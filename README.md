@@ -2,21 +2,19 @@
 
 #### The Features :
 * ##### Detect This Vulnerables
-  * <h5>Remote Code Injection Vulnerabilities</h5>
+  * <h5>Remote Code Injection</h5>
   * <h5>XSS Reflected</h5>
   * <h5>Template Injection</h5
   * <h5>SQl Injection </h5>
-* ##### Detect WebKnight WAF
-* ##### Finger-Print the backend Technologies.
 
 ### Screen Shot :
 
 <img src="https://i.ibb.co/PcPrRkL/scant3r.png" alt="scant3r" border="0">
 
 #### OS Support :
-* ##### Linux
-* ##### Android
-* ##### Windows
+- <h5> Linux</h5>
+- <h5> Android</h5>
+- <h5> Windows</h5>
 
 ## Install
 ### [Linux](https://wikipedia.org/wiki/Linux) [![alt tag](http://icons.iconarchive.com/icons/dakirby309/simply-styled/32/OS-Linux-icon.png)](https://fr.wikipedia.org/wiki/Linux)
