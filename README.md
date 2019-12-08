@@ -9,7 +9,7 @@
 
 ### Screen Shot :
 
-<img src="https://i.ibb.co/PcPrRkL/scant3r.png" alt="scant3r" border="0">
+<img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokai-xss" border="0"></a>
 
 #### OS Support :
 - <h5> Linux</h5>
