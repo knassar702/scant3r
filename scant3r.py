@@ -64,7 +64,7 @@ if __name__ == "__main__":
 		if '?' in url or '*' in url:
 			pass
 		else:
-			print(f"{mns} Please Add parameters in url ..")
+			print(f"{bad} Please Add parameters in url ..")
 			exit()
 		if r==True:
 			rfile=open(rfile,'r')
