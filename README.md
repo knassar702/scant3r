@@ -12,7 +12,7 @@
 ````
 #### The Features :
 * ##### Detect This Vulnerables
-  * <h5>Remote Code Injection</h5>
+  * <h5>Remote Code Execution</h5>
     <ul><li>Linux</li></ul>
   * <h5>XSS Reflected</h5>
   * <h5>Template Injection</h5>
@@ -23,8 +23,7 @@
      <li> Twig </li>
      <li> Freemarker </li>
      </ul>
-  * <h5>SQl Injection </h5>
-
+  * <h5>SQl Injection </h5> 
 ### Screen Shot :
    * ##### Nokia Website:
       * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0"></a>
@@ -41,7 +40,6 @@
    ````
    $ git clone https://github.com/knassar702/scant3r && cd scant3r && python3 -m pip install -r requirements.txt
    ````
- 
 ### Andoird <img src="https://img.icons8.com/clouds/100/000000/android-os.png">
 * Download <a href='https://play.google.com/store/apps/details?id=com.termux&hl=en'>Termux App</a>
 * open termux app
@@ -49,7 +47,6 @@
 ````bash
  $ pkg install python -y && pkg install git -y && git clone https://github.com/knassar702/scant3r && cd scant3r && python3 -m pip install -r requirements.txt
 ````
-
 ### Windows <img src="https://img.icons8.com/color/48/000000/windows-10.png">
 * Download <a href='https://www.python.org/downloads/windows/'>python3</a> and install it
 * open your cmd
@@ -58,5 +55,22 @@
 $ python3 -m pip install -r requirements.txt
 ````
 
+## Usage :
+````
+Options:
+  -h, --help          |    show this help menu
+  -u URL, --url=URL   |    Target URL (e.g."http://www.target.com/vuln.php?id=1")
+  --data=DATA         |    Data string to be sent through POST (e.g. "id=1")
+  --list=FILE         |    Get All Urls from List..
+  --threads=THR       |    Max number of concurrent HTTP(s) requests (default 10)
+  --timeout=time      |    Seconds to wait before timeout connection
+  --cookies=COK       |    HTTP Cookie header value (e.g. "PHPSESSID=a8d127e..")
+  --encode=1          |    How Many encode the payload
+````
+   ### Example :
+   <ul>
+	<li> ````$ python3 scant3r.py -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit' --cookies='PHPSESSID=safasf' --threads=20````</li>
+   </ul>
 ### Demo : <a href='http://youtube.com'> Video </a>
-
+### Blog : <a href='http://myblog.com/scant3r'> Post </a>
+##### Please send all your feedback and suggestions to: knassar702@gmail.com
