@@ -67,10 +67,9 @@ Options:
   --cookies=COK       |    HTTP Cookie header value (e.g. "PHPSESSID=a8d127e..")
   --encode=1          |    How Many encode the payload
 ````
-   ### Example :
-   <ul>
-	<li> ````$ python3 scant3r.py -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit' --cookies='PHPSESSID=safasf' --threads=20````</li>
-   </ul>
+### Example :
+
+``` $ python3 scant3r.py -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit' --cookies='PHPSESSID=safasf' --threads=20 ```
 ### Demo : <a href='http://youtube.com'> Video </a>
 ### Blog : <a href='http://myblog.com/scant3r'> Post </a>
 ##### Please send all your feedback and suggestions to: knassar702@gmail.com
