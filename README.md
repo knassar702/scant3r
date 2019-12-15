@@ -1,21 +1,38 @@
 ## ScanT3r - Web Security Scanner 
+````
 
+	   _____                ___________     
+	  / ___/_________ _____/_  __/__  /_____
+	  \__ \/ ___/ __ `/ __ \/ /   /_ </ ___/
+	 ___/ / /__/ /_/ / / / / /  ___/ / /    
+	/____/\___/\__,_/_/ /_/_/  /____/_/
+	
+	# Coded By : Khaled Nassar @knassar702
+
+````
 #### The Features :
 * ##### Detect This Vulnerables
   * <h5>Remote Code Injection</h5>
+    <ul><li>Linux</li></ul>
   * <h5>XSS Reflected</h5>
-  * <h5>Template Injection</h5
+  * <h5>Template Injection</h5>
+     <ul>
+     <li> Jinja2 </li>
+     <li> ERB </li>
+     <li> Java </li>
+     <li> Twig </li>
+     <li> Freemarker </li>
+     </ul>
   * <h5>SQl Injection </h5>
 
 ### Screen Shot :
    * ##### Nokia Website:
-      * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokai-xss" border="0"></a>
+      * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0"></a>
 
 #### OS Support :
-- <h5> Linux</h5>
-- <h5> Android</h5>
-- <h5> Windows</h5>
-
+<h5> Linux</h5>
+<h5> Android</h5>
+<h5> Windows</h5>
 ## Install
 ### [Linux](https://wikipedia.org/wiki/Linux) [![alt tag](http://icons.iconarchive.com/icons/dakirby309/simply-styled/32/OS-Linux-icon.png)](https://fr.wikipedia.org/wiki/Linux)
 * open your terminal 
