@@ -29,9 +29,9 @@
       * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0"></a>
 
 #### OS Support :
-<h5> Linux</h5>
-<h5> Android</h5>
-<h5> Windows</h5>
+- <h5> Linux</h5>
+- <h5> Android</h5>
+- <h5> Windows</h5>
 
 ## Install
 ### [Linux](https://wikipedia.org/wiki/Linux) [![alt tag](http://icons.iconarchive.com/icons/dakirby309/simply-styled/32/OS-Linux-icon.png)](https://fr.wikipedia.org/wiki/Linux)
