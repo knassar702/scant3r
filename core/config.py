@@ -3,3 +3,5 @@
 #-------------------------
 # HTTPS Cert
 vert = True
+# Allow Redirects
+redir=False
