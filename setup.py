@@ -14,7 +14,7 @@ setup(
     download_url="https://github.com/knassar702/scant3r",
     packages=find_packages(),
     include_package_data=True,
-    scripts=('scant3r.py',),
+    scripts=('scant3r',),
     entry_points={},
     install_requires=[
         "requests",
