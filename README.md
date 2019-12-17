@@ -69,7 +69,7 @@ Options:
 ````
 ### Example :
 
-``` $ python3 scant3r.py -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit' --cookies='PHPSESSID=safasf' --threads=20 ```
+``` $ python3 scant3r -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit' --cookies='PHPSESSID=safasf' --threads=20 ```
 ### Demo : <a href='http://youtube.com'> Video </a>
 ### Blog : <a href='http://myblog.com/scant3r'> Post </a>
 ##### Please send all your feedback and suggestions to: knassar702@gmail.com
