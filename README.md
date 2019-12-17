@@ -65,7 +65,7 @@ Options:
   --threads=THR       |    Max number of concurrent HTTP(s) requests (default 10)
   --timeout=time      |    Seconds to wait before timeout connection
   --cookies=COK       |    HTTP Cookie header value (e.g. "PHPSESSID=a8d127e..")
-  --encode=1          |    How Many encode the payload
+  --encode=1          |    How Many encode the payload (default 1)
 ````
 ### Example :
 
