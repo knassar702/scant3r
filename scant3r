@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # ScanT3r Web application Security Scanner - By : Khaled Nassar @knassar702
 __author__ = 'Khaled Nassar'
-__version__ = '0.1'
+__version__ = '0.1#beta'
 __github__ = 'https://github.com/knassar702/scant3r'
 __email__ = 'knassar702@gmail.com'
+__blog__ = 'https://knassar7o2.blogspot.com'
 
 import time,sys,os,logging,re,threading
 from core.scanner import *
@@ -25,18 +26,21 @@ def post_data(params):
     return {}
 
 def getargs():
-	global url,froms,data,rfile,r,cookie,thr,timeo,date,encoded
+	global url,froms,data,rfile,r,cookie,thr,timeo,date,encoded,redir,vert
 	r=False
 	helper=("""
 Options:
-  -h, --help          |    show this help menu
-  -u URL, --url=URL   |    Target URL (e.g."http://www.target.com/vuln.php?id=1")
-  --data=DATA         |    Data string to be sent through POST (e.g. "id=1")
-  --list=FILE         |    Get All Urls from List..
-  --threads=THR       |    Max number of concurrent HTTP(s) requests (default 10)
-  --timeout=time      |    Seconds to wait before timeout connection
-  --cookies=COK       |    HTTP Cookie header value (e.g. "PHPSESSID=a8d127e..")
-  --encode=1          |    How Many encode the payload (default 1)
+  -h, --help             |    Show help message and exit
+  --version              |    Show program's version number and exit
+  -u URL, --url=URL      |    Target URL (e.g."http://www.target.com/vuln.php?id=1")
+  --data=DATA            |    Data string to be sent through POST (e.g. "id=1")
+  --list=FILE            |    Get All Urls from List..
+  --threads=THR          |    Max number of concurrent HTTP(s) requests (default 10)
+  --timeout=time         |    Seconds to wait before timeout connection
+  --cookies=COK          |    HTTP Cookie header value (e.g. "PHPSESSID=a8d127e..")
+  --encode=1             |    How Many encode the payload (default 1)
+  --allow-redirect       |    Allow the main redirect
+  --verify               |    Enable HTTPS Cert
 		""")
 	optp = OptionParser(add_help_option=False)
 	optp.add_option("-u","--url",dest="url",help='Target URL (e.g. "http://www.target.com/vuln.php?id=1")')
@@ -47,19 +51,33 @@ Options:
 	optp.add_option("--timeout",type='int',dest="timeo",help="Set Timeout")
 	optp.add_option("--cookies",dest='cookie',help='Add cookie in Request')
 	optp.add_option("--encode",type="int",dest="encoded",help='How Many encode the payload')
+	optp.add_option("--version",dest='ver',action='store_true')
+	optp.add_option("--allow-redirect",dest='redirect',action='store_true')
+	optp.add_option("--verify",dest="vert",action="store_true")
 	opts, args = optp.parse_args()
 	if opts.thread:
 		thr = opts.thread
 	else:
 		thr = 10
+	if opts.redirect:
+		redir = True
+	else:
+		redir = False
 	if opts.url:
 		url=opts.url
+	if opts.vert:
+		vert = True
+	else:
+		vert = False
 	if opts.url == None and opts.rfile != None:
 		rfile=str(opts.rfile)
-		r=True
+		r = True
 		url = None
 	if opts.encoded:
 		encoded = opts.encoded
+		if encoded > 10:
+			print(thetime()+f"{bold}[{back}CRITICAL{end}{bold}]{end} maximum number of used encode is 10 avoiding potential issues")
+			exit()
 	else:
 		encoded = 1
 	if opts.data:
@@ -82,6 +100,9 @@ Options:
 		exit()
 	if opts.help:
 		print(helper)
+		exit()
+	if opts.ver:
+		print(__version__)
 		exit()
 	if opts.url != None and opts.rfile != None:
 		print (bad+" You Can't Start ScanT3r With List and url option ")
@@ -109,41 +130,14 @@ def logo():
 	time.sleep(1)
 def start(url,cookie,timeo,date):
 	global rfile,no
-	if r==True:
-		try:
-			rfile=open(rfile,'r')
-		except:
-			print(f"{bad} Error ..!")
-			exit()
-		for url in rfile:
-			url=url.strip()
-			if url.startswith('http://') or url.startswith('https://'):
-				no = False
-			else:
-				no = False
-				url='http://'+url
-			if '?' in url or '*' in url:
-				no = False
-			else:
-				print(f"{bad} No parameters :v ..")
-				no = True
-			if no == False:
-				print(url)
-				v.xss(url,cookie,timeo,encoded)
-				v.sqli(url,cookie,timeo,encoded)
-				v.osinj(url,cookie,timeo,date,encoded)
-				v.ssti(url,cookie,timeo,date,encoded)
+	col = con(url,redir=redir,r=r,vert=vert,date=date)
+	if col == 'no':
+		pass
 	else:
-		if date:
-			v.xss_post(url,cookie,timeo,date)
-			v.sqli_post(url,cookie,timeo,date)
-			v.osinj_post(url,cookie,timeo,date)
-			v.ssti_post(url,cookie,timeo,date)
-		else:
-			v.sqli(url,cookie,timeo,encoded)
-			v.xss(url,cookie,timeo,encoded)
-			v.osinj(url,cookie,timeo,encoded)
-			v.ssti(url,cookie,timeo,encoded)
+		v.sqli(url,cookie,timeo,encoded,vert,redir)
+		v.xss(url,cookie,timeo,encoded,vert,redir)
+		v.osinj(url,cookie,timeo,encoded,vert,redir)
+		v.ssti(url,cookie,timeo,encoded,vert,redir)
 def threader():
 	while True:
 		item = q.get()
@@ -155,7 +149,33 @@ if __name__ == "__main__":
 		v=paramscanner()
 		getargs()
 		if url:
-			con(url)
+			con(url,redir=redir,vert=vert,date=date)
+		if r:
+			try:
+				rfile=open(rfile,'r')
+			except:
+				print(f"{bad} Error ..!")
+				exit()
+			for i in range(thr):
+				t1 = threading.Thread(target=threader)
+				t1.daemon = True
+				t1.start()
+			for url in rfile:
+				url=url.strip()
+				if url.startswith('http://') or url.startswith('https://'):
+					no = False
+				else:
+					no = False
+					url='http://'+url
+				if '?' in url or '*' in url:
+					no = False
+				else:
+					print(f"{bad} No parameters :v ..")
+					no = True
+				if no == False:
+					q.put(url)
+			q.join()
+			exit()
 		if r == True or date != None:
 			pass
 		else:
@@ -168,12 +188,16 @@ if __name__ == "__main__":
 			else:
 				print(f"{bad} Please Add parameters in url ..")
 				exit()
-		for i in range(thr):
-			t1 = threading.Thread(target=threader)
-			t1.daemon = True
-			t1.start()
-		q.put(url)
-		q.join()
+		if date:
+			v.xss_post(url,cookie,timeo,date,vert,redir)
+			v.sqli_post(url,cookie,timeo,date,vert,redir)
+			v.osinj_post(url,cookie,timeo,date,vert,redir)
+			v.ssti_post(url,cookie,timeo,date,vert,redir)
+		else:
+			v.sqli(url,cookie,timeo,encoded,vert,redir)
+			v.xss(url,cookie,timeo,encoded,vert,redir)
+			v.osinj(url,cookie,timeo,encoded,vert,redir)
+			v.ssti(url,cookie,timeo,encoded,vert,redir)
 	except KeyboardInterrupt:
 		print(f'\n{bad} Good Bye :)\n')
 		exit()
