@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # ScanT3r Web application Security Scanner - By : Khaled Nassar @knassar702
 __author__ = 'Khaled Nassar'
 __version__ = '0.1#beta'
