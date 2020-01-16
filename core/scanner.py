@@ -1,5 +1,18 @@
-#!/usr/bin/env python
-# ScanT3r Web application Security Scanner - By : Khaled Nassar @knassar702
+#!/usr/bin/env python3
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
 __author__ = 'Khaled Nassar'
 __version__ = '0.1'
 __github__ = 'https://github.com/knassar702/scant3r'
@@ -46,7 +59,12 @@ def uagent():
 	'Mozilla/5.0 (Windows; U; Windows NT 6.1; en; rv:1.9.1.3) Gecko/20090824 Firefox/3.5.3 (.NET CLR 3.5.30729)',
 	'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/535.7 (KHTML, like Gecko) Comodo_Dragon/16.1.1.0 Chrome/16.0.912.63 Safari/535.7',
 	'Mozilla/5.0 (Windows; U; Windows NT 5.2; en-US; rv:1.9.1.3) Gecko/20090824 Firefox/3.5.3 (.NET CLR 3.5.30729)',
-	'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.1) Gecko/20090718 Firefox/3.5.1'
+	'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.1) Gecko/20090718 Firefox/3.5.1',
+	'Opera/8.01 (Windows NT 5.1; U; pl)',
+	'Opera/8.50 (Windows NT 5.0; U; en)',
+	'Opera/9.00 (Macintosh; PPC Mac OS X; U; es)',
+	'Opera/9.24 (X11; Linux i686; U; de)',
+	'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0; en) Opera 8.53'
 	] # Add Your User-Agents Here :)
 	return random.choice(agents).encode('utf-8') # Add random User-agent in request
 
@@ -216,7 +234,7 @@ class paramscanner: # Scanner Module
 {info}{bold} Payload : {payload}
 {info}{bold} Method  : [{yellow}POST{end}]
 {info}{bold} VALUS   : {dat}
-{info}{bold} URL     : {r.url}""")
+{info}{bold} URL     : {r.url}{end}""")
 					for i,d in dat.items():
 						dat[i] = d.replace(payload,'')
 					break
@@ -230,18 +248,23 @@ class paramscanner: # Scanner Module
 			if '*' in d:
 				ok = True
 		if ok:
-			payloads=['{{15279729727952579217591275217927272761*151723272727272725159151516565156}}','<%= 15279729727952579217591275217927272761 * 151723272727272725159151516565156 %>','${15279729727952579217591275217927272761*151723272727272725159151516565156}']
+			payloads=['{{6*6}}','<%= 6 * 6 %>','${6*6}']
 			for payload in payloads:
 				for i,c in dat.items():
-					dat[i] = c.replace('*',payload)
+					dat[i] = c.replace('*','Scant3rSSTI')
+				te = requests.post(url,data=dat,headers={'User-agent':uagent()},cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
+				fir = re.findall('36'.encode('utf-8'),te.content)
+				for i,c in dat.items():
+					dat[i] = c.replace('Scant3rSSTI',payload)
 				r = requests.post(url,data=dat,headers={'User-agent':uagent()},cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
-				if '2318290600713165858675521351981765038022843684314114299721561440515716'.encode('utf-8') in r.content:
+				ch = re.findall('36'.encode('utf-8'),r.content)
+				if len(ch) > len(fir):
 					print(f"""
 {bold}{good}{bold} Bug Found : Template injection (SSTI)
 {info}{bold} Payload : {payload}
 {info}{bold} Method  : [{yellow}POST{end}]
 {info}{bold} VALUS   : {dat}
-{info}{bold} URL     : {url}""")
+{info}{bold} URL     : {url}{end}""")
 					for i,d in dat.items():
 						dat[i] = i.replace(payload,'*')
 					break
@@ -250,27 +273,21 @@ class paramscanner: # Scanner Module
 						dat[i] = i.replace(payload,'*')
 					continue
 		else:
-			payloads=['{{15279729727952579217591275217927272761*151723272727272725159151516565156}}','<%= 15279729727952579217591275217927272761 * 151723272727272725159151516565156 %>','${15279729727952579217591275217927272761*151723272727272725159151516565156}']
+			payloads=['{{6*6}}','<%= 6 * 6 %>','${6*6}']
+			te = requests.post(url,data=dat,headers={'User-agent':uagent()},cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
+			fir = re.findall('36'.encode('utf-8'),te.content)
 			for payload in payloads:
 				for i,c in dat.items():
 					dat[i] = c + payload
-				if tim:
-					if co:
-						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent()})
-					else:
-						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent()})
-				else:
-					if co:
-						r = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
-					else:
-						r = requests.post(url,data=dat,verify=vert,allow_redirects=redir,headers={'User-agent':uagent()})
-				if '2318290600713165858675521351981765038022843684314114299721561440515716'.encode('utf-8') in r.content:
+				r = requests.post(url,data=dat,headers={'User-agent':uagent()},cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
+				ch = re.findall('36'.encode('utf-8'),r.content)
+				if len(ch) > len(fir):
 					print(f"""
 {bold}{good}{bold} Bug Found : Template injection (SSTI)
 {info}{bold} Payload : {payload}
 {info}{bold} Method  : [{yellow}POST{end}]
 {info}{bold} VALUS   : {dat}
-{info}{bold} URL     : {url}""")
+{info}{bold} URL     : {url}{end}""")
 					for i,d in dat.items():
 						dat[i] = i.replace(payload,'')
 					break
@@ -297,12 +314,10 @@ class paramscanner: # Scanner Module
 				if len(ch) > len(fir):
 					j=url.replace('*',payload.strip())
 					print(f"""
-
 {bold}{good}{bold} Bug Found : SQL Injection
 {bold}{info}{bold} Payload : "
 {info}{bold} Exploit : {j}
-{info}{bold} SQL Error : {i}
-                                """)
+{info}{bold} SQL Error : {i}{end}""")
 					break
 		elif '*' not in url:
 			for params in url.split("?")[1].split("&"):
@@ -320,7 +335,7 @@ class paramscanner: # Scanner Module
 {bold}{info}{bold} Payload   : {payload}
 {bold}{info}{bold} Param     : {params}
 {bold}{info}{bold} SQL Error : {i}
-{bold}{info}{bold} Exploit   : {j}
+{bold}{info}{bold} Exploit   : {j}{end}
 				""")
 						break
 	def osinj(self,url,co,tim,deco,vert,redir):
@@ -337,10 +352,9 @@ class paramscanner: # Scanner Module
 				if len(ch) > len(fir):
 					j=url.replace('*',payload.strip())
 					print (f"""
-
 {bold}{good}{bold} Bug Found : Remote Code Execution (RCE)
 {bold}{info}{bold} Payload : {payload}
-{bold}{info}{bold} Exploit : {j}
+{bold}{info}{bold} Exploit : {j}{end}
 				""")
 					break
 		for params in url.split("?")[1].split("&"):
@@ -356,37 +370,43 @@ class paramscanner: # Scanner Module
 {bold}{good}{bold} Bug Found : Remote Code Execution (RCE)
 {bold}{info}{bold} Payload : {payload}
 {bold}{info}{bold} Param : {params}
-{bold}{info}{bold} Exploit : {j}
+{bold}{info}{bold} Exploit : {j}{end}
 				""")
 					break
 	def ssti(self,url,co,tim,deco,vert,redir):
 		if '*' in url:
-			payloads=['{{15279729727952579217591275217927272761*151723272727272725159151516565156}}','<%= 15279729727952579217591275217927272761 * 151723272727272725159151516565156 %>','${15279729727952579217591275217927272761*151723272727272725159151516565156}']
+			payloads=['{{ 6*6 }}','<%= 6 * 6 %>','${6*6}']
+			te=requests.get(url.replace('*',''),headers={'User-agent':uagent()},cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
+			fir = re.findall('36'.encode('utf-8'),te.content)
 			for payload in payloads:
 				for h in range(deco):
 					payload=urlencoder(payload)
 				r=requests.get(url.replace('*',str(payload).strip()),headers={'User-agent':uagent()},cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
-				if '2318290600713165858675521351981765038022843684314114299721561440515716'.encode('utf-8') in r.content:
+				ch = re.findall('36'.encode('utf-8'),r.content)
+				if len(ch) > len(fir):
 					j=url.replace('*',str(payload).strip())
 					print (f"""
 {bold}{good}{bold} Bug Found : Template Injection
 {bold}{info}{bold} Payload : {payload}
-{bold}{info}{bold} Exploit : {j}""")
+{bold}{info}{bold} Exploit : {j}{end}""")
 					break
 		elif '*' not in url:
+			te=requests.get(url,headers={'User-agent':uagent()},cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
+			fir = re.findall('36'.encode('utf-8'),te.content)
 			for params in url.split("?")[1].split("&"):
-				payloads=['{{15279729727952579217591275217927272761*151723272727272725159151516565156}}','<%= 15279729727952579217591275217927272761 * 151723272727272725159151516565156 %>','${15279729727952579217591275217927272761*151723272727272725159151516565156}}']
+				payloads=['{{6*6}}','<%= 6 * 6 %>','${6*6}']
 				for payload in payloads:
 					for h in range(deco):
 						payload=urlencoder(payload)
 					r=requests.get(url.replace(params, params + str(payload).strip()),headers={'User-agent':uagent()},cookies=co,verify=vert,allow_redirects=redir,timeout=tim)
-					if '2318290600713165858675521351981765038022843684314114299721561440515716'.encode('utf-8') in r.content:
+					ch = re.findall('36'.encode('utf-8'),r.content)
+					if len(ch) > len(fir):
 						j=url.replace(params, params + str(payload).strip())
 						print (f"""
 {bold}{good}{bold} Bug Found : Template Injection
 {bold}{info}{bold} Payload : {payload}
 {bold}{info}{bold} Param : {params}
-{bold}{info}{bold} Exploit : {j}
+{bold}{info}{bold} Exploit : {j}{end}
 				""")
 						break
 class webscraper: # web scraper modules .. coming soon ^_^
