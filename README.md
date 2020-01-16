@@ -10,7 +10,6 @@
 	# Coded By : Khaled Nassar @knassar702
 
 ````
-#### The Features :
 * ##### Detect This Vulnerables
   * <h5>Remote Code Execution</h5>
     <ul><li>Linux</li></ul>
@@ -24,6 +23,7 @@
      <li> Freemarker </li>
      </ul>
   * <h5>SQl Injection </h5> 
+
 ### Screen Shot :
    * ##### Nokia Website:
       * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0"></a>
