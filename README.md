@@ -38,14 +38,20 @@
 * open your terminal 
 * enter this command 
    ````
-   $ git clone https://github.com/knassar702/scant3r && cd scant3r && python3 -m pip install -r requirements.txt
+   $ git clone https://github.com/knassar702/scant3r 
+   $ cd scant3r 
+   $ python3 -m pip install -r requirements.txt
    ````
 ### Andoird <img src="https://img.icons8.com/clouds/100/000000/android-os.png">
 * Download <a href='https://play.google.com/store/apps/details?id=com.termux&hl=en'>Termux App</a>
 * open termux app
 * enter this command
 ````bash
- $ pkg install python -y && pkg install git -y && git clone https://github.com/knassar702/scant3r && cd scant3r && python3 -m pip install -r requirements.txt
+ $ pkg install python -y 
+ $ pkg install git -y 
+ $ git clone https://github.com/knassar702/scant3r
+ $ cd scant3r 
+ $ python3 -m pip install -r requirements.txt
 ````
 ### Windows <img src="https://img.icons8.com/color/48/000000/windows-10.png">
 * Download <a href='https://www.python.org/downloads/windows/'>python3</a> and install it
@@ -69,7 +75,7 @@ Options:
 ````
 ### Example :
 
-``` $ python3 scant3r -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit' --cookies='PHPSESSID=safasf' --threads=20 ```
+``` $ python3 scant3r -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit' --cookies='PHPSESSID=safasf' ```
 ### Demo : <a href='http://youtube.com'> Video </a>
-### Blog : <a href='http://myblog.com/scant3r'> Post </a>
+### Blog : <a href='http://knassar702.blogspot.com'> Blog </a>
 ##### Please send all your feedback and suggestions to: knassar702@gmail.com
