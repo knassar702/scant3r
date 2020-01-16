@@ -1,5 +1,21 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 # ScanT3r Web application Security Scanner - By : Khaled Nassar @knassar702
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
+#
 __author__ = 'Khaled Nassar'
 __version__ = '0.1#beta'
 __github__ = 'https://github.com/knassar702/scant3r'
@@ -65,6 +81,10 @@ Options:
 		redir = False
 	if opts.url:
 		url=opts.url
+		url=url.replace("'",'').replace('"','')
+		url=url.replace("{",'').replace("}",'')
+		url=url.replace("<%",'').replace("%>",'')
+		url=url.replace("<",'').replace(">",'')
 	if opts.vert:
 		vert = True
 	else:
@@ -130,14 +150,10 @@ def logo():
 	time.sleep(1)
 def start(url,cookie,timeo,date):
 	global rfile,no
-	col = con(url,redir=redir,r=r,vert=vert,date=date)
-	if col == 'no':
-		pass
-	else:
-		v.sqli(url,cookie,timeo,encoded,vert,redir)
-		v.xss(url,cookie,timeo,encoded,vert,redir)
-		v.osinj(url,cookie,timeo,encoded,vert,redir)
-		v.ssti(url,cookie,timeo,encoded,vert,redir)
+	v.sqli(url,cookie,timeo,encoded,vert,redir)
+	v.xss(url,cookie,timeo,encoded,vert,redir)
+	v.osinj(url,cookie,timeo,encoded,vert,redir)
+	v.ssti(url,cookie,timeo,encoded,vert,redir)
 def threader():
 	while True:
 		item = q.get()
@@ -149,7 +165,9 @@ if __name__ == "__main__":
 		v=paramscanner()
 		getargs()
 		if url:
-			con(url,redir=redir,vert=vert,date=date)
+			con(url,redir=redir,vert=vert,cookie=cookie)
+		else:
+			pass
 		if r:
 			try:
 				rfile=open(rfile,'r')
@@ -161,7 +179,7 @@ if __name__ == "__main__":
 				t1.daemon = True
 				t1.start()
 			for url in rfile:
-				url=url.strip()
+				url=url.replace('<','').replace('>','').replace('{','').replace('}','').replace("<%","").replace("%>","").replace("'","").replace('"',"").strip()
 				if url.startswith('http://') or url.startswith('https://'):
 					no = False
 				else:
