@@ -93,18 +93,24 @@ Options:
 
 * Post Request
 ``` $ python3 scant3r -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit' --cookies='PHPSESSID=safasf' ```
+
 * Get Request
 ```` $ python3 scant3r -u http://localhost/web/search?u= --cookies='mycookie=True'````
+
 * Add Proxy
 ```$ python3 scant3r -u 'http://localhost/web/login' --proxy='http://127.0.0.1:8080'```
+
 * Send one request after some Seconds
 ``` $ python3 scant3r -u 'http://localhost/waf' --sleep=3``` <p> # send one request after 3 Seconds
+
 * How Many Encode The payload
  ```$ python3 scant3r -u 'http://localhost/web/login' --proxy='http://127.0.0.1:8080' --encode=3```
+
 * Add Custom User-agent
  ```$ python3 scant3r -u 'http://localhost/web/' --user-agent='Firefox'```
+
 * Change The Timeout
  ```$ python3 scant3r -u 'http://localhost/web/sleep' --timeout=10```
+
 * Add List and threads
  ```$ python3 scant3r --list mylist.txt --threads=100```
- 
