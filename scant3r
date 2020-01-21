@@ -15,14 +15,13 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
-#
 __author__ = 'Khaled Nassar'
-__version__ = '0.1#beta'
+__version__ = '0.2#beta'
 __github__ = 'https://github.com/knassar702/scant3r'
 __email__ = 'knassar702@gmail.com'
 __blog__ = 'https://knassar7o2.blogspot.com'
 
-import time,sys,os,logging,re,threading
+import time,sys,os,re,threading
 from core.scanner import *
 from core.colors import *
 from core.requester import *
@@ -30,7 +29,7 @@ from optparse import OptionParser
 from queue import Queue
 
 q = Queue()
-
+w = Queue()
 def post_data(params):
     if params:
         prePostData = params.split("&")
@@ -42,21 +41,24 @@ def post_data(params):
     return {}
 
 def getargs():
-	global url,froms,data,rfile,r,cookie,thr,timeo,date,encoded,redir,vert
+	global url,froms,data,rfile,r,cookie,thr,timeo,date,encoded,redir,vert,cagent,proxy,sleep
 	r=False
 	helper=("""
 Options:
-  -h, --help             |    Show help message and exit
-  --version              |    Show program's version number and exit
-  -u URL, --url=URL      |    Target URL (e.g."http://www.target.com/vuln.php?id=1")
-  --data=DATA            |    Data string to be sent through POST (e.g. "id=1")
-  --list=FILE            |    Get All Urls from List..
-  --threads=THR          |    Max number of concurrent HTTP(s) requests (default 10)
-  --timeout=time         |    Seconds to wait before timeout connection
-  --cookies=COK          |    HTTP Cookie header value (e.g. "PHPSESSID=a8d127e..")
-  --encode=1             |    How Many encode the payload (default 1)
-  --allow-redirect       |    Allow the main redirect
-  --verify               |    Enable HTTPS Cert
+  -h, --help          |    Show help message and exit
+  --version           |    Show program's version number and exit
+  -u URL, --url=URL   |    Target URL (e.g."http://www.target.com/vuln.php?id=1")
+  --data=DATA         |    Data string to be sent through POST (e.g. "id=1")
+  --list=FILE         |    Get All Urls from List
+  --threads           |    Max number of concurrent HTTP(s) requests (default 10)
+  --timeout           |    Seconds to wait before timeout connection
+  --proxy             |    Start The Connection with http(s) proxy
+  --cookies           |    HTTP Cookie header value (e.g. "PHPSESSID=a8d127e..")
+  --encode            |    How Many encode the payload (default 1)
+  --allow-redirect    |    Allow the main redirect
+  --verify            |    Enable HTTPS Cert
+  --user-agent        |    add custom user-agent
+  --sleep             |    Sent one request after some Seconds
 		""")
 	optp = OptionParser(add_help_option=False)
 	optp.add_option("-u","--url",dest="url",help='Target URL (e.g. "http://www.target.com/vuln.php?id=1")')
@@ -70,7 +72,38 @@ Options:
 	optp.add_option("--version",dest='ver',action='store_true')
 	optp.add_option("--allow-redirect",dest='redirect',action='store_true')
 	optp.add_option("--verify",dest="vert",action="store_true")
+	optp.add_option("--user-agent",dest='cagent')
+	optp.add_option("--proxy",dest='proxy')
+	optp.add_option("--sleep",dest='sleep',type='int')
 	opts, args = optp.parse_args()
+	if opts.proxy:
+		proxy = opts.proxy
+		if proxy.startswith("http://"):
+			proxy = {'http':proxy}
+		elif proxy.startswith("https://"):
+			proxy = {'https':proxy}
+		elif proxy.startswith('http://') == False and proxy.startswith('https://') == False:
+			print(f"{info} This Proxy Not Supported from ScanT3r")
+			exit()
+		else:
+			print(f"{info} Please add the protocol of the proxy like this (`{grey}--proxy='http://127.0.0.1:8080'{end}`)")
+			exit()
+	else:
+		proxy = None
+	if opts.sleep:
+		sleep = opts.sleep
+		try:
+			time.sleep(sleep)
+		except ValueError:
+			print(f'{bad} sleep length must be non-negative')
+			exit()
+	else:
+		sleep = 0
+	if opts.cagent:
+		cagent = opts.cagent
+		cagent = cagent.replace("<",'').replace(">",'').replace('{','').replace("}",'').replace("<%",'').replace('%>','').replace("'",'').replace('"','').replace("|",'')
+	else:
+		cagent = None
 	if opts.thread:
 		thr = opts.thread
 	else:
@@ -84,7 +117,11 @@ Options:
 		url=url.replace("'",'').replace('"','')
 		url=url.replace("{",'').replace("}",'')
 		url=url.replace("<%",'').replace("%>",'')
-		url=url.replace("<",'').replace(">",'')
+		url=url.replace("<",'').replace(">",'').replace("|",'')
+		if url.startswith('http://') or url.startswith('https://'):
+			pass
+		else:
+			url = 'http://'+url
 	if opts.vert:
 		vert = True
 	else:
@@ -96,7 +133,7 @@ Options:
 	if opts.encoded:
 		encoded = opts.encoded
 		if encoded > 10:
-			print(thetime()+f"{bold}[{back}CRITICAL{end}{bold}]{end} maximum number of used encode is 10 avoiding potential issues")
+			print(thetime()+f"{bold}[\033[91mCRITICAL{end}{bold}]{end} maximum number of used encode is 10 avoiding potential issues")
 			exit()
 	else:
 		encoded = 1
@@ -125,7 +162,7 @@ Options:
 		print(__version__)
 		exit()
 	if opts.url != None and opts.rfile != None:
-		print (bad+" You Can't Start ScanT3r With List and url option ")
+		print (bad+" You Can't Start ScanT3r With List option and url option ")
 		sys.exit()
 	if opts.cookie:
 		cookie=str(opts.cookie)
@@ -136,62 +173,87 @@ Options:
 		optp.error('missing a mandatory option (--url,--cookies,--data,--list,--encode) Use -h for help ..!')
 		exit()
 def logo():
-	l=(f'''{red}{bold}
+	l=(f'''\033[91m{bold}
 \t   _____                ___________     
 \t  / ___/_________ _____/_  __/__  /_____
 \t  \__ \/ ___/ __ `/ __ \/ /   /_ </ ___/
 \t ___/ / /__/ /_/ / / / / /  ___/ / /    
 \t/____/\___/\__,_/_/ /_/_/  /____/_/
 \t
-\t{yellow}# Coded By : Khaled Nassar @knassar702
-{end}
-''')
+\t{yellow}# Coded By : Khaled Nassar @knassar702{end}''')
 	print (l)
 	time.sleep(1)
-def start(url,cookie,timeo,date):
+def start(url,cookie,timeo,date,head=None):
 	global rfile,no
-	v.sqli(url,cookie,timeo,encoded,vert,redir)
-	v.xss(url,cookie,timeo,encoded,vert,redir)
-	v.osinj(url,cookie,timeo,encoded,vert,redir)
-	v.ssti(url,cookie,timeo,encoded,vert,redir)
+	headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	v.sqli(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
+	v.xss(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
+	v.osinj(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
+	v.ssti(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
+def start_header(url,cookie,timeo,date,head=None):
+	headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
 def threader():
 	while True:
 		item = q.get()
 		start(item,cookie,timeo,date)
 		q.task_done()
+def threader2():
+	while True:
+		item = w.get()
+		start_header(item,cookie,timeo,date)
+		w.task_done()
 if __name__ == "__main__":
 	try:
 		logo()
 		v=paramscanner()
 		getargs()
 		if url:
-			con(url,redir=redir,vert=vert,cookie=cookie)
-		else:
-			pass
+			con(url,vert=vert,redir=redir,cookie=cookie,timeo=timeo,proxy=proxy,slp=sleep,cagent=cagent)
 		if r:
 			try:
 				rfile=open(rfile,'r')
-			except:
-				print(f"{bad} Error ..!")
+			except FileNotFoundError:
+				print(f"{bad} File Not Found..!")
 				exit()
 			for i in range(thr):
 				t1 = threading.Thread(target=threader)
+				t2 = threading.Thread(target=threader2)
 				t1.daemon = True
+				t2.daemon = True
+				t2.start()
 				t1.start()
 			for url in rfile:
-				url=url.replace('<','').replace('>','').replace('{','').replace('}','').replace("<%","").replace("%>","").replace("'","").replace('"',"").strip()
+				url=url.replace('<','').replace('>','').replace('{','').replace('}','').replace("<%","").replace("%>","").replace("'","").replace('"',"").replace("|",'').strip()
 				if url.startswith('http://') or url.startswith('https://'):
 					no = False
 				else:
 					no = False
 					url='http://'+url
-				if '?' in url or '*' in url:
-					no = False
-				else:
-					print(f"{bad} No parameters :v ..")
-					no = True
-				if no == False:
-					q.put(url)
+				wh=con_f(url,vert=vert,proxy=proxy,redir=redir,cookie=cookie,timeo=timeo,slp=sleep,cagent=cagent)
+				if wh == 'ok':
+					if '?' in url or '*' in url:
+						no = False
+					else:
+						w.put(url)
+						print(f"{bad} No parameters :v .. Scanning The Headers")
+						no = True
+					if no == False:
+						q.put(url)
+				elif wh[0] == 'no':
+					print(f"{bad} {wh[1]}")
+			w.join()
 			q.join()
 			exit()
 		if r == True or date != None:
@@ -204,18 +266,41 @@ if __name__ == "__main__":
 			if '?' in url or '*' in url or date != None:
 				pass
 			else:
-				print(f"{bad} Please Add parameters in url ..")
+				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				print(f"{bad} Please Add parameters or (*) in url .. Scanning The Headers ")
 				exit()
 		if date:
-			v.xss_post(url,cookie,timeo,date,vert,redir)
-			v.sqli_post(url,cookie,timeo,date,vert,redir)
-			v.osinj_post(url,cookie,timeo,date,vert,redir)
-			v.ssti_post(url,cookie,timeo,date,vert,redir)
+			headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+			headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+			headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+			headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+			headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+			headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+			headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+			v.xss_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
+			v.sqli_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
+			v.osinj_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
+			v.ssti_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
 		else:
-			v.sqli(url,cookie,timeo,encoded,vert,redir)
-			v.xss(url,cookie,timeo,encoded,vert,redir)
-			v.osinj(url,cookie,timeo,encoded,vert,redir)
-			v.ssti(url,cookie,timeo,encoded,vert,redir)
+			headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+			headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+			headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+			headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+			headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+			headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+			v.sqli(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
+			v.xss(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
+			v.osinj(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
+			v.ssti(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
 	except KeyboardInterrupt:
 		print(f'\n{bad} Good Bye :)\n')
+		exit()
+	except RuntimeError:
+		print(f"\n{bad} can't start new thread .. ('--threads=100')")
 		exit()
