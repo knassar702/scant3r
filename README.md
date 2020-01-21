@@ -1,5 +1,4 @@
 <img src="https://i.ibb.co/fCtLQTz/received-2427790527459077.png" alt="ScanT3r Logo" border="0">
-# ScanT3r - Web application Security Scanner
 
 ### Features:
 
