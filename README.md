@@ -2,7 +2,7 @@
 
 ##### Last Version : 0.2#Beta
 ### Features:
-* ##### Detect This Vulnerables
+* ##### Detect This vulnerabilitys
   * <h5>Remote Code Execution</h5>
     <ul><li>Linux</li></ul>
   * <h5>XSS Reflected</h5>
