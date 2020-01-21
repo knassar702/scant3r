@@ -91,7 +91,7 @@ Options:
 ````
 ### Example :
 
-* Post Request
+* Post Request And Add cookies
 ``` $ python3 scant3r -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit' --cookies='PHPSESSID=safasf' ```
 
 * Get Request
@@ -101,7 +101,7 @@ Options:
 ```$ python3 scant3r -u 'http://localhost/web/login' --proxy='http://127.0.0.1:8080'```
 
 * Send one request after some Seconds
-``` $ python3 scant3r -u 'http://localhost/waf' --sleep=3``` <p> # send one request after 3 Seconds
+``` $ python3 scant3r -u 'http://localhost/waf' --sleep=3```
 
 * How Many Encode The payload
  ```$ python3 scant3r -u 'http://localhost/web/login' --proxy='http://127.0.0.1:8080' --encode=3```
