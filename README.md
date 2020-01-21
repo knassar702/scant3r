@@ -1,16 +1,8 @@
-## ScanT3r - Web Security Scanner 
 <img src="https://i.ibb.co/fCtLQTz/received-2427790527459077.png" alt="ScanT3r Logo" border="0">
-````
+# ScanT3r - Web application Security Scanner
 
-	   _____                ___________     
-	  / ___/_________ _____/_  __/__  /_____
-	  \__ \/ ___/ __ `/ __ \/ /   /_ </ ___/
-	 ___/ / /__/ /_/ / / / / /  ___/ / /    
-	/____/\___/\__,_/_/ /_/_/  /____/_/
-	
-	# Coded By : Khaled Nassar @knassar702
+### Features:
 
-````
 * ##### Detect This Vulnerables
   * <h5>Remote Code Execution</h5>
     <ul><li>Linux</li></ul>
@@ -24,10 +16,21 @@
      <li> Freemarker </li>
      </ul>
   * <h5>SQl Injection </h5> 
-
+* Support Post Request
+* Bypass KingWaf
+* Use Random ```user-agent``` in requests
+* Change The Timeout
+* Add Cookies
+* Remote in all thing in your request like (```add custom user-agent and allow to redirect.. etc```)
+* Support Scanning from List File
+* how many Seconds sleeping after send one request
+* Threading For Speeds
 ### Screen Shot :
    * ##### Nokia Website:
       * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0"></a>
+
+## Test ScanT3r
+#### You can download dvwa or hacking-lab for test scant3r tool
 
 #### OS Support :
 - <h5> Linux</h5>
@@ -65,18 +68,21 @@ $ python3 -m pip install -r requirements.txt
 ## Usage :
 ````
 Options:
-  -h, --help          |    show this help menu
+  -h, --help          |    Show help message and exit
+  --version           |    Show program's version number and exit
   -u URL, --url=URL   |    Target URL (e.g."http://www.target.com/vuln.php?id=1")
   --data=DATA         |    Data string to be sent through POST (e.g. "id=1")
-  --list=FILE         |    Get All Urls from List..
-  --threads=THR       |    Max number of concurrent HTTP(s) requests (default 10)
-  --timeout=time      |    Seconds to wait before timeout connection
-  --cookies=COK       |    HTTP Cookie header value (e.g. "PHPSESSID=a8d127e..")
-  --encode=1          |    How Many encode the payload (default 1)
+  --list=FILE         |    Get All Urls from List
+  --threads           |    Max number of concurrent HTTP(s) requests (default 10)
+  --timeout           |    Seconds to wait before timeout connection
+  --proxy             |    Start The Connection with http(s) proxy
+  --cookies           |    HTTP Cookie header value (e.g. "PHPSESSID=a8d127e..")
+  --encode            |    How Many encode the payload (default 1)
+  --allow-redirect    |    Allow the main redirect
+  --verify            |    Enable HTTPS Cert
+  --user-agent        |    add custom user-agent
+  --sleep             |    Sent one request after some Seconds 
 ````
 ### Example :
 
 ``` $ python3 scant3r -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit' --cookies='PHPSESSID=safasf' ```
-### Demo : <a href='http://youtube.com'> Video </a>
-### Blog : <a href='http://knassar702.blogspot.com'> Blog </a>
-##### Please send all your feedback and suggestions to: knassar702@gmail.com
