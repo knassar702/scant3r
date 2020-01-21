@@ -1,5 +1,6 @@
 <img src="https://i.ibb.co/fCtLQTz/received-2427790527459077.png" alt="ScanT3r Logo" border="0">
 
+Last Version : 0.2#Beta
 ### Features:
 
 * ##### Detect This Vulnerables
@@ -25,6 +26,8 @@
 * You can Change how many Seconds sleeping after send one request
 * Threading For Speeds
 * Inject Payloads os some bugs in ```referrer``` and ```user-agent``` header (Header Scanner)
+* Add Http and Https Proxy
+* You Can Change how many payload encoded (```URL Encoding```)
 ### Screen Shot :
    * ##### Nokia Website:
       * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0"></a>
@@ -90,4 +93,20 @@ Options:
 ````
 ### Example :
 
+* Post Request
 ``` $ python3 scant3r -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit' --cookies='PHPSESSID=safasf' ```
+* Get Request
+```` $ python3 scant3r -u http://localhost/web/search?u= --cookies='mycookie=True'````
+* Add Proxy
+```$ python3 scant3r -u 'http://localhost/web/login' --proxy='http://127.0.0.1:8080'```
+* Send one request after some Seconds
+``` $ python3 scant3r -u 'http://localhost/waf' --sleep=3``` <p> # send one request after 3 Seconds
+* How Many Encode The payload
+ ```$ python3 scant3r -u 'http://localhost/web/login' --proxy='http://127.0.0.1:8080' --encode=3```
+* Add Custom User-agent
+ ```$ python3 scant3r -u 'http://localhost/web/' --user-agent='Firefox'```
+* Change The Timeout
+ ```$ python3 scant3r -u 'http://localhost/web/sleep' --timeout=10```
+* Add List and threads
+ ```$ python3 scant3r --list mylist.txt --threads=100```
+ 
