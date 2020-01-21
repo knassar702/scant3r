@@ -1,7 +1,11 @@
+__author__ = 'Khaled Nassar'
+__version__ = '0.2#beta'
+__github__ = 'https://github.com/knassar702/scant3r'
+__email__ = 'knassar702@gmail.com'
+__blog__ = 'https://knassar7o2.blogspot.com'
 import sys
 import os
 import platform
-
 colors = True  # Output should be colored
 machine = sys.platform  # Detecting the os of current system
 checkplatform = platform.platform() # Get current version of OS
@@ -26,3 +30,4 @@ else:
     bad = '\033[91m[-]\033[0m'
     good = '\033[92m[+]\033[0m'
     run = '\033[97m[~]\033[0m'
+    grey = '\033[7;90m'
