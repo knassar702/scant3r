@@ -1,8 +1,7 @@
 <img src="https://i.ibb.co/fCtLQTz/received-2427790527459077.png" alt="ScanT3r Logo" border="0">
 
-Last Version : 0.2#Beta
+##### Last Version : 0.2#Beta
 ### Features:
-
 * ##### Detect This Vulnerables
   * <h5>Remote Code Execution</h5>
     <ul><li>Linux</li></ul>
@@ -39,7 +38,6 @@ Last Version : 0.2#Beta
 - <h5> Linux</h5>
 - <h5> Android</h5>
 - <h5> Windows</h5>
-
 ## Install
 ### [Linux](https://wikipedia.org/wiki/Linux) [![alt tag](http://icons.iconarchive.com/icons/dakirby309/simply-styled/32/OS-Linux-icon.png)](https://fr.wikipedia.org/wiki/Linux)
 * open your terminal 
