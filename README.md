@@ -24,7 +24,7 @@
 * Support Scanning from List File
 * You can Change how many Seconds sleeping after send one request
 * Threading For Speeds
-* Inject Payloads os some bugs in ```referrer``` and ```user-agent``` header (Header Scanner)
+* Inject Payloads of some bugs in ```referrer``` and ```user-agent``` header (Header Scanner)
 * Add Http and Https Proxy
 * You Can Change how many payload encoded (```URL Encoding```)
 ### Screen Shot :
