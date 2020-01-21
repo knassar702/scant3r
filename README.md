@@ -24,6 +24,7 @@
 * Support Scanning from List File
 * You can Change how many Seconds sleeping after send one request
 * Threading For Speeds
+* Inject Payloads os some bugs in ```referrer``` and ```user-agent``` header (Header Scanner)
 ### Screen Shot :
    * ##### Nokia Website:
       * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0"></a>
