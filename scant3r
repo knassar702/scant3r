@@ -56,7 +56,7 @@ Options:
   --cookies           |    HTTP Cookie header value (e.g. "PHPSESSID=a8d127e..")
   --encode            |    How Many encode the payload (default 1)
   --allow-redirect    |    Allow the main redirect
-  --verify            |    Enable HTTPS Cert
+  --verify            |    disable HTTPS Cert error
   --user-agent        |    add custom user-agent
   --sleep             |    Sent one request after some Seconds
 		""")
@@ -109,9 +109,9 @@ Options:
 	else:
 		thr = 10
 	if opts.redirect:
-		redir = True
-	else:
 		redir = False
+	else:
+		redir = True
 	if opts.url:
 		url=opts.url
 		url=url.replace("'",'').replace('"','')
