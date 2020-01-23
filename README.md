@@ -113,3 +113,5 @@ Options:
 
 * Add List and threads
  ```$ python3 scant3r --list mylist.txt --threads=100```
+
+# Blog : <a href='https://knassar7o2.blogspot.com/2020/01/scant3r.html'> ScanT3r </a>
