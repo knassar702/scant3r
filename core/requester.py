@@ -92,7 +92,7 @@ def con_f(url,redir,cookie=None,timeo=None,vert=None,proxy=None,cagent=None,slp=
 		r = requests.get(url,allow_redirects=redir,timeout=timeo,verify=vert,cookies=cookie,proxies=proxy,headers={'User-agent':uagent(cagent=cagent)})
 		return 'ok'
 	except requests.exceptions.ReadTimeout:
-		return 'no','timeout error ..'
+		return 'no','\ntimeout error ..'
 	except requests.exceptions.ConnectionError:
 		return 'no','Connection Error ..'
 	except requests.exceptions.ProxyError:
