@@ -56,7 +56,7 @@ Options:
   --cookies           |    HTTP Cookie header value (e.g. "PHPSESSID=a8d127e..")
   --encode            |    How Many encode the payload (default 1)
   --allow-redirect    |    Allow the main redirect
-  --verify            |    disable HTTPS Cert error
+  --verify            |    Skip HTTPS Cert Error
   --user-agent        |    add custom user-agent
   --sleep             |    Sent one request after some Seconds
 		""")
@@ -180,7 +180,8 @@ def logo():
 \t ___/ / /__/ /_/ / / / / /  ___/ / /    
 \t/____/\___/\__,_/_/ /_/_/  /____/_/
 \t
-\t{yellow}# Coded By : Khaled Nassar @knassar702{end}''')
+\t{yellow}# Coded By : Khaled Nassar @knassar702{end}
+''')
 	print (l)
 	time.sleep(1)
 def start(url,cookie,timeo,date,head=None):
@@ -252,7 +253,7 @@ if __name__ == "__main__":
 					if no == False:
 						q.put(url)
 				elif wh[0] == 'no':
-					print(f"{bad} {wh[1]}")
+					print(f"\n{bad} {wh[1]}")
 			w.join()
 			q.join()
 			exit()
@@ -273,7 +274,7 @@ if __name__ == "__main__":
 				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
 				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
 				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				print(f"{bad} Please Add parameters or (*) in url .. Scanning The Headers ")
+				print(f"{bad} Please Add parameters or (*) in url ")
 				exit()
 		if date:
 			headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
@@ -303,4 +304,22 @@ if __name__ == "__main__":
 		exit()
 	except RuntimeError:
 		print(f"\n{bad} can't start new thread .. ('--threads=100')")
+		exit()
+	except requests.exceptions.ConnectionError:
+		printer('error',f"host '{blue}{url}{end}' does not exist ..!")
+		exit()
+	except requests.exceptions.ReadTimeout:
+		print(f"\n{bad} Timeout Error ")
+		exit()
+	except requests.exceptions.ProxyError:
+		print(f"{bad} Proxy Connection Error")
+		exit()
+	except requests.exceptions.InvalidURL:
+		print(f"{bad} Invalid URL")
+		exit()
+	except requests.exceptions.InvalidSchema:
+		print(f"{bad} Invalid Schame")
+		exit()
+	except requests.exceptions.MissingSchema:
+		print(f"{bad} Missing Schema")
 		exit()
