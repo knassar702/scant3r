@@ -31,7 +31,7 @@
    * ##### Nokia Website:
       * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0"></a>
 
-##### How can i test Test ScanT3r Tool .. You can download <a href='https://github.com/ethicalhack3r/DVWA'><Dvwa</a> or <a href='https://github.com/knassar702/hacking-lab'>hacking-lab</a> for test scant3r tool
+##### How can i test Test ScanT3r Tool .. You can download <a href='https://github.com/ethicalhack3r/DVWA'>Dvwa</a> or <a href='https://github.com/knassar702/hacking-lab'>hacking-lab</a> for test scant3r tool
 
 #### OS Support :
 - <h5> Linux</h5>
