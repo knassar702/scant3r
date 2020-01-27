@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
     long_description = f.read()
 setup(
     name="scant3r",
-    version="0.1",
+    version="0.2",
     description="Web Application Security Scanner",
     long_description=long_description,
     author="Khaled Nassar",
@@ -33,7 +33,7 @@ setup(
         "Environment :: Console :: Curses",
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
         "Intended Audience :: Developers",
         "Intended Audience :: Education",
         "Intended Audience :: Information Technology",
