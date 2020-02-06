@@ -19,11 +19,12 @@ __github__ = 'https://github.com/knassar702/scant3r'
 __email__ = 'knassar702@gmail.com'
 __blog__ = 'https://knassar7o2.blogspot.com'
 
-import requests,sys,os,re,random
+import requests,sys,os,re,random,urllib3
 from .encoder import urlencoder
 from .colors import *
 from .reporter import make_report
 from time import sleep
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 errors = {'sqlite3':'sqlite3.OperationalError','MySQL': 'error in your SQL syntax',
              'MiscError': 'mysql_fetch',
              'MiscError2': 'num_rows',
