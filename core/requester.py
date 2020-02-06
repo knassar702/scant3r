@@ -19,7 +19,8 @@ from .colors import *
 from .config import *
 from .scanner import uagent
 from time import sleep
-import requests
+import requests,urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 __author__ = 'Khaled Nassar'
 __version__ = '0.2#beta'
 __github__ = 'https://github.com/knassar702/scant3r'
