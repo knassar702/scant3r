@@ -14,6 +14,11 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #
+__author__ = 'Khaled Nassar'
+__version__ = '0.3#beta'
+__github__ = 'https://github.com/knassar702/scant3r'
+__email__ = 'knassar702@gmail.com'
+__blog__ = 'https://knassar7o2.blogspot.com'
 from datetime import datetime
 from .colors import *
 from .config import *
@@ -21,11 +26,6 @@ from .scanner import uagent
 from time import sleep
 import requests,urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-__author__ = 'Khaled Nassar'
-__version__ = '0.2#beta'
-__github__ = 'https://github.com/knassar702/scant3r'
-__email__ = 'knassar702@gmail.com'
-__blog__ = 'https://knassar7o2.blogspot.com'
 def thetime():
 	now = datetime.now()
 	return f'{bold}{blue}[{end}{bold}{now.hour}:{now.minute}:{now.second}{blue}{bold}]{end}'
@@ -36,7 +36,7 @@ def red(w):
 		return False
 def printer(what,msg):
 	if what == 'info':
-		print(thetime()+f' [{green}INFO{end}] {msg}')
+		print(thetime()+f'{bold} [{green}INFO{end}] {bold}{msg}{end}')
 	elif what == 'error':
 		print(thetime()+f' [\033[91m{bold}CRITICAL{end}] {msg}')
 	elif what == 'war':
@@ -56,6 +56,7 @@ def con(url,redir,cookie=None,timeo=None,vert=None,proxy=None,slp=0,cagent=None)
 				if h == 'Server':
 					server = v
 					break
+				server = 'None'
 			print(f"""
 \033[91m#{yellow}{bold}--------------------------------{end}\033[91m#{end}
 {bold}{info}{bold} Status Code : {green}{r.status_code}{end}
@@ -63,7 +64,7 @@ def con(url,redir,cookie=None,timeo=None,vert=None,proxy=None,slp=0,cagent=None)
 {bold}{info}{bold} Web Server : {server}
 {bold}{info}{bold} Encoding  : {r.encoding}
 \033[91m#{yellow}{bold}--------------------------------{end}\033[91m#{end}
-					""")
+""")
 		elif r.status_code == 302 or r.status_code == 301:
 			printer('qu',f'ScanT3r got a {r.status_code} redirect to another website. Do you want to contiune .? [y/n] ')
 		elif r.status_code == 999:
