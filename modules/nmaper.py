@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from modules.scant3r_maker import Module,colors
-def data():
+def data(): # The all data of module
 	data = {
 	'name': 'port scanning',
 	'description':'''
@@ -19,8 +19,6 @@ With This module you can scan all hosts using NMAP Tool Online
 	]
 	}
 	return data
-def lol():
-	print(111)
 class script:
 	def __init__(self):
 		pass
