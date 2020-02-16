@@ -85,15 +85,20 @@ Options:
   --cookies           |    HTTP Cookie header value (e.g. "PHPSESSID=a8d127e..")
   --encode            |    How Many encode the payload (default 1)
   --allow-redirect    |    Allow the main redirect
-  --verify            |    Enable HTTPS Cert
+  --verify            |    Skip HTTPS Cert Error
   --user-agent        |    add custom user-agent
-  --sleep             |    Sent one request after some Seconds 
+  --scan-headers      |    Try to inject payloads in headers not parameters (user-agent,referrer)
+  --skip-headers      |    Skip The Headers scanning processe
+  --sleep             |    Sent one request after some Seconds
+  --module            |    add custom module (e.g. "google.py") 
 ````
 ### Example :
 
 * Post Request And Add cookies
 ``` $ python3 scant3r -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit' --cookies='PHPSESSID=safasf' ```
 
+* port scanner or add module 
+``` $ python3 scant3r -u 'http://localhost' --module=nmaper.py```
 * Get Request
 ```` $ python3 scant3r -u http://localhost/web/search?u= --cookies='mycookie=True'````
 
