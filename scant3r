@@ -185,7 +185,11 @@ Options:
 		sys.exit()
 	if opts.cookie:
 		cookie=str(opts.cookie)
-		cookie=post_data(cookie)
+		try:
+			cookie=post_data(cookie)
+		except:
+			printer('error','Invild Cookies ..')
+			exit()
 	else:
 		cookie=None
 	if opts.module:
@@ -238,14 +242,24 @@ Options:
 			'url':url,
 			'cookies':cookie,
 			'proxy':proxy,
+			'url*':url,
+			'cookies*':cookie,
+			'proxy*':proxy,
 			}
 			the_options = {}
 			for option in script_options:
 				the_options[option] = module_options[option]
-			for o,v in the_options.items():
-				if v == None:
-					printer('error',f'Module Errors . i need this option ({o})for continue')
-					exit()
+			try:
+				for o,v in the_options.items():
+					if o[-1] == '*':
+						if v == None:
+								printer('error',f'Module Errors . i need this option ({o})for continue')
+								exit()
+				for o,v in the_options.items():
+					the_options[o.replace('*','')] = the_options.pop(o)
+			except KeyError:
+				printer('error','Module Errors . This Value ({o.replace("*","")})Not Supported ')
+				exit()
 		except:
 			printer('error','Module Errors (informations)')
 			exit()
