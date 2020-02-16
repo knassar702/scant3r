@@ -1,6 +1,6 @@
 <img src="https://i.ibb.co/fCtLQTz/received-2427790527459077.png" alt="ScanT3r Logo" border="0">
 
-##### Last Version : 0.2#Beta
+##### Last Version : 0.3#Beta
 ### Features:
 * ##### Detect This vulnerabilitys
   * <h5>Remote Code Execution</h5>
@@ -27,6 +27,7 @@
 * Inject Payloads of some bugs in ```referrer``` and ```user-agent``` header (Header Scanner)
 * Add Http and Https Proxy
 * You Can Change how many payload encoded (```URL Encoding```)
+* You Can Add your custom module like (`port scanner , sql injection exploiter etc..`)
 ### Screen Shot :
    * ##### Nokia Website:
       * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0"></a>
