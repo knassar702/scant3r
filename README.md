@@ -1,7 +1,11 @@
 <img src="https://i.ibb.co/fCtLQTz/received-2427790527459077.png" alt="ScanT3r Logo" border="0">
 
-##### Last Version : 0.3#Beta
+
+## What is ScanT3r .?
+<h4>ScanT3r is a Web Applications Security Scanner coded in Python to help Security Researchers to scan Multiple links in the same time against Remote Code/Command Execution & XSS & SQLI & SSTI Vulnerabilities.You can also use your own crowler to gather URL’s for a certain domain or a random domains, and save it in list.txt then pass it to ScanT3r.</h4>
+
 ### Features:
+
 * ##### Detect This vulnerabilitys
   * <h5>Remote Code Execution</h5>
     <ul><li>Linux</li></ul>
@@ -121,3 +125,5 @@ Options:
  ```$ python3 scant3r --list mylist.txt --threads=100```
 
 # Blog : <a href='https://knassar7o2.blogspot.com/2020/01/scant3r.html'> ScanT3r </a>
+##### Last Version : 0.3#Beta
+
