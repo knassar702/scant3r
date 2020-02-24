@@ -34,8 +34,8 @@
 * You Can Add your custom module like (`port scanner , sql injection exploiter etc..`)
 ### Screen Shot :
    * ##### Nokia Website:
-      * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0"></a>
-
+      * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0">
+      * <img src="https://i.ibb.co/7b5Hm5d/scant3r-headers.png" alt="scant3r-headers" border="0">
 ##### How can i test Test ScanT3r Tool .. You can download <a href='https://github.com/ethicalhack3r/DVWA'>Dvwa</a> or <a href='https://github.com/knassar702/hacking-lab'>hacking-lab</a> for test scant3r tool
 
 #### OS Support :
