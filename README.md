@@ -85,4 +85,4 @@ Options:
 ### Example :
 
 ``` $ python3 scant3r -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit' --cookies='PHPSESSID=safasf' ```
-#### Blog : <a href='https://knassar702.github.io/projects/scant3r/'> Blog </a>
+#### Blog : <a href='https://knassar702.github.io/projects/scant3r/'>ScanT3r</a>
