@@ -242,6 +242,10 @@ Options:
 			'url':url,
 			'cookies':cookie,
 			'proxy':proxy,
+			'threads':thr,
+			'timeout':timeo,
+			'timeout*':timeo,
+			'threads*':thr,
 			'url*':url,
 			'cookies*':cookie,
 			'proxy*':proxy,
@@ -338,13 +342,15 @@ if __name__ == "__main__":
 						except:
 							printer('error','File Error')
 							exit()
-						for url in f:
-							run.run(url.strip())
+						the_options['file'] = f
+						run.run(the_options)
 				else:
 					run.run(the_options)
-			except:
-				printer('error','Module Errors (Code)')
-				exit()
+			finally:
+				pass
+#			except:
+#				printer('error','Module Errors (Code)')
+#				exit()
 			exit()
 		if url:
 			con(url,vert=vert,redir=redir,cookie=cookie,timeo=timeo,proxy=proxy,slp=sleep,cagent=cagent)
