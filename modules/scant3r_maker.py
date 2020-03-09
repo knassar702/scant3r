@@ -52,8 +52,10 @@ class colors:
 			self.good = '\033[92m[+]\033[0m'
 			self.run = '\033[97m[~]\033[0m'
 			self.grey = '\033[7;90m'
-def thetime():
+def thetime(t=None):
 	now = datetime.now()
+	if t:
+		return now
 	return f'{colors().bold}{colors().blue}[{colors().end}{colors().bold}{now.hour}:{now.minute}:{now.second}{colors().blue}{colors().bold}]{colors().end}'
 class Module:
 	def __init__():
