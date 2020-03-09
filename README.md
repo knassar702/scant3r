@@ -1,12 +1,16 @@
-<img src="https://i.ibb.co/fCtLQTz/received-2427790527459077.png" alt="ScanT3r Logo" border="0">
+## ScanT3r - Web Security Scanner 
+````
 
+	   _____                ___________     
+	  / ___/_________ _____/_  __/__  /_____
+	  \__ \/ ___/ __ `/ __ \/ /   /_ </ ___/
+	 ___/ / /__/ /_/ / / / / /  ___/ / /    
+	/____/\___/\__,_/_/ /_/_/  /____/_/
+	
+	# Coded By : Khaled Nassar @knassar702
 
-## What is ScanT3r .?
-<h4>ScanT3r is a Web Applications Security Scanner coded in Python to help Security Researchers to scan Multiple links in the same time against Remote Code/Command Execution & XSS & SQLI & SSTI Vulnerabilities.You can also use your own crowler to gather URL’s for a certain domain or a random domains, and save it in list.txt then pass it to ScanT3r.</h4>
-
-### Features:
-
-* ##### Detect This vulnerabilitys
+````
+* ##### Detect This Vulnerables
   * <h5>Remote Code Execution</h5>
     <ul><li>Linux</li></ul>
   * <h5>XSS Reflected</h5>
@@ -19,29 +23,16 @@
      <li> Freemarker </li>
      </ul>
   * <h5>SQl Injection </h5> 
-* Support Post Request
-* Bypass KingWaf
-* Use Random ```user-agent``` in requests
-* Change The Timeout
-* Add Cookies
-* Remote in all thing in the requests like (```add custom user-agent and allow to redirect.. etc```)
-* Support Scanning from List File
-* You can Change how many Seconds sleeping after send one request
-* Threading For Speeds
-* Inject Payloads of some bugs in ```referrer``` and ```user-agent``` header (Header Scanner)
-* Add Http and Https Proxy
-* You Can Change how many payload encoded (```URL Encoding```)
-* You Can Add your custom module like (`port scanner , sql injection exploiter etc..`)
+
 ### Screen Shot :
    * ##### Nokia Website:
-      * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0">
-      * <img src="https://i.ibb.co/7b5Hm5d/scant3r-headers.png" alt="scant3r-headers" border="0">
-##### How can i test Test ScanT3r Tool .. You can download <a href='https://github.com/ethicalhack3r/DVWA'>Dvwa</a> or <a href='https://github.com/knassar702/hacking-lab'>hacking-lab</a> for test scant3r tool
+      * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0"></a>
 
 #### OS Support :
 - <h5> Linux</h5>
 - <h5> Android</h5>
 - <h5> Windows</h5>
+
 ## Install
 ### [Linux](https://wikipedia.org/wiki/Linux) [![alt tag](http://icons.iconarchive.com/icons/dakirby309/simply-styled/32/OS-Linux-icon.png)](https://fr.wikipedia.org/wiki/Linux)
 * open your terminal 
@@ -50,8 +41,6 @@
    $ git clone https://github.com/knassar702/scant3r 
    $ cd scant3r 
    $ python3 -m pip install -r requirements.txt
-   $ chmod +x scant3r
-   $ python3 scant3r -h
    ````
 ### Andoird <img src="https://img.icons8.com/clouds/100/000000/android-os.png">
 * Download <a href='https://play.google.com/store/apps/details?id=com.termux&hl=en'>Termux App</a>
@@ -63,8 +52,6 @@
  $ git clone https://github.com/knassar702/scant3r
  $ cd scant3r 
  $ python3 -m pip install -r requirements.txt
- $ chmod +x scant3r
- $ python3 scant3r -h
 ````
 ### Windows <img src="https://img.icons8.com/color/48/000000/windows-10.png">
 * Download <a href='https://www.python.org/downloads/windows/'>python3</a> and install it
@@ -72,7 +59,6 @@
 * enter this command 
 ````
 $ python3 -m pip install -r requirements.txt
-$ python3 scant3r -h
 ````
 
 ## Usage :
@@ -94,36 +80,9 @@ Options:
   --scan-headers      |    Try to inject payloads in headers not parameters (user-agent,referrer)
   --skip-headers      |    Skip The Headers scanning processe
   --sleep             |    Sent one request after some Seconds
-  --module            |    add custom module (e.g. "google.py") 
+  --module            |    add custom module (e.g. "google.py")
 ````
 ### Example :
 
-* Post Request And Add cookies
 ``` $ python3 scant3r -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit' --cookies='PHPSESSID=safasf' ```
-
-* port scanner or add module 
-``` $ python3 scant3r -u 'http://localhost' --module=nmaper.py```
-* Get Request
-```` $ python3 scant3r -u http://localhost/web/search?u= --cookies='mycookie=True'````
-
-* Add Proxy
-```$ python3 scant3r -u 'http://localhost/web/login' --proxy='http://127.0.0.1:8080'```
-
-* Send one request after some Seconds
-``` $ python3 scant3r -u 'http://localhost/waf' --sleep=3```
-
-* How Many Encode The payload
- ```$ python3 scant3r -u 'http://localhost/web/login' --proxy='http://127.0.0.1:8080' --encode=3```
-
-* Add Custom User-agent
- ```$ python3 scant3r -u 'http://localhost/web/' --user-agent='Firefox'```
-
-* Change The Timeout
- ```$ python3 scant3r -u 'http://localhost/web/sleep' --timeout=10```
-
-* Add List and threads
- ```$ python3 scant3r --list mylist.txt --threads=100```
-
-# Blog : <a href='https://knassar7o2.blogspot.com/2020/01/scant3r.html'> ScanT3r </a>
-##### Last Version : 0.3#Beta
-
+#### Blog : <a href='https://knassar702.github.io/projects/scant3r/'> Blog </a>
