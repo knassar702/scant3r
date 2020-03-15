@@ -89,6 +89,9 @@ Options:
 	optp.add_option("--scan-headers",dest='nopar',action='store_true')
 	optp.add_option('--batch',dest='batch',action='store_true')
 	opts, args = optp.parse_args()
+	if opts.help:
+		print(helper)
+		exit()
 	if opts.batch:
 		batch = True
 	else:
