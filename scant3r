@@ -25,6 +25,7 @@ import time,sys,os,re,threading
 from core.scanner import *
 from core.colors import *
 from core.requester import *
+from core.logger import logger
 from modules.scant3r_maker import Module
 from optparse import OptionParser
 from queue import Queue
@@ -93,10 +94,10 @@ Options:
 		elif proxy.startswith("https://"):
 			proxy = {'https':proxy}
 		elif proxy.startswith('http://') == False and proxy.startswith('https://') == False:
-			print(f"{info} This Proxy Not Supported from ScanT3r")
+			logger.error("This Proxy Not Supported from ScanT3r")
 			exit()
 		else:
-			print(f"{info} Please add the protocol of the proxy like this (`{grey}--proxy='http://127.0.0.1:8080'{end}`)")
+			logger.error("Please add the protocol of the proxy like this (`{grey}--proxy='http://127.0.0.1:8080'{end}`)")
 			exit()
 	else:
 		proxy = None
@@ -107,18 +108,19 @@ Options:
 	if opts.yeh:
 		yeh = True
 	if nopar == True and yeh == True:
-		print(f"{info} You can't start with `--skip-headers` and `--scan-headers` at same time ..")
+		logger.error("You can't start with `--skip-headers` and `--scan-headers` at same time ..")
 		exit()
 	if opts.sleep:
 		sleep = opts.sleep
 		try:
 			time.sleep(sleep)
 		except ValueError:
-			print(f'{bad} sleep length must be non-negative')
+			logger.error('sleep length must be non-negative')
 			exit()
 	else:
 		sleep = 0
 	if opts.cagent:
+		logger.info('Loading Your Custom User-agent')
 		cagent = opts.cagent
 		cagent = cagent.replace("<",'').replace(">",'').replace('{','').replace("}",'').replace("<%",'').replace('%>','').replace("'",'').replace('"','').replace("|",'')
 	else:
@@ -141,6 +143,7 @@ Options:
 			pass
 		else:
 			url = 'http://'+url
+		logger.info(f'Loading The Target : {url}')
 	if opts.vert:
 		vert = True
 	else:
@@ -151,8 +154,9 @@ Options:
 		url = None
 	if opts.encoded:
 		encoded = opts.encoded
+		logger.info(f'Encoding The Payload : {encoded}')
 		if encoded > 10:
-			print(thetime()+f"{bold}[\033[91mCRITICAL{end}{bold}]{end} maximum number of used encode is 10 avoiding potential issues")
+			logger.error("maximum number of used encode is 10 avoiding potential issues")
 			exit()
 	else:
 		encoded = 1
@@ -160,18 +164,20 @@ Options:
 		date = opts.data
 		try:
 			date = post_data(date)
+			logger.info('Loading data For post request')
 		except:
-			print(thetime()+f"{bold}[{back}CRITICAL{end}{bold}]{end} Invild Params .. Please add data like (--data='id=1&search=55')")
+			logger.critical("Invild Params .. Please add data like (--data='id=1&search=55')")
 			time.sleep(1)
 			exit()
 	else:
 		date = None
 	if opts.timeo:
 		timeo = opts.timeo
+		logger.info(f'Loading Timeout : {timeo}')
 	else:
 		timeo = None
 	if opts.rfile != None and date != None:
-		print(thetime()+f"{bold}[{back}CRITICAL{end}{bold}]{end} You Can't Add Post request using \033[7;96m--data='\033[9;94m{opts.data}{end}' with list file ..")
+		logger.critical(f"You Can't Add Post request using \033[7;96m--data='\033[9;94m{opts.data}{end}' with list file ..")
 		time.sleep(1)
 		exit()
 	if opts.help:
@@ -181,27 +187,28 @@ Options:
 		print(__version__)
 		exit()
 	if opts.url != None and opts.rfile != None:
-		print (bad+" You Can't Start ScanT3r With List option and url option ")
-		sys.exit()
+		logger.error("You Can't Start ScanT3r With List option and url option ")
+		exit()
 	if opts.cookie:
 		cookie=str(opts.cookie)
 		try:
 			cookie=post_data(cookie)
+			logger.info('Loading The Cookies')
 		except:
-			printer('error','Invild Cookies ..')
+			logger.error('Invild Cookies ..')
 			exit()
 	else:
 		cookie=None
 	if opts.module:
 		modulee = True
 		module = opts.module.replace('.py','')
-		printer('info',f'Loading {module} Module')
+		logger.info(f'Loading {module} Module')
 		try:
 			module = Module.load_modules(module)
 		except:
-			printer('error','ImportError')
+			logger.error('ImportError')
 			exit()
-		printer('info',f'Checking The Module')
+		logger.info('Checking The Module')
 		time.sleep(1)
 		try:
 			d = module.data()
@@ -213,7 +220,7 @@ Options:
 			emails = d['emails']
 			script_options = d['options']
 			if name == None or description == None or date == None or emails == None or authors == None:
-				printer('error','i need more informations abount module please read the developers docs on scant3r website')
+				logger.error('i need more informations abount module please read the developers docs on scant3r website')
 				exit()
 			email = ''
 			author = ''
@@ -221,7 +228,7 @@ Options:
 				email += i+', '
 			for i in authors:
 				author += i+', '
-			printer('info','successful')
+			logger.info('Module Loading successfully')
 			print(f"""\n
 \033[91m#{yellow}{bold}{'-'*50}{end}\033[91m#{end}
 	   {bold}\033[91m|{end}{bold} Module Informations \033[91m|{end}
@@ -257,15 +264,15 @@ Options:
 				for o,v in the_options.items():
 					if o[-1] == '*':
 						if v == None:
-								printer('error',f'Module Errors . i need this option ({o})for continue')
+								logger.error(f'Module Errors . i need this option ({o})for continue')
 								exit()
 				for o,v in the_options.items():
 					the_options[o.replace('*','')] = the_options.pop(o)
 			except KeyError:
-				printer('error','Module Errors . This Value ({o.replace("*","")})Not Supported ')
+				logger.error('Module Errors . This Value ({o.replace("*","")})Not Supported ')
 				exit()
 		except:
-			printer('error','Module Errors (informations)')
+			logger.error('Module Errors (informations)')
 			exit()
 	if opts.url == None and opts.rfile == None and opts.help == None:
 		optp.error('missing a mandatory option (--url,--cookies,--data,--list,--encode) Use -h for help ..!')
@@ -281,7 +288,6 @@ def logo():
 \t{yellow}# Coded By : Khaled Nassar @knassar702{end}
 ''')
 	print (l)
-	time.sleep(1)
 def start(url,cookie,timeo,date,head=None):
 	global rfile,no
 	if nopar:
@@ -340,18 +346,15 @@ if __name__ == "__main__":
 						try:
 							f = open(rfile,'r')
 						except:
-							printer('error','File Error')
+							logger('File Error')
 							exit()
 						the_options['file'] = f
 						run.run(the_options)
 				else:
 					run.run(the_options)
-			finally:
-				pass
-#			except:
-#				printer('error','Module Errors (Code)')
-#				exit()
-			exit()
+			except:
+				logger.critical(f'Module Error ({red}Code{end})')
+				exit()
 		if url:
 			con(url,vert=vert,redir=redir,cookie=cookie,timeo=timeo,proxy=proxy,slp=sleep,cagent=cagent)
 		if r:
