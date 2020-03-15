@@ -489,23 +489,23 @@ if __name__ == "__main__":
 		print(f'\n{bad} Good Bye :)\n')
 		exit()
 	except RuntimeError:
-		print(f"\n{bad} can't start new thread .. ('--threads=100')")
+		logger.error(f"\n{bad} can't start new thread .. ('--threads=100')")
 		exit()
 	except requests.exceptions.ConnectionError:
-		printer('error',f"host '{blue}{url}{end}' does not exist ..!")
+		logger.error(f"host '{blue}{url}{end}' does not exist ..!")
 		exit()
 	except requests.exceptions.ReadTimeout:
-		print(f"\n{bad} Timeout Error ")
+		logger.error(f"\nTimeout Error ")
 		exit()
 	except requests.exceptions.ProxyError:
-		print(f"{bad} Proxy Connection Error")
+		logger.error(f"Proxy Connection Error")
 		exit()
 	except requests.exceptions.InvalidURL:
-		print(f"{bad} Invalid URL")
+		logger.error(f"Invalid URL")
 		exit()
 	except requests.exceptions.InvalidSchema:
-		print(f"{bad} Invalid Schame")
+		logger.error(f"Invalid Schame")
 		exit()
 	except requests.exceptions.MissingSchema:
-		print(f"{bad} Missing Schema")
+		logger.error(f"Missing Schema")
 		exit()
