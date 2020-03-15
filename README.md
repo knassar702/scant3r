@@ -80,7 +80,9 @@ Options:
   --scan-headers      |    Try to inject payloads in headers not parameters (user-agent,referrer)
   --skip-headers      |    Skip The Headers scanning processe
   --sleep             |    Sent one request after some Seconds
+  --batch             |    Never ask for user input, use the default behavior
   --module            |    add custom module (e.g. "google.py")
+
 ````
 ### Example :
 
