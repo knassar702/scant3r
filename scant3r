@@ -39,7 +39,7 @@ def post_data(params):
         return postData
     return {}
 def getargs():
-	global the_options,url,froms,data,rfile,r,cookie,thr,timeo,date,encoded,redir,vert,cagent,proxy,sleep,yeh,nopar,modulee,module,d
+	global the_options,url,froms,data,rfile,r,cookie,thr,timeo,date,encoded,redir,vert,cagent,proxy,sleep,yeh,nopar,modulee,module,d,batch
 	modulee = False
 	rfile = None
 	yeh = False
@@ -86,7 +86,12 @@ Options:
 	optp.add_option("--module",dest='module')
 	optp.add_option("--skip-headers",dest='yeh',action='store_true')
 	optp.add_option("--scan-headers",dest='nopar',action='store_true')
+	optp.add_option('--batch',dest='batch',action='store_true')
 	opts, args = optp.parse_args()
+	if opts.batch:
+		batch = True
+	else:
+		batch = False
 	if opts.proxy:
 		proxy = opts.proxy
 		if proxy.startswith("http://"):
@@ -124,6 +129,7 @@ Options:
 		cagent = opts.cagent
 		cagent = cagent.replace("<",'').replace(">",'').replace('{','').replace("}",'').replace("<%",'').replace('%>','').replace("'",'').replace('"','').replace("|",'')
 	else:
+		logger.info('Loading a Random User-agents')
 		cagent = None
 	if opts.thread:
 		thr = opts.thread
@@ -143,7 +149,7 @@ Options:
 			pass
 		else:
 			url = 'http://'+url
-		logger.info(f'Loading The Target : {url}')
+		logger.info(f'Loading The Target : {url.split("/")[2]}')
 	if opts.vert:
 		vert = True
 	else:
@@ -291,38 +297,38 @@ def logo():
 def start(url,cookie,timeo,date,head=None):
 	global rfile,no
 	if nopar:
-		headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-		headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-		headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-		headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-		headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-		headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-		headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+		headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
 	elif yeh:
-		v.sqli(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-		v.xss(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-		v.osinj(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-		v.ssti(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
+		v.sqli(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		v.xss(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		v.osinj(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		v.ssti(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
 	else:
-		v.sqli(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-		v.xss(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-		v.osinj(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-		v.ssti(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-		headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-		headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-		headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-		headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-		headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-		headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-		headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+		v.sqli(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		v.xss(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		v.osinj(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		v.ssti(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
 def start_header(url,cookie,timeo,date,head=None):
-	headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-	headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-	headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-	headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-	headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-	headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-	headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+	headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+	headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+	headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+	headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+	headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+	headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
 def threader():
 	while True:
 		item = q.get()
@@ -419,65 +425,65 @@ if __name__ == "__main__":
 				if yeh:
 					print(f"{bad} Please Add parameters or (*) in url ")
 					exit()
-				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
 				print(f"{bad} Please Add parameters or (*) in url ")
 				exit()
 		if date:
 			if nopar:
-				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
 			elif yeh:
-				v.xss_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-				v.sqli_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-				v.osinj_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-				v.ssti_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
+				v.xss_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				v.sqli_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				v.osinj_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				v.ssti_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
 			else:
-				v.xss_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-				v.sqli_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-				v.osinj_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-				v.ssti_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+				v.xss_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				v.sqli_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				v.osinj_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				v.ssti_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
 		else:
 			if nopar:
-				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
 			elif yeh:
-				v.sqli(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-				v.xss(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-				v.osinj(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-				v.ssti(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
+				v.sqli(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				v.xss(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				v.osinj(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				v.ssti(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
 			else:
-				v.sqli(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-				v.xss(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-				v.osinj(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-				v.ssti(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				v.sqli(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				v.xss(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				v.osinj(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				v.ssti(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
 	except KeyboardInterrupt:
 		print(f'\n{bad} Good Bye :)\n')
 		exit()
