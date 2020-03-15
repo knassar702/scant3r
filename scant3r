@@ -133,7 +133,6 @@ Options:
 		cagent = opts.cagent
 		cagent = cagent.replace("<",'').replace(">",'').replace('{','').replace("}",'').replace("<%",'').replace('%>','').replace("'",'').replace('"','').replace("|",'')
 	else:
-		logger.info('Loading a Random User-agents')
 		cagent = None
 	if opts.thread:
 		thr = opts.thread
