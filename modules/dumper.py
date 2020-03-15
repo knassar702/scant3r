@@ -4,7 +4,7 @@ def data(): # The all data of module
 	data = {
 	'name': 'Dumper',
 	'description':'''
-Dump All thing in website (img , links , js , etc ..)
+Dump Everything in website (img , links , js , etc ..)
 	''',
 	'date':'6-3-2020',
 	'license':'GPL',
