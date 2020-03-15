@@ -28,6 +28,10 @@ class script:
 		from bs4 import BeautifulSoup
 		f = options['file']
 		for url in f:
+			if url.startswith('http://') or url.startswith('https://'):
+				pass
+			else:
+				url = f'http://{url}'
 			print(f"{colors().info} [ {url.strip()} ]")
 			base_url = url.strip()
 			try:
