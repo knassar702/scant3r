@@ -353,7 +353,7 @@ if __name__ == "__main__":
 						try:
 							f = open(rfile,'r')
 						except:
-							logger('File Error')
+							logger.error('File Error')
 							exit()
 						the_options['file'] = f
 						run.run(the_options)
