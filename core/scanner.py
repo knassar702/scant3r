@@ -53,6 +53,7 @@ errors = {'sqlite3':'sqlite3.OperationalError','MySQL': 'error in your SQL synta
              'GetArray()' : 'GetArray()',
              'Fatal error': 'Fatal error',
              'FetchRow()' : 'FetchRow()',
+	     'Internal Server Error':'The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.',
              'Input string was not in a correct format' : 'Input string was not in a correct format',
              'Not found' : 'Not found','internal server':'The page cannot be displayed because an internal server error has occurred.','Internal Server Error':'The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application'}
 def uagent(payload=None,one=False,cagent=None):
@@ -315,7 +316,7 @@ class paramscanner: # Scanner Module
 			if '*' in d:
 				ok = True
 		if ok:
-			payload="""'"\\//"""
+			payload='"'
 			logger.info("replacing (*) from url to payload")
 			for i,d in dat.items():
 				dat[i] = d.replace('*',payload)
@@ -350,7 +351,7 @@ class paramscanner: # Scanner Module
 			if x == 0:
 				logger.info("Not vulnerable from SQLI With POST Method")
 		else:
-			payload="""'"\\//"""
+			payload='"'
 			for i,d in dat.items():
 				dat[i] = d + payload
 			if slp != 0:
@@ -566,18 +567,13 @@ class paramscanner: # Scanner Module
 	def sqli(self,url,co,tim,deco,vert,redir,cagent=None,proxy=None,slp=0,batch=None):
 		deco = deco - 1
 		logger.info("Scanning from SQLI With GET Method")
-		payload="""'"\\//"""
+		payload='"'
 		if slp != 0:
 			logger.debug(f'Sleeping {slp} sec')
 		sleep(slp)
-		te = requests.get(url,cookies=co,headers={'User-agent':uagent(cagent=cagent)},verify=vert,allow_redirects=redir,timeout=tim,proxies=proxy)
-		for v,c in errors.items():
-			fir = re.findall(c.encode('utf-8'),te.content)
-			if fir != []:
-				break
 		if '*' in url:
 			logger.info("replacing (*) from url to payload")
-			payload="""'"\\//"""
+			payload='"'
 			payload=urlencoder(payload)
 			for i in range(deco):
 				payload=urlencoder(payload)
@@ -588,7 +584,7 @@ class paramscanner: # Scanner Module
 			r=requests.get(url.replace('*',payload.strip()),headers={'User-agent':uagent(cagent=cagent)},cookies=co,verify=vert,allow_redirects=redir,timeout=tim,proxies=proxy)
 			for f,i in errors.items():
 				ch=re.findall(i.encode('utf-8'),r.content)
-				if len(ch) > len(fir):
+				if len(ch) > 0:
 					j=url.replace('*',payload.strip())
 					print(f"""
 \033[91m#{yellow}{bold}--------------------------------{end}\033[91m#{end}
@@ -612,7 +608,7 @@ class paramscanner: # Scanner Module
 		elif '*' not in url:
 			x = 0
 			for params in url.split("?")[1].split("&"):
-				payload="""'"\\//"""
+				payload='"'
 				payload=urlencoder(payload)
 				for h in range(deco):
 					payload=urlencoder(payload)
@@ -838,7 +834,7 @@ class headers_scanner: # Header Scanner Module ;-;
 				else:
 					continue
 	def referrer_sqli(url,cagent=None,timeo=None,cookie=None,redir=None,deco=None,vert=None,method=None,date=None,proxy=None,slp=0,batch=None):
-		payload=''''"//\\'''
+		payload=''''"'''
 		if method == 'get':
 			sleep(slp)
 			rr = requests.get(url,headers={"User-agent":uagent(cagent=cagent)},timeout=timeo,verify=vert,allow_redirects=redir,cookies=cookie,proxies=proxy)
@@ -1031,7 +1027,7 @@ class headers_scanner: # Header Scanner Module ;-;
 \033[91m#{yellow}{bold}--------------------------------{end}\033[91m#{end}""")
 					break
 	def user_agent_sqli(url,timeo=None,cookie=None,redir=None,deco=None,vert=None,method=None,date=None,cagent=None,proxy=None,slp=0,batch=None):
-		payload="""'"\\//"""
+		payload='"'
 		if method == 'get':
 			sleep(slp)
 			rr = requests.get(url,headers={"User-agent":uagent(cagent=cagent)},timeout=timeo,verify=vert,allow_redirects=redir,cookies=cookie,proxies=proxy)
