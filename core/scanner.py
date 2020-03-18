@@ -307,11 +307,11 @@ class paramscanner: # Scanner Module
 			logger.debug(f"Sleeping {slp} sec")
 		sleep(slp)
 		logger.info('Scanning SQLI using post method With POST Method')
-		te = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent(cagent=cagent)},proxies=proxy)
-		for c,d in errors.items():
-			fir = re.findall(d.encode('utf-8'),te.content)
-			if fir != []:
-				break
+#		te = requests.post(url,data=dat,cookies=co,verify=vert,allow_redirects=redir,timeout=tim,headers={'User-agent':uagent(cagent=cagent)},proxies=proxy)
+#		for c,d in errors.items():
+#			fir = re.findall(d.encode('utf-8'),te.content)
+#			if fir != []:
+#				break
 		for i,d in dat.items():
 			if '*' in d:
 				ok = True
@@ -327,7 +327,7 @@ class paramscanner: # Scanner Module
 			x = 0
 			for f,i in errors.items():
 				ch=re.findall(i.encode('utf-8'),r.content)
-				if len(ch) > len(fir):
+				if len(ch) > 0:
 					print(f"""
 \033[91m#{yellow}{bold}--------------------------------{end}\033[91m#{end}
 {bold}{good}{bold} Bug Found : SQL injection
@@ -361,7 +361,7 @@ class paramscanner: # Scanner Module
 			x = 0
 			for f,i in errors.items():
 				ch=re.findall(i.encode('utf-8'),r.content)
-				if len(ch) > len(fir):
+				if len(ch) > 0:
 					print(f"""
 \033[91m#{yellow}{bold}--------------------------------{end}\033[91m#{end}
 {bold}{good}{bold} Bug Found : SQL injection
@@ -618,7 +618,7 @@ class paramscanner: # Scanner Module
 				r=requests.get(url.replace(params, params + str(payload).strip()),headers={'User-agent':uagent(cagent=cagent)},cookies=co,verify=vert,allow_redirects=redir,timeout=tim,proxies=proxy)
 				for d,i in errors.items():
 					ch = re.findall(i.encode('utf-8'),r.content)
-					if len(ch) > len(fir):
+					if len(ch) > 0:
 						j=url.replace(params, params + str(payload).strip())
 						print(f"""
 \033[91m#{yellow}{bold}--------------------------------{end}\033[91m#{end}
