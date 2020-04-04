@@ -10,7 +10,7 @@
 	# Coded By : Khaled Nassar @knassar702
 
 ````
-* ##### Detect This Vulnerables
+* ##### Detect This vulnerabilities
   * <h5>Remote Code Execution</h5>
     <ul><li>Linux</li></ul>
   * <h5>XSS Reflected</h5>
