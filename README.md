@@ -28,7 +28,7 @@
    * ##### Nokia Website:
       * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0"></a>
 ### Video :
-<a href='https://asciinema.org/a/1PQEoW9RmH0jzaCEh7EWf35Lm'><img src='https://i.imgur.com/BddhMbp.png'></a>
+<a href='https://asciinema.org/a/318006'><img src='https://i.imgur.com/BddhMbp.png'></a>
 #### OS Support :
 - <h5> Linux</h5>
 - <h5> Android</h5>
