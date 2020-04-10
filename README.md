@@ -29,6 +29,7 @@
       * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0"></a>
 ### Video :
 <a href='https://asciinema.org/a/318006'><img src='https://i.imgur.com/BddhMbp.png'></a>
+
 #### OS Support :
 - <h5> Linux</h5>
 - <h5> Android</h5>
@@ -88,4 +89,5 @@ Options:
 ### Example :
 
 ``` $ python3 scant3r -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit' --cookies='PHPSESSID=safasf' ```
-#### Blog : <a href='https://knassar702.github.io/projects/scant3r/'>ScanT3r</a>
+#### <a href='https://knassar702.github.io/projects/scant3r/'>Blog</a>
+#### <a href='https://www.youtube.com/watch?v=Y2BR1GZ1B8g&feature=youtu.be'>YouTube</a>
