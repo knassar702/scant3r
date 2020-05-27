@@ -26,7 +26,8 @@ from .reporter import make_report
 from time import sleep
 from .logger import logger
 all_bugs = []
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+requests.packages.urllib3.disable_warnings()
+#urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 errors = {'sqlite3':'sqlite3.OperationalError','MySQL': 'error in your SQL syntax',
              'MiscError': 'mysql_fetch',
              'MiscError2': 'num_rows',
