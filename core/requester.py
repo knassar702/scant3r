@@ -26,7 +26,8 @@ from .logger import logger
 from .scanner import uagent
 from time import sleep
 import requests,urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+requests.packages.urllib3.disable_warnings()
+#urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 def thetime():
 	now = datetime.now()
 	return f'{bold}{blue}[{end}{bold}{now.hour}:{now.minute}:{now.second}{blue}{bold}]{end}'
