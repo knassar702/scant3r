@@ -26,8 +26,8 @@ from .reporter import make_report
 from time import sleep
 from .logger import logger
 all_bugs = []
-requests.packages.urllib3.disable_warnings()
 #urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+requests.packages.urllib3.disable_warnings()
 errors = {'sqlite3':'sqlite3.OperationalError','MySQL': 'error in your SQL syntax',
              'MiscError': 'mysql_fetch',
              'MiscError2': 'num_rows',
@@ -146,7 +146,7 @@ class paramscanner: # Scanner Module
 			for params in url.split("?")[1].split("&"):
 				if slp != 0:
 					logger.debug(f'Sleeping {slp} sec')
-				sleep(slp)	
+				sleep(slp)
 				r2 = requests.get(url.replace(params, params + str('ScanT3r')),headers={'User-agent':uagent(cagent=cagent)},cookies=co,verify=vert,allow_redirects=redir,timeout=tim,proxies=proxy)
 				if slp != 0:
 					logger.debug(f'Sleeping {slp} sec')
@@ -185,7 +185,7 @@ class paramscanner: # Scanner Module
 					if x == 0:
 						logger.info("Not vulnerable from XSS With GET Method")
 				else:
-					break
+					continue
 	def xss_post(self,url,co,tim,dat,vert,redir,cagent=None,proxy=None,slp=0,batch=None):
 		ok = False
 		logger.info('Scanning from XSS With POST Method')
