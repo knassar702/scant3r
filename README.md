@@ -28,7 +28,7 @@
    * ##### Nokia Website:
       * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0"></a>
 ### GIF
-<a href='src/scant3r.gif'></a>
+<img src='src/scant3r.gif'>
 ### Video :
 <a href='https://asciinema.org/a/318006'><img src='https://i.imgur.com/BddhMbp.png'></a>
 
