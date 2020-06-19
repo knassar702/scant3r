@@ -125,7 +125,7 @@ Options:
 		sleep = opts.sleep
 		try:
 			time.sleep(sleep)
-		except ValueError:
+		except ValueError: 
 			print(f'{bad} sleep length must be non-negative')
 			exit()
 	else:
