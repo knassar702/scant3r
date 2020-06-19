@@ -16,12 +16,12 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 __author__ = 'Khaled Nassar'
-__version__ = '0.3#beta'
+__version__ = '0.4#beta'
 __github__ = 'https://github.com/knassar702/scant3r'
 __email__ = 'knassar702@gmail.com'
 __blog__ = 'https://knassar7o2.blogspot.com'
 
-import time,sys,os,re,threading
+import time,sys,os,re,threading,logging
 from core.scanner import *
 from core.colors import *
 from core.requester import *
@@ -39,7 +39,7 @@ def post_data(params):
         return postData
     return {}
 def getargs():
-	global the_options,url,froms,data,rfile,r,cookie,thr,timeo,date,encoded,redir,vert,cagent,proxy,sleep,yeh,nopar,modulee,module,d,batch
+	global the_options,url,froms,data,rfile,r,cookie,thr,timeo,date,encoded,redir,cagent,proxy,sleep,yeh,nopar,modulee,module,d,batch
 	modulee = False
 	rfile = None
 	yeh = False
@@ -61,41 +61,43 @@ Options:
   --cookies           |    HTTP Cookie header value (e.g. "PHPSESSID=a8d127e..")
   --encode            |    How Many encode the payload (default 1)
   --allow-redirect    |    Allow the main redirect
-  --verify            |    Skip HTTPS Cert Error
   --user-agent        |    add custom user-agent
   --scan-headers      |    Try to inject payloads in headers not parameters (user-agent,referrer)
   --skip-headers      |    Skip The Headers scanning processe
   --sleep             |    Sent one request after some Seconds
-  --batch             |    Never ask for user input, use the default behavior
   --module            |    add custom module (e.g. "google.py")
+  --debug             |    Debugging Mood
 	""")
 	optp = OptionParser(add_help_option=False)
 	optp.add_option("-u","--url",dest="url",help='Target URL (e.g. "http://www.target.com/vuln.php?id=1")')
 	optp.add_option("--data",dest="data",help='Data string to be sent through POST (e.g. "id=1")')
 	optp.add_option("-h","--help",dest="help",action='store_true',help="Show Help Menu")
 	optp.add_option("--list",dest="rfile",help="Get All Urls from file ..")
-	optp.add_option("--threads",type='int',dest="thread",help='Thread number ..(DEF : 10)')
+	optp.add_option("--threads",type='int',dest="thread",help='Thread number ..(default: 10)')
 	optp.add_option("--timeout",type='int',dest="timeo",help="Set Timeout")
 	optp.add_option("--cookies",dest='cookie',help='Add cookie in Request')
 	optp.add_option("--encode",type="int",dest="encoded",help='How Many encode the payload')
 	optp.add_option("--version",dest='ver',action='store_true')
 	optp.add_option("--allow-redirect",dest='redirect',action='store_true')
-	optp.add_option("--verify",dest="vert",action="store_true")
 	optp.add_option("--user-agent",dest='cagent')
 	optp.add_option("--proxy",dest='proxy')
 	optp.add_option("--sleep",dest='sleep',type='int')
 	optp.add_option("--module",dest='module')
 	optp.add_option("--skip-headers",dest='yeh',action='store_true')
 	optp.add_option("--scan-headers",dest='nopar',action='store_true')
-	optp.add_option('--batch',dest='batch',action='store_true')
+	optp.add_option("--debug",dest='debug',action='store_true')
 	opts, args = optp.parse_args()
 	if opts.help:
 		print(helper)
 		exit()
-	if opts.batch:
-		batch = True
+	if opts.debug:
+		logging.basicConfig(format=f'{bold}[{cyan}%(asctime)s{end}{bold}]{gray}[{end}{bold}{green}%(levelname)s{gray}]{end} %(message)s',datefmt='%H:%M:%S')
+		logger = logging.getLogger()
+		logger.setLevel(logging.DEBUG)
+		logging.getLogger("requests").setLevel(logging.DEBUG)
+		logging.getLogger("urllib3").setLevel(logging.DEBUG)
 	else:
-		batch = False
+		pass
 	if opts.proxy:
 		proxy = opts.proxy
 		if proxy.startswith("http://"):
@@ -103,10 +105,10 @@ Options:
 		elif proxy.startswith("https://"):
 			proxy = {'https':proxy}
 		elif proxy.startswith('http://') == False and proxy.startswith('https://') == False:
-			logger.error("This Proxy Not Supported from ScanT3r")
+			print(f"{bad} This Proxy Not Supported from ScanT3r")
 			exit()
 		else:
-			logger.error("Please add the protocol of the proxy like this (`{grey}--proxy='http://127.0.0.1:8080'{end}`)")
+			print(f"{bad} Please add the protocol of the proxy like this (`{grey}--proxy='http://127.0.0.1:8080'{end}`)")
 			exit()
 	else:
 		proxy = None
@@ -117,19 +119,18 @@ Options:
 	if opts.yeh:
 		yeh = True
 	if nopar == True and yeh == True:
-		logger.error("You can't start with `--skip-headers` and `--scan-headers` at same time ..")
+		print(f"{bad} You can't start with `--skip-headers` and `--scan-headers` at same time ..")
 		exit()
 	if opts.sleep:
 		sleep = opts.sleep
 		try:
 			time.sleep(sleep)
 		except ValueError:
-			logger.error('sleep length must be non-negative')
+			print(f'{bad} sleep length must be non-negative')
 			exit()
 	else:
 		sleep = 0
 	if opts.cagent:
-		logger.info('Loading Your Custom User-agent')
 		cagent = opts.cagent
 		cagent = cagent.replace("<",'').replace(">",'').replace('{','').replace("}",'').replace("<%",'').replace('%>','').replace("'",'').replace('"','').replace("|",'')
 	else:
@@ -152,20 +153,15 @@ Options:
 			pass
 		else:
 			url = 'http://'+url
-		logger.info(f'Loading The Target : {url.split("/")[2]}')
-	if opts.vert:
-		vert = True
-	else:
-		vert = False
 	if opts.url == None and opts.rfile != None:
 		rfile=str(opts.rfile)
 		r = True
 		url = None
 	if opts.encoded:
 		encoded = opts.encoded
-		logger.info(f'Encoding The Payload : {encoded}')
+		#print(f'Encoding The Payload : {encoded}')
 		if encoded > 10:
-			logger.error("maximum number of used encode is 10 avoiding potential issues")
+			print(f"{bad} maximum number of used encode is 10 avoiding potential issues")
 			exit()
 	else:
 		encoded = 1
@@ -173,20 +169,20 @@ Options:
 		date = opts.data
 		try:
 			date = post_data(date)
-			logger.info('Loading data For post request')
+#			print('Loading data For post request')
 		except:
-			logger.critical("Invild Params .. Please add data like (--data='id=1&search=55')")
+			print(f"{bad} Invild Params .. Please add data like (--data='id=1&search=55')")
 			time.sleep(1)
 			exit()
 	else:
 		date = None
 	if opts.timeo:
 		timeo = opts.timeo
-		logger.info(f'Loading Timeout : {timeo}')
+#		print(f'Loading Timeout : {timeo}')
 	else:
 		timeo = None
 	if opts.rfile != None and date != None:
-		logger.critical(f"You Can't Add Post request using \033[7;96m--data='\033[9;94m{opts.data}{end}' with list file ..")
+		print(f"{bad} You Can't Add Post request using \033[7;96m--data='\033[9;94m{opts.data}{end}' with list file ..")
 		time.sleep(1)
 		exit()
 	if opts.help:
@@ -196,28 +192,27 @@ Options:
 		print(__version__)
 		exit()
 	if opts.url != None and opts.rfile != None:
-		logger.error("You Can't Start ScanT3r With List option and url option ")
+		print(f"{bad} You Can't Start ScanT3r With List option and url option ")
 		exit()
 	if opts.cookie:
 		cookie=str(opts.cookie)
 		try:
 			cookie=post_data(cookie)
-			logger.info('Loading The Cookies')
 		except:
-			logger.error('Invild Cookies ..')
+			print(f'{bad} Invild Cookies ..')
 			exit()
 	else:
 		cookie=None
 	if opts.module:
 		modulee = True
 		module = opts.module.replace('.py','')
-		logger.info(f'Loading {module} Module')
+		print(f'Loading {module} Module')
 		try:
 			module = Module.load_modules(module)
 		except:
-			logger.error('ImportError')
+			print(f'{bad} ImportError')
 			exit()
-		logger.info('Checking The Module')
+		print(f'{info} Checking The Module')
 		time.sleep(1)
 		try:
 			d = module.data()
@@ -229,7 +224,7 @@ Options:
 			emails = d['emails']
 			script_options = d['options']
 			if name == None or description == None or date == None or emails == None or authors == None:
-				logger.error('i need more informations abount module please read the developers docs on scant3r website')
+				print(f'{bad} i need more informations about module , please read developers docs on scant3r website')
 				exit()
 			email = ''
 			author = ''
@@ -237,7 +232,7 @@ Options:
 				email += i+', '
 			for i in authors:
 				author += i+', '
-			logger.info('Module Loading successfully')
+			print('Module Loading successfully')
 			print(f"""\n
 \033[91m#{yellow}{bold}{'-'*50}{end}\033[91m#{end}
 	   {bold}\033[91m|{end}{bold} Module Informations \033[91m|{end}
@@ -273,18 +268,18 @@ Options:
 				for o,v in the_options.items():
 					if o[-1] == '*':
 						if v == None:
-								logger.error(f'Module Errors . i need this option ({o})for continue')
+								print(f'Module Errors . i need this option ({o})for continue')
 								exit()
 				for o,v in the_options.items():
 					the_options[o.replace('*','')] = the_options.pop(o)
 			except KeyError:
-				logger.error('Module Errors . This Value ({o.replace("*","")})Not Supported ')
+				print('Module Errors . This Value ({o.replace("*","")})Not Supported ')
 				exit()
 		except:
-			logger.error('Module Errors (informations)')
+			print('Module Errors (informations)')
 			exit()
 	if opts.url == None and opts.rfile == None and opts.help == None:
-		optp.error('missing a mandatory option (--url,--cookies,--data,--list,--encode) Use -h for help ..!')
+		print('missing a mandatory option (--url,--cookies,--data,--list,--encode) Use -h for help ..!')
 		exit()
 def logo():
 	l=(f'''\033[91m{bold}
@@ -300,38 +295,38 @@ def logo():
 def start(url,cookie,timeo,date,head=None):
 	global rfile,no
 	if nopar:
-		headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+		headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+		headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+		headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+		headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+		headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+		headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
 	elif yeh:
-		v.sqli(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		v.xss(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		v.osinj(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		v.ssti(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		v.sqli(url,cookie,timeo,encoded,redir,cagent=cagent,proxy=proxy,slp=sleep)
+		v.xss(url,cookie,timeo,encoded,redir,cagent=cagent,proxy=proxy,slp=sleep)
+		v.osinj(url,cookie,timeo,encoded,redir,cagent=cagent,proxy=proxy,slp=sleep)
+		v.ssti(url,cookie,timeo,encoded,redir,cagent=cagent,proxy=proxy,slp=sleep)
 	else:
-		v.sqli(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		v.xss(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		v.osinj(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		v.ssti(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-		headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+		v.sqli(url,cookie,timeo,encoded,redir,cagent=cagent,proxy=proxy,slp=sleep)
+		v.xss(url,cookie,timeo,encoded,redir,cagent=cagent,proxy=proxy,slp=sleep)
+		v.osinj(url,cookie,timeo,encoded,redir,cagent=cagent,proxy=proxy,slp=sleep)
+		v.ssti(url,cookie,timeo,encoded,redir,cagent=cagent,proxy=proxy,slp=sleep)
+		headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+		headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+		headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+		headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+		headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+		headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+		headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
 def start_header(url,cookie,timeo,date,head=None):
-	headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-	headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-	headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-	headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-	headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-	headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-	headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+	headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+	headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
 def threader():
 	while True:
 		item = q.get()
@@ -355,17 +350,17 @@ if __name__ == "__main__":
 						try:
 							f = open(rfile,'r')
 						except:
-							logger.error('File Error')
+							print(f'{bad} File Error')
 							exit()
 						the_options['file'] = f
 						run.run(the_options)
 				else:
 					run.run(the_options)
 			except:
-				logger.critical(f'Module Error ({red}Code{end})')
+				print(f'Module Error ({red}Code{end})')
 				exit()
 		if url:
-			con(url,vert=vert,redir=redir,cookie=cookie,timeo=timeo,proxy=proxy,slp=sleep,cagent=cagent)
+			con(url,redir=redir,cookie=cookie,timeo=timeo,proxy=proxy,slp=sleep,cagent=cagent)
 		if r:
 			try:
 				rfile=open(rfile,'r')
@@ -397,7 +392,7 @@ if __name__ == "__main__":
 				else:
 					no = False
 					url='http://'+url
-				wh=con_f(url,vert=vert,proxy=proxy,redir=redir,cookie=cookie,timeo=timeo,slp=sleep,cagent=cagent)
+				wh=con_f(url,proxy=proxy,redir=redir,cookie=cookie,timeo=timeo,slp=sleep,cagent=cagent)
 				if wh == 'ok':
 					if '?' in url or '*' in url:
 						no = False
@@ -428,86 +423,89 @@ if __name__ == "__main__":
 				if yeh:
 					print(f"{bad} Please Add parameters or (*) in url ")
 					exit()
-				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
 				print(f"{bad} Please Add parameters or (*) in url ")
 				exit()
 		if date:
 			if nopar:
-				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
 			elif yeh:
-				v.xss_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				v.sqli_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				v.osinj_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				v.ssti_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				v.xss_post(url,cookie,timeo,date,redir,cagent=cagent,proxy=proxy,slp=sleep)
+				v.sqli_post(url,cookie,timeo,date,redir,cagent=cagent,proxy=proxy,slp=sleep)
+				v.osinj_post(url,cookie,timeo,date,redir,cagent=cagent,proxy=proxy,slp=sleep)
+				v.ssti_post(url,cookie,timeo,date,redir,cagent=cagent,proxy=proxy,slp=sleep)
 			else:
-				v.xss_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				v.sqli_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				v.osinj_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				v.ssti_post(url,cookie,timeo,date,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				v.xss_post(url,cookie,timeo,date,redir,cagent=cagent,proxy=proxy,slp=sleep)
+				v.sqli_post(url,cookie,timeo,date,redir,cagent=cagent,proxy=proxy,slp=sleep)
+				v.osinj_post(url,cookie,timeo,date,redir,cagent=cagent,proxy=proxy,slp=sleep)
+				v.ssti_post(url,cookie,timeo,date,redir,cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
 		else:
 			if nopar:
-				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,method='get',cagent=cagent,proxy=proxy,slp=sleep)
 			elif yeh:
-				v.sqli(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				v.xss(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				v.osinj(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				v.ssti(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				v.sqli(url,cookie,timeo,encoded,redir,cagent=cagent,proxy=proxy,slp=sleep)
+				v.xss(url,cookie,timeo,encoded,redir,cagent=cagent,proxy=proxy,slp=sleep)
+				v.osinj(url,cookie,timeo,encoded,redir,cagent=cagent,proxy=proxy,slp=sleep)
+				v.ssti(url,cookie,timeo,encoded,redir,cagent=cagent,proxy=proxy,slp=sleep)
 			else:
-				v.sqli(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				v.xss(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				v.osinj(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				v.ssti(url,cookie,timeo,encoded,vert,redir,cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
-				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,vert=vert,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				v.sqli(url,cookie,timeo,encoded,redir,cagent=cagent,proxy=proxy,slp=sleep)
+				v.xss(url,cookie,timeo,encoded,redir,cagent=cagent,proxy=proxy,slp=sleep)
+				v.osinj(url,cookie,timeo,encoded,redir,cagent=cagent,proxy=proxy,slp=sleep)
+				v.ssti(url,cookie,timeo,encoded,redir,cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.referrer_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
+				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
 	except KeyboardInterrupt:
 		print(f'\n{bad} Good Bye :)\n')
 		exit()
 	except RuntimeError:
-		logger.error(f"\n{bad} can't start new thread .. ('--threads=100')")
+		print(f"{bad} can't start new thread .. ('--threads=100')")
 		exit()
 	except requests.exceptions.ConnectionError:
-		logger.error(f"host '{blue}{url}{end}' does not exist ..!")
+		print(f"{bad} host '{blue}{url}{end}' does not exist ..!")
 		exit()
 	except requests.exceptions.ReadTimeout:
-		logger.error(f"\nTimeout Error ")
+		print(f"{bad} Timeout Error ")
 		exit()
 	except requests.exceptions.ProxyError:
-		logger.error(f"Proxy Connection Error")
+		print(f"{bad} Proxy Connection Error")
 		exit()
 	except requests.exceptions.InvalidURL:
-		logger.error(f"Invalid URL")
-		exit()
-	except requests.exceptions.InvalidSchema:
-		logger.error(f"Invalid Schame")
+		print(f"{bad} Invalid URL")
 		exit()
 	except requests.exceptions.MissingSchema:
-		logger.error(f"Missing Schema")
+		print(f"{bad} Missing Schema")
+		exit()
+	except requests.exceptions.InvalidSchema:
+		print(f"{bad} Invalid Schame")
+		exit()
+	except Exception as e:
+		print(f"{bad} {e}")
 		exit()
