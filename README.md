@@ -88,7 +88,29 @@ Options:
   --debug             |    Debugging Mood
 ````
 ### Example :
-
-``` $ python3 scant3r -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit' --cookies='PHPSESSID=safasf' ```
-#### <a href='https://knassar702.github.io/projects/scant3r/'>Blog</a>
-#### <a href='https://www.youtube.com/watch?v=Y2BR1GZ1B8g&feature=youtu.be'>YouTube</a>
+* post method
+``` $ python3 scant3r -u 'http://localhost/dvwa/vulnerabilities/exec/' --data='ip=localhost&Submit=Submit'```
+* add cookies
+```$ python3 scant3r -u 'http://localhost/?l=2' --cookies='user=admin&id=1'```
+* add timeout
+```$ python3 scant3r -u 'http://localhost/?l=13' --timeout=1```
+* allow redirects (302,301)
+```$ python3 scant3r -u 'http://localhost/?l=13' --allow-redirects```
+* sleeping
+```$ python3 scant3r -u 'http://localhost/?l=13' --sleep=2```
+* debugging mood
+```$ python3 scant3r -u 'http://localhost/?l=13' --debug```
+* scanning all headers
+```$ python3 scant3r -u 'http://localhost/?l=13' --scan-headers```
+* skip headers
+```$ python3 scant3r -u 'http://localhost/?l=13' --skip-headers```
+* add custom user-agent
+```$ python3 scant3r -u 'http://localhost/?l=13' --user-agent='CustomUseragent(v2)'```
+* add encoding
+```$ python3 scant3r -u 'http://localhost/?l=13' --encode=2```
+* add proxy
+```$ python3 scant3r -u 'http://localhost/?l=13' --proxy='http://localhost:8080'```
+* run your own module
+```$ python3 scant3r -u 'http://localhost/?l=13' --module=dumper.py```
+* add urls list
+```$ python3 scant3r --list urls.txt --threads=40```
