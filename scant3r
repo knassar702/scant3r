@@ -29,7 +29,7 @@ from core.logger import logger
 from modules.scant3r_maker import Module
 from optparse import OptionParser
 from queue import Queue
-def post_data(params):
+def post_data(params): 
     if params:
         prePostData = params.split("&")
         postData = {}
