@@ -30,9 +30,6 @@
 ### GIF
 <img src='https://github.com/knassar702/scant3r/blob/master/sc/scant3r.gif'>
 
-### Video :
-<a href='https://asciinema.org/a/318006'><img src='https://i.imgur.com/BddhMbp.png'></a>
-
 #### OS Support :
 - <h5> Linux</h5>
 - <h5> Android</h5>
