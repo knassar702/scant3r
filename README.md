@@ -80,14 +80,12 @@ Options:
   --cookies           |    HTTP Cookie header value (e.g. "PHPSESSID=a8d127e..")
   --encode            |    How Many encode the payload (default 1)
   --allow-redirect    |    Allow the main redirect
-  --verify            |    Skip HTTPS Cert Error
   --user-agent        |    add custom user-agent
   --scan-headers      |    Try to inject payloads in headers not parameters (user-agent,referrer)
   --skip-headers      |    Skip The Headers scanning processe
   --sleep             |    Sent one request after some Seconds
-  --batch             |    Never ask for user input, use the default behavior
   --module            |    add custom module (e.g. "google.py")
-
+  --debug             |    Debugging Mood
 ````
 ### Example :
 
