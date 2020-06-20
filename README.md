@@ -92,7 +92,7 @@ Options:
 * add timeout
 ```$ python3 scant3r -u 'http://localhost/?l=13' --timeout=1```
 * allow redirects (302,301)
-```$ python3 scant3r -u 'http://localhost/?l=13' --allow-redirects```
+```$ python3 scant3r -u 'http://localhost/?l=13' --allow-redirect```
 * sleeping
 ```$ python3 scant3r -u 'http://localhost/?l=13' --sleep=2```
 * debugging mood
