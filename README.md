@@ -29,6 +29,7 @@
       * <img src="https://i.ibb.co/4N9mdtQ/nokai-sx.png" alt="nokia-xss" border="0"></a>
       * <img src="sc/scant3r_header.png">
 ### GIF
+<img src='src/scan.gif'>
 <img src='https://github.com/knassar702/scant3r/blob/master/sc/scant3r.gif'>
 
 #### OS Support :
