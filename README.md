@@ -113,3 +113,8 @@ Options:
 ```$ python3 scant3r -u 'http://localhost/?l=13' --module=dumper.py```
 * add urls list<br>
 ```$ python3 scant3r --list urls.txt --threads=40```
+
+### For Testing :
+* `$ ./scant3r -u 'http://test.vulnweb.com/search.php?test=query' --data='searchFor=scant3r&goButton=go' `
+* `$ ./scant3r -u 'http://test.vulnweb.com/artists.php?artist=1'`
+* `$ ./scant3r -u 'https://menacoderrr.pythonanywhere.com/'`
