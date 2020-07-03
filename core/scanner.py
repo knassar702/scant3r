@@ -336,7 +336,9 @@ class paramscanner: # Scanner Module
 				ok = True
 		if ok:
 			x = 0
-			payloads=['{{6*6}}','<%= 6 * 6 %>','${6*6}']
+			# all Thanks to srkgupta
+			# https://github.com/srkgupta
+			payloads=['test{{6*6}}purpose','test<%= 6 * 6 %>purpose','test${6*6}purpose']
 			for payload in payloads:
 				for i,c in dat.items():
 					dat[i] = c.replace('*','Scant3rSSTI')
@@ -367,7 +369,7 @@ class paramscanner: # Scanner Module
 						dat[i] = i.replace(payload,'*')
 					continue
 		else:
-			payloads=['{{6*6}}','<%= 6 * 6 %>','${6*6}']
+			payloads=['test{{6*6}}purpose','test<%= 6 * 6 %>purpose','test${6*6}purpose']
 			x = 0
 			sleep(slp)
 			te = requests.post(url,data=dat,headers={'User-agent':uagent(cagent=cagent)},cookies=co,verify=False,allow_redirects=redir,timeout=tim,proxies=proxy)
@@ -486,7 +488,7 @@ class paramscanner: # Scanner Module
 	def ssti(self,url,co,tim,deco,redir,cagent=None,proxy=None,slp=0,batch=None):
 		if '*' in url:
 			x = 0
-			payloads=['{{ 6*6 }}','<%= 6 * 6 %>','${6*6}']
+			payloads=['test{{6*6}}purpose','test<%= 6 * 6 %>purpose','test${6*6}purpose']
 			sleep(slp)
 			te=requests.get(url.replace('*',''),headers={'User-agent':uagent(cagent=cagent)},cookies=co,verify=False,allow_redirects=redir,timeout=tim,proxies=proxy)
 			fir = re.findall('36'.encode('utf-8'),te.content)
@@ -511,7 +513,7 @@ class paramscanner: # Scanner Module
 			te=requests.get(url,headers={'User-agent':uagent(cagent=cagent)},cookies=co,verify=False,allow_redirects=redir,timeout=tim,proxies=proxy)
 			fir = re.findall('36'.encode('utf-8'),te.content)
 			for params in url.split("?")[1].split("&"):
-				payloads=['{{6*6}}','<%= 6 * 6 %>','${6*6}']
+				payloads=['test{{6*6}}purpose','test<%= 6 * 6 %>purpose','test${6*6}purpose']
 				for payload in payloads:
 					for h in range(deco):
 						payload=urlencoder(payload)
@@ -685,7 +687,7 @@ class headers_scanner: # Header Scanner Module ;-;
 {bold}{info}{bold} URL : {r.url}{end}
 \033[91m#{yellow}{bold}--------------------------------{end}\033[91m#{end}""")
 	def referrer_ssti(url,timeo=None,cookie=None,redir=None,deco=None,method=None,date=None,cagent=None,proxy=None,slp=0,batch=None):
-		payloads=['{{ 6*6 }}','<%= 6 * 6 %>','${6*6}']
+		payloads=['test{{6*6}}purpose','test<%= 6 * 6 %>purpose','test${6*6}purpose']
 		for payload in payloads:
 			if method == 'get':
  				sleep(slp)
