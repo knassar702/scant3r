@@ -91,7 +91,7 @@ Options:
 		print(helper)
 		exit()
 	if opts.debug:
-		logging.basicConfig(format=f'{bold}[{cyan}%(asctime)s{end}{bold}]{gray}[{end}{bold}{green}%(levelname)s{gray}]{end} %(message)s',datefmt='%H:%M:%S')
+#		logging.basicConfig(format=f'{bold}[{cyan}%(asctime)s{end}{bold}]{gray}[{end}{bold}{green}%(levelname)s{gray}]{end} %(message)s',datefmt='%H:%M:%S')
 		logger = logging.getLogger()
 		logger.setLevel(logging.DEBUG)
 		logging.getLogger("requests").setLevel(logging.DEBUG)
@@ -457,7 +457,7 @@ if __name__ == "__main__":
 				headers_scanner.referrer_ssti(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='post',cagent=cagent,proxy=proxy,slp=sleep)
 				headers_scanner.user_agent_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
 				headers_scanner.user_agent_sqli(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
-				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep,batch=batch)
+				headers_scanner.user_agent_rce(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,date=date,method='post',cagent=cagent,proxy=proxy,slp=sleep)
 		else:
 			if nopar:
 				headers_scanner.referrer_xss(url,cookie=cookie,timeo=timeo,deco=encoded,redir=redir,method='get',cagent=cagent,proxy=proxy,slp=sleep)
