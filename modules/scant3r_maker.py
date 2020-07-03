@@ -16,7 +16,7 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 __author__ = 'Khaled Nassar'
-__version__ = '0.3#beta'
+__version__ = '0.4#beta'
 __github__ = 'https://github.com/knassar702/scant3r'
 __email__ = 'knassar702@gmail.com'
 __blog__ = 'https://knassar7o2.blogspot.com'
