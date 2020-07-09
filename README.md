@@ -45,6 +45,7 @@
    $ git clone https://github.com/knassar702/scant3r 
    $ cd scant3r 
    $ python3 -m pip install -r requirements.txt
+   $ chmod +x scant3r
    ````
 ### Andoird <img src="https://img.icons8.com/clouds/100/000000/android-os.png">
 * Download <a href='https://play.google.com/store/apps/details?id=com.termux&hl=en'>Termux App</a>
@@ -56,6 +57,7 @@
  $ git clone https://github.com/knassar702/scant3r
  $ cd scant3r 
  $ python3 -m pip install -r requirements.txt
+ $ chmod +x scant3r
 ````
 ### Windows <img src="https://img.icons8.com/color/48/000000/windows-10.png">
 * Download <a href='https://www.python.org/downloads/windows/'>python3</a> and install it
