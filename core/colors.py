@@ -1,35 +1,45 @@
+#!/usr/bin/env python3
+__name__ = 'ScanT3r'
 __author__ = 'Khaled Nassar'
-__version__ = '0.3#beta'
-__github__ = 'https://github.com/knassar702/scant3r'
 __email__ = 'knassar702@gmail.com'
-__blog__ = 'https://knassar7o2.blogspot.com'
-import sys
-import os
-import platform
-colors = True  # Output should be colored
-machine = sys.platform  # Detecting the os of current system
-checkplatform = platform.platform() # Get current version of OS
-if machine.lower().startswith(('os', 'win', 'darwin', 'ios')):
-    colors = False  # Colors shouldn't be displayed in mac & windows
-if checkplatform.startswith("Windows-10") and int(platform.version().split(".")[2]) >= 10586:
-    colors = True
-    os.system('')   # Enables the ANSI
-if not colors:
-    end = red = white = green = yellow = run = bad = good = bold = info = que = ''
-else:
-    white = '\033[97m'
-    green = '\033[92m'
-    red = '\033[91m'
-    yellow = '\033[93m'
-    end = '\033[0m'
-    back = '\033[7;91m'
-    bold = '\033[1m'
-    blue = '\033[94m'
-    info = '\033[93m[!]\033[0m'
-    que = '\033[94m[?]\033[0m'
-    bad = '\033[91m[-]\033[0m'
-    good = '\033[92m[+]\033[0m'
-    run = '\033[97m[~]\033[0m'
-    grey = '\033[7;90m'
-    cyan='\u001B[36m'
-    gray = '\033[90m'
+__version__ = '0.5#Beta'
+
+# normal colors
+red = '\u001b[31m'
+rest = '\u001b[0m'
+black = '\u001b[30m'
+green = '\u001b[32m'
+yellow = '\u001b[33m'
+blue = '\u001b[34m'
+magenta = '\u001b[35m'
+cyan = '\u001b[36m'
+white = '\u001b[37m'
+# Bright Colors
+bblack = '\u001b[30;1m'
+bred = '\u001b[31;1m'
+bgreen = '\u001b[32;1m'
+byellow = '\u001b[33;1m'
+bblue = '\u001b[34;1m'
+bmagenta = '\u001b[35;1m'
+bcyan = '\u001b[36;1m'
+bwhite = '\u001b[37;1m'
+# Background Colors
+Bblack = '\u001b[40m'
+Bred = '\u001b[41m'
+Bgreen = '\u001b[42m'
+Byellow = '\u001b[43m'
+Bblue = '\u001b[44m'
+Bcyan = '\u001b[46m'
+Bwhite = '\u001b[47m'
+BBblack = '\u001b[40;1m'
+BBred = '\u001b[41;1m'
+BBgreen = '\u001b[42;1m'
+BByellow = '\u001b[43;1m'
+BBblue = '\u001b[44;1m'
+BBmagenta = '\u001b[45;1m'
+BBcyan = '\u001b[46;1m'
+BBwhite = '\u001b[47;1m'
+# idk
+good = f'{yellow}[{rest}{green}+{rest}{yellow}]{rest}'
+bad = f'{yellow}[{rest}{red}-{rest}{yellow}]{rest}'
+info = f'{yellow}[{yellow}!{rest}{yellow}]{rest}'
