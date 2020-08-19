@@ -33,7 +33,7 @@ with Scant3r you will have more time to look into functions and get Easy bugs on
 ### Linux ![Linux](http://icons.iconarchive.com/icons/dakirby309/simply-styled/32/OS-Linux-icon.png)
 ```bash
 $ git clone https://github.com/knassar702/scant3r
-$ cd scant3rr
+$ cd scant3r
 $ pip3 install -r requirements.txt
 ```
 ### Docker ![DOCKER](https://img.icons8.com/color/48/000000/docker.png)
