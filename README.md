@@ -19,17 +19,6 @@ with Scant3r you will have more time to look into functions and get Easy bugs on
 
 ***
 
-### Demo 
-
-![Example](images/all.gif)
-
-**Nokia** https://www.nokia.com/responsible-disclosure/
-![Nokia](images/nokia.gif)
-
-**IBM** https://hackerone.com/ibm
-
-![IBM](images/ibm.png)
-
 ## Installation
 
 ### Linux ![Linux](http://icons.iconarchive.com/icons/dakirby309/simply-styled/32/OS-Linux-icon.png)
@@ -230,3 +219,15 @@ http://example.com/?search=
 |-----------------|
 
 ```
+
+### Demo 
+
+![Example](images/all.gif)
+
+**Nokia** https://www.nokia.com/responsible-disclosure/
+![Nokia](images/nokia.gif)
+
+**IBM** https://hackerone.com/ibm
+
+![IBM](images/ibm.png)
+
