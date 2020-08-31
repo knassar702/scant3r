@@ -188,6 +188,31 @@ http://example.com/?search=
 ```
 <img src='images/call.png'>
 
+* **paths**
+```
+┌─[knassar702@PC]─[~/tools/scant3r]
+└──╼ $echo 'http://localhost/'| python3 scant3r.py -m neon
+
+
+   ____              __  ____
+  / __/______ ____  / /_|_  /____
+ _\ \/ __/ _ `/ _ \/ __//_ </ __/
+/___/\__/\_,_/_//_/\__/____/_/
+
+
+[!] Coded by : Khaled Nassar @knassar702
+[!] Version : 0.5#Beta
+    	
+[!] timeout : 10
+[!] random-agent : False
+[!] threads : 20
+[!] module : neon,
+[!] URLS : 1
+[!] host : None
+
+[+] Found :> http://loaclhost/phpinfo.php
+[+] Found :> http://loaclhost/PI.php
+```
 * **neon**
 ```bash
 # CVE-2019-20141 - https://knassar702.github.io/cve/neon/
