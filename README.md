@@ -206,7 +206,7 @@ http://example.com/?search=
 [!] timeout : 10
 [!] random-agent : False
 [!] threads : 50
-[!] module : neon,
+[!] module : paths,
 [!] URLS : 1
 [!] host : None
 
