@@ -191,7 +191,7 @@ http://example.com/?search=
 * **paths**
 ```
 ┌─[knassar702@PC]─[~/tools/scant3r]
-└──╼ $echo 'http://localhost/'| python3 scant3r.py -m neon
+└──╼ $echo 'http://localhost/'| python3 scant3r.py -m paths -w 50
 
 
    ____              __  ____
@@ -205,7 +205,7 @@ http://example.com/?search=
     	
 [!] timeout : 10
 [!] random-agent : False
-[!] threads : 20
+[!] threads : 50
 [!] module : neon,
 [!] URLS : 1
 [!] host : None
