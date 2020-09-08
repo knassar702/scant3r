@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
+#__name__ = 'ScanT3r'
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
 __version__ = '0.5#Beta'
-
 import sys
 if sys.version_info < (3, 6):
     print('[-] Scant3r requires python >= 3.6')
@@ -112,7 +112,7 @@ else:
 if opts.cookie:
     cookie = post_data(opts.cookie)
     if cookie == 0:
-        print(f'\n{bad} invalid data')
+        print('\n{bad} invalid data'.format(bad=bad))
         sys.exit()
 else:
     cookie = None
