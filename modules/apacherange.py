@@ -5,13 +5,16 @@ from threading import Thread
 from queue import Queue
 from core import good,cyan,rest,bmagenta,Byellow,yellow,magenta
 def RNG(host):
-    r = get(host,headers={'Range':'bytes=0-,5-0,5-1,5-2,5-3,5-4,5-5'},verify=False,allow_redirects=False)
-    if 'Content-Range: bytes'.encode('utf-8') in r.content:
-        print(f'''
+    try:
+        r = get(host,headers={'Range':'bytes=0-,5-0,5-1,5-2,5-3,5-4,5-5'},verify=False,allow_redirects=False)
+        if 'Content-Range: bytes'.encode('utf-8') in r.content:
+            print(f'''
 {yellow}[ {cyan}RANGE HEADER{rest} {yellow}]
 {good} Found >> {host}
 {"-"*13}|
 ''')
+    except:
+        pass
 q = Queue()
 def threader():
     while True:
