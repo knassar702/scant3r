@@ -16,6 +16,7 @@ with Scant3r you will have more time to look into functions and get Easy bugs on
 | **lorsrf** | Bruteforcing on Hidden parameters to find SSRF vulnerability |
 | **headers** | inject **SSTI - XSS - RCE - SQLI** payloads in HTTP Headers |
 | **hostping** | get live domains|
+| **crlf** | CRLF vulnerability scanner|
 | **paths** | dirbrute forcing|
 | **neon** | scans admin panel from CVE-2019-20141 |
 
