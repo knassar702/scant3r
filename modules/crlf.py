@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from libs import NewRequest as nq
-from core import green,rest
+from core import green,info,rest
 from urllib.parse import urljoin,urlparse
 from libs import post_data
 from queue import Queue
@@ -14,15 +14,19 @@ payloads = [
 
 def inject(host):
     for param in host.split('?')[1].split('&'):
+        done = 0
         for payload in payloads:
             r = nq.Get(host.replace(param,param + payload))
             if r != 0:
                 for header,value in r.headers.items():
                     if header == 'Header-Test':
                         if value == 'BLATRUC':
-                            print(f'[{green}CRLF{rest}] Found :> {host}')
-                            break
+                            print(f'[{green}CRLF{rest}] Found :> {host.replace(param,param + payload)}')
+                            done = 1
+            if done == 1:
+                break
     for param in host.split('?')[1].split('&'):
+        done = 0
         for payload in payloads:
             data = urlparse(host.replace(param,param + payload)).query
             d = post_data(data)
@@ -31,9 +35,12 @@ def inject(host):
                 for header,value in r.headers.items():
                     if header == 'Header-Test':
                         if value == 'BLATRUC':
-                            print(f'[{green}CRLF{rest}] Found :> {host}')
-                            break
+                            print(f'[{green}CRLF{rest}] Found :> {host}\n{info} Method :> POST\n{info} Data :> {data}')
+                            done = 1
+            if done == 1:
+                break
     for param in host.split('?')[1].split('&'):
+        done = 0
         for payload in payloads:
             data = urlparse(host.replace(param,param + payload)).query
             d = post_data(data)
@@ -42,8 +49,10 @@ def inject(host):
                 for header,value in r.headers.items():
                     if header == 'Header-Test':
                         if value == 'BLATRUC':
-                            print(f'[{green}CRLF{rest}] Found :> {host}')
-                            break
+                            print(f'[{green}CRLF{rest}] Found :> {host}\n{info} Method :> PUT\n{info} Data :> {data}')
+                            done = 1
+            if done == 1:
+                break
 
 def threader():
     while True:
