@@ -216,6 +216,72 @@ http://example.com/?search=
 [+] Found :> http://loaclhost/phpinfo.php
 [+] Found :> http://loaclhost/PI.php
 ```
+* hostping
+```
+┌─[knassar702@PC]─[~/tools/scant3r]
+└──╼ $cat ~/hunting/sony/domains.txt | python3 scant3r.py -m hostping
+
+
+   ____              __  ____
+  / __/______ ____  / /_|_  /____
+ _\ \/ __/ _ `/ _ \/ __//_ </ __/
+/___/\__/\_,_/_//_/\__/____/_/
+
+
+[!] Coded by : Khaled Nassar @knassar702
+[!] Version : 0.5#Beta
+    	
+[!] timeout : 10
+[!] random-agent : False
+[!] threads : 20
+[!] module : hostping,
+[!] URLS : 8588
+[!] host : None
+sony.com 54.144.253.202
+intqa.sony.com 160.33.128.119
+ns3.sony.com 160.33.66.20
+rn.kb.sony.com 160.33.196.15
+expressnetqa.sony.com 160.33.178.11
+ns21.sony.com 160.33.195.4
+eduqa.sony.com 160.33.128.117
+br.en.kb.sony.com 160.33.196.15
+ns1.sony.com 160.33.66.21
+www.scea.sony.com 64.157.7.8
+ca.en.kb.sony.com 160.33.196.15
+la.en.kb.sony.com 160.33.196.15
+la.es.kb.sony.com 160.33.196.15
+us.en.kb.sony.com 160.33.196.15
+```
+* CRLF
+```
+┌─[knassar702@PC]─[~/tools/scant3r]
+└──╼ $echo 'http://127.0.0.1:5000/?test=' | python3 scant3r.py -m crlf -p http://localhost:8080
+
++-+-+-+-+-+-+-+
+|S|C|a|N|t|3|r|
++-+-+-+-+-+-+-+
+             ____
+            / . .\
+            \  ---<
+             \  /
+   __________/ /
+-=:___________/
+
+[!] Coded by : Khaled Nassar @knassar702
+[!] Version : 0.5#Beta
+    	
+[!] proxy : True
+[!] timeout : 10
+[!] random-agent : False
+[!] threads : 20
+[!] module : crlf,
+[!] URLS : 1
+[!] host : None
+[CRLF] Found :> http://127.0.0.1:5000/?test=
+[!] Method :> PUT
+[!] Data :> test=%0AHeader-Test:BLATRUC
+
+```
 * **neon**
 ```bash
 # CVE-2019-20141 - https://knassar702.github.io/cve/neon/
