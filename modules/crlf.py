@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 from libs import NewRequest as nq
 from core import green,rest
-from urllib.parse import urljoin
+from urllib.parse import urljoin,urlparse
+from libs import post_data
 from queue import Queue
 from threading import Thread
 from random import randint
@@ -21,6 +22,29 @@ def inject(host):
                         if value == 'BLATRUC':
                             print(f'[{green}CRLF{rest}] Found :> {host}')
                             break
+    for param in host.split('?')[1].split('&'):
+        for payload in payloads:
+            data = urlparse(host.replace(param,param + payload)).query
+            d = post_data(data)
+            r = nq.Post(host.split('?')[0],d)
+            if r != 0:
+                for header,value in r.headers.items():
+                    if header == 'Header-Test':
+                        if value == 'BLATRUC':
+                            print(f'[{green}CRLF{rest}] Found :> {host}')
+                            break
+    for param in host.split('?')[1].split('&'):
+        for payload in payloads:
+            data = urlparse(host.replace(param,param + payload)).query
+            d = post_data(data)
+            r = nq.Put(host.split('?')[0],d)
+            if r != 0:
+                for header,value in r.headers.items():
+                    if header == 'Header-Test':
+                        if value == 'BLATRUC':
+                            print(f'[{green}CRLF{rest}] Found :> {host}')
+                            break
+
 def threader():
     while True:
         item = q.get()
