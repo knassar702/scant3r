@@ -216,7 +216,7 @@ http://example.com/?search=
 [+] Found :> http://loaclhost/phpinfo.php
 [+] Found :> http://loaclhost/PI.php
 ```
-* hostping
+* **hostping**
 ```
 ┌─[knassar702@PC]─[~/tools/scant3r]
 └──╼ $cat ~/hunting/sony/domains.txt | python3 scant3r.py -m hostping
@@ -252,10 +252,10 @@ la.en.kb.sony.com 160.33.196.15
 la.es.kb.sony.com 160.33.196.15
 us.en.kb.sony.com 160.33.196.15
 ```
-* CRLF
+* **CRLF**
 ```
 ┌─[knassar702@PC]─[~/tools/scant3r]
-└──╼ $echo 'http://127.0.0.1:5000/?test=' | python3 scant3r.py -m crlf -p http://localhost:8080
+└──╼ $echo 'http://127.0.0.1:5000/?test=' | python3 scant3r.py -m crlf
 
 +-+-+-+-+-+-+-+
 |S|C|a|N|t|3|r|
@@ -270,7 +270,7 @@ us.en.kb.sony.com 160.33.196.15
 [!] Coded by : Khaled Nassar @knassar702
 [!] Version : 0.5#Beta
     	
-[!] proxy : True
+[!] proxy : False
 [!] timeout : 10
 [!] random-agent : False
 [!] threads : 20
