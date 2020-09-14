@@ -6,7 +6,15 @@ __version__ = '0.5#Beta'
 
 import re
 import sys
+import binascii
 from core import *
+
+
+def urlencoder(data):
+    d = ''
+    for word in data:
+        d += '%' + binascii.b2a_hex(word.encode('utf-8')).decode('utf-8')
+    return d
 def post_data(params):
     try:
         if params:
