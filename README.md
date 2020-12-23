@@ -8,7 +8,7 @@ with Scant3r you will have more time to look into functions and get Easy bugs on
 
 ### What will Scant3r give you?
 
-**Scant3r will give you more time to focus on functionailities We've provided some modules to help you**
+**Scant3r will give you more time to focus on functionalities We've provided some modules to help you**
 
 | Module              | Description                   |
 | :-------------    | :-------------                |
