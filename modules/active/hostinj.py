@@ -29,18 +29,6 @@ def scan(host):
                     pass
     finally:
         pass
-def threader():
-    while True:
-        item = q.get()
-        scan(item)
-        q.task_done()
 
-def run(opts):
-    for _ in range(opts['threads']):
-        p1 = Thread(target=threader)
-        p1.daemon = True
-        p1.start()
-    for url in opts['url']:
-        q.put(url)
-    q.join()
-    sys.exit()
+def main(opts):
+    scan(opts['url'])

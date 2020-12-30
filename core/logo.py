@@ -2,7 +2,7 @@
 __name__ = 'ScanT3r'
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.5#Beta'
+__version__ = '0.6#Beta'
 
 from datetime import datetime
 from .colors import *
@@ -15,16 +15,6 @@ def logo():
 {yellow} _\ \/ __/ _ `/ _ \/ __//_ </ __/
 {green}/___/\__/\_,_/_//_/\__/____/_/{rest}
 """,r"""{red}
-+-+-+-+-+-+-+-+
-|S|C|a|N|t|3|r|
-+-+-+-+-+-+-+-+{red}
-             ____
-            / . .\
-            \  {cyan}---<{red}
-             \  /
-   __________/ /
--=:___________/""".format(red=red,cyan=cyan).replace('+',f'{green}+{yellow}')
-	,r"""{red}
  ___          _  _ _____ ____    
 / __| __ __ _| \| |_   _|__ /_ _ 
 \__ \/ _/ _` {green}| {green}.` | | |  {cyan}|_ \ '_|
@@ -33,5 +23,5 @@ def logo():
     print(random.choice(logos))
     print(f'''
 {info} Coded by : Khaled Nassar @knassar702
-{info} Version : 0.5#Beta
+{info} Version : 0.6#Beta
     	''')

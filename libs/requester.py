@@ -2,7 +2,7 @@
 __name__ = 'ScanT3r'
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.5#Beta'
+__version__ = '0.6#Beta'
 
 from requests import get,post,put,packages
 from fake_useragent import UserAgent

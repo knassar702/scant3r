@@ -1,7 +1,7 @@
 __name__ = 'ScanT3r'
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.5#Beta'
+__version__ = '0.6#Beta'
 
 from base64 import b64encode
 
@@ -68,4 +68,4 @@ ssti_payloads = {
     'scan<% 6*6 %>t3r':'scan36t3r'
     }
 
-ssrf_parameters = ["token","redirecturl","parse","u","f","query","dest","redirect","uri","path","continue","url","window","next","data","reference","site","html","val","validate","domain","callback","return","page","view","dir","show","file","document","folder","root","path","pg","style","php_path","doc","feed","host","link","port","to","out"]
+ssrf_parameters = ["token","redirecturl","title","parse","u","f","query","dest","redirect","uri","path","continue","url","window","next","data","reference","site","html","val","validate","domain","callback","return","page","view","dir","show","file","document","folder","root","path","pg","style","php_path","doc","feed","host","link","port","to","out"]

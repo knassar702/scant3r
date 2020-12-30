@@ -4,11 +4,8 @@ from libs import NewRequest as nq
 from libs import post_data
 from core import ShowMessage as show
 from core import info,bad
-from threading import Thread
-from queue import Queue
 from urllib.parse import urlparse,urljoin
 
-q = Queue()
 
 def add_path(url):
     paths = [
@@ -22,19 +19,8 @@ def add_path(url):
     for path in paths:
         urls.append(urljoin(url,path))
     return urls
-def threader():
-    while True:
-        item = q.get()
-        NEON_CVE(item)
-        q.task_done()
-def run(opts):
-    for i in range(opts['threads']):
-        p1 = Thread(target=threader)
-        p1.daemon = True
-        p1.start()
-    for url in opts['url']:
-        q.put(url)
-    q.join()
+def main(opts):
+    print(opts)
 def NEON_CVE(url):
     urls = add_path(url)
     for u in urls:

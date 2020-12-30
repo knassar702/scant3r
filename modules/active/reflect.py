@@ -12,7 +12,7 @@ t = Queue()
 def reflect(link):
     try:
         for parameter in link.split('?')[1].split('&'):
-            newparameter = f'sca{randint(1,20)}nt3r'
+            newparameter = f'><sca{randint(1,20)}nt3r'
             newlink = link.replace(parameter,parameter+newparameter)
             r = nq.Get(newlink)
             if r != 0:
@@ -29,17 +29,5 @@ def reflect(link):
     finally:
         pass
 
-def threader():
-    while True:
-        item = t.get()
-        reflect(item)
-        t.task_done()
-
-def run(opts):
-    for _ in range(opts['threads']):
-        p1 = Thread(target=threader)
-        p1.deamon = True
-        p1.start()
-    for url in opts['url']:
-        t.put(url)
-    t.join()
+def main(opts):
+    reflect(opts['url'])

@@ -2,7 +2,7 @@
 __name__ = 'ScanT3r'
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.5#Beta'
+__version__ = '0.6#Beta'
 
 import re
 import sys
@@ -10,11 +10,15 @@ import binascii
 from core import *
 
 
-def urlencoder(data):
+def URLENCODE(data):
     d = ''
     for word in data:
         d += '%' + binascii.b2a_hex(word.encode('utf-8')).decode('utf-8')
     return d
+def urlencoder(data,many=1):
+    for _ in range(many):
+        data = URLENCODE(data)
+    return data
 def post_data(params):
     try:
         if params:

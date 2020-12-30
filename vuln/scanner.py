@@ -2,7 +2,7 @@
 __name__ = 'ScanT3r'
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.5#Beta'
+__version__ = '0.6#Beta'
 
 from libs import NewRequest as nq
 from libs import post_data,insertAfter
@@ -319,7 +319,7 @@ class CRLF:
                 r = nq.Get(url.replace(param,param + en(payload)))
                 if r == 0:
                     break
-                if 'BLATRUC' == r.headers.get('Header-Test'):
+                if r.headers.get('Header-Test'):
                     bug = {
                             'name':'CRLF injection',
                             'payload':payload.replace('\n','%0a').replace('\r','%0d'),

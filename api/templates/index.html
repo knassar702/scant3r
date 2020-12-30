@@ -1,1 +1,51 @@
+<!DOCTYPE html>
+<html>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+  text-align: left;
+}
+</style>
+</head>
+<body>
+
+<h2> <a href='https://github.com/knassar702/scant3r'>ScanT3r</a> - API </h2>
+
+<p>http://localhost:6040/scan/{SCANNER_ID}?url={TAGET}</p>
+
+example : <h5>$ curl 'http://localhost:6040/scan/1?url=http://testphp.vulnweb.com/search.php?test=query%26searchFor=1%26goButton=go'</h5>
+
+<table style="width:70%">
+  <tr>
+    <th>ID</th>
+    <th>Scanner</th> 
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>XSS</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>SQLI</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>RCE</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>SSTI</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>CRLF</td>
+  </tr>
+</table>
+
+</body>
+</html>
 
