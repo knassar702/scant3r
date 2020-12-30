@@ -20,7 +20,7 @@ def add_path(url):
         urls.append(urljoin(url,path))
     return urls
 def main(opts):
-    print(opts)
+    NEON_CVE(opts['url'])
 def NEON_CVE(url):
     urls = add_path(url)
     for u in urls:
