@@ -21,7 +21,7 @@ b = Queue()
 c = Queue()
 d = Queue()
 r = Queue()
-helper = """{yellow}
+helper = r"""{yellow}
 Options:
     -h  | show help message and exit
     -c  | add cookies
