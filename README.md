@@ -24,7 +24,7 @@ with Scant3r you will have more time to look into functions and get Easy bugs on
 **If you want to write your own module**
 ***
 when writing your own python script, you need to learn adjust threading and option parser and fix connection errors etc..
-in scant3r all you have to do is write **main** function and scant3r Amina will organize all issues (threades,errors,etc..) you will find some functions will help you to write a greate module :D
+in scant3r all you have to do is write **main** function and scant3r will organize all issues (threades,errors,etc..) you will find some functions will help you to write a greate module :D
 
 * this simple blog about this : https://knassar702.github.io/tools/2020/10/01/scant3rmodules.html
 ***
