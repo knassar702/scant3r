@@ -33,4 +33,4 @@ class Import:
         for url in opts['url']:
             opts['url'] = url
             q.put(opts)
-        q.join()
+            q.join()
