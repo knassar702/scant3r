@@ -10,6 +10,8 @@ import importlib,sys
 
 q = Queue()
 
+def handeropts(url,options):
+    return url,options
 class Import:
     def Get(name):
         global c
@@ -23,7 +25,9 @@ class Import:
     def threader():
         while True:
             item = q.get()
-            c.main(item)
+            item[1]['url'] = item[0]
+#            print(item[1])
+            c.main(item[1])
             q.task_done()
     def run(opts):
         for i in range(opts['threads']):
@@ -31,6 +35,5 @@ class Import:
             p1.daemon = True
             p1.start()
         for url in opts['url']:
-            opts['url'] = url
-            q.put(opts)
+            q.put(handeropts(url,opts))
         q.join()

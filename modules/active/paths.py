@@ -2,10 +2,6 @@
 from libs import NewRequest as nq
 from urllib.parse import urljoin
 from core import good
-from queue import Queue
-from threading import Thread
-
-q = Queue()
 
 """
 paths = {
