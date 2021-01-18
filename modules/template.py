@@ -26,7 +26,10 @@ class Import:
         while True:
             item = q.get()
             item[1]['url'] = item[0]
+<<<<<<< HEAD
 #            print(item[1])
+=======
+>>>>>>> c6175aed85e1dca6c5a909faa90f298ea2ee79d2
             c.main(item[1])
             q.task_done()
     def run(opts):
@@ -36,4 +39,8 @@ class Import:
             p1.start()
         for url in opts['url']:
             q.put(handeropts(url,opts))
+<<<<<<< HEAD
         q.join()
+=======
+        q.join()
+>>>>>>> c6175aed85e1dca6c5a909faa90f298ea2ee79d2

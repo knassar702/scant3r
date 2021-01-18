@@ -193,7 +193,7 @@ if __name__ == '__main__':
         if '?' in url and '=' in url:
             pass
         else:
-            url += '?q=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist&user=&username=&group='
+            url += '?q=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist=&user=&username=&group='
         a.put(url)
         b.put(url)
         c.put(url)
