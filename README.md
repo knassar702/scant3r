@@ -17,7 +17,7 @@ with Scant3r you will have more time to look into functions and get Easy bugs on
 | **hostinj** | Host Header injection |
 | **paths** | dirbrute forcing|
 | **reflect** | find reflected parameters|
-| **accept** | scans website from CVE-2019-5418 | 
+| **headers** | add your payloads in HTTP headers | 
 | **neon** | scans admin panel from CVE-2019-20141 |
 
 **If you want to write your own module**
