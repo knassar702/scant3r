@@ -24,6 +24,7 @@ r = Queue()
 helper = r"""{yellow}
 Options:
     -h  | show help message and exit
+    -n  | remove scant3r banner
     -c  | add cookies
     -r  | follow redirects
     -p  | add (http/s) proxy
@@ -46,7 +47,7 @@ optp.add_option("-h",'--help',dest='help',action='store_true')
 optp.add_option('-c',dest='cookie')
 optp.add_option('-r',dest='redirect',action='store_true')
 optp.add_option('-p',dest='proxy')
-optp.add_option('--nologo',dest='nologo',action='store_true')
+optp.add_option('-n','--nologo',dest='nologo',action='store_true')
 optp.add_option('--api',dest='api',action='store_true')
 optp.add_option('-l',dest='List')
 optp.add_option('-m',dest='module',action='append')
