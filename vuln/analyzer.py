@@ -39,7 +39,9 @@ class refxss:
         pass
     def Get(url):
         try:
-            r = nq.Get(inf(url,'=',f'scantrrr'))
+            for param in url.split('?')[1].split('&'):
+               url = url.replace(param, f'{param}scantrrr')
+            r = nq.Get(url)
             if r.content.decode().lower().find('scantrrr') != -1:
                 return 1
             else:
@@ -48,7 +50,9 @@ class refxss:
             return 0
     def Post(url):
         try:
-            r = nq.Post(url.split('?')[0],post_data(inf(urlparse(url).query,'=','scantrrr')))
+            for param in url.split('?')[1].split('&'):
+                url = url.replace(param, f'{param}scantrrr')
+            r = nq.Post(url.split('?')[0],post_data(url))
             if r.content.decode().lower().find('scantrrr') != -1:
                 return 1
             else:
@@ -57,7 +61,9 @@ class refxss:
             return 0
     def Put(url):
         try:
-            r = nq.Put(url.split('?')[0],post_data(inf(urlparse(url).query,'=','scantrrr')))
+            for param in url.split('?')[1].split('&'):
+               url = url.replace(param, f'{param}scantrrr')
+            r = nq.Put(url.split('?')[0],post_data(url))
             if r.content.decode().lower().find('scantrrr') != -1:
                 return 1
             else:
@@ -70,7 +76,9 @@ class refcrlf:
         pass
     def Get(url):
         try:
-            r = nq.Get(inf(url,'=',f'scantrrr'))
+            for param in url.split('?')[1].split('&'):
+               url = url.replace(param, f'{param}scantrrr')
+            r = nq.Get(url)
             for header,value in r.headers.items():
                 if 'scantrrr' in header or 'scantrrr' in value:
                     return 1
@@ -80,7 +88,9 @@ class refcrlf:
             return 0
     def Post(url):
         try:
-            r = nq.Post(url.split('?')[0],post_data(inf(urlparse(url).query,'=','scantrrr')))
+            for param in url.split('?')[1].split('&'):
+               url = url.replace(param, f'{param}scantrrr')
+            r = nq.Post(url.split('?')[0],post_data(url))
             for header,value in r.headers.items():
                 if 'scantrrr' in header or 'scantrrr' in value:
                     return 1
@@ -90,7 +100,9 @@ class refcrlf:
             return 0
     def Put(url):
         try:
-            r = nq.Put(url.split('?')[0],post_data(inf(urlparse(url).query,'=','scantrrr')))
+            for param in url.split('?')[1].split('&'):
+              url = url.replace(param, f'{param}scantrrr')
+            r = nq.Put(url.split('?')[0],post_data(url))
             for header,value in r.headers.items():
                 if 'scantrrr' in header or 'scantrrr' in value:
                     return 1
