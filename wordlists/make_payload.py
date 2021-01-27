@@ -47,7 +47,7 @@ sql_err = {'sqlite3':'sqlite3.OperationalError','MySQL': 'error in your SQL synt
              'FetchRow()' : 'FetchRow()',
              'Input string was not in a correct format' : 'Input string was not in a correct format',
              'Internal Server Error':'The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application'}
- rce_payloads = {
+rce_payloads = {
      ';id #':'gid=',
      ';cat /etc/passwd #':'bin:x:2:2:bin:/bin:/usr/sbin/nologin',
      '|id #':'gid=',
