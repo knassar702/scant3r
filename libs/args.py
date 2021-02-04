@@ -58,7 +58,8 @@ Examples:
         $ cat subdomains.txt | ./scant3r.py -m hostping -w 100
     # find host header injection
         $ cat subdomains.txt | ./scant3r.py -m hostinj -w 100 -R
-
+    # Run Multi modules
+        $ ./scant3r.py -l subdomains.txt -m example -m example -m example -w 100 -R
 
 {rest}
 """.format(yellow=yellow,rest=rest)

