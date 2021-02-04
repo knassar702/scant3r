@@ -4,7 +4,7 @@ from libs import post_data
 from threading import Thread
 from queue import Queue
 from random import randint
-from core import info,good
+from libs import info,good
 from urllib.parse import urlparse
 
 t = Queue()

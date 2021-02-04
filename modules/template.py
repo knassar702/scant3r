@@ -2,37 +2,37 @@
 
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.6#Beta'
+__version__ = '0.7#Beta'
 
 from threading import Thread
 from queue import Queue
+from libs import load_opts
 import importlib,sys
 
 q = Queue()
 
-def handeropts(url,options):
-    return url,options
+def Get(name):
+    name = f'modules.active.{name}'
+    try:
+        c = importlib.import_module(name)
+        return c
+    except Exception as e:
+        print(e)
+        sys.exit()
 class Import:
-    def Get(name):
-        global c
-        name = f'modules.active.{name}'
-        try:
-            c = importlib.import_module(name)
-            return c
-        except Exception as e:
-            print(e)
-            sys.exit()
-    def threader():
+    def threader(func):
         while True:
             item = q.get()
-            item[1]['url'] = item[0]
-            c.main(item[1])
+            func.main(item)
             q.task_done()
-    def run(opts):
+    def run(func):
+        opts = load_opts()
         for i in range(opts['threads']):
-            p1 = Thread(target=Import.threader)
+            p1 = Thread(target=Import.threader,args=(func,))
             p1.daemon = True
             p1.start()
         for url in opts['url']:
-            q.put(handeropts(url,opts))
+            n = load_opts()
+            n['url'] = url
+            q.put(n)
         q.join()
