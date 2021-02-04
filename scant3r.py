@@ -21,8 +21,6 @@ if sys.version_info < (3, 6):
 colorama.init()
 
 
-__version__ = '0.6#Beta'
-
 import sys
 if sys.version_info < (3, 6):
     print('[-] Scant3r requires python >= 3.6')
