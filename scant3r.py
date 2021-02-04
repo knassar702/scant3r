@@ -18,15 +18,7 @@ import sys,colorama
 if sys.version_info < (3, 6):
     print('[-] Scant3r requires python >= 3.6')
     sys.exit()
-colorama.init()
 
-
-import sys
-if sys.version_info < (3, 6):
-    print('[-] Scant3r requires python >= 3.6')
-    sys.exit()
-
-import colorama
 colorama.init()
 
 from optparse import OptionParser
