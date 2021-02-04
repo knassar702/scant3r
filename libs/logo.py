@@ -2,7 +2,7 @@
 __name__ = 'ScanT3r'
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.6#Beta'
+__version__ = '0.7#Beta'
 
 from datetime import datetime
 from .colors import *
@@ -24,5 +24,5 @@ def logo():
     print(random.choice(logos))
     print(f'''
 {info} Coded by : Khaled Nassar @knassar702
-{info} Version : 0.6#Beta
+{info} Version : 0.7#Beta
     	''')
