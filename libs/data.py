@@ -2,17 +2,14 @@
 __name__ = 'ScanT3r'
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.7#Beta'
+__version__ = '0.6#Beta'
 
 import re
 import sys
 import binascii
-from .colors import *
+from core import *
 
 
-def sort(di):
-    mylist = list(dict.fromkeys(di))
-    return mylist
 def URLENCODE(data):
     d = ''
     for word in data:

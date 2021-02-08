@@ -5,7 +5,7 @@ __email__ = 'knassar702@gmail.com'
 __version__ = '0.6#Beta'
 from libs import NewRequest as nq
 from libs import post_data,urlencoder 
-from libs import bad # color
+from core import bad # color
 from urllib.parse import urlparse # url parsing
 from wordlists import ssrf_parameters # ssrf parameters wordlist
 import sys

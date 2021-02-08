@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from libs import NewRequest as nq
 from urllib.parse import urljoin
-from libs import good
+from core import good
 
 """
 paths = {

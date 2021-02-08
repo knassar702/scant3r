@@ -2,12 +2,12 @@
 __name__ = 'ScanT3r'
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.7#Beta'
+__version__ = '0.6#Beta'
 
 from libs import NewRequest as nq
 from libs import post_data,insertAfter
 from libs import urlencoder as en
-from libs import ShowMessage as show
+from core import ShowMessage as show
 from .analyzer import *
 from urllib.parse import urlparse
 from random import randint

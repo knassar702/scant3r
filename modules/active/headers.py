@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from requests import get
 from urllib.parse import urlparse
-from libs import good
+from core import good
 import sys
 
 

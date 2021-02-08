@@ -2,8 +2,8 @@
 
 from libs import NewRequest as nq
 from libs import post_data
-from libs import ShowMessage as show
-from libs import info,bad
+from core import ShowMessage as show
+from core import info,bad
 from urllib.parse import urlparse,urljoin
 
 

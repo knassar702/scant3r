@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from requests import get
-from libs import good,cyan,rest,bmagenta,Byellow,yellow,magenta
+from core import good,cyan,rest,bmagenta,Byellow,yellow,magenta
 
 def RNG(host):
     try:

@@ -2,7 +2,7 @@
 __name__ = 'ScanT3r'
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.7#Beta'
+__version__ = '0.6#Beta'
 
 from datetime import datetime
 from .colors import *
@@ -20,9 +20,8 @@ def logo():
 \__ \/ _/ _` {green}| {green}.` | | |  {cyan}|_ \ '_|
 |___/\__\__,_|_|\_| {green}|_| {cyan}|___/_|""".format(red=red,cyan=cyan,green=green)
     ]
-
     print(random.choice(logos))
     print(f'''
 {info} Coded by : Khaled Nassar @knassar702
-{info} Version : 0.7#Beta
+{info} Version : 0.6#Beta
     	''')

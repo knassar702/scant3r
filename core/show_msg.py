@@ -4,7 +4,7 @@ __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
 __version__ = '0.6#Beta'
 
-from .colors import *
+from core.colors import *
 class ShowMessage:
     def __init__():
         pass

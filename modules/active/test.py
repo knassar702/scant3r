@@ -1,7 +1,6 @@
 
-#from vuln import methods
+from vuln import methods
 
 def main(opts):
-    print(opts['url'])
-#    r = methods.Post(opts['url'],'')
-#    print(r)
+    r = methods.Post(opts['url'],'')
+    print(r)
