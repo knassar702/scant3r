@@ -41,6 +41,19 @@ $ git pull
 ```
 ### Usage
 * https://github.com/knassar702/scant3r/wiki/Usage
+
+### ScanT3r Modules
+* https://github.com/knassar702/scant3r/wiki/ScanT3r-Modules
+
+### writing your own scant3r module
+* https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module
+
+### how to find hidden SSRF Parameters by using scant3r
+* https://github.com/knassar702/scant3r/wiki/how-to-find-hidden-SSRF-Parameters-by-using-scant3r
+
+### How to Find sensitive files by using ScanT3r
+* https://github.com/knassar702/scant3r/wiki/How-to-Find-sensitive-files-by-using-ScanT3r
+
 ### ScanT3r API
 * https://github.com/knassar702/scant3r/wiki/ScanT3r-API
 
