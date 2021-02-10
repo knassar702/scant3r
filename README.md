@@ -60,12 +60,15 @@ $ git pull
 
 ### Demo 
 
-![Example](images/all.gif)
+![](images/all.gif)
 
 **Nokia** https://www.nokia.com/responsible-disclosure/
-![Nokia](images/nokia.gif)
+![](images/nokia.gif)
 
 **IBM** https://hackerone.com/ibm
 
-![IBM](images/ibm.png)
+![](images/ibm.png)
 
+
+**Blind SSRF Parameters**
+![](https://raw.githubusercontent.com/knassar702/scant3r/master/images/ssrf.gif)
