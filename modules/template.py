@@ -27,19 +27,15 @@ class Import:
             item = q.get()
             c.main(item)
             q.task_done()
-    def save():
-        global opt
-        opt = {}
     def run(opts):
-        global opt
-        Import.save()
+        opt = {}
         for o,v in opts.items():
             opt[o] = v
         for i in range(opts['threads']):
             p1 = Thread(target=Import.threader)
             p1.daemon = True
             p1.start()
-        for url in opt['url']:
+        for url in opts['url']:
             opt['url'] = url
             q.put(opt)
         q.join()
