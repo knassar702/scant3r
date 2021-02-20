@@ -58,7 +58,7 @@ Wiki:
     - https://github.com/knassar702/scant3r/wiki/Usage
 Examples:
     # simple scan
-        $ echo 'http://php.net' | ./scant3r.py -w 100 -R
+        $ echo 'http://testphp.vulnweb.com/search.php?test=query&searchFor=test&goButton=go' | ./scant3r.py -w 100 -R
     # Find SSRF Parameters
         $ echo 'http://testphp.vulnweb.com/showimage.php' | ./scant3r.py -m lorsrf -w 100 -R -x http://myhost
     # Find Files
