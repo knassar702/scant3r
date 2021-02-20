@@ -38,4 +38,7 @@ class Import:
         for url in opts['url']:
             opt['url'] = url
             q.put(opt)
+            opt = {}
+            for o,v in opts.items():
+                opt[o] = v
         q.join()
