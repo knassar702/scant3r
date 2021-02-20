@@ -3,3 +3,4 @@ fake-useragent
 requests_toolbelt
 flask
 jinja2
+colorama
