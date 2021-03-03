@@ -1,7 +1,7 @@
 ---
 name: Question
 about: for user questions
-title: "[Question]"
+title: "[Question] YOUR_TITLE"
 labels: question
 assignees: ''
 
