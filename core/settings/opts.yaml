@@ -1,0 +1,121 @@
+headers:
+    - option: '-H'
+    - type: 'string'
+    - action: 'store'
+    - help: "add custom header (ex:-H='Cookies: test=1')"
+    - default: '{}'
+    - exec: 'self.headers = extractHeaders(opts.headers)'
+
+api:
+    - option: '-a'
+    - type: false
+    - action: 'store_true'
+    - help: 'Start Scant3r API'
+    - default: false
+    - exec: |
+        self.api = True
+
+
+modules:
+    - option: '-m'
+    - help: 'run scant3r module (ex: -m=example)'
+    - type: 'string'
+    - default: []
+    - action: 'store'
+    - exec: |
+        self.modules = opts.modules.split(",")
+
+
+nologo:
+    - option: '-n'
+    - help: 'remove scant3r banner'
+    - type: false
+    - default: false
+    - action: 'store_true'
+    - exec: 'self.nologo = opts.nologo'
+targetlist:
+    - option: '-l'
+    - type: 'string'
+    - default: false
+    - help: 'add targets list'
+    - action: 'store'
+    - exec: |
+        try:
+            self.targetlist = open(opts.targetlist,'r')
+            for url in self.targetlist:
+                self.urls.append(url.rstrip())
+        except Exception as e:
+            print(e)
+            exit()
+
+genparam:
+    - option: '-g'
+    - type: false
+    - default: false
+    - help: "Generate Famouse Parameters if your url d"
+    - action: 'store_true'
+    - exec: 'self.genparam = opts.genparam'
+proxy:
+    - option: '-p'
+    - help: 'Forward all requests for proxy'
+    - type: 'string'
+    - default: '{}'
+    - action: 'store'
+    - exec: 'self.proxy = {"http":opts.proxy,"https":opts.proxy}'
+
+redirect:
+    - option: '-r'
+    - type: false
+    - default: false
+    - hlep: 'Follow redirects'
+    - action: 'store_true'
+    - exec: 'self.redirect = opts.redirect'
+
+blindxss:
+    - option: '-b'
+    - type: 'string'
+    - help: 'add your xsshunter host (or any xss host)'
+    - default: false
+    - action: 'store'
+    - exec: 'self.blindxss = opts.blindxss'
+
+debug:
+    - option: '-d'
+    - help: 'debugging mode (show requests/responses)'
+    - type: false
+    - default: false
+    - action: 'store_true'
+    - exec: 'self.debug = True'
+
+host:
+    - option: '-x'
+    - type: 'string'
+    - default: false
+    - help: 'add your host (burpcall,etc..)'
+    - action: 'store'
+    - exec: 'self.host = opts.host'
+
+ragent:
+    - option: '-R'
+    - type: false
+    - default: false
+    - help: 'use random user agent'
+    - action: 'store_true'
+    - exec: 'self.ragent = True'
+
+threads:
+    - option: '-w'
+    - type: 'int'
+    - help: 'Number of workers (default: 50)'
+    - action: 'store'
+    - default: 50
+    - exec: 'self.threads = opts.threads'
+
+timeout:
+    - option: '-t'
+    - type: 'int'
+    - default: 10
+    - help: 'set connection timeout (default: 10)'
+    - action: 'store'
+    - exec: 'self.timeout = opts.timeout'
+

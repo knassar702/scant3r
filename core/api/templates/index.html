@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+  text-align: left;
+}
+</style>
+</head>
+<body>
+
+<h2> <a href='https://github.com/knassar702/scant3r'>ScanT3r</a> - API </h2>
+
+<p>
+Endpoint: /scan/{Module_ID}<br> 
+Paraemter: url={TAGET}<br>
+Method: POST<br>
+</p>
+
+example : <h5>$ curl 'http://localhost:6040/scan/0 -d "url=http://testphp.vulnweb.com/search.php?test=query%26searchFor=1%26goButton=go'"</h5>
+
+<table style="width:70%">
+  <tr>
+    <th>ID</th>
+    <th>Scanner</th> 
+  </tr>
+{% for Id,Name in args.items()%}
+  <tr>
+    <td>{{Id}}</td>
+    <td>{{Name}}</td>
+  </tr>
+{%endfor%}
+</table>
+<hr>
+Check <a href="https://github.com/knassar702/scant3r/wiki">ScanT3r Wiki</a> for more info about how to write your own scant3r script and add it to scant3r api :D
+
+</body>
+</html>
+

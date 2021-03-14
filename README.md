@@ -2,9 +2,7 @@
 
 **Why would you use Scant3r?**
 
-Scant3r Scans all URLs with multiple HTTP Methods and Tries to look for bugs with basic exploits as **XSS - SQLI - RCE - CRLF -SSTI** from Headers and URL Parameters
-By chaining [waybackurls](https://github.com/tomnomnom/waybackurls) or [gau](https://github.com/lc/gau) <br>
-with Scant3r you will have more time to look into functions and get Easy bugs on the way :)
+scant3r will help you to write your own python script faster , you don't need to configure http/threads/errors/options/etc... , just by writing your main function in your script , you can run it in your terminal or access your script from api :D
 
 ### What will Scant3r give you?
 
@@ -13,12 +11,8 @@ with Scant3r you will have more time to look into functions and get Easy bugs on
 | Module              | Description                   |
 | :-------------    | :-------------                |
 | **lorsrf** | Bruteforcing on Hidden parameters to find SSRF vulnerability |
-| **hostping** | get live domains|
-| **hostinj** | Host Header injection |
 | **paths** | dirbrute forcing|
-| **reflect** | find reflected parameters|
-| **headers** | add your payloads in HTTP headers | 
-| **neon** | scans admin panel from CVE-2019-20141 |
+| **xss** | xss scanner|
 
 **If you want to write your own module**
 * https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module
@@ -58,7 +52,9 @@ $ git pull
 * https://github.com/knassar702/scant3r/wiki/ScanT3r-API
 
 
-### Demo 
+### Screenshot 
+
+# Version: [0.6](https://github.com/knassar702/scant3r/releases/tag/0.6)
 
 ![](images/all.gif)
 
@@ -69,6 +65,5 @@ $ git pull
 
 ![](images/ibm.png)
 
-
-**Blind SSRF Parameters**
+**Blind SSRF Parameters (lorsrf)**
 ![](https://raw.githubusercontent.com/knassar702/scant3r/master/images/ssrf.gif)

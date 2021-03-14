@@ -1,0 +1,4 @@
+# ScanT3r API Config
+host: '0.0.0.0'
+debug: true
+port: 6030
