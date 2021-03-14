@@ -56,14 +56,14 @@ $ git pull
 
 # Version: [0.6](https://github.com/knassar702/scant3r/releases/tag/0.6)
 
-![](images/all.gif)
+![](.src/all.gif)
 
 **Nokia** https://www.nokia.com/responsible-disclosure/
-![](images/nokia.gif)
+![](.src/nokia.gif)
 
 **IBM** https://hackerone.com/ibm
 
-![](images/ibm.png)
+![](.src/ibm.png)
 
 **Blind SSRF Parameters (lorsrf)**
 ![](https://raw.githubusercontent.com/knassar702/scant3r/master/images/ssrf.gif)
