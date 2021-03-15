@@ -4,9 +4,8 @@
 
 scant3r will help you to write your own python script faster , you don't need to configure http/threads/errors/options/etc... , just by writing main function in your script , you can run it in your terminal or access your script from api :D
 
-### What will Scant3r give you?
 
-**Scant3r will give you more time to focus on functionalities We've provided some modules to help you**
+### Modules
 
 | Module              | Description                   |
 | :-------------    | :-------------                |
