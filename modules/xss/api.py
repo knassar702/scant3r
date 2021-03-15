@@ -2,7 +2,6 @@ from .xss import Scan
 
 
 
-def main(url,opts,r):
-    opts['url'] = url
+def main(opts,r):
     scanner = Scan(opts,r)
-    return scanner.start(opts['url'],methods=['GET','POST','PUT'])
+    return scanner.start(opts['url'],methods=opts['methods'])

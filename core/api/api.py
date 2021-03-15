@@ -22,21 +22,18 @@ class Server:
     def index(self):
         return render_template('index.html',args=al)
     def scanapi(self,scanid):
-        url = request.form.get('url',None)
-        if url:
+        self.url = request.form.get('url',None)
+        if self.url:
             if scanid in al.keys():
                 try:
                     res = {'Results':[]}
                     op = self.opts.copy()
-                    op['url'] = url
+                    op['url'] = self.url
                     try:
                         m = import_module(f'modules.{al[scanid]}.api')
                     except Exception as e:
                         return jsonify({'Error':e})
-                    if m.main.__code__.co_argcount >= 2:
-                        scan = m.main(self.opts,self.http)
-                    else:
-                        scan = m.main(self.opts)
+                    scan = m.main(op,self.http)
                     if scan:
                         res['Results'] = scan
                     if len(res['Results']) > 0:
