@@ -22,5 +22,5 @@ def logo():
     print(random.choice(logos))
     print(f'''
 {info} Coded by : Khaled Nassar @knassar702
-{info} Version : 0.6#Beta
+{info} Version : 0.7#Beta
     	''')
