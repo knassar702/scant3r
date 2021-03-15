@@ -27,8 +27,7 @@ class MLoader:
                 opt['url'] = url
                 for module in self.modules:
                     if module.main.__code__.co_argcount >= 2:
-                        c = executor.submit(module.main, opt,r)
-                        print(c.result())
+                        executor.submit(module.main, opt,r)
                     else:
                         executor.submit(module.main,opt)
                 opt = opts.copy()
