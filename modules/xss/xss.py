@@ -9,7 +9,7 @@ class Scan:
     def __init__(self,opts,r):
         self.http = r
         self.opts = opts
-        self.payloads = XSS(opts['blindxss']).payloads
+        self.payloads = XSS(opts['blindxss'])
     def check_method(self,methods,url):
         self.method_allowed = {}
         if self.method_allowed:
@@ -22,6 +22,15 @@ class Scan:
                 if r.status_code != 405:
                     self.method_allowed[method] = {url:r.status_code}
         return self.method_allowed
+    def headers(self,url,methods=['GET','POST'],headers={'User-agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36'}):
+        http = self.http
+        header = headers.copy()
+        for payload in self.payloads.blind:
+            for h,v in headers.items():
+                header[h] = v + payload
+            print(payload)
+#        for met in methods:
+#            http.send(met,url,headers=headers)
     def start(self,url,methods=['GET','POST']):
         self.bugs = []
         for i in methods:
@@ -30,21 +39,20 @@ class Scan:
             n = insert_to_params_urls(url,txt)
             for wp in n:
                 if i != 'GET':
-                    r = self.http.send(i,wp.split('?')[0],body=urlparse(wp).query)
+                    r = self.http.send(i,wp.split('?')[0],body=urlparse(wp).query,headers=headers)
                     if txt in r.content.decode('utf-8'):
                         self.ref.append(wp)
                 else:
-                    r = self.http.send(i,wp)
+                    r = self.http.send(i,wp,headers=headers)
                     if txt in r.content.decode('utf-8'):
                         self.ref.append(wp)
             for rp in self.ref:
-                for P in self.payloads:
+                for P in self.payloads.payloads:
                     nurl = rp.replace(txt,P)
                     if i == 'GET':
                         r = self.http.send(i,nurl)
                     else:
                         r = self.http.send(i,nurl.split('?')[0],body=urlparse(nurl).query)
-
                     if P in r.content.decode('utf-8'):
                         print(f'[XSS] Found :> {nurl.split("?")[0]}\n\t[!] Method: {i}\n\t[!] Params: {urlparse(nurl).query}')
                         self.bugs.append({
