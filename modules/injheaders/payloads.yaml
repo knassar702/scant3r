@@ -1,0 +1,6 @@
+"\"><svg/onload=alert(1)>": 
+    - text: 1
+    - regex: false
+man:
+    - text: 'ma.*.'
+    - regex: true

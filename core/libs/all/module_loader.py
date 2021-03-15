@@ -27,6 +27,7 @@ class MLoader:
                 for module in self.modules:
                     if module.main.__code__.co_argcount >= 2:
                         executor.submit(module.main, opt,r)
+                        #print(c.result())
                     else:
                         executor.submit(module.main,opt)
                 opt = opts.copy()

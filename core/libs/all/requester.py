@@ -38,7 +38,8 @@ class http:
             a = Agent()
             if self.ragent:
                 a.load()
-            headers['User-agent'] = a.random
+            if 'User-agent' not in headers.keys():
+                headers['User-agent'] = a.random
             if self.headers:
                 for h,v in self.headers.items():
                     headers[h] = v
