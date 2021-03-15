@@ -1,27 +1,32 @@
 #!/usr/bin/env python3
-#__name__ = 'ScanT3r'
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
 __version__ = '0.7#Beta'
 
 import os,colorama,sys
-# check if python version high up 3.6
-if sys.version_info < (3, 6):
-    print('[-] Scant3r requires python >= 3.6')
-    sys.exit()
-
-from core.libs import Args,http,MLoader
-from core.api import Server
 
 colorama.init()
+
+from core.libs import bad
+# check if python version high up 3.6
+if sys.version_info < (3, 6):
+    print(f'{bad} Scant3r requires python >= 3.6')
+    sys.exit()
+
+from core.libs import Args,http,logo,MLoader
+from core.api import Server
+
 # set the path of scant3r folder
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
-
 
 
 # Load user args
 a = Args()
 opts = a.start()
+if opts['nologo']:
+    pass
+else:
+    logo()
 # ---
 # Configure http options (proxy,headers etc..)
 msg = http(opts)

@@ -2,7 +2,7 @@
 
 **Why would you use Scant3r?**
 
-scant3r will help you to write your own python script faster , you don't need to configure http/threads/errors/options/etc... , just by writing your main function in your script , you can run it in your terminal or access your script from api :D
+scant3r will help you to write your own python script faster , you don't need to configure http/threads/errors/options/etc... , just by writing main function in your script , you can run it in your terminal or access your script from api :D
 
 ### What will Scant3r give you?
 
@@ -11,8 +11,9 @@ scant3r will help you to write your own python script faster , you don't need to
 | Module              | Description                   |
 | :-------------    | :-------------                |
 | **lorsrf** | Bruteforcing on Hidden parameters to find SSRF vulnerability |
-| **paths** | dirbrute forcing|
+| **paths** | Check for custom paths|
 | **xss** | xss scanner|
+| **injheaders** | inject blind xss and custom payloads in custom headers (headers.yaml&payload.yaml)
 
 **If you want to write your own module**
 * https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module
@@ -26,6 +27,7 @@ scant3r will help you to write your own python script faster , you don't need to
 $ git clone https://github.com/knassar702/scant3r
 $ cd scant3r
 $ pip3 install -r requirements.txt
+$ ./scant3r.py -h
 ```
 
 #### Update to latest version:

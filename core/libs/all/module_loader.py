@@ -21,13 +21,14 @@ class MLoader:
             print(e)
     def run(self,opts,r):
         opt = opts.copy() # copy user options
+        print(f'Modules Loaded :> {len(self.modules)}')
         with concurrent.futures.ThreadPoolExecutor(max_workers=opts['threads']) as executor:
             for url in opts['urls']:
                 opt['url'] = url
                 for module in self.modules:
                     if module.main.__code__.co_argcount >= 2:
-                        executor.submit(module.main, opt,r)
-                        #print(c.result())
+                        c = executor.submit(module.main, opt,r)
+                        print(c.result())
                     else:
                         executor.submit(module.main,opt)
                 opt = opts.copy()

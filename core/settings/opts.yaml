@@ -15,6 +15,14 @@ api:
     - exec: |
         self.api = True
 
+methods:
+    - option: '-y'
+    - type: 'string'
+    - action: 'store'
+    - help: 'Methods Allowed on your target'
+    - default: 'GET,POST'
+    - exec: |
+        self.methods = opts.methods.split(",")
 
 modules:
     - option: '-m'

@@ -7,4 +7,4 @@ def main(url,opts,msg):
     else:
         return {'Lorsrf':'Error , add your host (-x)'}
     start(url,opts['host'],msg)
-    return {'Lorsrf':"Added To Task :D"}
+    return {'Lorsrf':"Done :D"}

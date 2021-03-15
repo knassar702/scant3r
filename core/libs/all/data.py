@@ -52,7 +52,8 @@ def insert_to_params_urls(url,text,single=True):
                 u.append(url.replace(param,param + text))
         return u
     except Exception as e:
-        return e
+        print(f'[insert_to_params_urls] {e}')
+        return {}
 
 def insert_to_params(param,text,single=True):
     u = list()
@@ -62,6 +63,7 @@ def insert_to_params(param,text,single=True):
                 u.append(p.replace(p,p + text))
         return u
     except Exception as e:
+        print(f'[insert_to_params] {e}')
         return u
 
 def post_data(params):
@@ -74,7 +76,8 @@ def post_data(params):
                 postData[p[0]] = p[1]
             return postData
         return {}
-    except:
+    except Exception as e:
+        print(e)
         return {}
 
 def extractHeaders(headers=''):
@@ -90,7 +93,8 @@ def extractHeaders(headers=''):
                     value = value[:-1]
                 sorted_headers[header] = value
             except Exception as e:
-                return f'[Extract Headers] {e}'
+                print ('[Extract Headers] {e}')
+                return {}
         return sorted_headers
     return {}
 

@@ -8,4 +8,5 @@ def main(opts,http):
         # (f'{bad} Host Not Found ..!') # -x option (ex: -x http://knassar702.burpcal.com)
         return
     else:
-        start(opts['url'],host,http)
+        for method in opts['methods']:
+            start(opts['url'],host,http,methods=[method])
