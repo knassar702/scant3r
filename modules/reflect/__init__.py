@@ -8,7 +8,7 @@ class Reflect:
         self.http = r
     def start(self,url,method):
         http = self.http
-        self.found = list()
+        self.found = dict()
         txt = f'scan{random_str(3)}tr'
         if urlparse(url).query:
             nurls = ur(url,txt)
@@ -20,7 +20,7 @@ class Reflect:
             else:
                 r = http.send(method,nurl.split('?')[0],body=urlparse(nurl).query)
             if txt in r.content.decode('utf-8'):
-                self.found.append(txt)
+                self.found[nurl] = method
         return self.found
 def main(opts,r):
     R = Reflect(r)

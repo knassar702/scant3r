@@ -1,3 +1,11 @@
+auth:
+  - option: '-o'
+  - type: string
+  - action: store
+  - help: add auth header
+  - default: false
+  - exec: 'self.auth = extractHeaders(opts.auth)'
+
 headers:
     - option: '-H'
     - type: 'string'
