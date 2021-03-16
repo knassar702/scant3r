@@ -2,7 +2,7 @@
 
 from optparse import OptionParser
 from .colors import rest,yellow
-from .data import extractHeaders
+from .data import *
 import yaml
 
 class Args:
@@ -34,15 +34,14 @@ Pipe:
 List:
     $ scant3r -l web.txt
 Wiki:
-    ScanT3r Modules
-    - https://github.com/knassar702/scant3r/wiki/ScanT3r-Modules
     how to wirte your own scant3r script
-    - https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module
-    
+    - https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module 
     ScanT3r API
     - https://github.com/knassar702/scant3r/wiki/ScanT3r-API
     Usage
     - https://github.com/knassar702/scant3r/wiki/Usage
+    Write API Module
+    - https://github.com/knassar702/scant3r/wiki/write-module-for-api
 Examples:
     # simple scan
         $ echo 'http://testphp.vulnweb.com/search.php?test=query&searchFor=test&goButton=go' | ./scant3r.py -w 100 -R

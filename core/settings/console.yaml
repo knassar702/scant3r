@@ -1,3 +1,0 @@
-logger:
-    - look: 'man'
-    - normal: debug

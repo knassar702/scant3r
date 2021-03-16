@@ -1,4 +1,0 @@
-xss:
-    - function: xss
-    - path: modules.example.api
-    - parameters: 'test,upload'
