@@ -60,7 +60,7 @@ genparam:
     - option: '-g'
     - type: false
     - default: false
-    - help: "Generate Famouse Parameters if your url d"
+    - help: "Generate Famouse Parameters if your url dosen't have parameters"
     - action: 'store_true'
     - exec: 'self.genparam = opts.genparam'
 proxy:
