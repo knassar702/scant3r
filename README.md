@@ -15,8 +15,6 @@ scant3r will help you to write your own python script faster , you don't need to
 | **injheaders** | inject blind xss and custom payloads in custom headers (headers.yaml&payload.yaml)
 | **reflect** | find reflected parameters 
 
-**If you want to write your own module**
-* https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module
 
 ***
 ## Installation
