@@ -1,4 +1,4 @@
-# Scant3r - Moduler loaderd with functions for write your pentesting script faster
+# Scant3r - Moduler loaderd with some functions for write your pentesting script faster
 
 **Why would you use Scant3r?**
 
