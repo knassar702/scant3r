@@ -28,32 +28,32 @@ $ pip3 install -r requirements.txt
 $ ./scant3r.py -h
 ```
 
-### Usage
+#### Usage
 * https://github.com/knassar702/scant3r/wiki/Usage
 
-### writing your own scant3r module
+#### writing your own scant3r module
 * https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module
 
-### Edite Scant3r Command line options
+#### Edite Scant3r Command line options
 
 * https://github.com/knassar702/scant3r/wiki/edite-scant3r-command-options
 
-### how to find hidden SSRF Parameters by using scant3r
+#### how to find hidden SSRF Parameters by using scant3r
 * https://github.com/knassar702/scant3r/wiki/how-to-find-hidden-SSRF-Parameters-by-using-scant3r
 
-### Find Reflected Parameters with scant3r 
+#### Find Reflected Parameters with scant3r 
 * https://github.com/knassar702/scant3r/wiki/find-reflected-parameters-with-scant3r
 
-### How to Find sensitive files by using ScanT3r
+#### How to Find sensitive files by using ScanT3r
 * https://github.com/knassar702/scant3r/wiki/How-to-Find-sensitive-files-by-using-ScanT3r
 
-### Find Blind XSS With ScanT3r
+#### Find Blind XSS With ScanT3r
 * https://github.com/knassar702/scant3r/wiki/Find-Blind-XSS-with-scant3r
 
-### ScanT3r API
+#### ScanT3r API
 * https://github.com/knassar702/scant3r/wiki/ScanT3r-API
 
-### Write module for API
+#### Write module for API
 * https://github.com/knassar702/scant3r/wiki/write-module-for-api
 
 ## TODOLIST
