@@ -51,6 +51,9 @@ $ git pull
 ### How to Find sensitive files by using ScanT3r
 * https://github.com/knassar702/scant3r/wiki/How-to-Find-sensitive-files-by-using-ScanT3r
 
+### Find Blind XSS With ScanT3r
+* https://github.com/knassar702/scant3r/wiki/Find-Blind-XSS-with-scant3r
+
 ### ScanT3r API
 * https://github.com/knassar702/scant3r/wiki/ScanT3r-API
 
