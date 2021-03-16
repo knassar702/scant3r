@@ -1,5 +1,3 @@
-# Scant3r - Moduler loaderd with some functions for write your pentesting script faster
-
 **Why would you use Scant3r?**
 
 scant3r will help you to write your own python script faster , you don't need to configure http/threads/errors/options/etc... , just by writing main function in your script , you can run it in your terminal or access your script from api :D
