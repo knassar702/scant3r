@@ -44,7 +44,7 @@ def dump_params(url):
 def add_path(url,path):
     return urljoin(url,path)
 
-def insert_to_params_urls(url,text,single=True):
+def insert_to_params_urls(url,text,single=True,debug=False):
     u = list()
     try:
         if len(url.split('?')) >= 1:
@@ -52,10 +52,11 @@ def insert_to_params_urls(url,text,single=True):
                 u.append(url.replace(param,param + text))
         return u
     except Exception as e:
-        print(f'[insert_to_params_urls] {e}')
+        if debug:
+            print(f'[insert_to_params_urls] {e}')
         return {}
 
-def insert_to_params(param,text,single=True):
+def insert_to_params(param,text,single=True,debug=False):
     u = list()
     try:
         if len(param.split('&')) > 0:
@@ -63,10 +64,11 @@ def insert_to_params(param,text,single=True):
                 u.append(p.replace(p,p + text))
         return u
     except Exception as e:
-        print(f'[insert_to_params] {e}')
+        if debug:
+            print(f'[insert_to_params] {e}')
         return u
 
-def post_data(params):
+def post_data(params,debug=False):
     try:
         if params:
             prePostData = params.split("&")
@@ -77,10 +79,11 @@ def post_data(params):
             return postData
         return {}
     except Exception as e:
-        print(e)
+        if debug:
+            print(e)
         return {}
 
-def extractHeaders(headers=''):
+def extractHeaders(headers='',debug=False):
     if headers:
         headers = headers.replace('\\n', '\n')
         sorted_headers = {}
@@ -93,7 +96,8 @@ def extractHeaders(headers=''):
                     value = value[:-1]
                 sorted_headers[header] = value
             except Exception as e:
-                print ('[Extract Headers] {e}')
+                if debug:
+                    print ('[Extract Headers] {e}')
                 return {}
         return sorted_headers
     return {}

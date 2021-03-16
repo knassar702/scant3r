@@ -75,7 +75,8 @@ class http:
                 print(dump.dump_all(req).decode('utf-8'))
             return req
         except Exception as e:
-            print(e)
+            if self.debug:
+                print(e)
             return 0
     def custom(self,method='GET',url=None,body={},headers={},timeout={},redirect=False,proxy={}):
         try:
@@ -90,4 +91,6 @@ class http:
             )
             return res
         except Exception as e:
-            return 0,f'ERROR:> {e}'
+            if self.debug:
+                print(f'Error > {e}')
+            return 0
