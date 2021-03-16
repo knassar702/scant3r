@@ -32,14 +32,10 @@ $ ./scant3r.py -h
 
 #### Update to latest version:
 ```bash
-$ cd scant3r
 $ git pull
 ```
 ### Usage
 * https://github.com/knassar702/scant3r/wiki/Usage
-
-### ScanT3r Modules
-* https://github.com/knassar702/scant3r/wiki/ScanT3r-Modules
 
 ### writing your own scant3r module
 * https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module
@@ -52,6 +48,10 @@ $ git pull
 
 ### ScanT3r API
 * https://github.com/knassar702/scant3r/wiki/ScanT3r-API
+
+### Write module for API
+* https://github.com/knassar702/scant3r/wiki/write-module-for-api
+
 
 
 ### Screenshot 
@@ -66,6 +66,3 @@ $ git pull
 **IBM** https://hackerone.com/ibm
 
 ![](.src/ibm.png)
-
-**Blind SSRF Parameters (lorsrf)**
-![](https://raw.githubusercontent.com/knassar702/scant3r/master/images/ssrf.gif)
