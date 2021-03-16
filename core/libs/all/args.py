@@ -49,16 +49,8 @@ Examples:
         $ echo 'http://testphp.vulnweb.com/showimage.php' | ./scant3r.py -m lorsrf -w 100 -R -x http://myhost
     # Find Files
         $ cat subdomains.txt | ./scant3r.py -m paths -w 100 -R
-    # scan headers from custom payloads
-        $ cat subdomains.txt | ./scant3r.py -m headers -w 100 -R
-    # get live http/s
-        $ cat subdomains.txt | ./scant3r.py -m httper -w 100 -R
-    # get live hosts
-        $ cat subdomains.txt | ./scant3r.py -m hostping -w 100
-    # find host header injection
-        $ cat subdomains.txt | ./scant3r.py -m hostinj -w 100 -R
     # Run Multi modules
-        $ ./scant3r.py -l subdomains.txt -m example -m example -m example -w 100 -R
+        $ ./scant3r.py -l subdomains.txt -m test,test,test -w 100 -R
 {rest}
 """.format(ho=ho,yellow=rest,rest=yellow)
     def start(self):
