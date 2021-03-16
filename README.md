@@ -56,11 +56,16 @@ $ ./scant3r.py -h
 ### Write module for API
 * https://github.com/knassar702/scant3r/wiki/write-module-for-api
 
+## TODOLIST
+* add web spider
+* send/analizy requests from .yaml file
+* SSRF/SQLI/REC/SSTI Module
+
 
 
 ### Screenshot 
 
-# Version: [0.6](https://github.com/knassar702/scant3r/releases/tag/0.6)
+#### Version: [0.6](https://github.com/knassar702/scant3r/releases/tag/0.6)
 
 ![](.src/all.gif)
 
