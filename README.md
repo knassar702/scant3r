@@ -1,8 +1,9 @@
-# Scant3r - web application vulnerability scanner
-
 **Why would you use Scant3r?**
 
-scant3r will help you to write your own python script faster , you don't need to configure http/threads/errors/options/etc... , just by writing main function in your script , you can run it in your terminal or access your script from api :D
+Scant3r Scans all URLs with multiple HTTP Methods and Tries to look for bugs with basic exploits from Headers and URL Parameters By chaining waybackurls or gau
+with Scant3r you will have more time to look into functions and get Easy bugs on the way :)
+
+
 
 
 ### Modules
@@ -15,8 +16,19 @@ scant3r will help you to write your own python script faster , you don't need to
 | **injheaders** | inject blind xss and custom payloads in custom headers (headers.yaml&payload.yaml)
 | **reflect** | find reflected parameters 
 
-**If you want to write your own module**
+scant3r will help you to write your own python script faster , you don't need to configure http/threads/errors/options/etc... , just by writing main function in your script , you can run it in your terminal or access your script from api :D
+#### Write module for API
+* https://github.com/knassar702/scant3r/wiki/write-module-for-api
+
+#### writing your own scant3r module
+
 * https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module
+
+
+#### Edite Scant3r Command line options
+
+* https://github.com/knassar702/scant3r/wiki/edite-scant3r-command-options
+
 
 ***
 ## Installation
@@ -30,37 +42,36 @@ $ pip3 install -r requirements.txt
 $ ./scant3r.py -h
 ```
 
-### Usage
+#### Usage
 * https://github.com/knassar702/scant3r/wiki/Usage
 
-### writing your own scant3r module
-* https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module
 
-
-### Edite Scant3r Command line options
-
-* https://github.com/knassar702/scant3r/wiki/edite-scant3r-command-options
-
-### how to find hidden SSRF Parameters by using scant3r
+#### how to find hidden SSRF Parameters by using scant3r
 * https://github.com/knassar702/scant3r/wiki/how-to-find-hidden-SSRF-Parameters-by-using-scant3r
 
-### How to Find sensitive files by using ScanT3r
+#### Find Reflected Parameters with scant3r 
+* https://github.com/knassar702/scant3r/wiki/find-reflected-parameters-with-scant3r
+
+#### How to Find sensitive files by using ScanT3r
 * https://github.com/knassar702/scant3r/wiki/How-to-Find-sensitive-files-by-using-ScanT3r
 
-### Find Blind XSS With ScanT3r
+#### Find Blind XSS With ScanT3r
 * https://github.com/knassar702/scant3r/wiki/Find-Blind-XSS-with-scant3r
 
-### ScanT3r API
+#### ScanT3r API
 * https://github.com/knassar702/scant3r/wiki/ScanT3r-API
 
-### Write module for API
-* https://github.com/knassar702/scant3r/wiki/write-module-for-api
+
+## TODOLIST
+* add web spider
+* send/analizy requests from .yaml file
+* SSRF/SQLI/REC/SSTI Module
 
 
 
 ### Screenshot 
 
-# Version: [0.6](https://github.com/knassar702/scant3r/releases/tag/0.6)
+#### Version: [0.6](https://github.com/knassar702/scant3r/releases/tag/0.6)
 
 ![](.src/all.gif)
 
