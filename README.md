@@ -1,6 +1,9 @@
 **Why would you use Scant3r?**
 
-scant3r will help you to write your own python script faster , you don't need to configure http/threads/errors/options/etc... , just by writing main function in your script , you can run it in your terminal or access your script from api :D
+Scant3r Scans all URLs with multiple HTTP Methods and Tries to look for bugs with basic exploits from Headers and URL Parameters By chaining waybackurls or gau
+with Scant3r you will have more time to look into functions and get Easy bugs on the way :)
+
+
 
 
 ### Modules
@@ -30,6 +33,8 @@ $ ./scant3r.py -h
 * https://github.com/knassar702/scant3r/wiki/Usage
 
 #### writing your own scant3r module
+scant3r will help you to write your own python script faster , you don't need to configure http/threads/errors/options/etc... , just by writing main function in your script , you can run it in your terminal or access your script from api :D
+
 * https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module
 
 #### Edite Scant3r Command line options
