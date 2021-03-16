@@ -46,7 +46,7 @@ class Scan:
                         r = self.http.send(i,nurl.split('?')[0],body=urlparse(nurl).query)
 
                     if P in r.content.decode('utf-8'):
-                        print(f'[XSS] Found :> {nurl.split("?")[0]}\n\t[!] Method: {i}\n\t[!] Params: {urlparse(nurl).query}')
+                        print(f'[XSS] Found :> {nurl.split("?")[0]}\n\t[!] Method: {i}\n\t[!] Params: {urlparse(nurl).query}\n\n----')
                         self.bugs.append({
                                 'Bug':'XSS',
                                 'url':nurl.split('?')[0],
