@@ -1,4 +1,4 @@
-# Scant3r - web application vulnerability scanner
+# Scant3r - Module load with functions for write your pentesting script faster
 
 **Why would you use Scant3r?**
 
