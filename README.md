@@ -16,6 +16,19 @@ with Scant3r you will have more time to look into functions and get Easy bugs on
 | **injheaders** | inject blind xss and custom payloads in custom headers (headers.yaml&payload.yaml)
 | **reflect** | find reflected parameters 
 
+scant3r will help you to write your own python script faster , you don't need to configure http/threads/errors/options/etc... , just by writing main function in your script , you can run it in your terminal or access your script from api :D
+#### Write module for API
+* https://github.com/knassar702/scant3r/wiki/write-module-for-api
+
+#### writing your own scant3r module
+
+* https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module
+
+
+#### Edite Scant3r Command line options
+
+* https://github.com/knassar702/scant3r/wiki/edite-scant3r-command-options
+
 
 ***
 ## Installation
@@ -32,14 +45,6 @@ $ ./scant3r.py -h
 #### Usage
 * https://github.com/knassar702/scant3r/wiki/Usage
 
-#### writing your own scant3r module
-scant3r will help you to write your own python script faster , you don't need to configure http/threads/errors/options/etc... , just by writing main function in your script , you can run it in your terminal or access your script from api :D
-
-* https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module
-
-#### Edite Scant3r Command line options
-
-* https://github.com/knassar702/scant3r/wiki/edite-scant3r-command-options
 
 #### how to find hidden SSRF Parameters by using scant3r
 * https://github.com/knassar702/scant3r/wiki/how-to-find-hidden-SSRF-Parameters-by-using-scant3r
@@ -56,8 +61,6 @@ scant3r will help you to write your own python script faster , you don't need to
 #### ScanT3r API
 * https://github.com/knassar702/scant3r/wiki/ScanT3r-API
 
-#### Write module for API
-* https://github.com/knassar702/scant3r/wiki/write-module-for-api
 
 ## TODOLIST
 * add web spider
