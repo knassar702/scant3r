@@ -40,6 +40,11 @@ $ git pull
 ### writing your own scant3r module
 * https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module
 
+
+### Edite Scant3r Command line options
+
+* https://github.com/knassar702/scant3r/wiki/edite-scant3r-command-options
+
 ### how to find hidden SSRF Parameters by using scant3r
 * https://github.com/knassar702/scant3r/wiki/how-to-find-hidden-SSRF-Parameters-by-using-scant3r
 
