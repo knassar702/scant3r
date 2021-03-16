@@ -30,10 +30,6 @@ $ pip3 install -r requirements.txt
 $ ./scant3r.py -h
 ```
 
-#### Update to latest version:
-```bash
-$ git pull
-```
 ### Usage
 * https://github.com/knassar702/scant3r/wiki/Usage
 
