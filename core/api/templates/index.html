@@ -21,7 +21,7 @@ Paraemter: url={TAGET}<br>
 Method: POST<br>
 </p>
 
-example : <h5>$ curl 'http://localhost:6040/scan/0 -d "url=http://testphp.vulnweb.com/search.php?test=query%26searchFor=1%26goButton=go'"</h5>
+example : <h5>$ curl -X POST --data-urlencode "url=https://yourtarget.com/path?parameter=test" http://localhost:6030/scan/{scanid}</h5>
 
 <table style="width:70%">
   <tr>
