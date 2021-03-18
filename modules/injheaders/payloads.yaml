@@ -5,6 +5,3 @@
     - text: 1
     - regex: false
 
-'"':
-    - text: 'mysql_.*.'
-    - regex: true

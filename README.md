@@ -11,6 +11,7 @@ with Scant3r you will have more time to look into functions and get Easy bugs on
 | Module              | Description                   |
 | :-------------    | :-------------                |
 | **lorsrf** | Bruteforcing on Hidden parameters to find SSRF vulnerability |
+| **ssrf* | ssrf scanner |
 | **paths** | Check for custom paths|
 | **xss** | xss scanner|
 | **injheaders** | inject blind xss and custom payloads in custom headers (headers.yaml&payload.yaml)
