@@ -69,7 +69,13 @@ $ ./scant3r.py -h
 
 
 
-### Screenshot 
+### Media 
+
+### Version: 0.7
+* XSS Scanner
+[![asciicast](https://asciinema.org/a/ROYOYuR7u7Ebjc81gf9iqisfw.svg)](https://asciinema.org/a/ROYOYuR7u7Ebjc81gf9iqisfw)
+
+*** 
 
 #### Version: [0.6](https://github.com/knassar702/scant3r/releases/tag/0.6)
 
