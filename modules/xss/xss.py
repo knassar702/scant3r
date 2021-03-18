@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import random
-from core.libs import insert_to_params,random_str,post_data,urlencoder,insert_to_params_urls
+from core.libs import insert_to_params,remove_dups_urls,random_str,post_data,urlencoder,insert_to_params_urls
 from urllib.parse import urlparse
 from wordlists import XSS
 
@@ -27,7 +27,7 @@ class Scan:
         for i in methods:
             self.ref = []
             txt = f'scan{random_str(3)}tr'
-            n = insert_to_params_urls(url,txt)
+            n = remove_dups_urls(insert_to_params_urls(url,txt))
             for wp in n:
                 if i != 'GET':
                     r = self.http.send(i,wp.split('?')[0],body=urlparse(wp).query)

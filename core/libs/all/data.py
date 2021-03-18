@@ -38,6 +38,15 @@ def remove_dups(l):
             v.append(i)
     return v
 
+def remove_dups_urls(l):
+    v = list()
+    for i in l:
+        if i not in v:
+            if urlparse(i).netloc:
+                v.append(i)
+    return v
+
+
 def dump_params(url):
     return urlparse(url).query
 
@@ -50,11 +59,11 @@ def insert_to_params_urls(url,text,single=True,debug=False):
         if len(url.split('?')) >= 1:
             for param in url.split('?')[1].split('&'):
                 u.append(url.replace(param,param + text))
-        return u
+        return remove_dups(u)
     except Exception as e:
         if debug:
             print(f'[insert_to_params_urls] {e}')
-        return {}
+        return list()
 
 def insert_to_params(param,text,single=True,debug=False):
     u = list()
