@@ -75,7 +75,8 @@ $ ./scant3r.py -h
 * XSS Scanner
 [![asciicast](https://asciinema.org/a/ROYOYuR7u7Ebjc81gf9iqisfw.svg)](https://asciinema.org/a/ROYOYuR7u7Ebjc81gf9iqisfw)
 
-*** 
+* injheaders
+[![asciicast](https://asciinema.org/a/400245.svg)](https://asciinema.org/a/400245)*** 
 
 #### Version: [0.6](https://github.com/knassar702/scant3r/releases/tag/0.6)
 
