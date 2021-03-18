@@ -27,4 +27,5 @@ def main(opts,r):
     for method in opts['methods']:
         v = R.start(opts['url'],method)
         if v:
-            print(f'[Refelct] Found :> {v}')
+            for i in v.keys():
+                print(f'[Refelct] Found :> {v[i]} {i}')

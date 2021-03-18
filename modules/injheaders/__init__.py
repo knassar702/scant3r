@@ -30,7 +30,7 @@ class Scan:
                                 if matcher[1]['regex']:
                                     c = findall(matcher[0]['text'],r.content.decode('utf-8'))
                                     if c:
-                                        print(f'[INJHEADERS] Found :> {h} | {payload}')
+                                        print(f'[INJHEADERS] Found :> {h} | {payload} {c}')
                                 else:
                                     try:
                                         int(matcher[0]['text'])
@@ -38,7 +38,7 @@ class Scan:
                                             print(f'[INJHEADERS] Found :> {h} | {payload}')
                                     except:
                                         if matcher[0]['text'] in r.content.decode('utf-8'):
-                                            print(f'[INJHEADERS] Found :> {h} | {payload}')
+                                            print(f'[INJHEADERS] Found :> {h} | {payload} {matcher[0]["text"]}')
                         finally:
                                 headers[h] = v
 def main(opts,r):
