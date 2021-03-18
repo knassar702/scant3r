@@ -33,7 +33,7 @@ class http:
         self.proxy = opts['proxy']
         self.redirect = opts['redirect']
         self.count = 0
-    def send(self,method='GET',url=None,body={},headers={},redirect=False,proxy={},org=True):
+    def send(self,method='GET',url=None,body={},headers={},redirect=False,org=True):
         try:
             a = Agent()
             if self.ragent:
