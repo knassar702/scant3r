@@ -1,53 +1,58 @@
 <!DOCTYPE html>
-<html>
-<style>
-table, th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-th, td {
-  padding: 5px;
-  text-align: left;
-}
-</style>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <link rel="shortcut icon" href="../static/logol.png" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>scant3r api</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="../static/style.css" />
 </head>
 <body>
-
-<h2> <a href='https://github.com/knassar702/scant3r'>ScanT3r</a> - API </h2>
-
-<p>
-<hr>
-<h4> For Scanning </h4>
-Endpoint: /scan/{Module_ID}<br> 
-Parameter: url={TAGET}<br>
-Method: POST<br>
-Example : <h5>$ curl -X POST --data-urlencode "url=https://yourtarget.com/path?parameter=test" http://localhost:6030/scan/{scanid}</h5>
-
-</p>
-<hr>
-<h4> Get all modules output</h4>
-Endpoint: /get<br>
-Method: GET
-<hr>
-<h4> Get Custom Module output </h4>
-Endpoint: /get/{module_id}<br>
-Method: GET
-<hr><br>
-<table style="width:70%">
-  <tr>
-    <th>ID</th>
-    <th>Scanner</th> 
-  </tr>
+<h1 id="scant3r-api">ScanT3r-API 0.7#Beta</h1>
+<h3 id="for-scanning">For Scanning</h3>
+<ul>
+<li>Endpoint: /scan/{Module_ID}</li>
+<li>Parameter: url={TAGET}</li>
+<li>Method: POST</li>
+<li>Example : <br>
+<code>$ curl -X POST --data-urlencode "url=https://yourtarget.com/path?parameter=test" http://localhost:6030/scan/{scanid}</code></li>
+</ul>
+<hr />
+<h3 id="get-all-modules-output">Get all modules output</h3>
+<ul>
+<li>Endpoint: /get</li>
+<li>Method: GET</li>
+</ul>
+<hr />
+<h3 id="get-custom-module-output">Get Custom Module output</h3>
+<ul>
+<li>Endpoint: /get/{module_id}</li>
+<li>Method: GET</li>
+</ul>
+<hr />
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">ID      </th>
+<th style="text-align: left;">|   Name</th>
+</tr>
+</thead>
+<tbody>
 {% for Id,Name in args.items()%}
-  <tr>
-    <td>{{Id}}</td>
-    <td>{{Name}}</td>
-  </tr>
-{%endfor%}
-</table>
-<hr>
-Check <a href="https://github.com/knassar702/scant3r/wiki">ScanT3r Wiki</a> for more info about how to write your own scant3r script and add it to scant3r api :D
+<tr class="odd">
+<td style="text-align: left;">{{Id}}</td>
+<td style="text-align: left;">{{Name}}</td>
 
+</tr>
+{%endfor%}
+</tbody>
+</table>
 </body>
 </html>
-
