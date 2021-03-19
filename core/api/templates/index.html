@@ -16,12 +16,22 @@ th, td {
 <h2> <a href='https://github.com/knassar702/scant3r'>ScanT3r</a> - API </h2>
 
 <p>
+<hr>
+<h4> For Scanning </h4>
 Endpoint: /scan/{Module_ID}<br> 
 Parameter: url={TAGET}<br>
 Method: POST<br>
-</p>
+Example : <h5>$ curl -X POST --data-urlencode "url=https://yourtarget.com/path?parameter=test" http://localhost:6030/scan/{scanid}</h5>
 
-example : <h5>$ curl -X POST --data-urlencode "url=https://yourtarget.com/path?parameter=test" http://localhost:6030/scan/{scanid}</h5>
+</p>
+<hr>
+<h4> Get all modules output</h4>
+Endpoint: /get
+Method: GET
+<hr>
+<h4> Get Custom Module output </h4>
+Endpoint: /get/{module_id}
+Method: GET
 
 <table style="width:70%">
   <tr>

@@ -46,6 +46,13 @@ def remove_dups_urls(l):
                 v.append(i)
     return v
 
+def insert_to_params_name(url,txt):
+    out = list()
+    for param in url.split('?')[1].split('&'):
+        p = param.split('=')
+        out.append(url.replace(p[0],p[0]+txt))
+    return out
+
 def force_insert_to_params_urls(url,txt):
     our = list()
     for param in url.split('?')[1].split('&'):
