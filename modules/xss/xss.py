@@ -58,5 +58,4 @@ class Scan:
 
 def main(opts,r):
     scanner = Scan(opts,r)
-    for method in opts['methods']:
-        scanner.start(url=opts['url'],methods=[method])
+    return scanner.start(url=opts['url'],methods=opts['methods'])
