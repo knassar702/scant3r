@@ -36,7 +36,7 @@ modules:
 
 nologo:
     - option: '-n'
-    - help: 'remove scant3r banner'
+    - help: 'Silent Mode'
     - type: false
     - default: false
     - action: 'store_true'

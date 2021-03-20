@@ -28,7 +28,11 @@ class Server:
     def index(self):
         return render_template('index.html',args=al)
     def getit(self):
-        return jsonify(self.output)
+        cc = list()
+        for i,v in self.output.items():
+            if self.output[i]:
+                cc.append(self.output)
+        return jsonify(cc)
     def getme(self,mid):
         try:
             return jsonify(self.output[str(mid)])
@@ -54,9 +58,7 @@ class Server:
                     p1 = Thread(target=self.save_output,args=(m,scanid,))
                     p1.daemon = True
                     p1.start()
-                    return {
-                            'Error':None
-                            }
+                    return {'Start':True}
                 except Exception as e:
                     return jsonify({'Error':f'{e}'})
             else:
