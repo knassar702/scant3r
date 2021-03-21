@@ -26,6 +26,11 @@ sqli_payloads=[
     ]
 
 
+ssti = {
+        'scan{{2*5}}tr':'scan10tr',
+        'scan<%= 2*5%>tr':'scan10tr',
+        'scan${2*5}tr':'scan10tr'
+        }
 
 sql_err = {'sqlite3':'sqlite3.OperationalError','MySQL': 'error in your SQL syntax',
              'MiscError': 'mysql_fetch',
