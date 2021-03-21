@@ -24,6 +24,7 @@ with Scant3r you will have more time to look into functions and get Easy bugs on
 | **paths** | Check for custom paths|
 | **xss** | inject xss payload in parameter value|
 | **xss_param** | inject xss payload in parameter name
+| **ssti** | simple server side template injection scanner |
 | **injheaders** | inject blind xss and custom payloads in custom headers (headers.yaml&payload.yaml)
 | **reflect** | find reflected parameters 
 
