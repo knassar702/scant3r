@@ -17,12 +17,13 @@ with Scant3r you will have more time to look into functions and get Easy bugs on
 
 ### Modules
 
-| Module              | Description                   |
-| :-------------    | :-------------                |
-| **lorsrf** | Bruteforcing on Hidden parameters to find SSRF vulnerability |
-| **ssrf** | simple ssrf scanner |
-| **paths** | Check for custom paths|
-| **xss** | inject xss payload in parameter value|
+| Module         | Description                                                  |
+| :------------- | :-------------                                               |
+| **lorsrf**     | Bruteforcing on Hidden parameters to find SSRF vulnerability |
+| **ssrf**       | simple ssrf scanner                                          |
+| **paths**      | Check for custom paths                                       |
+| **xss**        | inject xss payload in parameter value                        |
+| **sqli**       | simple sqli scanner                                          |
 | **xss_param** | inject xss payload in parameter name
 | **ssti** | simple server side template injection scanner |
 | **injheaders** | inject blind xss and custom payloads in custom headers (headers.yaml&payload.yaml)
