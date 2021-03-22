@@ -50,7 +50,7 @@ if __name__ == '__main__':
                 if '?' in url and '=' in url:
                     pass
                 else:
-                    url += '?q=&searchFor=&&query=&Searchfor=goButton=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist=&user=&username=&group='
+                    url += '?q=&searchFor=&query=&Searchfor=goButton=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist=&user=&username=&group='
                     opts['urls'][ind] = url
     if opts['modules']:
         # load modules
