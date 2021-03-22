@@ -1,0 +1,6 @@
+SQLI ERROR: 
+    - text: "mysql_fetch_array()"
+    - regex: false
+PHP INFO:
+    - text: 'PHP.*</h1>'
+    - regex: true
