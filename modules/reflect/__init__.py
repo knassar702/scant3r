@@ -25,7 +25,8 @@ class Reflect:
             return self.found
 def main(opts,r):
     R = Reflect(r)
-    v = R.start(opts['url'],opts['methods'])
-    if v:
-        for i in v.keys():
-            print(f'[Refelct] Found :> {v[i]} {i}')
+    if urlparse(opts['url']).query:
+        v = R.start(opts['url'],opts['methods'])
+        if v:
+            for i in v.keys():
+                print(f'[Refelct] Found :> {v[i]} {i}')

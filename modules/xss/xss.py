@@ -58,4 +58,5 @@ class Scan:
 
 def main(opts,r):
     scanner = Scan(opts,r)
-    scanner.start(url=opts['url'],methods=opts['methods'])
+    if urlparse(opts['url']).query:
+        scanner.start(url=opts['url'],methods=opts['methods'])
