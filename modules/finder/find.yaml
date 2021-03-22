@@ -14,9 +14,6 @@ FaceBook API:
 FaceBook Auth:
     - text: '[A-Za-z0-9]{125} (counting letters [2])'
     - regex: true
-instagram Auth:
-    - text: '[0-9a-fA-F]{7}.[0-9a-fA-F]{32}'
-    - regex: true
 
 Google API:
     - text: 'AIza[0-9A-Za-z-_]{35}'
