@@ -4,3 +4,37 @@ SQLI ERROR:
 PHP INFO:
     - text: 'PHP.*</h1>'
     - regex: true
+
+Twitter API:
+    - text: '[1-9][ 0-9]+-[0-9a-zA-Z]{40}'
+    - regex: true
+FaceBook API:
+    - text: 'EAACEdEose0cBA[0-9A-Za-z]+'
+    - regex: true
+FaceBook Auth:
+    - text: '[A-Za-z0-9]{125} (counting letters [2])'
+    - regex: true
+instagram Auth:
+    - text: '[0-9a-fA-F]{7}.[0-9a-fA-F]{32}'
+    - regex: true
+
+Google API:
+    - text: 'AIza[0-9A-Za-z-_]{35}'
+    - regex: true
+Github Auth:
+    - text: '[0-9a-fA-F]{40}'
+    - regex: true
+Gmail Auth:
+    - text: '[0-9(+-[0-9A-Za-z_]{32}.apps.qooqleusercontent.com'
+    - regex: true
+Twilio API:
+    - text: '55[0-9a-fA-F]{32}'
+    - regex: true
+
+Slack API:
+    - text: 'T[a-zA-Z0-9_]{8}/B[a-zA-Z0-9_]{8}/[a-zA-Z0-9_]{24}'
+    - regex: true
+
+Google Cloud API:
+    - text: '[A-Za-z0-9_]{21}--[A-Za-z0-9_]{8}'
+    - regex: true
