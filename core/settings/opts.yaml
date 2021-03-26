@@ -72,7 +72,7 @@ genparam:
     - exec: 'self.genparam = opts.genparam'
 proxy:
     - option: '-p'
-    - help: 'Forward all requests for proxy'
+    - help: 'Forward all requests to proxy'
     - type: 'string'
     - default: '{}'
     - action: 'store'
