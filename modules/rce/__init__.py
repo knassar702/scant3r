@@ -1,5 +1,5 @@
 from wordlists import rce_payloads
-from core.libs import dump,insert_to_params_urls
+from core.libs import alert_bug,insert_to_params_urls,dump_request,dump_response
 from urllib.parse import urlparse
 
 def scan(http,url,methods=['GET','POST']):
@@ -12,16 +12,15 @@ def scan(http,url,methods=['GET','POST']):
                 else:
                     r = http.send(method,u.split('?')[0],body=urlparse(u).query)
                 if r != 0: # 0 = connection error
-                    if match in dump.dump_all(r).decode('utf-8'):
+                    if match in dump_response(r).decode('utf-8'):
                         return {
-                                'method':method,
                                 'target':url.split('?')[0],
-                                'params':urlparse(u).query,
                                 'payload':payload.replace('\n','%0a').replace('\t','%0d'),
-                                'match':match
+                                'match':match,
+                                'http':r
                                 }
     return {}
 def main(opts,r):
     s = scan(r,opts['url'],opts['methods'])
     if s:
-        print(f'[Remote Code Execution] {s["target"]}\n\tMethod: {s["method"]}\n\tParams: {s["params"]}\n\tPayload: {s["payload"]}\n\tMatch: {s["match"]}')
+        alert_bug('Remote Code Execution',**s)

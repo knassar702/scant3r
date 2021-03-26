@@ -18,7 +18,33 @@ def random_str(num):
     num = int(num)
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(num))
 
+def dump_request(request):
+    body = b""
+    body += request.request.method.encode("utf8")
+    body += b" "
+    body += request.request.url.encode("utf8") + b' HTTP/1.1'
+    body += b"\r\n"
 
+    for header,value in request.request.headers.items():
+        body += header.encode("utf8") + b": " + value.encode("utf8") + b"\r\n"
+
+    if request.request.body != None:
+        body += b'\n' + str(request.request.body).encode("utf8")
+    return body
+
+def dump_response(request):
+    body = b"HTTP /1.1 "
+
+    body += str(request.status_code).encode("utf8")
+    body += b" "
+    body += request.reason.encode("utf8")
+    body += b"\r\n"
+
+    for header,value in request.headers.items():
+        body += header.encode("utf8") + b": " + value.encode("utf8") + b"\r\n"
+    body += b'\r\n\r\n'
+    body += request.content
+    return body
 
 def URLENCODE(data):
     d = ''

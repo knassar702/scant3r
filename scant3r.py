@@ -4,13 +4,12 @@ __email__ = 'knassar702@gmail.com'
 __version__ = '0.7#Beta'
 
 import os,colorama,sys
-
+from core.libs import Colors
 colorama.init()
 
-from core.libs import bad
 # check if python version high up 3.6
 if sys.version_info < (3, 6):
-    print(f'{bad} Scant3r requires python >= 3.6')
+    print(f'{Colors.bad} Scant3r requires python >= 3.6')
     sys.exit()
 
 from core.libs import Args,http,logo,MLoader

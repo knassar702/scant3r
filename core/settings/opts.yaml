@@ -5,6 +5,13 @@ headers:
     - help: "add custom header (ex:-H='Cookies: test=1')"
     - default: '{}'
     - exec: 'self.headers = extractHeaders(opts.headers)'
+delay:
+    - option: '-s'
+    - type: 'int'
+    - action: 'store'
+    - help: 'number of seconds to hold between each HTTP(S) requests.'
+    - default: 0
+    - exec: 'self.delay = int(opts.delay)'
 
 api:
     - option: '-a'

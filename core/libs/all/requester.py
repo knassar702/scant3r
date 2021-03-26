@@ -4,9 +4,8 @@ __email__ = 'knassar702@gmail.com'
 __version__ = '0.7#Beta'
 
 from requests import Request,Session,request,packages
-from requests_toolbelt.utils import dump
-from .data import post_data,extractHeaders
-import sys,random
+from .data import post_data,extractHeaders,dump_request,dump_response
+import sys,time,random
 
 packages.urllib3.disable_warnings()
 
@@ -32,6 +31,7 @@ class http:
         self.debug = opts['debug']
         self.proxy = opts['proxy']
         self.redirect = opts['redirect']
+        self.delay = opts['delay']
         self.count = 0
     def send(self,method='GET',url=None,body={},headers={},redirect=False,org=True):
         try:
@@ -60,6 +60,7 @@ class http:
                     body = post_data(body)
                 else:
                     body = {}
+            time.sleep(self.delay)
             req = request(
                     method,
                     url,
@@ -71,8 +72,11 @@ class http:
                     proxies=proxy)
             self.count += 1
             if self.debug:
-                print(f'[#{self.count}]')
-                print(dump.dump_all(req).decode('utf-8'))
+                print(f'--- [#{self.count}] Request ---')
+                print(dump_request(req).decode())
+                print('\n---- RESPONSE ----')
+                print(dump_response(req).decode())
+                print('--------------------\n\n')
             return req
         except Exception as e:
             if self.debug:
@@ -80,6 +84,7 @@ class http:
             return 0
     def custom(self,method='GET',url=None,body={},headers={},timeout={},redirect=False,proxy={}):
         try:
+            time.sleep(self.delay)
             req = Request(method,url,data=body,headers=headers)
             s = Session()
             res = s.send(

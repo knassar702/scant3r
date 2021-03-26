@@ -6,11 +6,6 @@ from yaml import safe_load
 from threading import Thread
 
 app = Flask(__name__)
-conf = glob('modules/*/api.py')
-al = dict()
-
-for c,i in enumerate(conf):
-    al[c] = i.split('/')[1]
 
 class Server:
     def __init__(self,r,opts):
@@ -21,12 +16,19 @@ class Server:
         self.debug = conf['debug']
         self.opts = opts
         self.output = dict()
+    def get_m(self):
+        conf = glob('modules/*/api.py')
+        al = dict()
+        for c,i in enumerate(conf):
+            al[c] = i.split('/')[1]
+        return al
     def save_output(self,func,scanid):
         v = func.main(self.op,self.http)
         scanid = str(scanid)
-        self.output[scanid].append(v)
+        if len(v) > 0:
+            self.output[scanid].append(v)
     def index(self):
-        return render_template('index.html',args=al)
+        return render_template('index.html',args=self.get_m())
     def getit(self):
         cc = list()
         for i,v in self.output.items():
@@ -40,35 +42,35 @@ class Server:
             return {'Error':f'Not Found'},404
     def scanapi(self,scanid):
         self.url = request.form.get('url',None)
-
         if self.url:
             try:
                 self.output[str(scanid)]
             except:
                 self.output[str(scanid)] = list()
-            if scanid in al.keys():
+            if scanid in self.get_m().keys():
                 try:
                     res = {'Results':[]}
                     self.op = self.opts.copy()
                     self.op['url'] = self.url
                     try:
-                        m = import_module(f'modules.{al[scanid]}.api')
+                        m = import_module(f'modules.{self.get_m()[scanid]}.api')
                     except Exception as e:
-                        return jsonify({'Error':e})
+                        return jsonify({'Error':e}),500
                     p1 = Thread(target=self.save_output,args=(m,scanid,))
                     p1.daemon = True
                     p1.start()
                     return {'Start':True}
+
                 except Exception as e:
                     return jsonify({'Error':f'{e}'})
             else:
                 return jsonify({'Scanid':'404'})
         else:
-            return '<h4>add url parameter .!!</h4>',404
+            return {'Error':'url paremter is required'},404
     def run(self):
         app.add_url_rule('/', view_func=self.index)
         app.add_url_rule('/scan/<int:scanid>',methods=['POST'],view_func=self.scanapi)
+        app.add_url_rule('/get/',view_func=self.getit)
         app.add_url_rule('/get',view_func=self.getit)
         app.add_url_rule('/get/<int:mid>',view_func=self.getme)
         app.run(host=self.host,port=self.port,debug=self.debug)
-
