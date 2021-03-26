@@ -4,6 +4,7 @@ from glob import glob
 from importlib import import_module
 from yaml import safe_load
 from threading import Thread
+import sys,os
 
 app = Flask(__name__)
 
@@ -16,6 +17,13 @@ class Server:
         self.debug = conf['debug']
         self.opts = opts
         self.output = dict()
+    def restart(self):
+        python = sys.executable
+        os.execl(python, python, * sys.argv)
+        curdir = os.getcwd()
+    def clearme(self):
+        self.output = dict()
+        return {'Done':True}
     def get_m(self):
         conf = glob('modules/*/api.py')
         al = dict()
@@ -72,5 +80,7 @@ class Server:
         app.add_url_rule('/scan/<int:scanid>',methods=['POST'],view_func=self.scanapi)
         app.add_url_rule('/get/',view_func=self.getit)
         app.add_url_rule('/get',view_func=self.getit)
+        app.add_url_rule('/restart',view_func=self.restart)
+        app.add_url_rule('/clear',view_func=self.clearme)
         app.add_url_rule('/get/<int:mid>',view_func=self.getme)
         app.run(host=self.host,port=self.port,debug=self.debug)
