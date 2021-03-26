@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from urllib.parse import urljoin
-from core.libs import good
+from core.libs import Colors as c
 from yaml import safe_load
 
 
@@ -16,11 +16,11 @@ def start(host,http):
                 try:
                     int(msg)
                     if msg == r.status_code:
-                        print(f'{good} Found :> {host}')
+                        print(f'{c.good} Found :> {host}')
                         found.append(host)
                 except:
                     if msg in r.content.decode('utf-8'):
-                        print(f'{good} Found :> {host}')
+                        print(f'{c.good} Found :> {host}')
                         found.append(host)
         except:
             pass

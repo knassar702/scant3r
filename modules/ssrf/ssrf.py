@@ -2,7 +2,7 @@ __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
 __version__ = '0.7#Beta'
 
-from core.libs import post_data,urlencoder,bad,force_insert_to_params_urls
+from core.libs import post_data,urlencoder,force_insert_to_params_urls
 from urllib.parse import urlparse # url parsing
 
 def start(opts,url,http,methods=['GET','POST']):
