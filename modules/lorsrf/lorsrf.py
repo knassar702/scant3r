@@ -3,7 +3,7 @@ __name__ = 'ScanT3r'
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
 __version__ = '0.6#Beta'
-from core.libs import post_data,urlencoder,bad
+from core.libs import post_data,urlencoder
 from urllib.parse import urlparse # url parsing
 from wordlists import ssrf_parameters # ssrf parameters wordlist
 

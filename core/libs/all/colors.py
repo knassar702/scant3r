@@ -44,6 +44,6 @@ class Colors:
 def dump_colors():
     ac = {}
     for c,v in vars(Colors).items():
-        if len(re.findall(r'__*.__',c)) == 0:
+        if len(re.findall(r'__.*.',c)) == 0:
            ac[c] = v
     return ac
