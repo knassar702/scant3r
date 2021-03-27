@@ -9,9 +9,7 @@
 
 **Why would you use Scant3r?**
 
-Scant3r Scans all URLs with multiple HTTP Methods and Tries to look for bugs with basic exploits from Headers and URL Parameters By chaining waybackurls or gau
-with Scant3r you will have more time to look into functions and get Easy bugs on the way :)
-
+Scant3r Scans all URLs with multiple HTTP Methods also,it Tries to look for bugs with basic exploits from Headers and URL Parameters By chaining waybackurls or gau with Scant3r you will have more time to look into functions and get Easy bugs on the way
 
 
 
@@ -21,7 +19,7 @@ with Scant3r you will have more time to look into functions and get Easy bugs on
 | :------------- | :-------------                                               |
 | **lorsrf**     | Bruteforcing on Hidden parameters to find SSRF vulnerability |
 | **ssrf**       | simple ssrf scanner                                          |
-| **paths**      | Check for custom paths                                       |
+| **paths**      | checking for custom paths                                       |
 | **xss**        | inject xss payload in parameter value                        |
 | **sqli**       | simple sqli scanner                                          |
 | **rce**        | simple RCE scanner
@@ -31,7 +29,10 @@ with Scant3r you will have more time to look into functions and get Easy bugs on
 | **injheaders** | inject blind xss and custom payloads in custom headers (headers.yaml&payload.yaml)
 | **reflect** | find reflected parameters 
 
-scant3r will help you to write your own python script faster , you don't need to configure http/threads/errors/options/etc... , just by writing main function in your script , you can run it in your terminal or access your script from api :D
+scant3r will help you  write your own python script faster , you don't need to configure http/threads/errors/options/etc... , just by writing main function in your script , you can run it in your terminal or access your script from api 😃
+
+
+
 #### Write module for API
 * https://github.com/knassar702/scant3r/wiki/write-module-for-api
 
