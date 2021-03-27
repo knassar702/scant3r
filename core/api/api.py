@@ -4,6 +4,7 @@ from glob import glob
 from importlib import import_module
 from yaml import safe_load
 from threading import Thread
+from core.libs import http
 import sys,os
 
 app = Flask(__name__)
@@ -33,7 +34,7 @@ class Server:
     def save_output(self,func,scanid):
         v = func.main(self.op,self.http)
         scanid = str(scanid)
-        if len(v) > 0:
+        if v:
             self.output[scanid].append(v)
     def index(self):
         return render_template('index.html',args=self.get_m())
@@ -48,6 +49,12 @@ class Server:
             return jsonify(self.output[str(mid)])
         except Exception as e:
             return {'Error':f'Not Found'},404
+    def orgparams(self,d):
+        v = self.opts.copy()
+        for i,o in d.items():
+            if o:
+                v[i] = o
+        return v
     def scanapi(self,scanid):
         self.url = request.form.get('url',None)
         if self.url:
@@ -55,6 +62,8 @@ class Server:
                 self.output[str(scanid)]
             except:
                 self.output[str(scanid)] = list()
+            idkk = self.orgparams(request.form)
+            print(idkk)
             if scanid in self.get_m().keys():
                 try:
                     res = {'Results':[]}

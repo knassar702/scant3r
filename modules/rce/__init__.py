@@ -14,7 +14,6 @@ def scan(http,url,methods=['GET','POST']):
                 if r != 0: # 0 = connection error
                     if match in dump_response(r).decode('utf-8'):
                         return {
-                                'target':url.split('?')[0],
                                 'payload':payload.replace('\n','%0a').replace('\t','%0d'),
                                 'match':match,
                                 'http':r

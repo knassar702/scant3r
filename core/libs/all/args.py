@@ -76,4 +76,6 @@ Options:
         c = vars(self)
         del c['conf']
         del c['help']
+        del c['moretxt']
+        del c['hhelp']
         return c

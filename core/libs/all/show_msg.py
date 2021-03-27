@@ -6,15 +6,22 @@ __version__ = '0.7#Beta'
 from .colors import Colors as c
 from .data import dump_request
 
-def alert_bug(name,target,payload,match,http):
-    print(f'''
-{c.good} {c.red}{name}{c.rest}: {target.split("?")[0]}
-    Method: {http.request.method}
-    Payload: {payload}
-    Match: {match}
+def alert_bug(name,http,**kwargs):
+    f = f'{c.good} {c.red}{name}{c.rest}: {http.request.url.split("?")[0]}'
+    f += f'\n  Method: {http.request.method}'
+    vv = ''
+    for p,v in kwargs.items():
+        vv += f'\n  {p}: {v}'
+    f += vv
+    f += f'''
 ---- Request ----
 {c.yellow}
 {dump_request(http).decode()}
 {c.rest}
 --------
-''')
+'''
+    print(f)
+    return {'Name':name,
+            'request':dump_request(http).decode(),
+            'output':kwargs
+            }

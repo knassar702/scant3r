@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import random
-from core.libs import insert_to_params,remove_dups_urls,random_str,post_data,urlencoder,insert_to_params_urls
+from core.libs import insert_to_params,remove_dups_urls,random_str,alert_bug,post_data,urlencoder,insert_to_params_urls
 from urllib.parse import urlparse
 from wordlists import XSS
 
@@ -46,15 +46,16 @@ class Scan:
                         r = self.http.send(i,nurl.split('?')[0],body=urlparse(nurl).query)
 
                     if P in r.content.decode('utf-8'):
-                        print(f'[XSS] Found :> {nurl.split("?")[0]}\n\t[!] Method: {i}\n\t[!] Params: {urlparse(nurl).query}\n\n----')
                         self.bugs.append({
-                                'Bug':'XSS',
-                                'url':nurl.split('?')[0],
-                                'method':i,
-                                'params':urlparse(nurl).query
+                                'params':urlparse(nurl).query,
+                                'payload':P,
+                                'http':r
                                 })
                         break
-        return self.bugs
+        self.fbug = []
+        for bu in self.bugs:
+            self.fbug.append(alert_bug('XSS',**bu))
+        return self.fbug
 
 def main(opts,r):
     scanner = Scan(opts,r)
