@@ -61,9 +61,13 @@ $ ./scant3r.py -h
 
 
 ## TODO-Features
-* add web spider
+* web spider
+* support change scant3r options from api
 * DOM XSS Scanner
 * send/analyzing requests from .yaml file
+* `rate limit/Access Token` option for api
+* scanning status bar
+* make opts.yaml easier to use 
 
 ### Media 
 
