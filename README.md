@@ -41,15 +41,11 @@ $ ./scant3r.py -h
 
 ### Links:
 * [Usage](https://github.com/knassar702/scant3r/wiki/Usage)
-
-* [Write ScanT3r API Script](https://github.com/knassar702/scant3r/wiki/write-module-for-api)
-
+* [Modules Usage](https://github.com/knassar702/scant3r/wiki/Modules-Usage)
 * [Writing your own scant3r module](https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module)
 * [Edite Scant3r Command line options](https://github.com/knassar702/scant3r/wiki/edite-scant3r-command-options)
 
-
-### Modules Usage
-
+### TIPS
 * [how to find hidden SSRF Parameters by using scant3r](https://github.com/knassar702/scant3r/wiki/how-to-find-hidden-SSRF-Parameters-by-using-scant3r)
 * [Find Reflected Parameters with scant3r](https://github.com/knassar702/scant3r/wiki/find-reflected-parameters-with-scant3r)
 * [How to Find sensitive files by using ScanT3r](https://github.com/knassar702/scant3r/wiki/How-to-Find-sensitive-files-by-using-ScanT3r)
@@ -57,6 +53,7 @@ $ ./scant3r.py -h
 
 ### ScanT3r API
 * [Usage](https://github.com/knassar702/scant3r/wiki/ScanT3r-API)
+* [Write ScanT3r API Script](https://github.com/knassar702/scant3r/wiki/write-module-for-api)
 
 
 ## TODO-Features
