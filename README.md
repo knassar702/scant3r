@@ -6,7 +6,7 @@
 </h1>
 
 
-[!ggg](.src/1.gif)
+<img src=.src/1.gif>Scant3r Scans all URLs with multiple HTTP Methods also,it Tries to look for bugs with basic exploits from Headers and URL Parameters By chaining waybackurls or gau with Scant3r you will have more time to look into functions and get Easy bugs on the way and scant3r will help you write your own python script faster , you don't need to configure http/threads/errors/options/etc... , just by writing main function in your script (also you can import scant3r function for write a awesome script), you can run it in your terminal or access your script from api smiley
 
 ***
 
