@@ -29,7 +29,7 @@ and scant3r will help you  write your own python script faster , you don't need 
 | **ssti** | simple server side template injection scanner |
 | **injheaders** | inject blind xss and custom payloads in custom headers (headers.yaml&payload.yaml)
 | **reflect** | find reflected parameters 
-| **secrets** | find intersting varibales content (API Keys , Debug Mode , etc ..) |
+| **secrets** | find interesting variables content (API Keys , Debug Mode , etc ..) |
 
 
 
