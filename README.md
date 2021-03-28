@@ -61,6 +61,7 @@ $ ./scant3r.py -h
 
 ## TODO-Features
 * add web spider
+* DOM XSS Scanner
 * send/analyzing requests from .yaml file
 
 ### Media 
