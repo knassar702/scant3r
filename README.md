@@ -42,7 +42,6 @@ $ ./scant3r.py -h
 ### Links:
 * [Usage](https://github.com/knassar702/scant3r/wiki/Usage)
 * [Modules Usage](https://github.com/knassar702/scant3r/wiki/Modules-Usage)
-* [Write ScanT3r API Script](https://github.com/knassar702/scant3r/wiki/write-module-for-api)
 * [Writing your own scant3r module](https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module)
 * [Edite Scant3r Command line options](https://github.com/knassar702/scant3r/wiki/edite-scant3r-command-options)
 
@@ -54,6 +53,7 @@ $ ./scant3r.py -h
 
 ### ScanT3r API
 * [Usage](https://github.com/knassar702/scant3r/wiki/ScanT3r-API)
+* [Write ScanT3r API Script](https://github.com/knassar702/scant3r/wiki/write-module-for-api)
 
 
 ## TODO-Features
