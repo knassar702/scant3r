@@ -13,26 +13,23 @@ def start(opts,url,http,methods=['GET','POST']):
         for method in methods:
             v = force_insert_to_params_urls(url,payload)
             for nurl in v:
-                for param in nurl.split('?')[1].split('&'):
-                    if method == 'GET':
-                        r = http.send(method,nurl.replace(param,param))
-                    else:
-                        r = http.send(method,url.split('?')[0],body=urlparse(nurl).query)
-                    v = False
-                    if match[1]['regex'] != False:
-                        for i in match[0].values():
-                            mm = i
-                        c = re.compile(mm)
-                        c = c.findall(dump_response(r).decode())
-                        if len(c) > 0:
-                            v = True
-                    else:
-                        for i in match[0].values():
-                            mm = i
-                        c = dump_response(r).decode().find(mm)
-                        if c == 0:
-                            v = True
-                        if v:
-                            alert_bug('SSRF',r,POC=nurl)
-                            return {method:nurl}
+                if method == 'GET':
+                    r = http.send(method,nurl)
+                else:
+                    r = http.send(method,url.split('?')[0],body=urlparse(nurl).query)
+                if match[1]['regex'] != False:
+                    for i in match[0].values():
+                        mm = i
+                    c = re.compile(mm)
+                    c = c.findall(dump_response(r).decode())
+                    if len(c) > 0:
+                        v = True
+                else:
+                    for i in match[0].values():
+                        mm = i
+                    c = dump_response(r).decode().find(mm)
+                    if c == 0:
+                        v = True
+                if v:
+                    alert_bug('SSRF',r,POC=nurl)
     return []

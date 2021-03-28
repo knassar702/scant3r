@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 from yaml import safe_load
-from re import findall
 from urllib.parse import urlparse
-from core.libs import post_data
+from core.libs import alert_bug,post_data
 from wordlists import XSS
+import re
 
 class Scan:
     def __init__(self,opts,r):
@@ -28,17 +28,18 @@ class Scan:
                                 r = http.send(method,url,headers=headers)
                             if r != 0:
                                 if matcher[1]['regex']:
-                                    c = findall(matcher[0]['text'],r.content.decode('utf-8'))
+                                    c = re.compile(matcher[0]['text'])
+                                    c = c.findall(dump_response(c).decode())
                                     if c:
-                                        print(f'[INJHEADERS] Found :> {h} | {payload} {c}')
+                                        return alert_bug('INJHEADERS',r,Match=matcher[0]['text'],regex=True,payload=payload,header=h)
                                 else:
                                     try:
                                         int(matcher[0]['text'])
                                         if payload in r.content.decode('utf-8'):
-                                            print(f'[INJHEADERS] Found :> {h} | {payload}')
+                                            return alert_bug('INJHEADERS',r,Match=matcher[0]['text'],regex=True,payload=payload,header=h)
                                     except:
                                         if matcher[0]['text'] in r.content.decode('utf-8'):
-                                            print(f'[INJHEADERS] Found :> {h} | {payload} {matcher[0]["text"]}')
+                                            return alert_bug('INJHEADERS',r,Match=matcher['text'],regex=True,payload=payload,header=h)
                         finally:
                                 headers[h] = v
 def main(opts,r):
