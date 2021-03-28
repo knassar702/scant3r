@@ -5,6 +5,11 @@
   <br>
 </h1>
 
+
+[!](.src/1.gif)
+
+***
+
 **Why would you use Scant3r?**
 
 Scant3r Scans all URLs with multiple HTTP Methods also,it Tries to look for bugs with basic exploits from Headers and URL Parameters By chaining waybackurls or gau with Scant3r you will have more time to look into functions and get Easy bugs on the way
