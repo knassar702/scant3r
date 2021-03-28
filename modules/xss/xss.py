@@ -31,12 +31,14 @@ class Scan:
             for wp in n:
                 if i != 'GET':
                     r = self.http.send(i,wp.split('?')[0],body=urlparse(wp).query)
-                    if txt in r.content.decode('utf-8'):
-                        self.ref.append(wp)
+                    if r != 0:
+                        if txt in r.content.decode('utf-8'):
+                            self.ref.append(wp)
                 else:
                     r = self.http.send(i,wp)
-                    if txt in r.content.decode('utf-8'):
-                        self.ref.append(wp)
+                    if r != 0:
+                        if txt in r.content.decode('utf-8'):
+                            self.ref.append(wp)
             for rp in self.ref:
                 for P in self.payloads:
                     nurl = rp.replace(txt,P)
@@ -44,14 +46,14 @@ class Scan:
                         r = self.http.send(i,nurl)
                     else:
                         r = self.http.send(i,nurl.split('?')[0],body=urlparse(nurl).query)
-
-                    if P in r.content.decode('utf-8'):
-                        self.bugs.append({
+                    if r != 0:
+                        if P in r.content.decode('utf-8'):
+                            self.bugs.append({
                                 'params':urlparse(nurl).query,
                                 'payload':P,
                                 'http':r
                                 })
-                        break
+                            break
         self.fbug = []
         for bu in self.bugs:
             self.fbug.append(alert_bug('XSS',**bu))

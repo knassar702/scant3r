@@ -28,8 +28,11 @@ Scant3r Scans all URLs with multiple HTTP Methods also,it Tries to look for bugs
 | **ssti** | simple server side template injection scanner |
 | **injheaders** | inject blind xss and custom payloads in custom headers (headers.yaml&payload.yaml)
 | **reflect** | find reflected parameters 
+| **secrets** | find intersting varibales content (API Keys , Debug Mode , etc ..) |
+
 
 scant3r will help you  write your own python script faster , you don't need to configure http/threads/errors/options/etc... , just by writing main function in your script , you can run it in your terminal or access your script from api 😃
+
 
 
 

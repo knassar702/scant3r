@@ -1,0 +1,7 @@
+'http://burpcollaborator.net/': 
+    - text: 'Burp Collaborator Server'
+    - regex: false
+
+'http://127.0.0.1:2020': 
+    - text: 'Hacker1'
+    - regex: false
