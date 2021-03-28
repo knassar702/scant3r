@@ -1,6 +1,5 @@
 <h1 align="center">
   <br>
-  <a href="https://github.com/knassar702/scant3r"><img src="/.src/sccc.png" alt="ScanT3r"></a>
   <br>
   ScanT3r
   <br>
