@@ -13,6 +13,7 @@ def start(opts,url,http,methods=['GET','POST']):
         for method in methods:
             v = force_insert_to_params_urls(url,payload)
             for nurl in v:
+                vv = False
                 if method == 'GET':
                     r = http.send(method,nurl)
                 else:
@@ -23,13 +24,13 @@ def start(opts,url,http,methods=['GET','POST']):
                     c = re.compile(mm)
                     c = c.findall(dump_response(r).decode())
                     if len(c) > 0:
-                        v = True
+                        vv = True
                 else:
                     for i in match[0].values():
                         mm = i
                     c = dump_response(r).decode().find(mm)
                     if c == 0:
-                        v = True
-                if v:
+                        vv = True
+                if vv:
                     alert_bug('SSRF',r,POC=nurl)
     return []
