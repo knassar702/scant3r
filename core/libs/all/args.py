@@ -55,6 +55,10 @@ Options:
                 op['default'] = []
             elif op['default'] == '{}':
                 op['default'] = {}
+            if op['save_content'] == True:
+                op['action'] = 'store'
+            else:
+                op['action'] = 'store_true'
             if op['type']:
                 optp.add_option(op['option'],default=op['default'],type=op['type'],action=op['action'],dest=op['name'])
             else:
