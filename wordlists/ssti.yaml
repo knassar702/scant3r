@@ -1,0 +1,3 @@
+'scan{{2*5}}tr': 'scan10tr'
+'scan<%= 2*5%>tr': 'scan10tr'
+'scan${2*5}tr': 'scan10tr'
