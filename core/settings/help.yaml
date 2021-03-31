@@ -20,9 +20,9 @@ Examples: |-
 TIPS: |-
     \n\t[ how to find hidden SSRF Parameters by using scant3r]
     \t$ echo 'http://testphp.vulnweb.com/showimage.php' | python3 scant3r.py -m lorsrf -w 100 -R -x http://yourhost.com
-    \n\t[Find Reflected Parameters with scant3r]
+    \t[Find Reflected Parameters with scant3r]
     \t$ echo http://google.com/search?q= |./scant3r.py -m reflect -n
-    \n\t[How to Find sensitive files by using ScanT3r]
-    \n$ cat subdomains.txt | python3 scant3r.py -m paths
-    \n\t[Find Blind XSS With ScanT3r]
-    \n$ cat urls.txt | ./scant3r.py -m xss,xss_param,injheaders -b example.xss.ht -w 100
+    \t[How to Find sensitive files by using ScanT3r]
+    \t$ cat subdomains.txt | python3 scant3r.py -m paths
+    \t[Find Blind XSS With ScanT3r]
+    \t$ cat urls.txt | ./scant3r.py -m xss,xss_param,injheaders -b example.xss.ht -w 100
