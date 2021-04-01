@@ -3,18 +3,17 @@ __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
 __version__ = '0.7#Beta'
 
-import os,colorama,sys
-from core.libs import Colors
-colorama.init()
+import os,sys
 
 # check if python version high up 3.6
 if sys.version_info < (3, 6):
-    print(f'{Colors.bad} Scant3r requires python >= 3.6')
+    print('[-] Scant3r requires python >= 3.6')
     sys.exit()
-
-from core.libs import Args,http,logo,MLoader
+import colorama
+from core.libs import Args,http,logo,Colors,MLoader
 from core.api import Server
 
+colorama.init()
 # set the path of scant3r folder
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
