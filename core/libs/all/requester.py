@@ -10,6 +10,7 @@ import sys,time,random
 packages.urllib3.disable_warnings()
 
 
+
 class Agent:
     def __init__(self):
         self.all = ['Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:86.0) Gecko/20100101 Firefox/86.0']

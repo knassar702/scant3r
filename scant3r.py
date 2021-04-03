@@ -12,6 +12,7 @@ if sys.version_info < (3, 6):
 import colorama
 from core.libs import Args,http,logo,Colors,MLoader
 from core.api import Server
+from urllib.parse import urlparse,urljoin
 
 colorama.init()
 # set the path of scant3r folder
@@ -45,11 +46,8 @@ if __name__ == '__main__':
             for url in opts['urls']:
                 url = url.rstrip()
                 ind = opts['urls'].index(url)
-                if '?' in url and '=' in url:
-                    pass
-                else:
-                    url += '?q=&searchFor=&query=&Searchfor=goButton=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist=&user=&username=&group='
-                    opts['urls'][ind] = url
+                if len(urlparse(url).query) == 0:
+                    opts['urls'][ind] = urljoin(url,'?q=&searchFor=&query=&Searchfor=goButton=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist=&user=&username=&group=')
     if opts['modules']:
         # load modules
         for MM in opts['modules']:
