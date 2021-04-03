@@ -31,7 +31,6 @@ else:
 msg = http(opts)
 # Start Module Loader Class
 M = MLoader()
-s = Server(msg,opts)
 
 if __name__ == '__main__':
     if opts['api']:
