@@ -42,11 +42,15 @@ if __name__ == '__main__':
             opts['urls'].append(url.rstrip())
     # (-g option) , add famouse parameters
     if opts['genparam']:
+            np = 'q=&searchFor=&query=&Searchfor=goButton=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist=&user=&username=&group='
             for url in opts['urls']:
                 url = url.rstrip()
                 ind = opts['urls'].index(url)
-                if len(urlparse(url).query) == 0:
-                    opts['urls'][ind] = urljoin(url,'?q=&searchFor=&query=&Searchfor=goButton=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist=&user=&username=&group=')
+                if len(urlparse(url).query) > 0:
+                    np = f'&{np}'
+                else:
+                    np = f'?{np}'
+                opts['urls'][ind] = f'{url}{np}'
     if opts['modules']:
         # load modules
         for MM in opts['modules']:
