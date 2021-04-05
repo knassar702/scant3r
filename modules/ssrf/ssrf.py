@@ -28,8 +28,7 @@ def start(opts,url,http,methods=['GET','POST']):
                 else:
                     for i in match[0].values():
                         mm = i
-                    c = dump_response(r).decode().find(mm)
-                    if c == 0:
+                    if mm in dump_response(r).decode():
                         vv = True
                 if vv:
                     alert_bug('SSRF',r,POC=nurl)
