@@ -80,6 +80,7 @@ $ ./scant3r.py -l scant3r.py
 * DOM XSS Scanner
 * send/analyzing requests from .yaml file
 * `rate limit/Access Token` option for api
+* swigger api template
 * scanning status bar
 * make scant3r functions to another langs (nodejs/php/golang)
 
