@@ -19,6 +19,8 @@ def random_str(num):
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(num))
 
 def dump_request(request):
+    if request == 0:
+        return b''
     body = b""
     body += request.request.method.encode("utf8")
     body += b" "
@@ -33,13 +35,13 @@ def dump_request(request):
     return body
 
 def dump_response(request):
+    if request == 0:
+        return b''
     body = b"HTTP /1.1 "
-
     body += str(request.status_code).encode("utf8")
     body += b" "
     body += request.reason.encode("utf8")
     body += b"\r\n"
-
     for header,value in request.headers.items():
         body += header.encode("utf8") + b": " + value.encode("utf8") + b"\r\n"
     body += b'\r\n\r\n'
