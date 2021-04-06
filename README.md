@@ -82,6 +82,7 @@ $ ./scant3r.py -l scant3r.py
 * `rate limit/Access Token` option for api
 * scanning status bar
 * make opts.yaml easier to use 
+* make scant3r modules to another langs (nodejs/php/golang)
 
 ### Media 
 
