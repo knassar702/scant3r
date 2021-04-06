@@ -63,11 +63,11 @@ $ ./scant3r.py -l scant3r.py
 * [Edite Scant3r Logo](https://github.com/knassar702/scant3r/wiki/Edite-ScanT3r-Logo)
 
 ### TIPS
+* [Automate your recon with scant3r](https://github.com/knassar702/scant3r/wiki/Automate-Your-Recon)
 * [how to find hidden SSRF Parameters by using scant3r](https://github.com/knassar702/scant3r/wiki/how-to-find-hidden-SSRF-Parameters-by-using-scant3r)
 * [Find Reflected Parameters with scant3r](https://github.com/knassar702/scant3r/wiki/find-reflected-parameters-with-scant3r)
 * [How to Find sensitive files by using ScanT3r](https://github.com/knassar702/scant3r/wiki/How-to-Find-sensitive-files-by-using-ScanT3r)
 * [Find Blind XSS With ScanT3r](https://github.com/knassar702/scant3r/wiki/Find-Blind-XSS-with-scant3r)
-
 ### ScanT3r API
 * [Usage](https://github.com/knassar702/scant3r/wiki/ScanT3r-API)
 * [Write ScanT3r API Script](https://github.com/knassar702/scant3r/wiki/write-module-for-api)
