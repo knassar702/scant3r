@@ -1,7 +1,5 @@
 subdomain enum:
-    sublist3r: python3 ~/sublist3r.py -d {domain}
-    subfinder: subfinder -d {domain}
+    assetfinder: assetfinder -subs-only {domain}
 
 geturls:
     waybackurls: waybackurls {domain}
-    gau: gau {domain}

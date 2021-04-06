@@ -12,7 +12,7 @@ class Start:
         self.op = dict()
         for op,va in opts.items():
             self.op[op] = va
-        self.op['domain'] = ur(opts['url']).netloc
+        self.op['domain'] = sub(r'/(^\w+:|^)\/\//','',opts['url'])
         self.mm = safe_load(open('modules/exec/conf.yaml','r'))
         self.opts = opts
         self.q = Queue()
