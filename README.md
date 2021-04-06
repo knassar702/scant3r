@@ -27,6 +27,7 @@ and scant3r will help you  write your own python script faster , you don't need 
 | **finder**     | text Matcher in request/response                                                              |
 | **xss_param** | inject xss payload in parameter name
 | **ssti** | simple server side template injection scanner |
+| **exec** | run multi tasks for automate your work/recon |
 | **injheaders** | inject blind xss and custom payloads in custom headers (headers.yaml&payload.yaml)
 | **reflect** | find reflected parameters 
 | **secrets** | find interesting variables content (API Keys , Debug Mode , etc ..) |

@@ -26,3 +26,5 @@ TIPS: |-
     \t$ cat subdomains.txt | python3 scant3r.py -m paths
     \t[Find Blind XSS With ScanT3r]
     \t$ cat urls.txt | ./scant3r.py -m xss,xss_param,injheaders -b example.xss.ht -w 100
+    \t[Run Another Scripts (another programming lang)]
+    \t$ cat urls.txt | ./scant3r.py -m xss,test_go.go,test_sh.sh
