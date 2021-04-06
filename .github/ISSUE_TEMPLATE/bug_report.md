@@ -26,6 +26,7 @@ If applicable, add screenshots to help explain your problem.
  - OS: [e.g. Linux]
  - Compiler [e.g. Python, PYPY]
  - Version [e.g. 3.8]
+ - Last Commit [first line of `git log` command , EX: f8a3a9de97d1b378df21a91d34cb77df7bf7417d]
 
 
 **Additional context**
