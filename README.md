@@ -43,8 +43,20 @@ $ pip3 install -r requirements.txt
 $ ./scant3r.py -h
 ```
 
+### pass data
+* pipe
+```
+$ echo http://testphp.vulnweb.com  | ./scant3r.py
+```
+* list
+```
+$ ./scant3r.py -l scant3r.py
+```
+
+***
+
 ### Links:
-* [Usage](https://github.com/knassar702/scant3r/wiki/Usage)
+* [ScanT3r Usage](https://github.com/knassar702/scant3r/wiki/Usage)
 * [Modules Usage](https://github.com/knassar702/scant3r/wiki/Modules-Usage)
 * [Writing your own scant3r module](https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module)
 * [Edite Scant3r Command line options](https://github.com/knassar702/scant3r/wiki/edite-scant3r-command-options)
