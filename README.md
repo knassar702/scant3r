@@ -58,6 +58,7 @@ $ ./scant3r.py -l scant3r.py
 ### Links:
 * [ScanT3r Usage](https://github.com/knassar702/scant3r/wiki/Usage)
 * [Modules Usage](https://github.com/knassar702/scant3r/wiki/Modules-Usage)
+* [Run Another Programming Lang Scripts](https://github.com/knassar702/scant3r/wiki/Run-Another-programming-langauge-scripts-with-scant3r)
 * [Writing your own scant3r module](https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module)
 * [Edite Scant3r Command line options](https://github.com/knassar702/scant3r/wiki/edite-scant3r-command-options)
 * [Edite Scant3r Logo](https://github.com/knassar702/scant3r/wiki/Edite-ScanT3r-Logo)
