@@ -50,7 +50,7 @@ $ echo http://testphp.vulnweb.com  | ./scant3r.py
 ```
 * list
 ```
-$ ./scant3r.py -l scant3r.py
+$ ./scant3r.py -l url_list.txt
 ```
 
 ***
