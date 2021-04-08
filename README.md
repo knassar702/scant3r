@@ -58,16 +58,17 @@ $ ./scant3r.py -l scant3r.py
 ### Links:
 * [ScanT3r Usage](https://github.com/knassar702/scant3r/wiki/Usage)
 * [Modules Usage](https://github.com/knassar702/scant3r/wiki/Modules-Usage)
+* [Run Another Programming Lang Scripts](https://github.com/knassar702/scant3r/wiki/Run-Another-programming-langauge-scripts-with-scant3r)
 * [Writing your own scant3r module](https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module)
 * [Edite Scant3r Command line options](https://github.com/knassar702/scant3r/wiki/edite-scant3r-command-options)
 * [Edite Scant3r Logo](https://github.com/knassar702/scant3r/wiki/Edite-ScanT3r-Logo)
 
 ### TIPS
+* [Automate your recon with scant3r](https://github.com/knassar702/scant3r/wiki/Automate-Your-Recon)
 * [how to find hidden SSRF Parameters by using scant3r](https://github.com/knassar702/scant3r/wiki/how-to-find-hidden-SSRF-Parameters-by-using-scant3r)
 * [Find Reflected Parameters with scant3r](https://github.com/knassar702/scant3r/wiki/find-reflected-parameters-with-scant3r)
 * [How to Find sensitive files by using ScanT3r](https://github.com/knassar702/scant3r/wiki/How-to-Find-sensitive-files-by-using-ScanT3r)
 * [Find Blind XSS With ScanT3r](https://github.com/knassar702/scant3r/wiki/Find-Blind-XSS-with-scant3r)
-
 ### ScanT3r API
 * [Usage](https://github.com/knassar702/scant3r/wiki/ScanT3r-API)
 * [Write ScanT3r API Script](https://github.com/knassar702/scant3r/wiki/write-module-for-api)
@@ -79,8 +80,9 @@ $ ./scant3r.py -l scant3r.py
 * DOM XSS Scanner
 * send/analyzing requests from .yaml file
 * `rate limit/Access Token` option for api
+* swigger api template
 * scanning status bar
-* make opts.yaml easier to use 
+* make scant3r functions to another langs (nodejs/php/golang)
 
 ### Media 
 
