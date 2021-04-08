@@ -5,6 +5,8 @@ __version__ = '0.7#Beta'
 
 from .colors import Colors as c
 from .data import dump_request
+from urllib.parse import urlparse 
+import random
 
 def alert_bug(name,http,**kwargs):
     f = f'{c.good} {c.red}{name}{c.rest}: {http.request.url.split("?")[0]}'
@@ -21,6 +23,9 @@ def alert_bug(name,http,**kwargs):
 --------
 '''
     print(f)
+    ooo = open(f'log/{urlparse(http.request.url).netloc}_{random.randint(1,50)}.txt','w')
+    ooo.write(f)
+    ooo.close()
     return {'Name':name,
             'request':dump_request(http).decode(),
             'output':kwargs
