@@ -73,4 +73,5 @@ class MLoader:
             for future in concurrent.futures.as_completed(mres):
                 res = future.result()
                 if res:
-                    print(res.replace('$EX$',''))
+                    res = str(res)
+                    print(res.replace(r'$EX$',''))

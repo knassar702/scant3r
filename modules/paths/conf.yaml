@@ -1,4 +1,28 @@
-"/phpinfo.php": "PHP Version"
-"/PI.php": "PHP Version"
-'/+CSCOT+/translation-table?type=mst&textdomain=/%2bCSCOE%2b/portal_inc.lua&default-language&lang=../': dofile("
-'/pluto/portal': '<title>Pluto Portal</title>'
+PHP INFO:
+    path: 
+        - /phpinfo.php
+        - /PI.php
+        - /PHPINFO.php
+    method: GET
+    headers: null
+    match:
+        text: "PHP Version"
+        regex: false
+
+'[CVE-2020-3452] Unauthenticated file read in Cisco ASA':
+    method: GET
+    path: 
+        - '/+CSCOT+/translation-table?type=mst&textdomain=/%2bCSCOE%2b/portal_inc.lua&default-language&lang=../'
+    headers: null
+    match:
+        text: 'dofile("'
+        regex: false
+
+"Pluto Portal":
+    method: GET
+    headers: null
+    path:
+        - '/pluto/portal'
+    match:
+        text: '<title>Pluto Portal</title>'
+        regex: false

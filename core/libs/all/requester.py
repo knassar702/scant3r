@@ -5,6 +5,7 @@ __version__ = '0.7#Beta'
 
 from requests import Request,Session,request,packages
 from .data import post_data,extractHeaders,dump_request,dump_response
+from urllib.parse import urlparse
 import sys,time,random
 
 packages.urllib3.disable_warnings()
@@ -61,6 +62,12 @@ class http:
                     body = post_data(body)
                 else:
                     body = {}
+                if method != 'GET':
+                    if body:
+                        pass
+                    else:
+                        body = post_data(urlparse(url).query)
+                        url = url.split('?')[0]
             time.sleep(self.delay)
             req = request(
                     method,
