@@ -4,7 +4,6 @@ PHP INFO:
         - /PI.php
         - /PHPINFO.php
     method: GET
-    headers: null
     match:
         text: "PHP Version"
         regex: false
@@ -13,14 +12,12 @@ PHP INFO:
     method: GET
     path: 
         - '/+CSCOT+/translation-table?type=mst&textdomain=/%2bCSCOE%2b/portal_inc.lua&default-language&lang=../'
-    headers: null
     match:
         text: 'dofile("'
         regex: false
 
 "Pluto Portal":
     method: GET
-    headers: null
     path:
         - '/pluto/portal'
     match:
