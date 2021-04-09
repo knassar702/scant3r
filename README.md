@@ -83,7 +83,8 @@ $ ./scant3r.py -l url_list.txt
 * swigger api template
 * scanning status bar
 * make scant3r functions to another langs (nodejs/php/golang)
-
+* pass module output to another module as input
+* 
 ### Media 
 
 ### Version: 0.7
