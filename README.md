@@ -84,7 +84,9 @@ $ ./scant3r.py -l url_list.txt
 * scanning status bar
 * make scant3r functions to another langs (nodejs/php/golang)
 * pass module output to another module as input
-* 
+* Logger
+
+
 ### Media 
 
 ### Version: 0.7
