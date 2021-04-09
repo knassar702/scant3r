@@ -15,57 +15,53 @@ class MLoader:
     def __init__(self):
         self.thr = list()
         self.modules = dict()
-        self.lang = yaml.safe_load(open('core/settings/lang.yaml','r'))
-    def get(self,name):
+        self.scripts = dict()
+    def get(self,name,ourlist=True):
         try:
             c = None
             run = False
-            if len(splitext(name)[1]) > 0:
-                run = True
-            else:
-                run = False
-            if run == True:
-                nnn = splitext(name)
-                yex = nnn[1].replace('.','')
-                vvv = len(nnn[0].split('/')) - 1
-                yn = nnn[0].split('/')[vvv].replace('.','')
-                name = f'modules/{yn}/main.{yex}'
-                test = isfile(name)
-                if test:
-                    ex = splitext(name)[1].replace(".","")
-                    if ex in self.lang.keys():
-                        c = self.lang[ex].replace("$MODULE",name)
-                        name = f'$EX${name}'
-                        self.modules[name] = c
-                    else:
-                        print(f'[!] Not supported * {splitext(name)[1]} *')
-                        return 0
-                else:
-                    print(f'[!] |{name}| The file does not exist')
-                    return 0
-            else:
+            ih = isfile(f'modules/{name}/run.yaml')
+            cki = isfile(f'modules/{name}/__init__.py')
+            if cki == False and ih == True:
+                ff = yaml.safe_load(open(f'modules/{name}/run.yaml','r'))
+                name = f'$EX${name}'
+                if ourlist:
+                    self.scripts[name] = ff['exec']
+            elif cki == True:
                 name = f'modules.{name}'
                 c = importlib.import_module(name.replace('.py',''))
-                self.modules[name] = c
+                if ourlist:
+                    self.modules[name] = c
+            else:
+                return
             return c
         except Exception as e:
             print(e)
-    def exeman(self,cmd,oo):
+    def exeman(self,name,cmd,oo):
+        ff = yaml.safe_load(open(f'modules/{name}/run.yaml','r'))
         oo['domain'] = ur(oo['url']).netloc
         oc = oo.copy()
         oc['ALL'] = oo.copy()
-        s = subprocess.call(cmd.format(**oc),shell=True)
-        return s
+        acmd = cmd.format(**oc).replace(r'$SCPATH',f'modules/{name}')
+        s = subprocess.Popen([acmd],shell=True, universal_newlines=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        sres,_err = s.communicate()
+        resu = f'\n[MODULE-{name.upper()}] {acmd}\n[OUTPUT]: [\n\n{sres}\n]\n-------\n'
+        if 'pass' in ff.keys():
+            module_name = ff['pass']['module']
+            change_option = ff['pass']['option']
+        if len(sres) > 0:
+            return resu
+        return 
     def run(self,opts,r):
         opt = opts.copy() # copy user options
         with concurrent.futures.ThreadPoolExecutor(max_workers=opts['threads']) as executor:
-            mres = []
+            mres = list()
             for url in opts['urls']:
                 opt['url'] = url
+                for n,module in self.scripts.items():
+                    mres.append(executor.submit(self.exeman,n.replace('$EX$','').replace('/','.'),module,opt))
                 for n,module in self.modules.items():
-                    if n.startswith('$EX$'):
-                        mres.append(executor.submit(self.exeman,module,opt))
-                    elif module.main.__code__.co_argcount >= 2:
+                    if module.main.__code__.co_argcount >= 2:
                         mres.append(executor.submit(module.main, opt,r))
                     else:
                         mres.append(executor.submit(module.main,opt))

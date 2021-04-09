@@ -23,7 +23,7 @@ def alert_bug(name,http,**kwargs):
 --------
 '''
     print(f)
-    ooo = open(f'log/{urlparse(http.request.url).netloc}_{random.randint(1,50)}.txt','w')
+    ooo = open(f'log/{urlparse(http.request.url).netloc}_{random.randint(1,100)}.txt','w')
     ooo.write(f)
     ooo.close()
     return {'Name':name,

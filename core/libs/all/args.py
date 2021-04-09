@@ -9,9 +9,9 @@ import yaml
 class Args:
     def __init__(self):
         try:
-            self.conf = yaml.safe_load(open('core/settings/opts.yaml','r'))
+            self.conf = yaml.safe_load(open('conf/opts.yaml','r'))
             self.moretxt = ''
-            self.hhelp = yaml.safe_load(open('core/settings/help.yaml','r'))
+            self.hhelp = yaml.safe_load(open('conf/help.yaml','r'))
             for v,i in self.hhelp.items():
                 i = i.replace(r'\t','\t').replace(r'\n','\n')
                 self.moretxt += f'\n{v}:{i}'

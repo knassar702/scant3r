@@ -9,7 +9,7 @@ from .colors import dump_colors
 import random
 def logo():
     logos = []
-    for logo in glob('core/settings/logo/*.txt'):
+    for logo in glob('conf/logo/*.txt'):
         logos.append(open(logo,'r').read().format(**dump_colors())) 
     print(random.choice(logos))
 

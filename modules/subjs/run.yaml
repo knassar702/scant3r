@@ -1,0 +1,4 @@
+exec: echo {url} | ./$SCPATH/subjs
+pass:
+    module: secrets
+    option: url
