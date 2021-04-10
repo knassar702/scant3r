@@ -1,12 +1,6 @@
 # Security Policy
 
 
-I think I am too lazy to test my tool, so if you find any security risk (low/high etc ..) , share it with me 
-         |
-you can open issue with `bug_report.md` template , or send mail to `knassar702@gmail.com`
-
-When sending the report please add what damage will be caused by this security issue
-
 ### Scope
 
 | ScanT3r Type | Supported          |
@@ -16,6 +10,10 @@ When sending the report please add what damage will be caused by this security i
 
 ## Reporting a Vulnerability
 
+I think I am too lazy to test my tool, so if you find any security risk (low/high etc ..) , share it with me  <br>
+you can open issue with `bug_report.md` template , or send mail to `knassar702@gmail.com`
+
+When sending the report please add what damage will be caused by this security issue
 
 for example
 
