@@ -1,7 +1,7 @@
 # Security Policy
 
 
-I think I am too lazy to test my tool, so if you find any security risk (low/high etc ..) , report it with me 
+I think I am too lazy to test my tool, so if you find any security risk (low/high etc ..) , share it with me 
          |
 you can open issue with `bug_report.md` template , or send mail to `knassar702@gmail.com`
 
