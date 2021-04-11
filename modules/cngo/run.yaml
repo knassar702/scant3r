@@ -1,0 +1,1 @@
+exec: echo ${domain} > $SCPATH/domain.txt ; go run $SCPATH/main.go -f $SCPATH/domain.txt
