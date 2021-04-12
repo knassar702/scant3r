@@ -1,0 +1,1 @@
+exec: go run $SCPATH/main.go --domain {domain} --url {url} --timeout {timeout}
