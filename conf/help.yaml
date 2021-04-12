@@ -8,8 +8,8 @@ Wiki: |-
     \t[ Write API Module ]
     \t- https://github.com/knassar702/scant3r/wiki/write-module-for-api
 Examples: |-
-    \n\t[ simple scan ]
-    \t$ echo 'http://testphp.vulnweb.com/search.php?test=query&searchFor=test&goButton=go' | ./scant3r.py -w 100 -R
+    \n\t[ simple scan #XSS ]
+    \t$ echo 'http://testphp.vulnweb.com/search.php?test=query&searchFor=test&goButton=go' | ./scant3r.py -m xss -w 100 -R
     \t[ Find Hidden SSRF Parameters]
     \t$ echo 'http://testphp.vulnweb.com/showimage.php' | ./scant3r.py -m lorsrf -w 100 -R -x http://myhost
     \t[ Find custom endpoints ]
