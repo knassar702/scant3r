@@ -47,10 +47,10 @@ if __name__ == '__main__':
                 url = url.rstrip()
                 ind = opts['urls'].index(url)
                 if len(urlparse(url).query) > 0:
-                    np = f'&{np}'
+                    np = '&{}'.format(np)
                 else:
-                    np = f'?{np}'
-                opts['urls'][ind] = f'{url}{np}'
+                    np = '?{}'.format(np)
+                opts['urls'][ind] = '{url}{np}'.format(url=url,np=np)
     if opts['modules']:
         # load modules
         for MM in opts['modules']:
