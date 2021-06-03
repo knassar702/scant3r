@@ -9,6 +9,7 @@ from threading import Thread
 def start(op,http):
     for method in op['methods']:
         for payload in sqli_payloads:
+            payload = payload.rstrip()
             n = insert_to_params_urls(op['url'],payload)
             for url in n:
                 if method == 'GET':
@@ -16,7 +17,8 @@ def start(op,http):
                 else:
                     r = http.send(method,op['url'].split('?')[0],body=urlparse(url).query)
                 for v in sql_err:
-                    if len(v) > 0:
+                    v = v.rstrip()
+                    if len(v.rstrip()) >= 1:
                         hmm = findall(v,r.content.decode('utf-8'))
                         for i in hmm:
                             if i:
