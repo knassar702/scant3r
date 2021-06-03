@@ -17,11 +17,10 @@ def start(op,http):
                     r = http.send(method,op['url'].split('?')[0],body=urlparse(url).query)
                 for v in sql_err:
                     if len(v) > 0:
-                        return
-                    hmm = findall(v,r.content.decode('utf-8'))
-                    for i in hmm:
-                        if i:
-                            return {
+                        hmm = findall(v,r.content.decode('utf-8'))
+                        for i in hmm:
+                            if i:
+                                return {
                                     'method':method,
                                     'url':url.split('?')[0],
                                     'params':urlparse(url).query,
