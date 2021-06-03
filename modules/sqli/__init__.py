@@ -16,6 +16,8 @@ def start(op,http):
                 else:
                     r = http.send(method,op['url'].split('?')[0],body=urlparse(url).query)
                 for v in sql_err:
+                    if len(v) > 0:
+                        return
                     hmm = findall(v,r.content.decode('utf-8'))
                     for i in hmm:
                         if i:
