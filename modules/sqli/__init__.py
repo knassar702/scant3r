@@ -15,7 +15,7 @@ def start(op,http):
                     r = http.send(method,url)
                 else:
                     r = http.send(method,op['url'].split('?')[0],body=urlparse(url).query)
-                for s,v in sql_err.items():
+                for v in sql_err:
                     hmm = findall(v,r.content.decode('utf-8'))
                     for i in hmm:
                         if i:
