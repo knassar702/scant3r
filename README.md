@@ -75,16 +75,7 @@ $ ./scant3r.py -l url_list.txt
 
 
 ## TODO-Features
-* web spider
-* support change scant3r options from api
-* DOM XSS Scanner
-* send/analyzing requests from .yaml file
-* `rate limit/Access Token` option for api
-* swigger api template
-* scanning status bar
-* make scant3r functions to another langs (nodejs/php/golang)
-* pass module output to another module as input
-* Logger
+* https://github.com/knassar702/scant3r/projects/8
 
 
 ### Media 
