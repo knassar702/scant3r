@@ -17,4 +17,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_PROJECT_URL: https://github.com/knassar702/scant3r/projects/8
-        GITHUB_PROJECT_COLUMN_NAME: TODO
+        GITHUB_PROJECT_COLUMN_NAME: To Do
