@@ -2,7 +2,8 @@
 host: '0.0.0.0'
 debug: false
 port: 6030
-check_tokens: true
+token: $RANDOM$ # $RANDOM$ = generate random value
+check_token: true
 limits:
   - 200 per day
   - 50 per hour

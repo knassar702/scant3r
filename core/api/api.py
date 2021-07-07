@@ -2,6 +2,7 @@
 from flask import Flask,abort,request,jsonify,render_template
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from werkzeug.security import generate_password_hash
 from glob import glob
 from importlib import import_module
 from yaml import safe_load
@@ -16,17 +17,30 @@ class Server:
         conf = safe_load(open('core/api/conf.yaml','r'))
         self.host = conf['host']
         self.port = conf['port']
+        self.check_token = conf['check_token']
         self.debug = conf['debug']
         self.opts = opts
         self.output = dict()
+        if conf['token'] == '$RANDOM$':
+            try:
+                conf['token'] = generate_password_hash(os.urandom(30).decode('utf-16')).replace('pbkdf2:sha256:','')
+            except UnicodeDecodeError:
+                self.restart()
+        if conf['check_token'] == False:
+            print(f"""
+======================
+|YOUR RANDOM API TOKEN: {conf['token']}
+======================
+            """)
+        app.config['SECRET_KEY'] = conf['token']
         limiter = Limiter(
         app,
         key_func=get_remote_address,
         default_limits=conf['limits']
         )
     def restart(self):
-        python = sys.executable
-        os.execl(python, python, * sys.argv)
+        ex = sys.executable
+        os.execl(ex, ex, * sys.argv)
         curdir = os.getcwd()
     def clearme(self):
         self.output = dict()
@@ -45,6 +59,17 @@ class Server:
     def index(self):
         return render_template('index.html',args=self.get_m())
     def getit(self):
+        if self.check_token != True:
+            if 'token' not in req_params.keys():
+                return {
+                    "Error":"token parameter missing"
+                }
+        else:
+            if 'token' in req_params.keys():
+                if req_params['token'] != app.config['SECRET_KEY']:
+                    return {
+                        "Error":"Auth Error"
+                    }
         cc = {}
         for i,v in self.output.items():
             if self.output[i]:
@@ -53,6 +78,17 @@ class Server:
                     cc[c] = v
         return jsonify(cc)
     def getme(self,mid):
+        if self.check_token != True:
+            if 'token' not in req_params.keys():
+                return {
+                    "Error":"token parameter missing"
+                }
+        else:
+            if 'token' in req_params.keys():
+                if req_params['token'] != app.config['SECRET_KEY']:
+                    return {
+                        "Error":"Auth Error"
+                    }
         try:
             c = []
             for v in self.output[str(mid)]:
@@ -71,6 +107,20 @@ class Server:
         self.url = None
         if 'url' in req_params.keys():
             self.url = req_params['url']
+        if self.check_token != True:
+            if 'token' not in req_params.keys():
+                return {
+                    "Error":"token parameter missing"
+                }
+        else:
+            if 'token' in req_params.keys():
+                if req_params['token'] != app.config['SECRET_KEY']:
+                    return {
+                        "Error":"Auth Error"
+                    }
+        if 'url' in req_params.keys():
+            self.url = req_params['url']
+
         if self.url:
             try:
                 self.output[str(scanid)]
@@ -92,7 +142,7 @@ class Server:
                 except Exception as e:
                     return jsonify({'Error':f'{e}'})
             else:
-                return jsonify({'Scanid':'404'})
+                return jsonify({'Error':'Scanid not found'})
         else:
             return {'Error':'url paremter is required'},404
     def run(self):
