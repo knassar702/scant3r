@@ -2,6 +2,7 @@ name: Wiki Sync
   # You may pin to the exact commit or the version.
   # uses: JoeIzzard/ghaction-wiki-sync@56fa2d2877578ffd8480f8694eff93de0fac5d4f
 uses: JoeIzzard/ghaction-wiki-sync@v1
+on: push
 with:
     # The username of the repo owner
     username: knassar702
