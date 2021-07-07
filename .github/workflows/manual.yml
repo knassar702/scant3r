@@ -22,6 +22,6 @@ jobs:
         # WIKI_DIR's default is wiki/
         WIKI_DIR: wiki/
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GH_MAIL: ${{ secrets.YOUR_EMAIL }}
-        GH_NAME: ${{ github.repository_owner }}
+        GH_MAIL: knassar702@gmail.com
+        GH_NAME: knassar702
         EXCLUDED_FILES: "a/ b.md"
