@@ -22,20 +22,18 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 # Load user args
 a = Args()
 opts = a.start()
-if opts['nologo']:
-    pass
-else:
+
+if opts['nologo'] != False:
     logo()
-# ---
-# Configure http options (proxy,headers etc..)
-msg = http(opts)
+
 # Start Module Loader Class
 M = MLoader()
 
 if __name__ == '__main__':
     if opts['api']:
-        app = Server(msg,opts)
+        app = Server(opts)
         app.run()
+        sys.exit()
     if len(opts['urls']) <= 0:
         # get urls from pipe
         for url in sys.stdin:
@@ -56,4 +54,4 @@ if __name__ == '__main__':
         for MM in opts['modules']:
             M.get(MM)
         # start all modules (main function)
-        M.run(opts,msg)
+        M.run(opts,http(opts))

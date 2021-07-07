@@ -1,0 +1,7 @@
+testopts:
+    - option: '--test-opts'
+    - type: 'int'
+    - save_content: true
+    - help: 'number of seconds to hold between each HTTP(S) requests.'
+    - default: 0
+    - exec: 'self.testopts = int(opts.testopts)'

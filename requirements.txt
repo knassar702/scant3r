@@ -2,5 +2,6 @@ requests
 requests_toolbelt
 flask
 jinja2
+Flask-Limiter
 colorama
 pyyaml

@@ -24,5 +24,5 @@ TIPS: |-
     \t$ echo http://google.com/search?q= |./scant3r.py -m reflect -n
     \t[How to Find sensitive files by using ScanT3r]
     \t$ cat subdomains.txt | python3 scant3r.py -m paths
-    \t[Find Blind XSS With ScanT3r]
+    \t[Find Blind XSS with ScanT3r (headers,parameters name/value)]
     \t$ cat urls.txt | ./scant3r.py -m xss,xss_param,injheaders -b example.xss.ht -w 100

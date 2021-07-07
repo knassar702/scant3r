@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 
 def scan(http,url,methods=['GET','POST']):
     for method in methods:
-        for payload,match in rce_payloads.items():
+        for payload,match in rce_payloads().items():
             nurl = insert_to_params_urls(url,payload.replace('\n','%0a').replace('\t','%0d'))
             for u in nurl:
                 if method == 'GET':

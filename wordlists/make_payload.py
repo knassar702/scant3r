@@ -17,8 +17,8 @@ class XSS:
                 new_payload = blind_payload.replace("{host}",host).replace('{b64_host}',b)
                 self.payloads.append(new_payload)
 
-sqli_payloads = open('wordlists/sqli.txt','r')
-sql_err = open('wordlists/sqli_errors.txt','r')
+sqli_payloads = open('wordlists/txt/sqli.txt','r')
+sql_err = open('wordlists/txt/sqli_errors.txt','r')
 
 def rce_payloads(): 
     f = {

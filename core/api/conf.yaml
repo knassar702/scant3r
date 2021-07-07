@@ -2,3 +2,7 @@
 host: '0.0.0.0'
 debug: false
 port: 6030
+check_tokens: true
+limits:
+  - 200 per day
+  - 50 per hour
