@@ -18,7 +18,6 @@ colorama.init()
 # set the path of scant3r folder
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Load user args
 a = Args()
 opts = a.start()

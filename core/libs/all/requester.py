@@ -17,7 +17,7 @@ class Agent:
         self.all = ['Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:86.0) Gecko/20100101 Firefox/86.0']
         self.random = random.choice(self.all)
     def load(self):
-        with open('wordlists/agents.txt','r') as aw:
+        with open('wordlists/txt/agents.txt','r') as aw:
             for i in aw:
                 if len(i.rstrip()) > 1:
                     self.all.append(i.rstrip())
