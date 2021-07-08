@@ -1,12 +1,16 @@
 headers:
-    - option: '-H'
+    - option: 
+      - '-H'
+      - "--header"
     - type: 'string'
     - save_content: true
     - help: "add custom header (ex:-H='Cookies: test=1')"
     - default: '{}'
     - exec: 'self.headers = extractHeaders(opts.headers)'
 delay:
-    - option: '-s'
+    - option: 
+      - '-s'
+      - "--disable-ssl-check"
     - type: 'int'
     - save_content: true
     - help: 'number of seconds to hold between each HTTP(S) requests.'
@@ -14,7 +18,9 @@ delay:
     - exec: 'self.delay = int(opts.delay)'
 
 api:
-    - option: '-a'
+    - option: 
+      - '-a'
+      - '--api'
     - type: false
     - save_content: false
     - help: 'Start Scant3r API'
@@ -23,7 +29,9 @@ api:
         self.api = True
 
 methods:
-    - option: '-y'
+    - option: 
+      - '-y'
+      - '--method'
     - type: 'string'
     - save_content: true
     - help: 'Methods Allowed on your target'
@@ -32,7 +40,9 @@ methods:
         self.methods = opts.methods.split(",")
 
 modules:
-    - option: '-m'
+    - option: 
+      - '-m'
+      - '--module'
     - help: 'run scant3r module (ex: -m=example)'
     - type: 'string'
     - default: []
@@ -42,14 +52,18 @@ modules:
 
 
 nologo:
-    - option: '-n'
+    - option: 
+      - '-n'
+      - '--no-logo'
     - help: 'Silent Mode'
     - type: false
     - default: false
     - save_content: false
     - exec: 'self.nologo = opts.nologo'
 targetlist:
-    - option: '-l'
+    - option: 
+      - '-l'
+      - '--list'
     - type: 'string'
     - default: false
     - help: 'add targets list'
@@ -64,14 +78,18 @@ targetlist:
             exit()
 
 genparam:
-    - option: '-g'
+    - option: 
+      - '-g'
+      - '--add-parameters'
     - type: false
     - default: false
     - help: "Generate Famouse Parameters if your url dosen't have parameters"
     - save_content: false
     - exec: 'self.genparam = opts.genparam'
 proxy:
-    - option: '-p'
+    - option: 
+      - '-p'
+      - '--proxy'
     - help: 'Forward all requests to proxy'
     - type: 'string'
     - default: '{}'
@@ -79,7 +97,9 @@ proxy:
     - exec: 'self.proxy = {"http":opts.proxy,"https":opts.proxy}'
 
 redirect:
-    - option: '-r'
+    - option: 
+      - '-r'
+      - '--follow-redirects'
     - type: false
     - default: false
     - hlep: 'Follow redirects'
@@ -87,7 +107,9 @@ redirect:
     - exec: 'self.redirect = opts.redirect'
 
 blindxss:
-    - option: '-b'
+    - option:
+      - '-b'
+      - '--blind-host'
     - type: 'string'
     - help: 'add your xsshunter host (or any xss host)'
     - default: false
@@ -95,7 +117,9 @@ blindxss:
     - exec: 'self.blindxss = opts.blindxss'
 
 debug:
-    - option: '-d'
+    - option: 
+      - '-d'
+      - '--debug'
     - help: 'debugging mode (show requests/responses)'
     - type: false
     - default: false
@@ -103,7 +127,9 @@ debug:
     - exec: 'self.debug = True'
 
 host:
-    - option: '-x'
+    - option: 
+      - '-x'
+      - '--host'
     - type: 'string'
     - default: false
     - help: 'add your host (burpcall,etc..)'
@@ -111,7 +137,9 @@ host:
     - exec: 'self.host = opts.host'
 
 ragent:
-    - option: '-R'
+    - option: 
+      - '-R'
+      - '--random-agents'
     - type: false
     - default: false
     - help: 'use random user agent'
@@ -119,7 +147,9 @@ ragent:
     - exec: 'self.ragent = True'
 
 threads:
-    - option: '-w'
+    - option: 
+      - '-w'
+      - '--workers'
     - type: 'int'
     - help: 'Number of workers (default: 50)'
     - save_content: true
@@ -127,7 +157,9 @@ threads:
     - exec: 'self.threads = opts.threads'
 
 timeout:
-    - option: '-t'
+    - option: 
+      - '-t'
+      - '--timeout'
     - type: 'int'
     - default: 10
     - help: 'set connection timeout (default: 10)'

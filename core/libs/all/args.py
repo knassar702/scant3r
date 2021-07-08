@@ -28,17 +28,19 @@ class Args:
                 if 'option' in _.keys():
                     vv.append(_['option'])
                 if len(vv) == 2:
-                    ho += f'  {vv[0]} | {vv[1]}\n'
+                    ho += f'{Colors.yellow}  {vv[0][0]} {vv[0][1]} | {Colors.green} {vv[1]}{Colors.rest}\n'
                     vv.clear()
                     break
         self.help = r"""{yellow}
 Options:
-  -h | show help menu and exit
+  -h | {green} show help menu and exit
 {ho}
+{yellow}
 {moretxt}
 {rest}
 """.format(
         ho=ho,
+        green=Colors.green,
         moretxt=self.moretxt,
         yellow=Colors.yellow,
         rest=Colors.rest
@@ -60,9 +62,9 @@ Options:
             else:
                 op['action'] = 'store_true'
             if op['type']:
-                optp.add_option(op['option'],default=op['default'],type=op['type'],action=op['action'],dest=op['name'])
+                optp.add_option(op['option'][0],op['option'][1],default=op['default'],type=op['type'],action=op['action'],dest=op['name'])
             else:
-                optp.add_option(op['option'],default=op['default'],action=op['action'],dest=op['name'])
+                optp.add_option(op['option'][0],op['option'][1],default=op['default'],action=op['action'],dest=op['name'])
         opts, args = optp.parse_args()
         if opts.help:
             logo()

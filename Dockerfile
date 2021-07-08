@@ -9,7 +9,7 @@ RUN apt install python3-dev -y
 RUN apt install python3-pip -y
 RUN apt install sudo -y
 RUN apt install uwsgi -y
-RUN python3 -m pip install Flask-Limiter uwsgi requests flask
+RUN python3 -m pip install -r requirements.txt
 RUN apt install uwsgi-plugin-python -y
 COPY . /home/scant3r/
 RUN rm Dockerfile
