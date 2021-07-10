@@ -33,7 +33,7 @@ class Args:
                     break
         self.help = r"""{yellow}
 Options:
-  -h | {green} show help menu and exit
+  -h --help | {green} show help menu and exit
 {ho}
 {yellow}
 {moretxt}

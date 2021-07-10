@@ -102,7 +102,7 @@ redirect:
       - '--follow-redirects'
     - type: false
     - default: false
-    - hlep: 'Follow redirects'
+    - help: 'Follow redirects'
     - save_content: false
     - exec: 'self.redirect = opts.redirect'
 
