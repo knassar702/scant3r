@@ -23,7 +23,7 @@ class Server:
         self.output = dict()
         if conf['token'] == '$RANDOM$':
             try:
-                conf['token'] = generate_password_hash(os.urandom(30).decode('utf-16')).replace('pbkdf2:sha256:','')
+                conf['token'] = generate_password_hash(os.urandom(30).decode('utf-16')).lstrip('pbkdf2:sha256:')
             except UnicodeDecodeError:
                 self.restart()
         if conf['check_token'] == False:
