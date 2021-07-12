@@ -2,6 +2,7 @@
 from flask import Flask,abort,request,jsonify,render_template
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flasgger import Swagger, swag_from
 from werkzeug.security import generate_password_hash
 from glob import glob
 from importlib import import_module
@@ -11,10 +12,14 @@ from core.libs import http
 import sys,os
 
 app = Flask(__name__)
-
+app.config['SWAGGER'] = {
+    'title': 'ScanT3r API',
+    'uiversion': 3,
+    "specs_route": "/"
+}
 class Server:
     def __init__(self,opts):
-        conf = safe_load(open('core/api/conf.yaml','r'))
+        conf = safe_load(open('conf/api.yaml','r'))
         self.host = conf['host']
         self.port = conf['port']
         self.check_token = conf['check_token']
@@ -41,7 +46,7 @@ class Server:
     def restart(self):
         ex = sys.executable
         os.execl(ex, ex, * sys.argv)
-        curdir = os.getcwd()
+        return
     def clearme(self):
         self.output = dict()
         return {'Done':True}
@@ -57,7 +62,8 @@ class Server:
         if v:
             self.output[scanid].append(v)
     def index(self):
-        return render_template('index.html',args=self.get_m())
+        return swag
+        #return render_template('index.html',args=self.get_m())
     def getit(self):
         if self.check_token != True:
             if 'token' not in req_params.keys():
