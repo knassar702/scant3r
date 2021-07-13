@@ -41,6 +41,7 @@ class Colors:
     good = f'{yellow}[{rest}{green}+{rest}{yellow}]{rest}'
     bad = f'{yellow}[{rest}{red}-{rest}{yellow}]{rest}'
     info = f'{yellow}[{yellow}!{rest}{yellow}]{rest}'
+    
 def dump_colors():
     ac = {}
     for c,v in vars(Colors).items():
