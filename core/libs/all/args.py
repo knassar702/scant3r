@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-
-from optparse import OptionParser
+import argparse
 from .data import *
 from .colors import Colors
 from .logo import logo
@@ -10,78 +9,78 @@ class Args:
     def __init__(self):
         try:
             self.conf = yaml.safe_load(open('conf/opts.yaml','r'))
-            self.moretxt = ''
-            self.hhelp = yaml.safe_load(open('conf/help.yaml','r'))
-            for v,i in self.hhelp.items():
-                i = i.replace(r'\t','\t').replace(r'\n','\n')
-                self.moretxt += f'\n{v}:{i}'
+            self.help = yaml.safe_load(open('conf/help.yaml','r'))
         except Exception as e:
             print(f"[Args] {e}")
             exit()
-        ho = ''
-        self.urls = []
-        for name,option in self.conf.items():
-            vv = []
-            for _ in option:
-                if 'help' in _.keys():
-                    vv.append(_["help"])
-                if 'option' in _.keys():
-                    vv.append(_['option'])
-                if len(vv) == 2:
-                    ho += f'{Colors.yellow}  {vv[0][0]} {vv[0][1]} | {Colors.green} {vv[1]}{Colors.rest}\n'
-                    vv.clear()
-                    break
-        self.help = r"""{yellow}
-Options:
-  -h --help | {green} show help menu and exit
-{ho}
-{yellow}
-{moretxt}
-{rest}
-""".format(
-        ho=ho,
-        green=Colors.green,
-        moretxt=self.moretxt,
-        yellow=Colors.yellow,
-        rest=Colors.rest
-        )
-    def start(self):
-        optp = OptionParser(add_help_option=False)
-        optp.add_option("-h",'--help',dest='help',action='store_true')
-        for name,value in self.conf.items():
-            op = {'name':name}
-            for _ in value:
-                for o,v in _.items():
-                    op[o] = v
-            if op['default'] == '[]':
-                op['default'] = []
-            elif op['default'] == '{}':
-                op['default'] = {}
-            if op['save_content'] == True:
-                op['action'] = 'store'
-            else:
-                op['action'] = 'store_true'
-            if op['type']:
-                optp.add_option(op['option'][0],op['option'][1],default=op['default'],type=op['type'],action=op['action'],dest=op['name'])
-            else:
-                optp.add_option(op['option'][0],op['option'][1],default=op['default'],action=op['action'],dest=op['name'])
-        opts, args = optp.parse_args()
-        if opts.help:
-            logo()
-            print(self.help)
-            exit()
-        for name,value in self.conf.items():
-            op = {'name':name}
-            for _ in value:
-                for o,v in _.items():
-                    op[o] = v
-            if eval(f'opts.{name}'):
-                exec(op['exec'])
-            else:
-                exec(f'self.{name} = {op["default"]}')
-        c = vars(self)
-        del c['conf']
-        del c['help']
-        del c['moretxt']
-        del c['hhelp']
-        return c
+    
+    # Add an argument to a parser 
+    def set_argument(self, options: list, name: str, parser: argparse.ArgumentParser):
+        dict_option = {}
+        dict_option['name'] = str(name)
+        for option in options: 
+            if 'option' in option.keys():
+                dict_option['small'] = option['option'][0]
+                dict_option['large'] = option['option'][1]
+                
+            if 'type' in option.keys():
+                dict_option['type'] = str
+                if option['type'] == 'int':
+                    dict_option['type'] = int 
+                if option['type'] == 'boolean':
+                    dict_option['type'] = bool
+
+            if 'save_content' in option.keys():
+                dict_option['action'] = "store_true"
+                if option['save_content'] == True:   
+                    dict_option['action'] = "store"
+                    
+            if 'help' in option.keys():
+                dict_option['help'] = option['help']
+           
+            if 'default' in option.keys():
+                dict_option['default'] = option['default']
+                if option['default'] == "{}":
+                    dict_option['default'] = {}
+                if option["default"] == "[]":
+                    dict_option['default'] = []
+        
+        if dict_option['type'] != bool: 
+            parser.add_argument(dict_option['small'], dict_option['large'], 
+                        dest=dict_option['name'], type=dict_option['type'], 
+                        default=dict_option['default'], action=dict_option['action'], 
+                        help=dict_option['help'])
+        else: 
+            parser.add_argument(dict_option['small'], dict_option['large'], 
+                                dest=dict_option['name'], default=dict_option['default'], 
+                                action=dict_option['action'], help=dict_option['help'])
+    
+    # Create the dict with args
+    def create_dict_args(self, args : argparse.Namespace) -> dict:
+        dict_args = { "urls" : [] }
+        args = vars(args)
+        for name, value in args.items(): 
+            if value == 0 or value == [] or value == {} or value == False:
+                dict_args[name] = value
+            else : 
+                dict_exe = list(filter(lambda item : 'exec' in item.keys(), self.conf[name]))[0]
+                if dict_exe:
+                    exec(dict_exe['exec'])
+        return dict_args
+    
+    # Take text from Help.yaml and transfrom to str
+    def epilog_text(self) -> str: 
+        text = ''
+        for v,i in self.help.items():
+            i = i.replace(r'\t','\t').replace(r'\n','\n')
+            text += f'\n{v}:{i}'
+        return text
+     
+    # Return args in dict 
+    def get_args(self) -> dict:
+        parser = argparse.ArgumentParser(epilog=self.epilog_text(), formatter_class=argparse.RawTextHelpFormatter)
+        for name,options in self.conf.items():
+            self.set_argument(options, name, parser)
+        args = parser.parse_args()    
+        return self.create_dict_args(args)
+

@@ -7,6 +7,7 @@ Wiki: |-
     \t- https://github.com/knassar702/scant3r/wiki/Usage
     \t[ Write API Module ]
     \t- https://github.com/knassar702/scant3r/wiki/write-module-for-api
+    
 Examples: |-
     \n\t[ simple scan #XSS ]
     \t$ echo 'http://testphp.vulnweb.com/search.php?test=query&searchFor=test&goButton=go' | ./scant3r.py -m xss -w 100 -R

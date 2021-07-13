@@ -9,8 +9,9 @@ import os,sys
 if sys.version_info < (3, 6):
     print('[-] Scant3r requires python >= 3.6')
     sys.exit()
+    
 import colorama
-from core.libs import Args,http,logo,Colors,MLoader
+from core.libs import Args, Http, Colors, MLoader, logo
 from core.api import Server
 from urllib.parse import urlparse,urljoin
 
@@ -19,10 +20,9 @@ colorama.init()
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Load user args
-a = Args()
-opts = a.start()
+opts = Args().get_args()
 
-if opts['nologo'] != False:
+if opts['nologo'] == False:
     logo()
 
 # Start Module Loader Class
@@ -53,4 +53,4 @@ if __name__ == '__main__':
         for MM in opts['modules']:
             M.get(MM)
         # start all modules (main function)
-        M.run(opts,http(opts))
+        M.run(opts,Http(opts))
