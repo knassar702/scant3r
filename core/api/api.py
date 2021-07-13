@@ -8,7 +8,7 @@ from glob import glob
 from importlib import import_module
 from yaml import safe_load
 from threading import Thread
-from core.libs import http
+from core.libs import Http
 import sys,os
 
 app = Flask(__name__)
@@ -57,7 +57,7 @@ class Server:
             al[c] = i.split('/')[1]
         return al
     def save_output(self,func,scanid,copts):
-        v = func.main(copts,http(copts))
+        v = func.main(copts,Http(copts))
         scanid = str(scanid)
         if v:
             self.output[scanid].append(v)
