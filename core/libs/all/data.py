@@ -4,15 +4,11 @@ __email__ = 'knassar702@gmail.com'
 __version__ = '0.7#Beta'
 
 import re
-import sys
 import binascii
 import random
 import string
-from urllib.parse import urljoin,urlparse
+from urllib.parse import urljoin, urlparse
 from .colors import *
-
-
-
 
 def random_str(num):
     num = int(num)
@@ -95,6 +91,7 @@ def force_insert_to_params_urls(url,txt):
         return list()
     finally:
         return our
+
 def dump_params(url):
     return urlparse(url).query
 

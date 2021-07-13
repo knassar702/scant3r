@@ -8,7 +8,7 @@ import importlib
 import concurrent.futures
 import yaml
 from urllib.parse import urlparse as ur
-from os.path import splitext,isfile
+from os.path import splitext, isfile
 import subprocess
 
 class MLoader:
@@ -16,28 +16,30 @@ class MLoader:
         self.thr = list()
         self.modules = dict()
         self.scripts = dict()
-    def get(self,name,ourlist=True):
+        
+    def get(self, name: str, ourlist: bool = True):
         try:
             c = None
-            run = False
             ih = isfile(f'modules/{name}/run.yaml')
             cki = isfile(f'modules/{name}/__init__.py')
+            
             if cki == False and ih == True:
                 ff = yaml.safe_load(open(f'modules/{name}/run.yaml','r'))
                 name = f'$EX${name}'
                 if ourlist:
                     self.scripts[name] = ff['exec']
-            elif cki == True:
+                    
+            if cki == True:
                 name = f'modules.{name}'
                 c = importlib.import_module(name.replace('.py',''))
                 if ourlist:
                     self.modules[name] = c
-            else:
-                return
+
             return c
         except Exception as e:
             print(e)
-    def exeman(self,name,cmd,oo):
+            
+    def exeman(self, name, cmd, oo):
         ff = yaml.safe_load(open(f'modules/{name}/run.yaml','r'))
         oo['domain'] = ur(oo['url']).netloc
         oc = oo.copy()
@@ -52,10 +54,13 @@ class MLoader:
         if len(sres) > 0:
             return resu
         return 
-    def run(self,opts,r):
-        opt = opts.copy() # copy user options
+    
+    def run(self, opts : dict, r):
+        # copy user options
+        opt = opts.copy() 
         with concurrent.futures.ThreadPoolExecutor(max_workers=opts['threads']) as executor:
             mres = list()
+            
             for url in opts['urls']:
                 opt['url'] = url
                 for n,module in self.scripts.items():
@@ -66,6 +71,7 @@ class MLoader:
                     else:
                         mres.append(executor.submit(module.main,opt))
                 opt = opts.copy()
+                
             for future in concurrent.futures.as_completed(mres):
                 res = future.result()
                 if res:

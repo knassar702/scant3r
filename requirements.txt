@@ -4,5 +4,4 @@ flask
 jinja2
 Flask-Limiter
 colorama
-flasgger
 pyyaml

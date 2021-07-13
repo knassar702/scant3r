@@ -9,48 +9,56 @@ import os,sys
 if sys.version_info < (3, 6):
     print('[-] Scant3r requires python >= 3.6')
     sys.exit()
+    
 import colorama
-from core.libs import Args,http,logo,Colors,MLoader
+from core.libs import Args, Http, Colors, MLoader, logo
 from core.api import Server
-from urllib.parse import urlparse,urljoin
+from urllib.parse import urlparse, urljoin
 
 colorama.init()
 # set the path of scant3r folder
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Load user args
-a = Args()
-opts = a.start()
+opts = Args().get_args()
 
-if opts['nologo'] != False:
+# Display Logo
+if opts['nologo'] == False:
     logo()
 
 # Start Module Loader Class
 M = MLoader()
 
 if __name__ == '__main__':
+    # launch the server with the API
     if opts['api']:
         app = Server(opts)
         app.run()
         sys.exit()
+    
+    # If no urls get urls from pipe 
     if len(opts['urls']) <= 0:
-        # get urls from pipe
         for url in sys.stdin:
             opts['urls'].append(url.rstrip())
-    # (-g option) , add famouse parameters
+        
+    # (-g option) , add famous parameters
     if opts['genparam']:
             np = 'q=&searchFor=&query=&Searchfor=goButton=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist=&user=&username=&group='
             for url in opts['urls']:
                 url = url.rstrip()
                 ind = opts['urls'].index(url)
+                
                 if len(urlparse(url).query) > 0:
                     np = '&{}'.format(np)
                 else:
                     np = '?{}'.format(np)
+                    
                 opts['urls'][ind] = '{url}{np}'.format(url=url,np=np)
+    
     if opts['modules']:
         # load modules
-        for MM in opts['modules']:
-            M.get(MM)
+        for module in opts['modules']:
+            M.get(module)
+    
         # start all modules (main function)
-        M.run(opts,http(opts))
+        M.run(opts, Http(opts))
