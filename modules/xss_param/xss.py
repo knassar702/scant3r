@@ -25,6 +25,7 @@ class Scan:
             v = self.reflect(self.opts['url'],method=method)
             if len(v) > 0:
                 for payload in self.payloads:
+                    payload = payload.rstrip()
                     for nurl in insert_to_params_name(self.opts['url'],urlencoder(payload)):
                         if method == 'GET':
                             r = http.send(method,nurl)
