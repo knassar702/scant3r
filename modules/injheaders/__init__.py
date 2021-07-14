@@ -35,10 +35,10 @@ class Scan:
                                 else:
                                     try:
                                         int(matcher[0]['text'])
-                                        if payload in r.content.decode('utf-8'):
+                                        if payload in r.content.decode('cp1252'):
                                             return alert_bug('INJHEADERS',r,Match=matcher[0]['text'],regex=True,payload=payload,header=h)
                                     except:
-                                        if matcher[0]['text'] in r.content.decode('utf-8'):
+                                        if matcher[0]['text'] in r.content.decode('cp1252'):
                                             return alert_bug('INJHEADERS',r,Match=matcher['text'],regex=True,payload=payload,header=h)
                         finally:
                                 headers[h] = v
