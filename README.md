@@ -11,7 +11,7 @@
   <a href="https://github.com/knassar702/scant3r/wiki/Usage">Usage</a> •
   <a href="https://github.com/knassar702/scant3r/wiki/FAQ">FAQ</a> •
   <a href="https://github.com/knassar702/scant3r/wiki/for-developers">For Developers</a> •
-  <a href="https://github.com/knassar702/scant3r#Media">Media</a>
+  <a href="https://github.com/knassar702/scant3r#Media">Media</a> •
   <a href="https://github.com/knassar702/scant3r#Collaborators">Collaborators</a>
 </p>
 
@@ -61,6 +61,10 @@ $ ./scant3r.py -h
 * [@0xflotus](https://github.com/0xflotus)
 * [@pdelteil](https://github.com/pdelteil)
 * [@oppsec](https://github.com/oppsec)
+#### How to Contribute to the Project ?
+* fork this repo and make sure to read devs wikie
+* create new branch and add your changes and make pull requets
+* please please write your changes with clean code 🙆‍♂️
 
 ## License
 * [GPL 3v](https://github.com/knassar702/scant3r/blob/master/LICENSE)
