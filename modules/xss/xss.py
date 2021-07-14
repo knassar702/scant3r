@@ -41,6 +41,7 @@ class Scan:
                             self.ref.append(wp)
             for rp in self.ref:
                 for P in self.payloads:
+                    P = P.rstrip() # remove new lines from payloads 
                     nurl = rp.replace(txt,P)
                     if i == 'GET':
                         r = self.http.send(i,nurl)
