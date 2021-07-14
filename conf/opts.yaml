@@ -11,7 +11,7 @@ headers:
 delay:
   - option: 
     - '-s'
-    - "--disable-ssl-check"
+    - '--sleep'
   - type: int
   - default: 0
   - save_content: true
