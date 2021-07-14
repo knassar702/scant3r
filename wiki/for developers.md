@@ -14,4 +14,4 @@ this a quike describa about file & functions job
 * **core/api/api.py** - the api of scant3r , the idea when scant3r api start will parse all modules files and try to get api.py file if the file there will give the module a id for scan
 
 
-here about how to write your own scant3r module https://github.com/knassar702/scant3r/wiki/write-module-for-api
+here about how to write your own scant3r module https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module
