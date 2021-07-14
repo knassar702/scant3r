@@ -10,10 +10,8 @@ import (
 	"strings"
 	"sync"
 	"time"
-
 	"github.com/gookit/color"
 	"github.com/jessevdk/go-flags"
-	"github.com/mbndr/figlet4go"
 )
 
 // Setting Options For Args
@@ -53,11 +51,6 @@ func main() {
 		fmt.Println(erColor("File Not Found"))
 		return
 	}
-	// Print the OutPut Banner
-	banner()
-	fmt.Println("Starting...")
-	time.Sleep(time.Duration(3) * time.Second)
-	fmt.Println("\n")
 	// Start reading the file and pass urls channel to function to store the lines on it
 	urls := getlines(filename)
 	// set the WaitGroup
@@ -140,23 +133,4 @@ func isExists(filename string) bool {
 	return true
 }
 
-func banner() {
-	ascii := figlet4go.NewAsciiRender()
-	options := figlet4go.NewRenderOptions()
-	options.FontColor = []figlet4go.Color{
-		figlet4go.ColorGreen,
-		figlet4go.ColorYellow,
-		figlet4go.ColorCyan,
-	}
 
-	renderStr, _ := ascii.RenderOpts("CNGO", options)
-	fmt.Print(renderStr)
-	we := center("v1, author: @yghonem14")
-	fmt.Println(we)
-}
-
-func center(str string) string {
-	ss, _ := fmt.Printf(fmt.Sprintf("%%-%ds", 80/2), fmt.Sprintf(fmt.Sprintf("%%%ds", 80/2), str))
-	text := string(ss)
-	return strings.Trim(text, "(")
-}

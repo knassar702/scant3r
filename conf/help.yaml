@@ -7,6 +7,7 @@ Wiki: |-
     \t- https://github.com/knassar702/scant3r/wiki/Usage
     \t[ Write API Module ]
     \t- https://github.com/knassar702/scant3r/wiki/write-module-for-api
+    
 Examples: |-
     \n\t[ simple scan #XSS ]
     \t$ echo 'http://testphp.vulnweb.com/search.php?test=query&searchFor=test&goButton=go' | ./scant3r.py -m xss -w 100 -R
@@ -24,5 +25,5 @@ TIPS: |-
     \t$ echo http://google.com/search?q= |./scant3r.py -m reflect -n
     \t[How to Find sensitive files by using ScanT3r]
     \t$ cat subdomains.txt | python3 scant3r.py -m paths
-    \t[Find Blind XSS With ScanT3r]
+    \t[Find Blind XSS with ScanT3r (headers,parameters name/value)]
     \t$ cat urls.txt | ./scant3r.py -m xss,xss_param,injheaders -b example.xss.ht -w 100

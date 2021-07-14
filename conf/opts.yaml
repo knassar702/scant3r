@@ -1,136 +1,190 @@
 headers:
-    - option: '-H'
-    - type: 'string'
-    - save_content: true
-    - help: "add custom header (ex:-H='Cookies: test=1')"
-    - default: '{}'
-    - exec: 'self.headers = extractHeaders(opts.headers)'
+  - option: 
+    - '-H'
+    - "--header"
+  - type: string
+  - default: '{}'
+  - save_content: true
+  - help: "add custom header (ex:-H='Cookies: test=1')"
+  - exec: "dict_args['headers'] = extractHeaders(value)"
+
 delay:
-    - option: '-s'
-    - type: 'int'
-    - save_content: true
-    - help: 'number of seconds to hold between each HTTP(S) requests.'
-    - default: 0
-    - exec: 'self.delay = int(opts.delay)'
+  - option: 
+    - '-s'
+    - '--sleep'
+  - type: int
+  - default: 0
+  - save_content: true
+  - help: 'number of seconds to hold between each HTTP(S) requests.'
+  - exec: "dict_args['delay'] = int(value)"
 
+content_types:
+    - option:
+        - '-c'
+        - '--content-types'
+    - type: list
+    - default: plane
+    - save_content: true
+    - help: 'content type support'
+    - exec: |
+        idkk = []
+        try:
+            idk = yaml.safe_load(open('conf/content_types.yaml','r'))
+            for i in value.split(','):
+                try:
+                    i = idk[i]
+                    for c in i:
+                        idkk.append(c)
+                except:
+                    pass
+        finally:
+            dict_args["content_types"] = idkk
 api:
-    - option: '-a'
-    - type: false
-    - save_content: false
-    - help: 'Start Scant3r API'
-    - default: false
-    - exec: |
-        self.api = True
-
+  - option: 
+    - '-a'
+    - '--api'
+  - type: boolean
+  - default: false
+  - save_content: false
+  - help: 'Start Scant3r API'
+  - exec: "dict_args['api'] = True"
+      
 methods:
-    - option: '-y'
-    - type: 'string'
-    - save_content: true
-    - help: 'Methods Allowed on your target'
-    - default: 'GET,POST'
-    - exec: |
-        self.methods = opts.methods.split(",")
+  - option: 
+    - '-y'
+    - '--method'
+  - type: string
+  - default: 'GET,POST'
+  - save_content: true
+  - help: 'Methods Allowed on your target'
+  - exec: | 
+      dict_args['methods'] = value.split(",")
+    
 
 modules:
-    - option: '-m'
-    - help: 'run scant3r module (ex: -m=example)'
-    - type: 'string'
-    - default: []
-    - save_content: true
-    - exec: |
-        self.modules = opts.modules.split(",")
+  - option: 
+    - '-m'
+    - '--module'
+  - help: 'run scant3r module (ex: -m=example)'
+  - type: string
+  - default: '[]'
+  - save_content: true
+  - exec: |
+      dict_args['modules'] = value.split(",")
 
-
-nologo:
-    - option: '-n'
-    - help: 'Silent Mode'
-    - type: false
-    - default: false
-    - save_content: false
-    - exec: 'self.nologo = opts.nologo'
+nologo :
+  - option: 
+    - '-n'
+    - '--no-logo'
+  - help: 'Silent Mode'
+  - type: boolean
+  - default: false
+  - save_content: false
+  - exec: "dict_args['nologo'] = value"
+  
 targetlist:
-    - option: '-l'
-    - type: 'string'
-    - default: false
-    - help: 'add targets list'
-    - save_content: true
-    - exec: |
+  - option: 
+    - '-l'
+    - '--list'
+  - type: boolean
+  - default: False
+  - help: 'add targets list'
+  - save_content: true
+  - exec: |
         try:
-            self.targetlist = open(opts.targetlist,'r')
-            for url in self.targetlist:
-                self.urls.append(url.rstrip())
+          dict_args['targetlist'] = open(value,'r')
+          for url in dict_args['targetlist']:
+            dict_args['urls'].append(url.rstrip())
         except Exception as e:
             print(e)
             exit()
 
 genparam:
-    - option: '-g'
-    - type: false
-    - default: false
-    - help: "Generate Famouse Parameters if your url dosen't have parameters"
-    - save_content: false
-    - exec: 'self.genparam = opts.genparam'
-proxy:
-    - option: '-p'
-    - help: 'Forward all requests to proxy'
-    - type: 'string'
-    - default: '{}'
-    - save_content: true
-    - exec: 'self.proxy = {"http":opts.proxy,"https":opts.proxy}'
+  - option: 
+    - '-g'
+    - '--add-parameters'
+  - type: boolean
+  - default: false
+  - help: "Generate Famouse Parameters if your url dosen't have parameters"
+  - save_content: false
+  - exec: "dict_args['genparam'] = value"
 
-redirect:
-    - option: '-r'
-    - type: false
-    - default: false
-    - hlep: 'Follow redirects'
-    - save_content: false
-    - exec: 'self.redirect = opts.redirect'
+proxy:
+  - option: 
+    - '-p'
+    - '--proxy'
+  - help: 'Forward all requests to proxy'
+  - type: string
+  - default: '{}'
+  - save_content: true
+  - exec: "dict_args['proxy'] = {'http':value,'https':value}"
+
+allow_redirects:
+  - option: 
+    - '-r'
+    - '--follow-redirects'
+  - type: boolean
+  - default: false
+  - help: 'Follow redirects'
+  - save_content: false
+  - exec: "dict_args['allow_redirects'] = value"
 
 blindxss:
-    - option: '-b'
-    - type: 'string'
-    - help: 'add your xsshunter host (or any xss host)'
-    - default: false
-    - save_content: true
-    - exec: 'self.blindxss = opts.blindxss'
+  - option:
+    - '-b'
+    - '--blind-host'
+  - type: string
+  - default: ''
+  - help: 'add your xsshunter host (or any xss host)'
+  - save_content: true
+  - exec: "dict_args['blindxss'] = value"
 
 debug:
-    - option: '-d'
-    - help: 'debugging mode (show requests/responses)'
-    - type: false
-    - default: false
-    - save_content: false
-    - exec: 'self.debug = True'
+  - option: 
+    - '-d'
+    - '--debug'
+  - help: 'debugging mode (show requests/responses)'
+  - type: boolean
+  - default: false
+  - save_content: false
+  - exec: "dict_args['debug'] = True"
 
 host:
-    - option: '-x'
-    - type: 'string'
-    - default: false
-    - help: 'add your host (burpcall,etc..)'
-    - save_content: true
-    - exec: 'self.host = opts.host'
+  - option: 
+    - '-x'
+    - '--host'
+  - type: string
+  - default: ''
+  - help: 'add your host (burpcall,etc..)'
+  - save_content: true
+  - exec: "dict_args['host'] = value"
 
-ragent:
-    - option: '-R'
-    - type: false
-    - default: false
-    - help: 'use random user agent'
-    - save_content: false
-    - exec: 'self.ragent = True'
+random_agents:
+  - option: 
+    - '-R'
+    - '--random-agents'
+  - type: boolean
+  - default: false
+  - help: 'use random user agent'
+  - save_content: false
+  - exec: "dict_args['random_agents'] = True"
 
 threads:
-    - option: '-w'
-    - type: 'int'
-    - help: 'Number of workers (default: 50)'
-    - save_content: true
-    - default: 50
-    - exec: 'self.threads = opts.threads'
+  - option: 
+    - '-w'
+    - '--workers'
+  - type: int
+  - default: 50
+  - help: 'Number of workers (default: 50)'
+  - save_content: true
+  - exec: "dict_args['threads'] = value"
 
 timeout:
-    - option: '-t'
-    - type: 'int'
-    - default: 10
-    - help: 'set connection timeout (default: 10)'
-    - save_content: true
-    - exec: 'self.timeout = opts.timeout'
-
+  - option: 
+    - '-t'
+    - '--timeout'
+  - type: int
+  - default: 10
+  - help: 'set connection timeout (default: 10)'
+  - save_content: true
+  - exec: "dict_args['timeout'] = value"

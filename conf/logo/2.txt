@@ -5,4 +5,4 @@
 /____/\___/\__,_/_/ /_/\__/____/_{rest}/ 
 
 {info} Coded by: Khaled Nassar @knassar702
-{info} Version: 0.7#Beta{rest}
+{info} Version: 0.8#Beta{rest}

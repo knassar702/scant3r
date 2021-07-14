@@ -5,4 +5,4 @@
 {green}/___/\__/\_,_/_//_/\__/____/_/{rest}
 
 {info} Coded by: Khaled Nassar @knassar702
-{info} Version: 0.7#Beta
+{info} Version: 0.8#Beta

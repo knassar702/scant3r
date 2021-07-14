@@ -22,13 +22,13 @@ def start(opts,url,http,methods=['GET','POST']):
                     for i in match[0].values():
                         mm = i
                     c = re.compile(mm)
-                    c = c.findall(dump_response(r).decode())
+                    c = c.findall(dump_response(r))
                     if len(c) > 0:
                         vv = True
                 else:
                     for i in match[0].values():
                         mm = i
-                    if mm in dump_response(r).decode():
+                    if mm in dump_response(r):
                         vv = True
                 if vv:
                     alert_bug('SSRF',r,POC=nurl)

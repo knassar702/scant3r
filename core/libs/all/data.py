@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.7#Beta'
+__version__ = '0.8#Beta'
 
 import re
-import sys
 import binascii
 import random
 import string
-from urllib.parse import urljoin,urlparse
+from urllib.parse import urljoin, urlparse
 from .colors import *
-
-
 
 
 def random_str(num):
@@ -20,32 +17,32 @@ def random_str(num):
 
 def dump_request(request):
     if request == 0:
-        return b''
-    body = b""
-    body += request.request.method.encode("utf8")
-    body += b" "
-    body += request.request.url.encode("utf8") + b' HTTP/1.1'
-    body += b"\r\n"
+        return ''
+    body = ""
+    body += request.request.method
+    body += " "
+    body += request.request.url + ' HTTP/1.1'
+    body += "\n"
 
     for header,value in request.request.headers.items():
-        body += header.encode("utf8") + b": " + value.encode("utf8") + b"\r\n"
+        body += header + ": " + value + "\n"
 
     if request.request.body != None:
-        body += b'\n' + str(request.request.body).encode("utf8")
+        body += '\n' + str(request.request.body)
     return body
 
 def dump_response(request):
     if request == 0:
-        return b''
-    body = b"HTTP /1.1 "
-    body += str(request.status_code).encode("utf8")
-    body += b" "
-    body += request.reason.encode("utf8")
-    body += b"\r\n"
+        return ''
+    body = "HTTP /1.1 "
+    body += str(request.status_code)
+    body += " "
+    body += request.reason
+    body += "\n"
     for header,value in request.headers.items():
-        body += header.encode("utf8") + b": " + value.encode("utf8") + b"\r\n"
-    body += b'\r\n\r\n'
-    body += request.content
+        body += header + ": " + value + "\n"
+    body += '\n\n'
+    body += request.text
     return body
 
 def URLENCODE(data):
@@ -95,6 +92,7 @@ def force_insert_to_params_urls(url,txt):
         return list()
     finally:
         return our
+
 def dump_params(url):
     return urlparse(url).query
 

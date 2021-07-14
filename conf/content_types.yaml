@@ -1,0 +1,24 @@
+# name of content type list:
+#    - content type 1
+#     - content type 2
+
+plane:
+    - application/x-www-form-urlencoded
+    - text/html
+
+xml:
+    - text/xml
+    - application/xml
+    - application/rss-xml
+    - appliction/image+svg
+    - application/xhtml-xml
+
+json:
+    - application/json
+
+form:
+    - multipart/form-data
+
+javascript:
+    - application/javascript
+    - text/javascript
