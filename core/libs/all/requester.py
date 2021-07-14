@@ -29,19 +29,19 @@ class Http:
     def __init__(self, opts : dict):
         self.timeout = opts['timeout']
         self.headers = opts['headers']
-        self.ragent = opts['ragent']
+        self.random_agents = opts['random_agents']
         self.debug = opts['debug']
         self.proxy = opts['proxy']
-        self.redirect = opts['redirect']
+        self.allow_redirects = opts['allow_redirects']
         self.delay = opts['delay']
         self.count = 0
     
     # Send a request 
-    def send(self, method='GET', url=None, body={}, headers={}, redirect=False, org=True):
+    def send(self, method='GET', url=None, body={}, headers={}, allow_redirects=False, org=True):
         try:
             # Generate user agent 
             a = Agent()
-            if self.ragent:
+            if self.random_agents:
                 a.load()
             
             # Add user agent to headers 
@@ -53,10 +53,10 @@ class Http:
                 for h,v in self.headers.items():
                     headers[h] = v
             
-            # Enable redirection        
-            redirect = False
-            if self.redirect:
-                redirect = True                
+            # follow 302 redirects   
+            allow_redirects = False
+            if self.allow_redirects:
+                allow_redirects = True                
             
             # Set timeout
             timeout = 10
@@ -83,13 +83,13 @@ class Http:
                     url,
                     data=body,
                     headers=headers,
-                    allow_redirects=redirect,
+                    allow_redirects=allow_redirects,
                     verify=False,
                     timeout=timeout,
                     proxies=proxy)
-            self.count += 1
+            self.count += 1 # number of request
             
-            if self.debug:
+            if self.debug: # show request and response (-d option)
                 print(f'--- [#{self.count}] Request ---')
                 print(dump_request(req).decode())
                 print('\n---- RESPONSE ----')
@@ -101,8 +101,8 @@ class Http:
             if self.debug:
                 print(e)
             return 0
-    
-    def custom(self, method='GET', url=None, body={}, headers={}, timeout={}, redirect=False, proxy={}):
+    # send a request with custom options (without user options)
+    def custom(self, method='GET', url=None, body={}, headers={}, timeout={}, allow_redirects=False, proxy={}):
         try:
             time.sleep(self.delay)
             req = Request(method, url, data=body, headers=headers)
@@ -110,7 +110,7 @@ class Http:
             res = s.send(
                 req.prepare(),
                 timeout=timeout,
-                allow_redirects=redirect,
+                allow_redirects=allow_redirects,
                 verify=False,
                 proxies=proxy
             )

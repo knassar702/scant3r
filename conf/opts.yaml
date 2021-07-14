@@ -98,7 +98,7 @@ proxy:
   - save_content: true
   - exec: "dict_args['proxy'] = {'http':value,'https':value}"
 
-redirect:
+allow_redirects:
   - option: 
     - '-r'
     - '--follow-redirects'
@@ -106,7 +106,7 @@ redirect:
   - default: false
   - help: 'Follow redirects'
   - save_content: false
-  - exec: "dict_args['redirect'] = value"
+  - exec: "dict_args['allow_redirects'] = value"
 
 blindxss:
   - option:
@@ -138,7 +138,7 @@ host:
   - save_content: true
   - exec: "dict_args['host'] = value"
 
-ragent:
+random_agents:
   - option: 
     - '-R'
     - '--random-agents'
@@ -146,7 +146,7 @@ ragent:
   - default: false
   - help: 'use random user agent'
   - save_content: false
-  - exec: "dict_args['ragent'] = True"
+  - exec: "dict_args['random_agents'] = True"
 
 threads:
   - option: 
