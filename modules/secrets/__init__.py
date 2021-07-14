@@ -49,7 +49,7 @@ class Findme:
                 if r != 0: # 0 = Connection Error
                     for option,match in regexs.items():
                         c = re.compile(rr.replace('{{REGEX}}',match))
-                        mm = c.findall(r.content.decode())
+                        mm = c.findall(r.text)
                         if len(mm) > 0:
                             alert_bug('SECRET',r,Found=option,Match=mm)
             return list()

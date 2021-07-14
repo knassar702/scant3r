@@ -21,7 +21,7 @@ def alert_bug(name,http,**kwargs):
     f += f'''
 ---- Request ----
 {c.yellow}
-{dump_request(http).decode()}
+{dump_request(http)}
 {c.rest}
 --------
 '''
@@ -44,6 +44,6 @@ def alert_bug(name,http,**kwargs):
     ooo.write(f)
     ooo.close()
     return {'Name':name,
-            'request':dump_request(http).decode(),
+            'request':dump_request(http),
             'output':kwargs
             }

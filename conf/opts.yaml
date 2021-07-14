@@ -18,6 +18,27 @@ delay:
   - help: 'number of seconds to hold between each HTTP(S) requests.'
   - exec: "dict_args['delay'] = int(value)"
 
+content_types:
+    - option:
+        - '-c'
+        - '--content-types'
+    - type: list
+    - default: plane
+    - save_content: true
+    - help: 'content type support'
+    - exec: |
+        idkk = []
+        try:
+            idk = yaml.safe_load(open('conf/content_types.yaml','r'))
+            for i in value.split(','):
+                try:
+                    i = idk[i]
+                    for c in i:
+                        idkk.append(c)
+                except:
+                    pass
+        finally:
+            dict_args["content_types"] = idkk
 api:
   - option: 
     - '-a'

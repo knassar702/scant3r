@@ -12,7 +12,7 @@ def scan(http,url,methods=['GET','POST']):
                 else:
                     r = http.send(method,u.split('?')[0],body=urlparse(u).query)
                 if r != 0: # 0 = connection error
-                    if match in dump_response(r).decode('utf-8'):
+                    if match in dump_response(r):
                         return {
                                 'payload':payload.replace('\n','%0a').replace('\t','%0d'),
                                 'match':match,

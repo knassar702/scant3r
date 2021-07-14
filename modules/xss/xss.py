@@ -32,12 +32,12 @@ class Scan:
                 if i != 'GET':
                     r = self.http.send(i,wp.split('?')[0],body=urlparse(wp).query)
                     if r != 0:
-                        if txt in r.content.decode('utf-8'):
+                        if txt in r.text:
                             self.ref.append(wp)
                 else:
                     r = self.http.send(i,wp)
                     if r != 0:
-                        if txt in r.content.decode('utf-8'):
+                        if txt in r.text:
                             self.ref.append(wp)
             for rp in self.ref:
                 for P in self.payloads:
@@ -48,7 +48,7 @@ class Scan:
                     else:
                         r = self.http.send(i,nurl.split('?')[0],body=urlparse(nurl).query)
                     if r != 0:
-                        if P in r.content.decode('utf-8'):
+                        if P in r.text:
                             self.bugs.append({
                                 'params':urlparse(nurl).query,
                                 'payload':P,

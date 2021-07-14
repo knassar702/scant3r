@@ -19,7 +19,7 @@ def start(host,http):
                         print(f'{c.good} Found :> {host}')
                         found.append(host)
                 except:
-                    if msg in r.content.decode('utf-8'):
+                    if msg in r.text:
                         print(f'{c.good} Found :> {host}')
                         found.append(host)
         except:

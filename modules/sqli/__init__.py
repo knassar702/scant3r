@@ -19,7 +19,7 @@ def start(op,http):
                 for v in sql_err:
                     v = v.rstrip()
                     if len(v.rstrip()) >= 1:
-                        hmm = findall(v,r.content.decode('utf-8'))
+                        hmm = findall(v,r.text)
                         for i in hmm:
                             if i:
                                 return {

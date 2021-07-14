@@ -6,9 +6,10 @@ __version__ = '0.7#Beta'
 from requests import Request, Session, request, packages
 from .data import post_data, dump_request, dump_response
 from urllib.parse import urlparse
-import time, random
+from ftfy import fix_encoding
+import time, random, json
 
-packages.urllib3.disable_warnings()
+packages.urllib3.disable_warnings() # ignore ssl warning messages
 
 # Create an User Agent 
 # Choice one user agent from  the text file agents.txt 
@@ -35,9 +36,10 @@ class Http:
         self.allow_redirects = opts['allow_redirects']
         self.delay = opts['delay']
         self.count = 0
+        self.content_types = opts['content_types']
 
     # Send a request 
-    def send(self, method='GET', url=None, body={}, headers={}, allow_redirects=False, org=True):
+    def send(self, method = 'GET', url= None, body={}, headers={}, allow_redirects=False, org=True):
         try:
             # Generate user agent 
             user_agents = Agent()
@@ -75,9 +77,12 @@ class Http:
                 if method != 'GET' and not body:
                     body = post_data(urlparse(url).query)
                     url = url.split('?')[0]
-
-            time.sleep(self.delay)
-            req = request(
+            if self.content_types:
+                for content_type in self.content_types:
+                    if content_type.split('/')[1] == 'json':
+                        body = json.dumps(body) # convert query parameters to json
+                    headers['Content-Type'] = content_type
+                    req = request(
                     method,
                     url,
                     data=body,
@@ -86,15 +91,25 @@ class Http:
                     verify=False,
                     timeout=timeout,
                     proxies=proxy)
+            else:
+                    req = request(
+                    method,
+                    url,
+                    data=body,
+                    headers=headers,
+                    allow_redirects=allow_redirects,
+                    verify=False,
+                    timeout=timeout,
+                    proxies=proxy)
+            time.sleep(self.delay)
             self.count += 1 # number of request
-
+            req.encoding = req.apparent_encoding
             if self.debug: # show request and response (-d option)
                 print(f'--- [#{self.count}] Request ---')
-                print(dump_request(req).decode())
+                print(dump_request(req))
                 print('\n---- RESPONSE ----')
-                print(dump_response(req).decode())
+                print(dump_response(req))
                 print('--------------------\n\n')
-
             return req
         except Exception as e:
             if self.debug:

@@ -16,7 +16,7 @@ class Scan:
             else:
                 r = self.http.send(method,u.split('?')[0],body=urlparse(u).query)
             if r != 0:
-                if txt in r.content.decode('utf-8'):
+                if txt in r.text:
                     ref.append(txt)
         return ref
     def start(self,methods=['GET','POST']):
@@ -32,6 +32,6 @@ class Scan:
                         else:
                             r = http.send(method,self.opts['url'].split('?')[0],body=urlparse(nurl).query)
                         if r != 0:
-                            if payload in r.content.decode('utf-8'):
+                            if payload in r.text:
                                 print(f'[XSS Parameter Name: {method}] :> {nurl}\n')
                                 return {method:nurl}

@@ -20,7 +20,7 @@ class Reflect:
                     r = http.send(method,nurl)
                 else:
                     r = http.send(method,nurl.split('?')[0],body=urlparse(nurl).query)
-                if txt in r.content.decode('utf-8'):
+                if txt in r.text:
                     self.found[nurl] = method
             return self.found
 def main(opts,r):

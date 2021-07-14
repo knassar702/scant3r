@@ -19,11 +19,11 @@ def start(op,http):
                     hm[v] = vv
             if 'part' in hm.keys():
                 if hm['part'] == 'request':
-                    part = dump_request(r).decode()
+                    part = dump_request(r)
                 else:
-                    part = dump_response(r).decode()
+                    part = dump_response(r)
             else:
-                part = dump_response(r).decode()
+                part = dump_response(r)
             if hm['regex']:
                 m = findall(hm['text'],part)
                 for ff in m:

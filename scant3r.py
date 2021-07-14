@@ -16,7 +16,7 @@ from core.api import Server
 from urllib.parse import urlparse, urljoin
 
 colorama.init()
-# set the path of scant3r folder
+# set the path to scant3r folder
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Load user args
@@ -30,14 +30,14 @@ if opts['nologo'] == False:
 M = MLoader()
 
 if __name__ == '__main__':
-    # launch the server with the API
+    # launch scant3r api server
     if opts['api']:
         app = Server(opts)
         app.run()
         sys.exit()
     
-    # If no urls get urls from pipe 
     if len(opts['urls']) <= 0:
+        # listen to pipe
         for url in sys.stdin:
             opts['urls'].append(url.rstrip())
         

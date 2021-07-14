@@ -29,16 +29,16 @@ class Scan:
                             if r != 0:
                                 if matcher[1]['regex']:
                                     c = re.compile(matcher[0]['text'])
-                                    c = c.findall(dump_response(c).decode())
+                                    c = c.findall(dump_response(c))
                                     if c:
                                         return alert_bug('INJHEADERS',r,Match=matcher[0]['text'],regex=True,payload=payload,header=h)
                                 else:
                                     try:
                                         int(matcher[0]['text'])
-                                        if payload in r.content.decode('utf-8'):
+                                        if payload in r.text:
                                             return alert_bug('INJHEADERS',r,Match=matcher[0]['text'],regex=True,payload=payload,header=h)
                                     except:
-                                        if matcher[0]['text'] in r.content.decode('utf-8'):
+                                        if matcher[0]['text'] in r.text:
                                             return alert_bug('INJHEADERS',r,Match=matcher['text'],regex=True,payload=payload,header=h)
                         finally:
                                 headers[h] = v

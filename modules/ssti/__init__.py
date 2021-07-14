@@ -17,7 +17,7 @@ class Scan:
                     else:
                         r = self.http.send(method,url.split('?')[0],body=urlparse(n).query)
                     if r != 0: # 0 = Connection error:
-                        if match in r.content.decode('utf-8'):
+                        if match in r.text:
                             return {
                                     'http':r,
                                     'target':n,
