@@ -2,7 +2,7 @@
 
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.7#Beta'
+__version__ = '0.8#Beta'
 
 import importlib
 import concurrent.futures

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.7#Beta'
+__version__ = '0.8#Beta'
 
 from .colors import Colors as c
 from .data import dump_request
