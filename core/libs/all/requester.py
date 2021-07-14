@@ -35,48 +35,47 @@ class Http:
         self.allow_redirects = opts['allow_redirects']
         self.delay = opts['delay']
         self.count = 0
-    
+
     # Send a request 
     def send(self, method='GET', url=None, body={}, headers={}, allow_redirects=False, org=True):
         try:
             # Generate user agent 
-            a = Agent()
+            user_agents = Agent()
             if self.random_agents:
-                a.load()
-            
+                user_agents.load()
+
             # Add user agent to headers 
             if 'User-agent' not in headers.keys():
-                headers['User-agent'] = a.random
-            
+                headers['User-agent'] = user_agents.random
+
             # set headers     
             if self.headers:
                 for h,v in self.headers.items():
                     headers[h] = v
-            
+
             # follow 302 redirects   
             allow_redirects = False
             if self.allow_redirects:
-                allow_redirects = True                
-            
+                allow_redirects = True
+
             # Set timeout
             timeout = 10
             if self.timeout:
                 timeout = self.timeout
-            
+
             # set proxy 
             proxy = {}
             if type(self.proxy) == dict:
                 proxy = self.proxy
-                
+            # convert body to parameters
             if org:
-                body = {}
                 if body:
                     body = post_data(body)
 
                 if method != 'GET' and not body:
                     body = post_data(urlparse(url).query)
                     url = url.split('?')[0]
-                        
+
             time.sleep(self.delay)
             req = request(
                     method,
@@ -88,14 +87,14 @@ class Http:
                     timeout=timeout,
                     proxies=proxy)
             self.count += 1 # number of request
-            
+
             if self.debug: # show request and response (-d option)
                 print(f'--- [#{self.count}] Request ---')
                 print(dump_request(req).decode())
                 print('\n---- RESPONSE ----')
                 print(dump_response(req).decode())
                 print('--------------------\n\n')
-            
+
             return req
         except Exception as e:
             if self.debug:

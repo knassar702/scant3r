@@ -27,7 +27,7 @@ def alert_bug(name,http,**kwargs):
 '''
     target = urlparse(http.request.url).netloc
     print(f)
-    if isfile(f'log/{target}') == False:
+    if isfile(f'log/{target}') == True:
         mkdir(f'log/{target}')
     ooo = open(f'log/{target}/{name}_{random.randint(1,100)}.txt','w')
     f = re.compile(r'''
