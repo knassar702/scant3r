@@ -2,7 +2,7 @@
 
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.8#Beta'
+__version__ = '0.7#Beta'
 
 import importlib
 import concurrent.futures
@@ -23,18 +23,22 @@ class MLoader:
             ih = isfile(f'modules/{name}/run.yaml')
             cki = isfile(f'modules/{name}/__init__.py')
             
+            # if Not __init__.py and run.yaml present 
+            # Execution No Python Script
             if cki == False and ih == True:
                 ff = yaml.safe_load(open(f'modules/{name}/run.yaml','r'))
                 name = f'$EX${name}'
                 if ourlist:
                     self.scripts[name] = ff['exec']
-                    
+
+            # If file __init__.py in modules
             if cki == True:
                 name = f'modules.{name}'
+                # Import the modules and remove .py if need                
                 c = importlib.import_module(name.replace('.py',''))
                 if ourlist:
+                    # Add module to the dict
                     self.modules[name] = c
-
             return c
         except Exception as e:
             print(e)
@@ -56,22 +60,28 @@ class MLoader:
         return 
     
     def run(self, opts : dict, r):
-        # copy user options
-        opt = opts.copy() 
+        # Start threading
         with concurrent.futures.ThreadPoolExecutor(max_workers=opts['threads']) as executor:
             mres = list()
             
             for url in opts['urls']:
+                # copy user options
+                opt = opts.copy() 
                 opt['url'] = url
+                
+                # Execution of scripts 
                 for n,module in self.scripts.items():
                     mres.append(executor.submit(self.exeman,n.replace('$EX$','').replace('/','.'),module,opt))
-                for n,module in self.modules.items():
-                    if module.main.__code__.co_argcount >= 2:
-                        mres.append(executor.submit(module.main, opt,r))
-                    else:
-                        mres.append(executor.submit(module.main,opt))
-                opt = opts.copy()
                 
+                # Execution of modules     
+                for n,module in self.modules.items():
+                    # Check the number of argument needed by the module                     
+                    if module.main.__code__.co_argcount >= 2:
+                        mres.append(executor.submit(module.main, opt, r))
+                    else:
+                        mres.append(executor.submit(module.main, opt))
+            
+            # When the scan is completed
             for future in concurrent.futures.as_completed(mres):
                 res = future.result()
                 if res:
