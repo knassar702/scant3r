@@ -6,7 +6,6 @@ __version__ = '0.8#Beta'
 from requests import Request, Session, request, packages
 from .data import post_data, dump_request, dump_response
 from urllib.parse import urlparse
-from ftfy import fix_encoding
 import time, random, json
 
 packages.urllib3.disable_warnings() # ignore ssl warning messages
