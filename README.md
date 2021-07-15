@@ -2,8 +2,7 @@
   <br>
   <br>
   ScanT3r
-  <br>
-  
+  <br>  
 </h1>
 
 <p align="center">
@@ -72,6 +71,7 @@ $ ./scant3r.py -h
 ### Media 
 
 * **Version: 0.7/0.8**
+<img src='.src/scant3r.png'>
 
 
 <img src=.src/1.gif>
