@@ -50,7 +50,7 @@ class Server:
             pass
         else:
             user_args.append('-n')
-        os.execl(ex, ex, * sys.argv)
+        os.execl(exe, exe, * sys.argv)
         return
     def clearme(self):
         self.output = dict()
