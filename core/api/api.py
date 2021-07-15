@@ -44,7 +44,12 @@ class Server:
         default_limits=conf['limits']
         )
     def restart(self):
-        ex = sys.executable
+        exe = sys.executable
+        user_args = sys.argv
+        if '-n' in user_args or '--no-logo' in user_args:
+            pass
+        else:
+            user_args.append('-n')
         os.execl(ex, ex, * sys.argv)
         return
     def clearme(self):
