@@ -6,7 +6,7 @@ __version__ = '0.8#Beta'
 from .colors import Colors as c
 from .data import dump_request
 from urllib.parse import urlparse 
-from os.path import splitext,isfile
+from os.path import splitext
 from os import mkdir
 import random,re
 
@@ -27,11 +27,10 @@ def alert_bug(name,http,**kwargs):
 '''
     target = urlparse(http.request.url).netloc
     print(f)
-    if isfile(f'log/{target}') == True:
-        try:
-            mkdir(f'log/{target}')
-        except:
-            pass
+    try:
+        mkdir(f'log/{target}')
+    except:
+        pass
     ooo = open(f'log/{target}/{name}_{random.randint(1,100)}.txt','w')
     f = re.compile(r'''
     \x1B  # ESC
