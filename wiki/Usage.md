@@ -14,6 +14,10 @@ $ cat yourtargets.txt | ./scant3r.py -m injheaders -b yourxssht.xss.ht
 ```bash
 $ echo "http://testphp.vulnweb.com/search.php?test=query&searchFor=1&goButton=go" | python3 scant3r.py -R
 ```
+* support another content-type (eg: convert from query to json )
+```bash
+$ echo 'http://test.com/?test=1' | ./scant3r.py -m xss -c json
+```
 * add custom headers
 ```bash
 $ echo "http://testphp.vulnweb.com/search.php?test=query&searchFor=1&goButton=go" | python3 scant3r.py -H "Auth: U2NhblQzcgo=\nNew: True"
