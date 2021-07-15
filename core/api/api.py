@@ -2,7 +2,6 @@
 from flask import Flask,abort,request,jsonify,render_template
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from flasgger import Swagger, swag_from
 from werkzeug.security import generate_password_hash
 from glob import glob
 from importlib import import_module
@@ -67,8 +66,7 @@ class Server:
         if v:
             self.output[scanid].append(v)
     def index(self):
-        return swag
-        #return render_template('index.html',args=self.get_m())
+        return render_template('index.html',args=self.get_m())
     def getit(self):
         if self.check_token != True:
             if 'token' not in req_params.keys():
