@@ -7,7 +7,7 @@ from yaml import safe_load
 def start(host,http):
     h = host
     found = []
-    f = safe_load(open('modules/paths/conf.yaml','r'))
+    f = safe_load(open('modules/python/paths/conf.yaml','r'))
     for path,msg in f.items():
         host = urljoin(host,path)
         try:

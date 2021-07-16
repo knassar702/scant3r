@@ -10,12 +10,12 @@ class Scan:
         self.opts = opts
         self.http = r
         self.blind = list()
-        self.conf = safe_load(open('modules/injheaders/payloads.yaml','r'))
+        self.conf = safe_load(open('modules/python/injheaders/payloads.yaml','r'))
         for i in XSS(opts['blindxss']).blind:
             self.conf[i] = [{'text':i},{'regex':False}]
     def start(self,url,methods=['GET']):
         http = self.http
-        headers = safe_load(open('modules/injheaders/headers.yaml','r'))
+        headers = safe_load(open('modules/python/injheaders/headers.yaml','r'))
         for method in methods:
             for payload,matcher in self.conf.items():
                 for h,v in headers.copy().items():

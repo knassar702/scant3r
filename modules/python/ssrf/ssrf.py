@@ -8,7 +8,7 @@ from yaml import safe_load
 import re
 
 def start(opts,url,http,methods=['GET','POST']):
-    conf = safe_load(open('modules/ssrf/payloads.yaml'))
+    conf = safe_load(open('modules/python/ssrf/payloads.yaml'))
     for payload,match in conf.items():
         for method in methods:
             v = force_insert_to_params_urls(url,payload)
