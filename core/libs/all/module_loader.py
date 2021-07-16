@@ -9,6 +9,7 @@ import concurrent.futures
 import yaml
 from urllib.parse import urlparse as ur
 from os.path import splitext, isfile
+from glob import glob
 import subprocess
 
 class MLoader:
@@ -20,35 +21,40 @@ class MLoader:
     def get(self, name: str, ourlist: bool = True):
         try:
             c = None
-            ih = isfile(f'modules/{name}/run.yaml')
-            cki = isfile(f'modules/{name}/__init__.py')
-            
-            # if Not __init__.py and run.yaml present 
-            # Execution No Python Script
-            if cki == False and ih == True:
-                ff = yaml.safe_load(open(f'modules/{name}/run.yaml','r'))
-                name = f'$EX${name}'
-                if ourlist:
-                    self.scripts[name] = ff['exec']
-
-            # If file __init__.py in modules
-            if cki == True:
-                name = f'modules.{name}'
-                # Import the modules and remove .py if need                
-                c = importlib.import_module(name.replace('.py',''))
-                if ourlist:
-                    # Add module to the dict
-                    self.modules[name] = c
-            return c
+            for our_file in glob(f'modules/*/{name}'):
+                if type(our_file) is list:
+                    # remove duplicates module name
+                    our_file = our_file[0]
+                ih = isfile(f'{our_file}/run.yaml')
+                cki = isfile(f'{our_file}/__init__.py')
+                # if Not __init__.py and run.yaml present 
+                # Execution No Python Script
+                if cki == False and ih == True:
+                    ff = yaml.safe_load(open(f'{our_file}/run.yaml','r'))
+                    name = f'$EX${name}'
+                    if ourlist:
+                        self.scripts[name] = ff['exec']
+                # If file __init__.py in modules
+                if cki == True:
+                    name = f'modules.{our_file.split("/")[1]}.{name}'
+                    # Import the modules and remove .py if need    
+                    c = importlib.import_module(name)
+                    if ourlist:
+                        # Add module to the dict
+                        self.modules[name] = c
+                return c
         except Exception as e:
             print(e)
             
     def exeman(self, name, cmd, oo):
-        ff = yaml.safe_load(open(f'modules/{name}/run.yaml','r'))
+        module_folder = glob(f'modules/*/{name}/run.yaml')
+        if type(module_folder) is list:
+            module_folder = module_folder[0]
+        ff = yaml.safe_load(open(module_folder,'r'))
         oo['domain'] = ur(oo['url']).netloc
         oc = oo.copy()
         oc['ALL'] = oo.copy()
-        acmd = cmd.format(**oc).replace(r'$SCPATH',f'modules/{name}')
+        acmd = cmd.format(**oc).replace(r'$SCPATH',f'modules/{module_folder.split("/")[1]}/{name}')
         s = subprocess.Popen([acmd],shell=True, universal_newlines=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         sres,_err = s.communicate()
         resu = f'\n[MODULE-{name.upper()}] {acmd}\n[OUTPUT]: [\n\n{sres}\n]\n-------\n'
