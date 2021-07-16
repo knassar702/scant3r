@@ -11,11 +11,7 @@ from core.libs import Http
 import sys,os
 
 app = Flask(__name__)
-app.config['SWAGGER'] = {
-    'title': 'ScanT3r API',
-    'uiversion': 3,
-    "specs_route": "/"
-}
+
 class Server:
     def __init__(self,opts):
         conf = safe_load(open('conf/api.yaml','r'))
@@ -68,17 +64,23 @@ class Server:
     def index(self):
         return render_template('index.html',args=self.get_m())
     def getit(self):
+        req_params = request.get_json(force=True)
         if self.check_token != True:
-            if 'token' not in req_params.keys():
-                return {
-                    "Error":"token parameter missing"
-                }
+            pass
+            #if 'token' not in req_params.keys():
+            #    return {
+            #        "Error":"token parameter missing"
+            #    }
         else:
             if 'token' in req_params.keys():
                 if req_params['token'] != app.config['SECRET_KEY']:
                     return {
                         "Error":"Auth Error"
                     }
+            else:
+                return {
+                        "Error":"token parameter missing"
+                        }
         cc = {}
         for i,v in self.output.items():
             if self.output[i]:
@@ -87,17 +89,19 @@ class Server:
                     cc[c] = v
         return jsonify(cc)
     def getme(self,mid):
+        req_params = request.get_json(force=True)
         if self.check_token != True:
-            if 'token' not in req_params.keys():
-                return {
-                    "Error":"token parameter missing"
-                }
+            pass
         else:
             if 'token' in req_params.keys():
                 if req_params['token'] != app.config['SECRET_KEY']:
                     return {
                         "Error":"Auth Error"
                     }
+            else:
+                return {
+                        'Error':'token parameter missing'
+                        }
         try:
             c = []
             for v in self.output[str(mid)]:
@@ -117,16 +121,17 @@ class Server:
         if 'url' in req_params.keys():
             self.url = req_params['url']
         if self.check_token != True:
-            if 'token' not in req_params.keys():
-                return {
-                    "Error":"token parameter missing"
-                }
+            pass
         else:
             if 'token' in req_params.keys():
                 if req_params['token'] != app.config['SECRET_KEY']:
                     return {
                         "Error":"Auth Error"
                     }
+            else:
+                return {
+                        'Error':'token parameter missing'
+                        }
         if 'url' in req_params.keys():
             self.url = req_params['url']
 
