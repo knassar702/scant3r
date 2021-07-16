@@ -1,4 +1,4 @@
-from core.libs import insert_to_params_urls
+from core.libs import insert_to_params_urls, alert_bug
 from wordlists import sqli_payloads,sql_err
 from urllib.parse import urlparse
 from re import findall
@@ -22,20 +22,9 @@ def start(op,http):
                         hmm = findall(v,r.text)
                         for i in hmm:
                             if i:
-                                return {
-                                    'method':method,
-                                    'url':url.split('?')[0],
-                                    'params':urlparse(url).query,
-                                    'payload':payload,
-                                    'match':v
-                                    }
+                                alert_bug('SQL injection',r,payload=urlparse(url).query,match=v)
     return {}
 def main(opts,r):
     c = start(opts,r)
     if c:
-        print(f'''[SQLI] {c["url"]}
-\tParams: {c["params"]}
-\tMethod: {c["method"]}
-\tPayload: {c["payload"]}
-\tMatch: {c["match"]}
-                ''')
+        return c
