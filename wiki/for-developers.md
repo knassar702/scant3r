@@ -13,10 +13,6 @@ this a quike describa about file & functions job
 * **core/libs/all/show_msg.py** - this moudle for display the output of modules just add the name of output and request var , and add your info with more args in function after that show_msg will save the output in `log/{TARGET}/log.txt`
 * **core/api/api.py** - the api of scant3r , the idea when scant3r api start will parse all modules files and try to get api.py file if the file there will give the module a id for scan
 
-
-here about how to write your own scant3r module https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module
-
-
 ## Configs
 * `conf/opts.yaml` - all scant3r options
 for add more options for scant3r
