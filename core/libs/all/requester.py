@@ -79,7 +79,8 @@ class Http:
             if self.content_types:
                 for content_type in self.content_types:
                     if content_type.split('/')[1] == 'json':
-                        body = json.dumps(body) # convert query parameters to json
+                        if method != 'GET':
+                            body = json.dumps(body) # convert query parameters to json
                     headers['Content-Type'] = content_type
                     req = request(
                     method,
