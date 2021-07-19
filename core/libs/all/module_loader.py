@@ -27,8 +27,10 @@ class MLoader:
                 if type(our_file) is list:
                     # remove duplicates module name
                     our_file = our_file[0]
+
                 ih = isfile(f'{our_file}/run.yaml')
                 cki = isfile(f'{our_file}/__init__.py')
+                
                 # if Not __init__.py and run.yaml present 
                 # Execution No Python Script
                 if cki == False and ih == True:
@@ -36,10 +38,11 @@ class MLoader:
                     name = f'$EX${name}'
                     if ourlist:
                         self.scripts[name] = ff['exec']
+                        
                 # If file __init__.py in modules
                 if cki == True:
-                    name = f'modules.{our_file.split("/")[1]}.{name}'
-                    # Import the modules and remove .py if need    
+                    name = f'modules.python.{name}'
+                    # Import the modules 
                     c = importlib.import_module(name)
                     if ourlist:
                         # Add module to the dict
