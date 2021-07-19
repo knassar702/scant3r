@@ -11,9 +11,9 @@ if sys.version_info < (3, 6):
     sys.exit()
 
 import colorama , logging
-from core.libs import Args, Http, Colors, MLoader, logo
+from core.libs import Args, Http, MLoader, logo
 from core.api import Server
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urlparse
 
 colorama.init()
 # set the path to scant3r folder
@@ -59,6 +59,6 @@ if __name__ == '__main__':
         # load modules
         for module in opts['modules']:
             M.get(module)
-    
+            
         # start all modules (main function)
         M.run(opts, Http(opts))
