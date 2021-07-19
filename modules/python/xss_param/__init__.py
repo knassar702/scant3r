@@ -1,8 +1,11 @@
 from .xss import Scan
 from urllib.parse import urlparse as ur
-
+from core.libs import show_error
 
 def main(opts,r):
-    c = Scan(opts,r)
+    scanner = Scan(opts,r)
+    # If Query in the URL 
     if ur(opts['url']).query:
-        c.start(opts['methods'])
+        scanner.start(opts['methods'])
+    show_error('xss_param', "No query in the URL")
+    
