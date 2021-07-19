@@ -43,17 +43,17 @@ if __name__ == '__main__':
         
     # (-g option) , add famous parameters
     if opts['genparam']:
-            np = 'q=&searchFor=&query=&Searchfor=goButton=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist=&user=&username=&group='
-            for url in opts['urls']:
-                url = url.rstrip()
-                ind = opts['urls'].index(url)
+        np = 'q=&searchFor=&query=&Searchfor=goButton=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist=&user=&username=&group='
+        for url in opts['urls']:
+            url = url.rstrip()
+            ind = opts['urls'].index(url)
+            
+            if len(urlparse(url).query) > 0:
+                np = '&{}'.format(np)
+            else:
+                np = '?{}'.format(np)
                 
-                if len(urlparse(url).query) > 0:
-                    np = '&{}'.format(np)
-                else:
-                    np = '?{}'.format(np)
-                    
-                opts['urls'][ind] = '{url}{np}'.format(url=url,np=np)
+            opts['urls'][ind] = '{url}{np}'.format(url=url,np=np)
     
     if opts['modules']:
         # load modules
