@@ -6,9 +6,11 @@ __version__ = '0.8#Beta'
 from requests import Request, Session, request, packages
 from .data import post_data, dump_request, dump_response
 from urllib.parse import urlparse
-import time, random, json
+import time, random, logging , json
 
 packages.urllib3.disable_warnings() # ignore ssl warning messages
+
+log = logging.getLogger('scant3r') # scant3r logger
 
 # Create an User Agent 
 # Choice one user agent from  the text file agents.txt 
@@ -17,14 +19,17 @@ class Agent:
     def __init__(self):
         self.all = ['Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:86.0) Gecko/20100101 Firefox/86.0']
         self.random = random.choice(self.all)
-        
     def load(self):
-        with open('wordlists/txt/agents.txt','r') as aw:
-            for i in aw:
-                if len(i.rstrip()) > 1:
-                    self.all.append(i.rstrip())
-        self.random = random.choice(self.all)
-        
+        try:
+            with open('wordlists/txt/agents.txt','r') as aw:
+                for i in aw:
+                    if len(i.rstrip()) > 1:
+                        self.all.append(i.rstrip())
+            self.random = random.choice(self.all)
+        except Exception as e:
+            log.error(e)
+            return
+
 class Http:
     def __init__(self, opts : dict):
         self.timeout = opts['timeout']
@@ -36,7 +41,6 @@ class Http:
         self.delay = opts['delay']
         self.count = 0
         self.content_types = opts['content_types']
-
     # Send a request 
     def send(self, method = 'GET', url= None, body={}, headers={}, allow_redirects=False, org=True):
         try:
@@ -71,15 +75,18 @@ class Http:
             # convert body to parameters
             if org:
                 if body:
+                    log.debug('convert body to dict')
                     body = post_data(body)
 
                 if method != 'GET' and not body:
+                    log.debug('convert body to dict')
                     body = post_data(urlparse(url).query)
                     url = url.split('?')[0]
             if self.content_types:
                 for content_type in self.content_types:
                     if content_type.split('/')[1] == 'json':
                         if method != 'GET':
+                            log.debug('convert body to json query')
                             body = json.dumps(body) # convert query parameters to json
                     headers['Content-Type'] = content_type
                     req = request(
@@ -101,6 +108,7 @@ class Http:
                     verify=False,
                     timeout=timeout,
                     proxies=proxy)
+            log.debug(f'sleep {self.delay}')
             time.sleep(self.delay)
             self.count += 1 # number of request
             req.encoding = req.apparent_encoding
@@ -112,9 +120,8 @@ class Http:
                 print('--------------------\n\n')
             return req
         except Exception as e:
-            if self.debug:
-                print(e)
-            return 0
+            log.error(e)
+            return [0,e]
     # send a request with custom options (without user options)
     def custom(self, method='GET', url=None, body={}, headers={}, timeout={}, allow_redirects=False, proxy={}):
         try:
@@ -130,6 +137,5 @@ class Http:
             )
             return res
         except Exception as e:
-            if self.debug:
-                print(f'Error > {e}')
-            return 0
+            log.error(e)
+            return [0,e]

@@ -1,0 +1,1 @@
+exec: echo {domain} | xargs -I {} sh modules/scripts/hacker/test.sh {}

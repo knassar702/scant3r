@@ -10,14 +10,16 @@ import yaml
 from urllib.parse import urlparse as ur
 from os.path import splitext, isfile
 from glob import glob
-import subprocess
+import subprocess, logging
+
+log = logging.getLogger('scant3r')
 
 class MLoader:
     def __init__(self):
         self.thr = list()
         self.modules = dict()
         self.scripts = dict()
-        
+
     def get(self, name: str, ourlist: bool = True):
         try:
             c = None

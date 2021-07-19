@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
-import argparse
+import argparse , logging, yaml
 from .data import *
+from .log import CustomFormatter
 from .colors import Colors
 from .logo import logo
-import yaml
+
+
+log = logging.getLogger('scant3r')
 
 class Args:
     def __init__(self):
         try:
+            log.debug('load opts & help config files')
             self.conf = yaml.safe_load(open('conf/opts.yaml','r'))
             self.help = yaml.safe_load(open('conf/help.yaml','r'))
         except Exception as e:
-            print(f"[Args] {e}")
+            log.error(e)
             exit()
     
     # Add an argument to a parser 

@@ -8,6 +8,23 @@ headers:
   - help: "add custom header (ex:-H='Cookies: test=1')"
   - exec: "dict_args['headers'] = extractHeaders(value)"
 
+log_info:
+  - option: 
+    - '-v'
+    - '--logger-mode'
+  - type: int
+  - default: 1
+  - save_content: true
+  - help: 'change debug messages mode (1: info 2: debug 3: warning 4: error)'
+  - exec: |
+      logs = {1:logging.INFO,2:logging.DEBUG,3:logging.WARNING,4:logging.ERROR}
+      logger = logging.getLogger("scant3r")
+      logger.setLevel(logs[value])
+      ch = logging.StreamHandler()
+      ch.setLevel(logs[value])
+      ch.setFormatter(CustomFormatter())
+      logger.addHandler(ch)
+
 delay:
   - option: 
     - '-s'

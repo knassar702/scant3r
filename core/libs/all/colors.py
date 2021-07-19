@@ -8,6 +8,7 @@ class Colors:
     black = '\u001b[30m'
     green = '\u001b[32m'
     yellow = '\u001b[33m'
+    grey = "\x1b[38;21m"
     blue = '\u001b[34m'
     magenta = '\u001b[35m'
     cyan = '\u001b[36m'

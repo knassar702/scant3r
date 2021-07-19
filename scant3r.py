@@ -9,8 +9,8 @@ import os,sys
 if sys.version_info < (3, 6):
     print('[-] Scant3r requires python >= 3.6')
     sys.exit()
-    
-import colorama
+
+import colorama , logging
 from core.libs import Args, Http, Colors, MLoader, logo
 from core.api import Server
 from urllib.parse import urlparse, urljoin
