@@ -60,7 +60,3 @@ class Scan:
             self.fbug.append(alert_bug('XSS',**bu))
         return self.fbug
 
-def main(opts,r):
-    scanner = Scan(opts,r)
-    if urlparse(opts['url']).query:
-        scanner.start(url=opts['url'],methods=opts['methods'])

@@ -8,7 +8,7 @@ from .data import dump_request
 from urllib.parse import urlparse 
 from os.path import splitext
 from os import mkdir
-import random,re
+import random, re
 
 def alert_bug(name,http,**kwargs):
     f = f'{c.good} {c.red}{name}{c.rest}: {http.request.url.split("?")[0]}'
@@ -19,12 +19,12 @@ def alert_bug(name,http,**kwargs):
         vv += f'\n  {p}: {v}'
     f += vv
     f += f'''
----- Request ----
-{c.yellow}
-{dump_request(http)}
-{c.rest}
---------
-'''
+        ---- Request ----
+        {c.yellow}
+        {dump_request(http)}
+        {c.rest}
+        --------
+    '''
     target = urlparse(http.request.url).netloc
     print(f)
     try:
@@ -49,3 +49,10 @@ def alert_bug(name,http,**kwargs):
             'request':dump_request(http),
             'output':kwargs
             }
+
+def show_error(name : str, message : str):
+    f = "\n---- Errors -----"
+    f += f"\nModule Name : {name}"
+    f += f'\n{message}'   
+    f += '\n-----------------'
+    print(f)

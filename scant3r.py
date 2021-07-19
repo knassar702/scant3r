@@ -11,9 +11,9 @@ if sys.version_info < (3, 6):
     sys.exit()
 
 import colorama , logging
-from core.libs import Args, Http, Colors, MLoader, logo
+from core.libs import Args, Http, MLoader, logo
 from core.api import Server
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urlparse
 
 colorama.init()
 # set the path to scant3r folder
@@ -43,22 +43,22 @@ if __name__ == '__main__':
         
     # (-g option) , add famous parameters
     if opts['genparam']:
-            np = 'q=&searchFor=&query=&Searchfor=goButton=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist=&user=&username=&group='
-            for url in opts['urls']:
-                url = url.rstrip()
-                ind = opts['urls'].index(url)
+        np = 'q=&searchFor=&query=&Searchfor=goButton=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist=&user=&username=&group='
+        for url in opts['urls']:
+            url = url.rstrip()
+            ind = opts['urls'].index(url)
+            
+            if len(urlparse(url).query) > 0:
+                np = '&{}'.format(np)
+            else:
+                np = '?{}'.format(np)
                 
-                if len(urlparse(url).query) > 0:
-                    np = '&{}'.format(np)
-                else:
-                    np = '?{}'.format(np)
-                    
-                opts['urls'][ind] = '{url}{np}'.format(url=url,np=np)
+            opts['urls'][ind] = '{url}{np}'.format(url=url,np=np)
     
     if opts['modules']:
         # load modules
         for module in opts['modules']:
             M.get(module)
-    
+            
         # start all modules (main function)
         M.run(opts, Http(opts))
