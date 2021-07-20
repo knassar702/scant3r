@@ -33,10 +33,10 @@ regexs = {
             'json_web_token' : 'ey[A-Za-z0-9_-]*\.[A-Za-z0-9._-]*|ey[A-Za-z0-9_\/+-]*\.[A-Za-z0-9._\/+-]*'
         } # from https://github.com/BitTheByte/Eagle/blob/master/plugins/spider.py by @BitTheByte
 
-class Scan:
-    def __init__(self, opts, r):
+class Secrets:
+    def __init__(self, opts, http):
         self.opts = opts
-        self.http = r
+        self.http = http
         
     def start(self):
         try:

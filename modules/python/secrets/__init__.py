@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-from .secrets import Scan
+from .secrets import Secrets
 
 def main(opts, r):
-    c = Scan(opts,r)
-    c.start()
+    Secrets(opts, r).start()
