@@ -1,8 +1,7 @@
-from .sqli import Scan
+from .sqli import Sqli
 
 def main(opts, r):
-    s = Scan(opts, r)    
-    c = s.scan()
+    c = Sqli(opts, r).start()
     # C is always an empty dict
     if c:
         return c 

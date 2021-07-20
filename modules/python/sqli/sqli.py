@@ -3,12 +3,12 @@ from wordlists import sqli_payloads, sql_err
 from urllib.parse import urlparse
 from re import findall
 
-class Scan:
-    def __init__(self, opts, r):
+class Sqli:
+    def __init__(self, opts, http):
         self.opts = opts
-        self.http = r
+        self.http = http
         
-    def scan(self):
+    def start(self):
         for method in self.opts['methods']:
             for payload in sqli_payloads:
                 payload = payload.rstrip()
