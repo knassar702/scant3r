@@ -1,11 +1,10 @@
 from urllib.parse import urlparse
 from core.libs import random_str,urlencoder,insert_to_params_name
 from wordlists import XSS
-
-class XssParam:
+from scan import Scan
+class XssParam(Scan):
     def __init__(self, opts, http):
-        self.opts = opts
-        self.http = http
+        super().__init__(opts, http)
         self.payloads = XSS(opts['blindxss']).payloads
         
     def reflect(self, url, method='GET'):

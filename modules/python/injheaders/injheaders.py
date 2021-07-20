@@ -4,11 +4,11 @@ from urllib.parse import urlparse
 from core.libs import alert_bug, dump_response
 from wordlists import XSS
 import re
+from scan import Scan
 
-class Injheaders:
+class Injheaders(Scan):
     def __init__(self, opts, http):
-        self.opts = opts 
-        self.http = http 
+        super().__init__(opts, http) 
         self.conf = self.define_conf()
         
     def define_conf(self):

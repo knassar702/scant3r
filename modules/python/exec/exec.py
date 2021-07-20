@@ -5,12 +5,13 @@ from urllib.parse import urlparse as ur
 from threading import Thread
 from subprocess import call
 from yaml import safe_load
+from scan import Scan
 
 q = Queue()
 
-class Exec: 
-    def __init__(self, opts):
-        self.opts = opts
+class Exec(Scan): 
+    def __init__(self, opts, http):
+        super().__init__(opts, http)
         self.op = self.define_op()
         
     def define_op(self):

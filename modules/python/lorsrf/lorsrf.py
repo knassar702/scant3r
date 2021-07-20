@@ -7,6 +7,7 @@ from threading import Thread
 from queue import Queue
 from urllib.parse import urlparse # url parsing
 from wordlists import ssrf_parameters # ssrf parameters wordlist
+from scan import Scan
 
 q = Queue()
 
@@ -17,10 +18,9 @@ parameters_in_one_request = 10
 
 # ?ex1=http://google.com&ex2=http://google.com
 
-class Lorsrf:
+class Lorsrf(Scan):
     def __init__(self, opts, http):
-        self.opts = opts 
-        self.http = http
+        super().__init__(opts, http)
     
     def start(self): 
         for _ in range(int(self.opts['threads'])):

@@ -2,11 +2,11 @@ from yaml import safe_load
 from re import findall
 from core.libs import dump_request, dump_response
 from urllib.parse import urlparse
+from scan import Scan
 
-class Finder: 
+class Finder(Scan): 
     def __init__(self, opts, http):
-        self.opts = opts 
-        self.http = http
+        super().__init__(opts, http)
         
     def start(self) -> dict:
         f = safe_load(open('modules/python/finder/find.yaml','r'))

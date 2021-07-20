@@ -1,11 +1,10 @@
 from core.libs import insert_to_params_urls  as ur
 from core.libs import random_str
 from urllib.parse import urlparse
-
-class Reflect:
+from scan import Scan
+class Reflect(Scan):
     def __init__(self, opts, http):
-        self.opts = opts
-        self.http = http
+        super().__init__(opts, http)
         
     def start(self) -> list:
         found = dict()

@@ -2,11 +2,10 @@
 from core.libs import remove_dups_urls, random_str, alert_bug, insert_to_params_urls
 from urllib.parse import urlparse
 from wordlists import XSS
-
-class Xss:
+from scan import Scan
+class Xss(Scan):
     def __init__(self, opts, http):
-        self.opts = opts
-        self.http = http
+        super().__init__(opts, http)
         self.payloads = XSS(opts['blindxss']).payloads
         
     def check_method(self,methods,url):

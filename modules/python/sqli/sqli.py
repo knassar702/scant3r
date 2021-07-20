@@ -2,11 +2,10 @@ from core.libs import insert_to_params_urls, alert_bug
 from wordlists import sqli_payloads, sql_err
 from urllib.parse import urlparse
 from re import findall
-
-class Sqli:
+from scan import Scan
+class Sqli(Scan):
     def __init__(self, opts, http):
-        self.opts = opts
-        self.http = http
+        super().__init__(opts, http)
         
     def start(self):
         for method in self.opts['methods']:

@@ -6,11 +6,10 @@ from core.libs import alert_bug, dump_response, force_insert_to_params_urls
 from urllib.parse import urlparse # url parsing
 from yaml import safe_load
 import re
-
-class Ssrf: 
+from scan import Scan
+class Ssrf(Scan): 
     def __init__(self, opts, http):
-        self.opts = opts 
-        self.http = http 
+        super().__init__(opts, http)
         
     def start(self): 
         conf = safe_load(open('modules/python/ssrf/payloads.yaml'))

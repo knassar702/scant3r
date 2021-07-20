@@ -2,6 +2,7 @@
 from urllib.parse import urlparse
 from core.libs import alert_bug
 import re
+from scan import Scan
 
 regexs = {
             'google_api' : 'AIza[0-9A-Za-z-_]{35}',
@@ -33,10 +34,9 @@ regexs = {
             'json_web_token' : 'ey[A-Za-z0-9_-]*\.[A-Za-z0-9._-]*|ey[A-Za-z0-9_\/+-]*\.[A-Za-z0-9._\/+-]*'
         } # from https://github.com/BitTheByte/Eagle/blob/master/plugins/spider.py by @BitTheByte
 
-class Secrets:
+class Secrets(Scan):
     def __init__(self, opts, http):
-        self.opts = opts
-        self.http = http
+        super().__init__(opts, http)
         
     def start(self):
         try:
