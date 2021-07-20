@@ -2,7 +2,8 @@ from core.libs import insert_to_params_urls, alert_bug
 from wordlists import sqli_payloads, sql_err
 from urllib.parse import urlparse
 from re import findall
-from scan import Scan
+from modules import Scan
+
 class Sqli(Scan):
     def __init__(self, opts, http):
         super().__init__(opts, http)

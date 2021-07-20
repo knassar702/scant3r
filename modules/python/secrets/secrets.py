@@ -2,7 +2,7 @@
 from urllib.parse import urlparse
 from core.libs import alert_bug
 import re
-from scan import Scan
+from modules import Scan
 
 regexs = {
             'google_api' : 'AIza[0-9A-Za-z-_]{35}',

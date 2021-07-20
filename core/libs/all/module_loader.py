@@ -42,7 +42,7 @@ class MLoader:
                 # If file __init__.py in modules
                 if cki:
                     name = f'modules.python.{name}'
-                    # Import the modules 
+                    # Import the modules
                     c = importlib.import_module(name)
                     if ourlist:
                         # Add module to the dict
@@ -79,8 +79,8 @@ class MLoader:
                 # copy user options
                 opt = opts.copy() 
                 opt['url'] = url
-                
-                # Execution of scripts 
+        
+                # Execution of scripts
                 for n,module in self.scripts.items():
                     mres.append(executor.submit(self.exeman,n.replace('$EX$','').replace('/','.'),module,opt))
                 

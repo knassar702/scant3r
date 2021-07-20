@@ -6,14 +6,18 @@ __version__ = '0.8#Beta'
 import re
 import binascii
 import random
+import logging
 import string
 from urllib.parse import urljoin, urlparse
 from .colors import *
+
+log = logging.getLogger('scant3r')
 
 # Generate a random string. Arg int return str 
 def random_str(num: int) -> str:
     num = int(num)
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(num))
+
 
 # Print the request in the console. Arg the request. Return a string. Empty string if no request
 def dump_request(request) -> str:
@@ -112,8 +116,7 @@ def insert_to_params_urls(url: str, text:str, debug: bool = False) -> list :
                 u.append(url.replace(param,param + text))
         return remove_dups(u)
     except Exception as e:
-        if debug:
-            print(f'[insert_to_params_urls] {e}')
+        log.error(e)
         return list()
 
 # add parameters to url 
@@ -125,8 +128,7 @@ def insert_to_params(param: str, text: str, debug : bool=False) -> str:
                 u.append(p.replace(p,p + text))
         return u
     except Exception as e:
-        if debug:
-            print(f'[insert_to_params] {e}')
+        log.error(e)
         return u
 
 # add string value to dictionary (for cookies,post/put parameters)
@@ -141,8 +143,7 @@ def post_data(params: str, debug: bool = False) -> dict:
             return postData
         return {}
     except Exception as e:
-        if debug:
-            print(e)
+        log.error(e)
         return {}
 
 # Convert string headers to a dict Headers
@@ -159,8 +160,7 @@ def extract_headers(headers: str='' ,debug: bool =False) -> dict:
                     value = value[:-1]
                 sorted_headers[header] = value
             except Exception as e:
-                if debug:
-                    print ('[Extract Headers] {e}')
+                log.error(e)
                 return {}
         return sorted_headers
     return {}

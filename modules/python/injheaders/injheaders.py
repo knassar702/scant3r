@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 from core.libs import alert_bug, dump_response
 from wordlists import XSS
 import re
-from scan import Scan
+from modules import Scan
 
 class Injheaders(Scan):
     def __init__(self, opts, http):

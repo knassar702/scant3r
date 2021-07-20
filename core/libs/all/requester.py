@@ -108,7 +108,8 @@ class Http:
                     verify=False,
                     timeout=timeout,
                     proxies=proxy)
-            log.debug(f'sleep {self.delay}')
+            if self.delay > 0:
+                log.debug(f'sleep {self.delay}')
             time.sleep(self.delay)
             self.count += 1 # number of request
             req.encoding = req.apparent_encoding

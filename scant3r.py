@@ -58,6 +58,5 @@ if __name__ == '__main__':
         # load modules
         for module in opts['modules']:
             M.get(module)
-            
         # start all modules (main function)
         M.run(opts, Http(opts))

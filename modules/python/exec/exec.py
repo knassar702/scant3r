@@ -5,7 +5,7 @@ from urllib.parse import urlparse as ur
 from threading import Thread
 from subprocess import call
 from yaml import safe_load
-from scan import Scan
+from modules import Scan
 
 q = Queue()
 

@@ -5,8 +5,9 @@ __version__ = '0.8#Beta'
 from core.libs import alert_bug, dump_response, force_insert_to_params_urls
 from urllib.parse import urlparse # url parsing
 from yaml import safe_load
+from modules import Scan
 import re
-from scan import Scan
+
 class Ssrf(Scan): 
     def __init__(self, opts, http):
         super().__init__(opts, http)

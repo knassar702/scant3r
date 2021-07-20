@@ -2,7 +2,7 @@
 from urllib.parse import urljoin
 from core.libs import Colors as c
 from yaml import safe_load
-from scan import Scan
+from modules import Scan
 class Paths(Scan):
     def __init__(self, opts, http):
         super().__init__(opts, http)

@@ -1,9 +1,9 @@
 from wordlists import rce_payloads
 from core.libs import insert_to_params_urls ,dump_response
 from urllib.parse import urlparse
-from scan import Scan
+from modules import Scan
 
-class Rce:
+class Rce(Scan):
     def __init__(self, opts, http):
         super().__init__(opts, http)
         

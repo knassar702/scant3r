@@ -7,7 +7,7 @@ from threading import Thread
 from queue import Queue
 from urllib.parse import urlparse # url parsing
 from wordlists import ssrf_parameters # ssrf parameters wordlist
-from scan import Scan
+from modules import Scan
 
 q = Queue()
 

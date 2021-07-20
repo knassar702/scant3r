@@ -1,7 +1,7 @@
 from urllib.parse import urlparse
 from core.libs import random_str,urlencoder,insert_to_params_name
 from wordlists import XSS
-from scan import Scan
+from modules import Scan
 class XssParam(Scan):
     def __init__(self, opts, http):
         super().__init__(opts, http)
