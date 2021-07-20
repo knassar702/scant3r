@@ -5,7 +5,7 @@ from core.libs import alert_bug, dump_response
 from wordlists import XSS
 import re
 
-class Scan:
+class Injheaders:
     def __init__(self, opts, http):
         self.opts = opts 
         self.http = http 
@@ -17,7 +17,7 @@ class Scan:
             conf[i] = [{'text':i},{'regex':False}]
         return conf
                     
-    def scan(self): 
+    def start(self): 
         headers = safe_load(open('modules/python/injheaders/headers.yaml','r'))
         for method in self.opts['methods']:
             for payload, matcher in self.conf.items(): 

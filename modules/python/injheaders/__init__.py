@@ -1,4 +1,4 @@
-from .injheaders import Scan 
+from .injheaders import Injheaders 
 
 def main(opts, http):
-    Scan(opts,http).scan()
+    Injheaders(opts, http).start()
