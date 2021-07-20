@@ -3,12 +3,12 @@ from urllib.parse import urljoin
 from core.libs import Colors as c
 from yaml import safe_load
 
-class Scan:
-    def __init__(self, opts, r):
+class Paths:
+    def __init__(self, opts, http):
         self.opts = opts
-        self.http = r
+        self.http = http
     
-    def scan(self):
+    def start(self) -> list:
         found = []
         f = safe_load(open('modules/python/paths/conf.yaml','r')) 
         for path, msg in f.items(): 
