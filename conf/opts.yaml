@@ -76,7 +76,6 @@ methods:
   - help: 'Methods Allowed on your target'
   - exec: | 
       dict_args['methods'] = value.split(",")
-    
 
 modules:
   - option: 
