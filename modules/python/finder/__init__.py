@@ -1,8 +1,8 @@
-from .finder import Scan
+from .finder import Finder
 from core.libs import alert_bug
 
 def main(opts, http, api=False):
-    result = Scan(opts, http).scan()
+    result = Finder(opts, http).start()
     if result:
         for i,c in result.items():
             alert_bug('FINDER',**c)

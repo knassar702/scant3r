@@ -3,12 +3,12 @@ from re import findall
 from core.libs import dump_request, dump_response
 from urllib.parse import urlparse
 
-class Scan: 
+class Finder: 
     def __init__(self, opts, http):
         self.opts = opts 
         self.http = http
         
-    def scan(self):
+    def start(self) -> dict:
         f = safe_load(open('modules/python/finder/find.yaml','r'))
         found = dict()
         

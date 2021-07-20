@@ -1,4 +1,4 @@
-from . import start
+from .finder import Finder
 
-def main(opts,r):
-    return start(opts,r,api=True)
+def main(opts, http):
+    return Finder(opts, http).start() 
