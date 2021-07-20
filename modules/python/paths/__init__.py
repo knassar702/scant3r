@@ -1,4 +1,4 @@
-from .paths import start
+from .paths import Scan
 
-def main(opts,msg):
-    start(opts['url'],msg)
+def main(opts,http):
+    Scan(opts, http).scan()
