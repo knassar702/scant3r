@@ -17,12 +17,12 @@ parameters_in_one_request = 10
 
 # ?ex1=http://google.com&ex2=http://google.com
 
-class Scan:
+class Lorsrf:
     def __init__(self, opts, http):
         self.opts = opts 
         self.http = http
     
-    def scan(self): 
+    def start(self): 
         for _ in range(int(self.opts['threads'])):
             p1 = Thread(target=self.threader)
             p1.daemon = True
