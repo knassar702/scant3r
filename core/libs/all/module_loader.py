@@ -8,7 +8,7 @@ import importlib
 import concurrent.futures
 import yaml
 from urllib.parse import urlparse as ur
-from os.path import splitext, isfile
+from os.path import isfile
 from glob import glob
 import subprocess, logging
 
@@ -33,14 +33,14 @@ class MLoader:
                 
                 # if Not __init__.py and run.yaml present 
                 # Execution No Python Script
-                if cki == False and ih == True:
+                if not cki and ih:
                     ff = yaml.safe_load(open(f'{our_file}/run.yaml','r'))
                     name = f'$EX${name}'
                     if ourlist:
                         self.scripts[name] = ff['exec']
                         
                 # If file __init__.py in modules
-                if cki == True:
+                if cki:
                     name = f'modules.python.{name}'
                     # Import the modules 
                     c = importlib.import_module(name)
@@ -70,11 +70,11 @@ class MLoader:
             return resu
         return 
     
-    def run(self, opts : dict, r):
+    def run(self, opts : dict, http):
         # Start threading
         with concurrent.futures.ThreadPoolExecutor(max_workers=opts['threads']) as executor:
             mres = list()
-            
+
             for url in opts['urls']:
                 # copy user options
                 opt = opts.copy() 
@@ -88,7 +88,7 @@ class MLoader:
                 for n,module in self.modules.items():
                     # Check the number of argument needed by the module                     
                     if module.main.__code__.co_argcount >= 2:
-                        mres.append(executor.submit(module.main, opt, r))
+                        mres.append(executor.submit(module.main, opt, http))
                     else:
                         mres.append(executor.submit(module.main, opt))
             
