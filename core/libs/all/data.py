@@ -82,7 +82,7 @@ def insert_to_params_name(url,txt):
     finally:
         return out
 
-def force_insert_to_params_urls(url,txt):
+def force_insert_to_params_urls(url: str, txt) -> list():
     our = list()
     try:
         for param in url.split('?')[1].split('&'):
