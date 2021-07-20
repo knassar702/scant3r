@@ -73,7 +73,6 @@ class Args:
             else : 
                 dict_exe = list(filter(lambda item : 'exec' in item.keys(), self.conf[name]))[0]
                 if dict_exe:
-                    print(dict_exe['exec'])
                     exec(dict_exe['exec'])
         return dict_args
     
