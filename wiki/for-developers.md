@@ -219,4 +219,14 @@ http://site.com/?msg=<svg/onload=alert(1)>
 [+] Yes
 ```
 
+
+#### Debug
+
+```python
+>> import logging
+>> log = logging.getLogger('scant3r')
+>> log.debug('This a debug message')
+>> log.info('info message')
+```
+
 Thanks
