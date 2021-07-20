@@ -1,6 +1,0 @@
-php: php $MODULE {url}
-js: node $MODULE {url}
-go: echo {url} | ./$MODULE
-sh: sh $MODULE {url}
-rb: ruby $MODULE {url}
-# file extension : compiler run $MODULE -t {timeout} -d {domain}
