@@ -25,7 +25,7 @@ auth:
   - save_content: True
   - help: add auth header
   - default: ''
-  - exec: 'self.auth = extractHeaders(opts.auth)'
+  - exec: 'self.auth = extract_headers(opts.auth)'
 ```
 
 

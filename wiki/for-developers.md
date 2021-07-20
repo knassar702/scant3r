@@ -107,8 +107,8 @@ to fetch option just add `opts['OPTION']` for example `opts['url']`
 | :-------------    | :-------------                | :-------------                | 
 | post_data | add string value to dictionary (for cookies,post/put parameters) | post_data('name=khaled&id=444') > {'name':'khaled','id':44}|
 | urlencoder | from plain text to url encoding| `urlencoder(yourtext,many=1)` > many = how many you want to encode your payloads|
-| extractHeaders | add headers value to dictionary| `extractHeaders('Header: hello') > {'Header':'hello'}`|
-| insertAfter | Insert some string into given string at given index |`insertAfter('scant3r','3r','test')` > scantest |
+| extract_headers | add headers value to dictionary| `extract_headers('Header: hello') > {'Header':'hello'}`|
+| insert_after | Insert some string into given string at given index |`insert_after('scant3r','3r','test')` > scantest |
 | random_str | make random string value by length | `random_str(5) > 3AQU5` | 
 | remove_dups | remove duplicated items from the list | `remove_dups(['test','test']) > ['test']`| 
 | dump_params | dump all parameters in your url| `dump_params('http://google.com/?test=1&hmm=2') > 'test=1&hmm=2'`|
@@ -148,22 +148,22 @@ args.py load all options from `core/settings/opts.yaml` file
 #### http
 you don't need to import http module just add `r` argument in your main function
 ```python
-from core.libs import extractHeaders
+from core.libs import extract_headers
 # send : send http request with scant3r options (-H -p etc ..)
 # custom : send http request with your options (function parameters)
 def main(opts,r):
    req = r.send('GET','https://httpbin.org/get')
-   # req = r.custom('POST','http://httpbin.org/post',headers=extractHeaders('test: hello'),body='test=1444')
+   # req = r.custom('POST','http://httpbin.org/post',headers=extract_headers('test: hello'),body='test=1444')
    print(req.content.decode('utf-8'))
 ```
 ##### extractHeaders
 ```python
->> from core.libs import extractHeaders
+>> from core.libs import extract_headers
 >> headers = '''
 Auth: c2NhbnQzcgo=
 Host: knassar702.github.io
 '''
->> extractHeaders(headers)
+>> extract_headers(headers)
 {'Auth': 'c2NhbnQzcgo=',"Host":"knassar702.github.io"}
 ```
 ##### urlencoder
@@ -178,10 +178,10 @@ Host: knassar702.github.io
 ```
 #### insertAfter
 ```python
->> from core.libs import insertAfter
-insertAfter('TEXT','INSERT_AFTER','NewText')
+>> from core.libs import insert_after
+insert_after('TEXT','INSERT_AFTER','NewText')
 
->> insertAfter('http://site.com/?msg=hi','=','<svg/onload=alert(1)>')
+>> insert_after('http://site.com/?msg=hi','=','<svg/onload=alert(1)>')
 http://site.com/?msg=<svg/onload=alert(1)>
 ```
 
