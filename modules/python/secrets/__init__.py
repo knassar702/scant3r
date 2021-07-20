@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
 from .secrets import Secrets
 
-def main(opts, r):
-    Secrets(opts, r).start()
+def main(opts, http):
+    Secrets(opts, http).start()

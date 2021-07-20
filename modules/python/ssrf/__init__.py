@@ -1,5 +1,5 @@
 from .ssrf import Ssrf
 
-def main(opts,r):
-    return Ssrf(opts, r).start()
+def main(opts, http):
+    return Ssrf(opts, http).start()
     

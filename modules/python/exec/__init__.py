@@ -1,4 +1,4 @@
 from .exec import Scan
 
-def main(opts,r):
+def main(opts, http):
     m = Scan(opts).run()

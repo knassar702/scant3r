@@ -1,4 +1,4 @@
 from .paths import Paths
 
-def main(opts,http):
+def main(opts, http):
     Paths(opts, http).start()
