@@ -18,17 +18,20 @@ class Paths(Scan):
         f = safe_load(open('modules/python/paths/conf.yaml','r')) 
         for path, msg in f.items(): 
             log.debug('insert path to url')
+            if path.startswith('/'):
+                path = path[1:]
             host = urljoin(self.opts['url'], path)
             try:
                 log.debug('send http request to the target')
                 r = self.http.send('GET',host)
                 if r != 0:
                     try:
+                        msg = int(msg)
                         if msg == r.status_code:
                             alert_bug('paths',r,found=host,match=f'status Code: [{r.status_code}]')
                     except:
                         if msg in r.text:
-                            alert_bug('paths',r,found=host,match=f'Text: {r.text}')
+                            alert_bug('paths',r,found=host,match=f'Text: {msg}')
             except Exception as e:
                 log.error(e)
             finally: 
