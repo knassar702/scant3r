@@ -10,12 +10,13 @@ import string
 from urllib.parse import urljoin, urlparse
 from .colors import *
 
-
-def random_str(num):
+# Generate a random string. Arg int return str 
+def random_str(num: int) -> str:
     num = int(num)
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(num))
 
-def dump_request(request):
+# Print the request in the console. Arg the request. Return a string. Empty string if no request
+def dump_request(request) -> str:
     if request == 0:
         return ''
     body = ""
@@ -31,10 +32,11 @@ def dump_request(request):
         body += '\n' + str(request.request.body)
     return body
 
-def dump_response(request):
+# Print the response in the console. Arg the request. Return a string. Empty string if no response
+def dump_response(request) -> str:
     if request == 0:
         return ''
-    body = "HTTP /1.1 "
+    body = "HTTP /1.1"
     body += str(request.status_code)
     body += " "
     body += request.reason
@@ -51,27 +53,26 @@ def URLENCODE(data):
         d += '%' + binascii.b2a_hex(word.encode('utf-8')).decode('utf-8')
     return d
 
-def urlencoder(data,many=1):
+# from plain text to url encoding
+def urlencoder(data, many=1):
     for _ in range(many):
         data = URLENCODE(data)
     return data
 
-def remove_dups(l):
+# Remove duplicate element from a list. Arg List return a clean list
+def remove_dups(l: list) -> list:
     v = list()
-    for i in l:
-        if i not in v:
-            v.append(i)
+    [ v.append(x) for x in l if x not in v ]
     return v
 
-def remove_dups_urls(l):
+# Remove duplicate url from a list. Arg list of url. Return a clean Url list
+def remove_dups_urls(l : list) -> list:
     v = list()
-    for i in l:
-        if i not in v:
-            if urlparse(i).netloc:
-                v.append(i)
+    [ v.append(i) for i in l if i not in v and urlparse(i).netloc ]
     return v
 
-def insert_to_params_name(url,txt):
+# Insert param 
+def insert_to_params_name(url: str, txt: str) -> list:
     out = list()
     try:
         for param in url.split('?')[1].split('&'):
@@ -82,7 +83,8 @@ def insert_to_params_name(url,txt):
     finally:
         return out
 
-def force_insert_to_params_urls(url,txt):
+# Insert param
+def force_insert_to_params_urls(url: str, txt: str) -> list():
     our = list()
     try:
         for param in url.split('?')[1].split('&'):
@@ -93,13 +95,16 @@ def force_insert_to_params_urls(url,txt):
     finally:
         return our
 
-def dump_params(url):
+# Return the query from the url 
+def dump_params(url: str):
     return urlparse(url).query
 
-def add_path(url,path):
+# Add a path to an url
+def add_path(url: str, path: str) -> str:
     return urljoin(url,path)
 
-def insert_to_params_urls(url,text,single=True,debug=False):
+# Add a string to url parameters
+def insert_to_params_urls(url: str, text:str, debug: bool = False) -> list :
     u = list()
     try:
         if len(url.split('?')) >= 1:
@@ -111,7 +116,8 @@ def insert_to_params_urls(url,text,single=True,debug=False):
             print(f'[insert_to_params_urls] {e}')
         return list()
 
-def insert_to_params(param,text,single=True,debug=False):
+# add parameters to url 
+def insert_to_params(param: str, text: str, debug : bool=False) -> str:
     u = list()
     try:
         if len(param.split('&')) > 0:
@@ -123,7 +129,8 @@ def insert_to_params(param,text,single=True,debug=False):
             print(f'[insert_to_params] {e}')
         return u
 
-def post_data(params,debug=False):
+# add string value to dictionary (for cookies,post/put parameters)
+def post_data(params: str, debug: bool = False) -> dict:
     try:
         if params:
             prePostData = params.split("&")
@@ -138,7 +145,8 @@ def post_data(params,debug=False):
             print(e)
         return {}
 
-def extractHeaders(headers='',debug=False):
+# Convert string headers to a dict Headers
+def extract_headers(headers: str='' ,debug: bool =False) -> dict:
     if headers:
         headers = headers.replace('\\n', '\n')
         sorted_headers = {}
@@ -157,6 +165,7 @@ def extractHeaders(headers='',debug=False):
         return sorted_headers
     return {}
 
-def insertAfter(haystack, needle, newText):
+#  Insert some string into given string at given index
+def insert_after(haystack: str, needle: str, newText: str) -> str:
   i = haystack.find(needle)
   return haystack[:i + len(needle)] + newText + haystack[i + len(needle):]

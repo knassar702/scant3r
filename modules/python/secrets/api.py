@@ -1,6 +1,4 @@
-from . import Findme
-
+from .secrets import Secrets
 
 def main(opts,r):
-    c = Findme(opts,r)
-    return c.start()
+    return Secrets(opts, r).start()

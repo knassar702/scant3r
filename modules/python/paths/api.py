@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-from .paths import start
+from .paths import Paths
 
-def main(opts,msg):
-    m = start(opts['url'],msg)
-    return m
+def main(opts,http):
+    return Paths(opts, http).start()

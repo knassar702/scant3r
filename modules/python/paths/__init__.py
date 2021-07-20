@@ -1,4 +1,4 @@
-from .paths import start
+from .paths import Paths
 
-def main(opts,msg):
-    start(opts['url'],msg)
+def main(opts, http):
+    Paths(opts, http).start()

@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
-from .lorsrf import start
+from .lorsrf import Lorsrf
 
-def main(opts,msg):
-    if opts['host']:
-        pass
-    else:
+def main(opts, http):
+    if not opts['host']:
         return {'Lorsrf':'Error , add your host (-x)'}
-    start(opts['url'],opts['host'],msg)
+    Lorsrf(opts , http).start()
     return {'Lorsrf':"Done :D"}

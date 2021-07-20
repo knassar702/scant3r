@@ -1,4 +1,4 @@
-from .ssrf import start
+from .ssrf import Ssrf
 
 def main(opts,r):
-    return start(opts,opts['url'],r,opts['methods'])
+    return Ssrf(opts, r).start()

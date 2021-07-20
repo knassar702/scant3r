@@ -6,7 +6,7 @@ headers:
   - default: '{}'
   - save_content: true
   - help: "add custom header (ex:-H='Cookies: test=1')"
-  - exec: "dict_args['headers'] = extractHeaders(value)"
+  - exec: "dict_args['headers'] = extract_headers(value)"
 
 log_mode:
   - option: 
@@ -76,7 +76,6 @@ methods:
   - help: 'Methods Allowed on your target'
   - exec: | 
       dict_args['methods'] = value.split(",")
-    
 
 modules:
   - option: 

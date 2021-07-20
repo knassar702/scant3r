@@ -1,7 +1,4 @@
-from .xss import Scan
-
-
+from .xss_param import XssParam
 
 def main(opts,r):
-    c = Scan(opts,r)
-    return c.start(opts['methods'])
+    return XssParam(opts,r).start()
