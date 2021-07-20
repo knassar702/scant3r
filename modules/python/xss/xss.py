@@ -1,33 +1,33 @@
 #!/usr/bin/env python3
-import random
-from core.libs import insert_to_params,remove_dups_urls,random_str,alert_bug,post_data,urlencoder,insert_to_params_urls
+from core.libs import remove_dups_urls, random_str, alert_bug, insert_to_params_urls
 from urllib.parse import urlparse
 from wordlists import XSS
 
-
-class Scan:
+class Xss:
     def __init__(self,opts,r):
         self.http = r
         self.opts = opts
         self.payloads = XSS(opts['blindxss']).payloads
+        
     def check_method(self,methods,url):
-        self.method_allowed = {}
-        if self.method_allowed:
-            self.method_allowed.clear()
+        method_allowed = dict()
+        if method_allowed:
+            method_allowed.clear()
         for u in methods:
-            self.method_allowed[u] = {}
+            method_allowed[u] = {}
         for method in methods:
             r = self.http.send(method,url)
             if r != 0:
                 if r.status_code != 405:
-                    self.method_allowed[method] = {url:r.status_code}
-        return self.method_allowed
-    def start(self,url,methods=['GET','POST']):
+                    method_allowed[method] = {url:r.status_code}
+        return method_allowed
+    
+    def start(self):
         self.bugs = []
-        for i in methods:
+        for i in self.opts['methods']:
             self.ref = []
             txt = f'scan{random_str(3)}tr'
-            n = remove_dups_urls(insert_to_params_urls(url,txt))
+            n = remove_dups_urls(insert_to_params_urls(self.opts['url'],txt))
             for wp in n:
                 if i != 'GET':
                     r = self.http.send(i,wp.split('?')[0],body=urlparse(wp).query)

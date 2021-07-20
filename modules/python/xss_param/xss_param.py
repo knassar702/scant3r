@@ -2,12 +2,13 @@ from urllib.parse import urlparse
 from core.libs import random_str,urlencoder,insert_to_params_name
 from wordlists import XSS
 
-class Scan:
+class XssParam:
     def __init__(self,opts,r):
         self.http = r
         self.opts = opts
         self.payloads = XSS(opts['blindxss']).payloads
-    def reflect(self,url,method='GET'):
+        
+    def reflect(self, url, method='GET'):
         ref = []
         txt = f'scan{random_str(2)}'
         for u in insert_to_params_name(url,txt):
@@ -19,9 +20,10 @@ class Scan:
                 if txt in r.text:
                     ref.append(txt)
         return ref
-    def start(self,methods=['GET','POST']):
+    
+    def start(self):
         http = self.http
-        for method in methods:
+        for method in self.opts['methods']:
             v = self.reflect(self.opts['url'],method=method)
             if len(v) > 0:
                 for payload in self.payloads:
