@@ -2,12 +2,12 @@ from core.libs import insert_to_params_urls  as ur
 from core.libs import random_str
 from urllib.parse import urlparse
 
-class Scan:
-    def __init__(self, opts, r):
+class Reflect:
+    def __init__(self, opts, http):
         self.opts = opts
-        self.http = r
+        self.http = http
         
-    def scan(self):
+    def start(self) -> list:
         found = dict()
         txt = f'scan{random_str(3)}tr'
         
