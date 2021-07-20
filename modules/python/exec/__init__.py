@@ -1,4 +1,4 @@
 from .exec import Exec
 
 def main(opts, http):
-    Exec(opts).start
+    Exec(opts,http).start()
