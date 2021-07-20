@@ -54,7 +54,6 @@ if __name__ == '__main__':
                 np = '?{}'.format(np)
                 
             opts['urls'][ind] = '{url}{np}'.format(url=url,np=np)
-    print(opts)
     if opts['modules']:
         # load modules
         for module in opts['modules']:
