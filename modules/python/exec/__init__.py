@@ -1,4 +1,4 @@
-from .exec import Scan
+from .exec import Exec
 
 def main(opts, http):
-    m = Scan(opts).run()
+    Exec(opts).start

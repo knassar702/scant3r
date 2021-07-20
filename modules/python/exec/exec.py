@@ -8,7 +8,7 @@ from yaml import safe_load
 
 q = Queue()
 
-class Scan: 
+class Exec: 
     def __init__(self, opts):
         self.opts = opts
         self.op = self.define_op()
@@ -30,7 +30,7 @@ class Scan:
             self.execute(item)
             q.task_done()
     
-    def run(self):
+    def start(self):
         mm = safe_load(open(f'modules/python/exec/conf.yaml','r'))
         for _ in range(self.opts['threads']):
             p1 = Thread(target=self.threader)
