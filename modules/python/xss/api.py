@@ -1,8 +1,7 @@
-from .xss import Scan
+from .xss import Xss
 from urllib.parse import urlparse
 
 def main(opts,http):
-    scanner = Scan(opts,http)
     if urlparse(opts['url']).query:
-        return scanner.start(url=opts['url'],opts['methods'])
+        return Xss(opts,http).start()
     return

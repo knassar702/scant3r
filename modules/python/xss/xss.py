@@ -4,9 +4,9 @@ from urllib.parse import urlparse
 from wordlists import XSS
 
 class Xss:
-    def __init__(self,opts,r):
-        self.http = r
+    def __init__(self, opts, http):
         self.opts = opts
+        self.http = http
         self.payloads = XSS(opts['blindxss']).payloads
         
     def check_method(self,methods,url):
