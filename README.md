@@ -31,7 +31,6 @@ and scant3r will help you  write your own python script faster , you don't need 
 | **xss**        | inject xss payload in parameter value                        |
 | **sqli**       | simple sqli scanner                                          |
 | **rce**        | simple RCE scanner
-| **finder**     | text Matcher in request/response                                                              |
 | **xss_param** | inject xss payload in parameter name
 | **ssti** | simple server side template injection scanner |
 | **exec** | run multi tasks for automate your work/recon |

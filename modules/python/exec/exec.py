@@ -4,10 +4,12 @@ from queue import Queue
 from urllib.parse import urlparse as ur
 from threading import Thread
 from subprocess import call
+from logging import getLogger
 from yaml import safe_load
 from modules import Scan
 
 q = Queue()
+log = getLogger('scant3r')
 
 class Exec(Scan): 
     def __init__(self, opts, http):
@@ -22,6 +24,7 @@ class Exec(Scan):
         return dict_op
         
     def execute(self,cmd):
+        log.info(f'Execute {cmd}')
         s = call(cmd.format(**self.op),shell=True)
         return s
     
@@ -32,8 +35,10 @@ class Exec(Scan):
             q.task_done()
     
     def start(self):
+        log.debug('load exec conf file')
         mm = safe_load(open(f'modules/python/exec/conf.yaml','r'))
         for _ in range(self.opts['threads']):
+            log.debug('new thread started')
             p1 = Thread(target=self.threader)
             p1.daemon = True
             p1.start()

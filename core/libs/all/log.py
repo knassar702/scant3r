@@ -13,7 +13,7 @@ class CustomFormatter(logging.Formatter):
     green = colors.green
     yellow = colors.yellow
     """Logging Formatter to add colors and count warning / errors"""
-    debug_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s (%(filename)s:%(funcName)s:%(lineno)d)"
+    debug_format = "%(asctime)s - %(module)s - %(levelname)s - %(message)s (%(filename)s:%(funcName)s:%(lineno)d)"
     normal_format = f"[{green}%(levelname)s{reset}][{colors.bwhite}%(asctime)s{reset}] {colors.byellow}%(module)s{reset} -> %(message)s"
     FORMATS = {
         logging.DEBUG: magenta + debug_format + reset,
