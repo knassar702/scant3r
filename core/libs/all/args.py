@@ -41,14 +41,18 @@ class Args:
                     
             if 'help' in option.keys():
                 dict_option['help'] = option['help']
-           
             if 'default' in option.keys():
                 dict_option['default'] = option['default']
                 if option['default'] == "{}":
                     dict_option['default'] = {}
                 if option["default"] == "[]":
                     dict_option['default'] = []
-        
+            if 'default_action' in option.keys():
+                try:
+                    # execute command for default value :D
+                    dict_option['default'] = eval(option['default_action'])
+                except Exception as e:
+                    log.error(e)
         if dict_option['type'] != bool: 
             parser.add_argument(dict_option['small'], dict_option['large'], 
                         dest=dict_option['name'], type=dict_option['type'], 
@@ -69,6 +73,7 @@ class Args:
             else : 
                 dict_exe = list(filter(lambda item : 'exec' in item.keys(), self.conf[name]))[0]
                 if dict_exe:
+                    print(dict_exe['exec'])
                     exec(dict_exe['exec'])
         return dict_args
     

@@ -8,7 +8,7 @@ headers:
   - help: "add custom header (ex:-H='Cookies: test=1')"
   - exec: "dict_args['headers'] = extractHeaders(value)"
 
-log_info:
+log_mode:
   - option: 
     - '-v'
     - '--logger-mode'
@@ -85,10 +85,14 @@ modules:
   - help: 'run scant3r module (ex: -m=example)'
   - type: string
   - default: '[]'
+  - default_action: |
+      yaml.safe_load(open('conf/main_scan.yaml','r'))
   - save_content: true
   - exec: |
-      dict_args['modules'] = value.split(",")
-
+      if type(value) == list:
+        dict_args['modules'] = value
+      else:
+        dict_args['modules'] = value.split(",")
 nologo :
   - option: 
     - '-n'

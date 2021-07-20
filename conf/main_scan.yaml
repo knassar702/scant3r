@@ -1,0 +1,10 @@
+- xss
+- xss_param
+- sqli
+- rce
+- finder
+- injheaders
+- paths
+- secrets
+- ssrf
+- ssti 
