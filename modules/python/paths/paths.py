@@ -17,7 +17,7 @@ class Paths(Scan):
         log.debug('load paths config file')
         f = safe_load(open('modules/python/paths/conf.yaml','r')) 
         for path, msg in f.items(): 
-            log.debug('insert path to url')
+            log.debug('insert the path to url')
             if path.startswith('/'):
                 path = path[1:]
             host = urljoin(self.opts['url'], path)
@@ -27,9 +27,11 @@ class Paths(Scan):
                 if r != 0:
                     try:
                         msg = int(msg)
+                        log.debug('matching by http status code')
                         if msg == r.status_code:
                             alert_bug('paths',r,found=host,match=f'status Code: [{r.status_code}]')
                     except:
+                        log.debug('matching by http response body')
                         if msg in r.text:
                             alert_bug('paths',r,found=host,match=f'Text: {msg}')
             except Exception as e:
