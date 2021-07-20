@@ -2,12 +2,12 @@ from wordlists import rce_payloads
 from core.libs import insert_to_params_urls ,dump_response
 from urllib.parse import urlparse
 
-class Scan:
-    def __init__(self, opts, r):
+class Rce:
+    def __init__(self, opts, http):
         self.opts = opts
-        self.http = r
+        self.http = http
         
-    def scan(self):
+    def start(self) -> dict:
         for method in self.opts['methods']:
             for payload,match in rce_payloads().items():
                 nurl = insert_to_params_urls(self.opts['url'],payload.replace('\n','%0a').replace('\t','%0d'))
