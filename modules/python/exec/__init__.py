@@ -1,5 +1,4 @@
-from .exeec import Start
+from .exec import Scan
 
 def main(opts,r):
-    m = Start(opts)
-    m.run()
+    m = Scan(opts).run()
