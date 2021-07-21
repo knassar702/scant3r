@@ -149,23 +149,26 @@ def post_data(params: str, debug: bool = False) -> dict:
 
 # Convert string headers to a dict Headers
 def extract_headers(headers: str='' ,debug: bool =False) -> dict:
-    if headers:
-        headers = headers.replace('\\n', '\n')
-        sorted_headers = {}
-        matches = re.findall(r'(.*):\s(.*)', headers)
-        for match in matches:
-            header = match[0]
-            value = match[1]
-            try:
-                if value[-1] == ',':
-                    value = value[:-1]
-                sorted_headers[header] = value
-            except Exception as e:
-                log.error(e)
-                return {}
-        return sorted_headers
-    return {}
-
+    try:
+        if headers:
+            headers = headers.replace('\\n', '\n')
+            sorted_headers = {}
+            matches = re.findall(r'(.*):\s(.*)', headers)
+            for match in matches:
+                header = match[0]
+                value = match[1]
+                try:
+                    if value[-1] == ',':
+                        value = value[:-1]
+                    sorted_headers[header] = value
+                except Exception as e:
+                    log.error(e)
+                    return {}
+            return sorted_headers
+        return {}
+    except Exception as e:
+        log.error(e)
+        return {}
 #  Insert some string into given string at given index
 def insert_after(haystack: str, needle: str, newText: str) -> str:
   i = haystack.find(needle)
