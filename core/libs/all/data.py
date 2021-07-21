@@ -135,6 +135,8 @@ def insert_to_params(param: str, text: str, debug : bool=False) -> str:
 # add string value to dictionary (for cookies,post/put parameters)
 def post_data(params: str, debug: bool = False) -> dict:
     try:
+        if '?' not in params or '&' not in params:
+            return {}
         if params:
             prePostData = params.split("&")
             postData = {}
