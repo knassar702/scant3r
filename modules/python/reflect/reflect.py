@@ -13,9 +13,6 @@ class Reflect(Scan):
         txt = f'scan{random_str(3)}tr'
         
         for method in self.opts['methods']:
-            if not urlparse(self.opts['url']).query:
-                return []
-            
             list_url = ur(self.opts['url'],txt)
             
             for url in list_url:
