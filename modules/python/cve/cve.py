@@ -24,7 +24,7 @@ class Cve(Scan):
             with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
                 results.append(executor.submit(module.main(self.opts['url'],self.http)))
         # load YAML CVE templates
-        for template in glob('modules/python/cve/list/templates/CVE*.yaml'):
+        for template in glob('modules/cve/list/templates/CVE*.yaml'):
             template = self.open_yaml_file(template)
             log.debug('parsing CVE template')
             name = template['id']
