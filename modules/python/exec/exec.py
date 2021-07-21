@@ -37,7 +37,7 @@ class Exec(Scan):
     
     def start(self):
         log.debug('load exec conf file')
-        mm = safe_load(open(f'modules/python/exec/conf.yaml','r'))
+        mm = self.open_yaml_file('exec/conf.yaml')
         for _ in range(self.opts['threads']):
             log.debug('new thread started')
             p1 = Thread(target=self.threader)

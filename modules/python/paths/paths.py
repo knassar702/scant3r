@@ -15,7 +15,7 @@ class Paths(Scan):
     def start(self) -> list:
         found = []
         log.debug('load paths config file')
-        f = safe_load(open('modules/python/paths/conf.yaml','r')) 
+        f = self.open_yaml_file('paths/conf.yaml')
         for path, msg in f.items(): 
             log.debug('insert the path to url')
             if path.startswith('/'):
