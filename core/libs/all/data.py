@@ -9,6 +9,7 @@ import random
 import logging
 import string
 from urllib.parse import urljoin, urlparse
+from requests.models import Response
 from .colors import *
 
 log = logging.getLogger('scant3r')
@@ -20,7 +21,7 @@ def random_str(num: int) -> str:
 
 
 # Print the request in the console. Arg the request. Return a string. Empty string if no request
-def dump_request(request) -> str:
+def dump_request(request : Response) -> str:
     if request == 0:
         return ''
     body = ""
@@ -37,7 +38,7 @@ def dump_request(request) -> str:
     return body
 
 # Print the response in the console. Arg the request. Return a string. Empty string if no response
-def dump_response(request) -> str:
+def dump_response(request : Response) -> str:
     if request == 0:
         return ''
     body = "HTTP /1.1"

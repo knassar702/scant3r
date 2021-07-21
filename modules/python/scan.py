@@ -1,6 +1,8 @@
+from typing import Union
 from urllib.parse import urlparse
 from logging import getLogger
 from core.libs import Http
+from requests.models import Response
 
 PATH_PYTHON_MODULE = 'modules/python/'
 
@@ -18,8 +20,10 @@ class Scan:
             self.log.error(e)
             return None
 
-    def send_request(self, method: str, url: str):
+    def send_request(self, method: str, url: str, second_url: Union[str, None] = None) -> Response:
         if method == 'GET':
             return self.http.send(method, url)
-        return self.http.send(method, url.split('?')[0], body=urlparse(url).query)
+        if second_url is None:
+            return self.http.send(method, second_url.split('?')[0], body = urlparse(url).query)
+        return self.http.send(method, url.split('?')[0], body = urlparse(url).query)
 
