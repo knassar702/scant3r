@@ -3,6 +3,8 @@
 - sqli
 - rce
 - injheaders
+- cve
+- firebase
 - paths
 - secrets
 - ssrf
