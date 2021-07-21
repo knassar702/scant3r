@@ -1,28 +1,25 @@
-from core.libs import insert_to_params_urls, alert_bug
+from core.libs import insert_to_params_urls, alert_bug, Http
 from wordlists import sqli_payloads, sql_err
 from urllib.parse import urlparse
 from re import findall
 from modules import Scan
 
 class Sqli(Scan):
-    def __init__(self, opts, http):
+    def __init__(self, opts: dict, http: Http):
         super().__init__(opts, http)
         
-    def start(self):
+    def start(self) -> list:
         for method in self.opts['methods']:
             for payload in sqli_payloads:
                 payload = payload.rstrip()
-                n = insert_to_params_urls(self.opts['url'],payload)
-                for url in n:
-                    if method == 'GET':
-                        r = self.http.send(method,url)
-                    else:
-                        r = self.http.send(method,self.opts['url'].split('?')[0],body=urlparse(url).query)
+                list_url = insert_to_params_urls(self.opts['url'],payload)
+                for url in list_url:
+                    response = self.send_request(method, url, self.opts['url'])
                     for v in sql_err:
                         v = v.rstrip()
                         if len(v.rstrip()) >= 1:
-                            hmm = findall(v,r.text)
+                            hmm = findall(v,response.text)
                             for i in hmm:
                                 if i:
-                                    alert_bug('SQL injection',r,payload=urlparse(url).query,match=v)
+                                    alert_bug('SQL injection', response, payload=urlparse(url).query,match=v)
         return {}

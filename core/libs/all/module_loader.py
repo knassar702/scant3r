@@ -11,14 +11,15 @@ from urllib.parse import urlparse as ur
 from os.path import isfile
 from glob import glob
 import subprocess, logging
+from core.libs import Http
 
 log = logging.getLogger('scant3r')
 
 class MLoader:
     def __init__(self):
-        self.thr = list()
-        self.modules = dict()
-        self.scripts = dict()
+        self.thr: list = list()
+        self.modules: dict = dict()
+        self.scripts: dict = dict()
 
     def get(self, name: str, ourlist: bool = True):
         try:
@@ -70,7 +71,7 @@ class MLoader:
             return resu
         return 
     
-    def run(self, opts : dict, http):
+    def run(self, opts: dict, http: Http):
         # Start threading
         with concurrent.futures.ThreadPoolExecutor(max_workers=opts['threads']) as executor:
             mres = list()
@@ -81,16 +82,12 @@ class MLoader:
                 opt['url'] = url
         
                 # Execution of scripts
-                for n,module in self.scripts.items():
-                    mres.append(executor.submit(self.exeman,n.replace('$EX$','').replace('/','.'),module,opt))
+                for name, script in self.scripts.items():
+                    mres.append(executor.submit(self.exeman, name.replace('$EX$','').replace('/','.'), script, opt))
                 
                 # Execution of modules     
-                for n,module in self.modules.items():
-                    # Check the number of argument needed by the module                     
-                    if module.main.__code__.co_argcount >= 2:
-                        mres.append(executor.submit(module.main, opt, http))
-                    else:
-                        mres.append(executor.submit(module.main, opt))
+                for _, module in self.modules.items():
+                    mres.append(executor.submit(module.main, opt, http))
             
             # When the scan is completed
             for future in concurrent.futures.as_completed(mres):

@@ -1,4 +1,5 @@
 from .ssrf import Ssrf
+from core.libs import Http
 
-def main(opts,r):
-    return Ssrf(opts, r).start()
+def main(opts: dict, http: Http):
+    return Ssrf(opts, http).start()

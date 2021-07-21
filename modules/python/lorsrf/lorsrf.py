@@ -8,6 +8,7 @@ from queue import Queue
 from urllib.parse import urlparse # url parsing
 from wordlists import ssrf_parameters # ssrf parameters wordlist
 from modules import Scan
+from core.libs import Http
 
 q = Queue()
 
@@ -19,7 +20,7 @@ parameters_in_one_request = 10
 # ?ex1=http://google.com&ex2=http://google.com
 
 class Lorsrf(Scan):
-    def __init__(self, opts, http):
+    def __init__(self, opts: dict, http: Http):
         super().__init__(opts, http)
     
     def start(self): 
@@ -39,16 +40,12 @@ class Lorsrf(Scan):
 
     def lor(self, url: str):
         for method in self.opts['methods']:
-            if method == 'GET':
-                r = self.http.send(method, url)
-            else: 
-                r = self.http.send(method, url.split('?')[0], body=urlparse(url).query)
+            self.send_request(method, url)
 
     def check_url(self, url: str, par: str, pay: str) -> str:
         if len(urlparse(url).query) > 0:
             return f'&{par}={pay}'
-        else:
-            return f'?{par}={pay}'
+        return f'?{par}={pay}'
     
     def org(self):
         l = len(ssrf_parameters())

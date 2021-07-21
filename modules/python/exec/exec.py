@@ -7,12 +7,13 @@ from subprocess import call
 from logging import getLogger
 from yaml import safe_load
 from modules import Scan
+from core.libs import Http
 
 q = Queue()
 log = getLogger('scant3r')
 
 class Exec(Scan): 
-    def __init__(self, opts, http):
+    def __init__(self, opts: dict, http: Http):
         super().__init__(opts, http)
         self.op = self.define_op()
         
@@ -36,7 +37,7 @@ class Exec(Scan):
     
     def start(self):
         log.debug('load exec conf file')
-        mm = safe_load(open(f'modules/python/exec/conf.yaml','r'))
+        mm = self.open_yaml_file('exec/conf.yaml')
         for _ in range(self.opts['threads']):
             log.debug('new thread started')
             p1 = Thread(target=self.threader)
