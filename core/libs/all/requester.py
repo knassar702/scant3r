@@ -45,7 +45,7 @@ class Http:
         self.content_types: list = opts['content_types']
         
     # Send a request 
-    def send(self, method: str = 'GET', url: Union[str, None] = None, body: dict = {}, headers: dict = {}, allow_redirects: bool = False, org: bool = True) -> Response:
+    def send(self, method: str = 'GET', url: Union[str, None] = None, body: dict = {}, headers: dict = {}, allow_redirects: bool = False, org: bool = True,contentType:str ='plane') -> Response:
         try:
             # Generate user agent 
             user_agents = Agent()
@@ -92,9 +92,10 @@ class Http:
                     if content_type.split('/')[1] == 'json' and method != 'GET':
                         log.debug('convert body to json query')
                         body = json.dumps(body) # convert query parameters to json
-
                     headers['Content-Type'] = content_type
-                    
+            if contentType == 'json' and method != 'GET':
+                body = json.dumps(body)
+                headers['Content-Type'] = 'application/json'
             req = request(method, url, data=body, headers=headers, allow_redirects=allow_redirects, verify=False, timeout=timeout, proxies=proxy)
                                 
             if self.delay > 0:
