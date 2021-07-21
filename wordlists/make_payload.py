@@ -20,6 +20,11 @@ class XSS:
 sqli_payloads = open('wordlists/txt/sqli.txt','r')
 sql_err = open('wordlists/txt/sqli_errors.txt','r')
 
+
+def TLD():
+    f = open('wordlists/txt/tld.txt','r')
+    return f
+
 def rce_payloads(): 
     f = {
      ';id #':'gid=',
