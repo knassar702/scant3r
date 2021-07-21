@@ -17,9 +17,9 @@ log = logging.getLogger('scant3r')
 
 class MLoader:
     def __init__(self):
-        self.thr = list()
-        self.modules = dict()
-        self.scripts = dict()
+        self.thr: list = list()
+        self.modules: dict = dict()
+        self.scripts: dict = dict()
 
     def get(self, name: str, ourlist: bool = True):
         try:
@@ -82,12 +82,11 @@ class MLoader:
                 opt['url'] = url
         
                 # Execution of scripts
-                for n,module in self.scripts.items():
-                    mres.append(executor.submit(self.exeman,n.replace('$EX$','').replace('/','.'),module,opt))
+                for name, script in self.scripts.items():
+                    mres.append(executor.submit(self.exeman, name.replace('$EX$','').replace('/','.'), script, opt))
                 
                 # Execution of modules     
-                for n,module in self.modules.items():
-                    # Check the number of argument needed by the module                     
+                for _, module in self.modules.items():
                     mres.append(executor.submit(module.main, opt, http))
             
             # When the scan is completed
