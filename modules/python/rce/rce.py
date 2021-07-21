@@ -1,10 +1,10 @@
 from wordlists import rce_payloads
-from core.libs import insert_to_params_urls ,dump_response
+from core.libs import insert_to_params_urls ,dump_response, Http
 from urllib.parse import urlparse
 from modules import Scan
 
 class Rce(Scan):
-    def __init__(self, opts, http):
+    def __init__(self, opts: dict, http: Http):
         super().__init__(opts, http)
         
     def start(self) -> dict:

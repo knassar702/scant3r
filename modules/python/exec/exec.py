@@ -7,12 +7,13 @@ from subprocess import call
 from logging import getLogger
 from yaml import safe_load
 from modules import Scan
+from core.libs import Http
 
 q = Queue()
 log = getLogger('scant3r')
 
 class Exec(Scan): 
-    def __init__(self, opts, http):
+    def __init__(self, opts: dict, http: Http):
         super().__init__(opts, http)
         self.op = self.define_op()
         

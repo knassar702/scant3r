@@ -2,17 +2,17 @@ __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
 __version__ = '0.8#Beta'
 
-from core.libs import alert_bug, dump_response, force_insert_to_params_urls
+from core.libs import alert_bug, dump_response, force_insert_to_params_urls, Http
 from urllib.parse import urlparse # url parsing
 from yaml import safe_load
 from modules import Scan
 import re
 
 class Ssrf(Scan): 
-    def __init__(self, opts, http):
+    def __init__(self, opts: dict, http: Http):
         super().__init__(opts, http)
         
-    def start(self): 
+    def start(self) -> list: 
         conf = safe_load(open('modules/python/ssrf/payloads.yaml'))
         for payload,match in conf.items():
             for method in self.opts['methods']:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from core.libs import remove_dups_urls, random_str, alert_bug, insert_to_params_urls
+from core.libs import remove_dups_urls, random_str, alert_bug, insert_to_params_urls, Http
 from urllib.parse import urlparse
 from wordlists import XSS
 from logging import getLogger
@@ -8,12 +8,12 @@ from modules import Scan
 log = getLogger('scant3r')
 
 class Xss(Scan):
-    def __init__(self, opts, http):
+    def __init__(self, opts: dict, http: Http):
         super().__init__(opts, http)
         log.info('hi')
         self.payloads = XSS(opts['blindxss']).payloads
         
-    def check_method(self,methods,url):
+    def check_method(self, methods: list, url: str) -> dict:
         method_allowed = dict()
         if method_allowed:
             method_allowed.clear()

@@ -1,7 +1,7 @@
 from .rce import Rce
-from core.libs import alert_bug
+from core.libs import alert_bug, Http
 
-def main(opts,r):
-    dict_result = Rce(opts, r).start()
+def main(opts: dict, http : Http):
+    dict_result = Rce(opts, http).start()
     if dict_result:
         return alert_bug('Remote Code Execution',**dict_result)

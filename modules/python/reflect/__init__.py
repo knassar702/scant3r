@@ -1,8 +1,8 @@
 from .reflect import Reflect
 from urllib.parse import urlparse
-from core.libs import show_error
+from core.libs import show_error, Http
 
-def main(opts, http):
+def main(opts: dict, http: Http):
     if urlparse(opts['url']).query:
         list_result = Reflect(opts, http).start()
         if list_result:

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from urllib.parse import urlparse
-from core.libs import alert_bug
+from core.libs import alert_bug, Http
 import re
 from modules import Scan
 
@@ -35,10 +35,10 @@ regexs = {
         } # from https://github.com/BitTheByte/Eagle/blob/master/plugins/spider.py by @BitTheByte
 
 class Secrets(Scan):
-    def __init__(self, opts, http):
+    def __init__(self, opts: dict, http : Http):
         super().__init__(opts, http)
         
-    def start(self):
+    def start(self) -> list:
         try:
             url = self.opts['url']
             rr = r"[:|=|\'|\"|\s*|`|´| |,|?=|\]|\|//|/\*}]({{REGEX}})[:|=|\'|\"|\s*|`|´| |,|?=|\]|\}|&|//|\*/]"

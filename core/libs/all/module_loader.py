@@ -11,6 +11,7 @@ from urllib.parse import urlparse as ur
 from os.path import isfile
 from glob import glob
 import subprocess, logging
+from core.libs import Http
 
 log = logging.getLogger('scant3r')
 
@@ -70,7 +71,7 @@ class MLoader:
             return resu
         return 
     
-    def run(self, opts : dict, http):
+    def run(self, opts: dict, http: Http):
         # Start threading
         with concurrent.futures.ThreadPoolExecutor(max_workers=opts['threads']) as executor:
             mres = list()

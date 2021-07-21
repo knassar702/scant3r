@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-from core.libs import show_error
+from core.libs import show_error, Http
 from .lorsrf import Lorsrf
 
-def main(opts, http):
+def main(opts: dict, http: Http):
     if opts['host']:
         Lorsrf(opts, http).start()
     else:

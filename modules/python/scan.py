@@ -1,10 +1,11 @@
 from urllib.parse import urlparse
 from logging import getLogger
+from core.libs import Http
 
 PATH_PYTHON_MODULE = 'modules/python/'
 
 class Scan: 
-    def __init__(self, opts, http, path = PATH_PYTHON_MODULE): 
+    def __init__(self, opts: dict, http: Http, path: str = PATH_PYTHON_MODULE): 
         self.opts = opts 
         self.http = http
         self.path = path 
@@ -17,7 +18,7 @@ class Scan:
             self.log.error(e)
             return None
 
-    def send_request(self, method: str, url):
+    def send_request(self, method: str, url: str):
         if method == 'GET':
             return self.http.send(method, url)
         return self.http.send(method, url.split('?')[0], body=urlparse(url).query)

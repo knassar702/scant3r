@@ -1,13 +1,13 @@
 from urllib.parse import urlparse
-from core.libs import random_str,urlencoder,insert_to_params_name
+from core.libs import random_str, urlencoder, insert_to_params_name, Http
 from wordlists import XSS
 from modules import Scan
 class XssParam(Scan):
-    def __init__(self, opts, http):
+    def __init__(self, opts: dict, http: Http):
         super().__init__(opts, http)
         self.payloads = XSS(opts['blindxss']).payloads
         
-    def reflect(self, url, method='GET'):
+    def reflect(self, url: str, method: str ='GET') -> list:
         ref = []
         txt = f'scan{random_str(2)}'
         for u in insert_to_params_name(url,txt):

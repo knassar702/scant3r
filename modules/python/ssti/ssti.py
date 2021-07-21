@@ -1,9 +1,9 @@
 from wordlists import ssti_payloads as ssti
 from urllib.parse import urlparse
-from core.libs import insert_to_params_urls
+from core.libs import insert_to_params_urls, Http
 from modules import Scan
 class Ssti(Scan):
-    def __init__(self, opts, http):
+    def __init__(self, opts: dict, http: Http):
         super().__init__(opts, http)
     
     def start(self):

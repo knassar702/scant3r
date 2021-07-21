@@ -8,6 +8,7 @@ from queue import Queue
 from urllib.parse import urlparse # url parsing
 from wordlists import ssrf_parameters # ssrf parameters wordlist
 from modules import Scan
+from core.libs import Http
 
 q = Queue()
 
@@ -19,7 +20,7 @@ parameters_in_one_request = 10
 # ?ex1=http://google.com&ex2=http://google.com
 
 class Lorsrf(Scan):
-    def __init__(self, opts, http):
+    def __init__(self, opts: dict, http: Http):
         super().__init__(opts, http)
     
     def start(self): 

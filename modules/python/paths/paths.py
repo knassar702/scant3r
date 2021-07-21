@@ -2,14 +2,14 @@
 from urllib.parse import urljoin
 from core.libs import Colors as c
 from yaml import safe_load
-from core.libs import alert_bug
+from core.libs import alert_bug, Http
 from modules import Scan
 from logging import getLogger
 
 log = getLogger('scant3r')
 
 class Paths(Scan):
-    def __init__(self, opts, http):
+    def __init__(self, opts: dict, http: Http):
         super().__init__(opts, http)
     
     def start(self) -> list:

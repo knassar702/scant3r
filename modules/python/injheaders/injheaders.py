@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 from yaml import safe_load
 from urllib.parse import urlparse
-from core.libs import alert_bug, dump_response
+from core.libs import alert_bug, dump_response, Http
 from wordlists import XSS
 import re
 from modules import Scan
 
 class Injheaders(Scan):
-    def __init__(self, opts, http):
+    def __init__(self, opts: dict, http: Http):
         super().__init__(opts, http) 
         self.conf = self.define_conf()
         
