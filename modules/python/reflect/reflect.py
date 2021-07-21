@@ -2,6 +2,7 @@ from core.libs import insert_to_params_urls  as ur
 from core.libs import random_str
 from urllib.parse import urlparse
 from scan import Scan
+
 class Reflect(Scan):
     def __init__(self, opts, http):
         super().__init__(opts, http)

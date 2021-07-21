@@ -87,10 +87,7 @@ class MLoader:
                 # Execution of modules     
                 for n,module in self.modules.items():
                     # Check the number of argument needed by the module                     
-                    if module.main.__code__.co_argcount >= 2:
-                        mres.append(executor.submit(module.main, opt, http))
-                    else:
-                        mres.append(executor.submit(module.main, opt))
+                    mres.append(executor.submit(module.main, opt, http))
             
             # When the scan is completed
             for future in concurrent.futures.as_completed(mres):

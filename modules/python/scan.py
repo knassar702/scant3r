@@ -1,5 +1,4 @@
 from urllib.parse import urlparse
-from core.libs import post_data
 from logging import getLogger
 
 PATH_PYTHON_MODULE = 'modules/python/'
@@ -10,6 +9,7 @@ class Scan:
         self.http = http
         self.path = path 
         self.log = getLogger('scant3r')
+        
     def open_yaml_file(self,file_name: str): 
         try:
             read_file = open(file_name,'r')
