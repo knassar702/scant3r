@@ -45,9 +45,9 @@ class Http:
         self.content_types: list = opts['content_types']
         
     # Send a request 
-    def send(self, method: str = 'GET', url: Union[str, None] = None, body: dict = {}, headers: dict = {}, allow_redirects: bool = False, org: bool = True,contentType:str ='plane') -> Response:
+    def send(self, method: str = 'GET', url: Union[str, None] = None, body: dict = {}, headers: dict = {}, allow_redirects: bool = False, org: bool = True,timeout:int = 10,IgnoreErrors: bool = False,contentType:str ='plane') -> Response:
         try:
-            # Generate user agent 
+            # Generate user agent
             user_agents = Agent()
             if self.random_agents:
                 user_agents.load()
@@ -67,10 +67,9 @@ class Http:
                 allow_redirects = True
 
             # Set timeout
-            timeout = 10
-            if self.timeout:
-                timeout = self.timeout
-
+            if timeout == 10:
+                if self.timeout:
+                    timeout = self.timeout
             # set proxy 
             proxy = {}
             if type(self.proxy) == dict:
@@ -115,7 +114,8 @@ class Http:
                 
             return req
         except Exception as e:
-            log.error(e)
+            if IgnoreErrors == False:
+                log.error(e)
             return [0,e]
         
     # send a request with custom options (without user options)
