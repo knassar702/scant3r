@@ -15,15 +15,11 @@ class Xss(Scan):
         
     def check_method(self, methods: list, url: str) -> dict:
         method_allowed = dict()
-        if method_allowed:
-            method_allowed.clear()
-        for u in methods:
-            method_allowed[u] = {}
         for method in methods:
+            method_allowed[method] = {}
             r = self.http.send(method,url)
-            if r != 0:
-                if r.status_code != 405:
-                    method_allowed[method] = {url:r.status_code}
+            if r != 0 and r.status_code != 405:
+                method_allowed[method] = {url: r.status_code}
         return method_allowed
     
     def start(self):
@@ -33,16 +29,14 @@ class Xss(Scan):
             txt = f'scan{random_str(3)}tr'
             n = remove_dups_urls(insert_to_params_urls(self.opts['url'],txt))
             for wp in n:
-                if i != 'GET':
-                    r = self.http.send(i,wp.split('?')[0],body=urlparse(wp).query)
-                    if r != 0:
-                        if txt in r.text:
-                            self.ref.append(wp)
-                else:
+                if i == 'GET':
                     r = self.http.send(i,wp)
-                    if r != 0:
-                        if txt in r.text:
-                            self.ref.append(wp)
+                    if r != 0 and txt in r.text:
+                        self.ref.append(wp)
+                else:                
+                    r = self.http.send(i,wp.split('?')[0],body=urlparse(wp).query)
+                    if r != 0 and txt in r.text:
+                        self.ref.append(wp)
             for rp in self.ref:
                 for P in self.payloads:
                     P = P.rstrip() # remove new lines from payloads 
@@ -51,14 +45,13 @@ class Xss(Scan):
                         r = self.http.send(i,nurl)
                     else:
                         r = self.http.send(i,nurl.split('?')[0],body=urlparse(nurl).query)
-                    if r != 0:
-                        if P in r.text:
-                            self.bugs.append({
-                                'params':urlparse(nurl).query,
-                                'payload':P,
-                                'http':r
-                                })
-                            break
+                    if r != 0 and P in r.text:
+                        self.bugs.append({
+                            'params':urlparse(nurl).query,
+                            'payload':P,
+                            'http':r
+                            })
+                        break
         self.fbug = []
         for bu in self.bugs:
             self.fbug.append(alert_bug('XSS',**bu))
