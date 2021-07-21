@@ -25,23 +25,23 @@ class Injheaders(Scan):
                     headers[h] = f'{v}{payload}'
                     try: 
                         if method != 'GET':
-                            r = self.http.send(method, self.opts['url'].split('?')[0],headers=headers, body=urlparse(self.opts['url']).query)
+                            response = self.http.send(method, self.opts['url'].split('?')[0],headers=headers, body=urlparse(self.opts['url']).query)
                         else:
-                            r = self.http.send(method, self.opts['url'], headers=headers)
+                            response = self.http.send(method, self.opts['url'], headers=headers)
                             
-                        if r != 0:
+                        if response != 0:
                             if matcher[1]['regex']:
                                 c = re.compile(matcher[0]['text'])
                                 c = c.findall(dump_response(c))
                                 if c:
-                                    return alert_bug('INJHEADERS',r,Match=matcher[0]['text'],regex=True,payload=payload,header=h)
+                                    return alert_bug('INJHEADERS', response, Match=matcher[0]['text'], regex=True, payload=payload, header=h)
                             else:
                                 try:
                                     int(matcher[0]['text'])
-                                    if payload in r.text:
-                                        return alert_bug('INJHEADERS', r, Match=matcher[0]['text'], regex=True, payload=payload, header=h)
+                                    if payload in response.text:
+                                        return alert_bug('INJHEADERS', response, Match=matcher[0]['text'], regex=True, payload=payload, header=h)
                                 except:
-                                    if matcher[0]['text'] in r.text:
-                                        return alert_bug('INJHEADERS', r, Match=matcher['text'], regex=True, payload=payload, header=h)
+                                    if matcher[0]['text'] in response.text:
+                                        return alert_bug('INJHEADERS', response, Match=matcher['text'], regex=True, payload=payload, header=h)
                     finally :
                         headers[h] = v

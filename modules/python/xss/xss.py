@@ -17,43 +17,40 @@ class Xss(Scan):
         method_allowed = dict()
         for method in methods:
             method_allowed[method] = {}
-            r = self.http.send(method,url)
-            if r != 0 and r.status_code != 405:
-                method_allowed[method] = {url: r.status_code}
+            response = self.http.send(method,url)
+            if response != 0 and response.status_code != 405:
+                method_allowed[method] = {url: response.status_code}
         return method_allowed
     
     def start(self):
-        self.bugs = []
-        for i in self.opts['methods']:
-            self.ref = []
+        bugs = []
+        for method in self.opts['methods']:
+            
+            ref: list = []
             txt = f'scan{random_str(3)}tr'
-            n = remove_dups_urls(insert_to_params_urls(self.opts['url'],txt))
-            for wp in n:
-                if i == 'GET':
-                    r = self.http.send(i,wp)
-                    if r != 0 and txt in r.text:
-                        self.ref.append(wp)
-                else:                
-                    r = self.http.send(i,wp.split('?')[0],body=urlparse(wp).query)
-                    if r != 0 and txt in r.text:
-                        self.ref.append(wp)
-            for rp in self.ref:
+            list_url = remove_dups_urls(insert_to_params_urls(self.opts['url'],txt))
+            for url in list_url:
+                response = self.send_request(method, url)
+                if response != 0 and txt in response.text:
+                    ref.append(url)
+                    
+            for rp in ref:
                 for P in self.payloads:
-                    P = P.rstrip() # remove new lines from payloads 
+                    # remove new lines from payloads
+                    P = P.rstrip()  
                     nurl = rp.replace(txt,P)
-                    if i == 'GET':
-                        r = self.http.send(i,nurl)
-                    else:
-                        r = self.http.send(i,nurl.split('?')[0],body=urlparse(nurl).query)
-                    if r != 0 and P in r.text:
-                        self.bugs.append({
+                    response = self.send_request(method, nurl)
+                    if response != 0 and P in response.text:
+                        bugs.append({
                             'params':urlparse(nurl).query,
                             'payload':P,
-                            'http':r
-                            })
+                            'http': response
+                        })
                         break
-        self.fbug = []
-        for bu in self.bugs:
-            self.fbug.append(alert_bug('XSS',**bu))
-        return self.fbug
+                    
+        result_list = []
+        for bug in bugs:             
+            result_list.append(alert_bug('XSS',**bug))
+        
+        return result_list
 

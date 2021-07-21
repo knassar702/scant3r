@@ -44,17 +44,14 @@ class Secrets(Scan):
             rr = r"[:|=|\'|\"|\s*|`|´| |,|?=|\]|\|//|/\*}]({{REGEX}})[:|=|\'|\"|\s*|`|´| |,|?=|\]|\}|&|//|\*/]"
             
             for method in self.opts['methods']:    
-                if method == 'GET':
-                    r = self.http.send(method,url)
-                else:
-                    r = self.http.send(method,url.split('?')[0],body=urlparse(url).query)
+                response = self.send_request(method, url)
                 
-                if r != 0: # 0 = Connection Error
+                if response != 0: # 0 = Connection Error
                     for option,match in regexs.items():
                         c = re.compile(rr.replace('{{REGEX}}',match))
-                        mm = c.findall(r.text)
+                        mm = c.findall(response.text)
                         if len(mm) > 0:
-                            alert_bug('SECRET',r,Found=option,Match=mm)
+                            alert_bug('SECRET', response, Found=option, Match=mm)
             return list() 
         except Exception as e:
             print(e)

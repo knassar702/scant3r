@@ -11,11 +11,8 @@ class XssParam(Scan):
         ref = []
         txt = f'scan{random_str(2)}'
         for u in insert_to_params_name(url,txt):
-            if method == 'GET':
-                r = self.http.send(method,u)
-            else:
-                r = self.http.send(method,u.split('?')[0],body=urlparse(u).query)
-            if r != 0 and txt in r.text:
+            response = self.send_request(method, u)
+            if response != 0 and txt in response.text:
                 ref.append(txt)
         return ref
     
@@ -26,10 +23,7 @@ class XssParam(Scan):
                 for payload in self.payloads:
                     payload = payload.rstrip()
                     for nurl in insert_to_params_name(self.opts['url'],urlencoder(payload)):
-                        if method == 'GET':
-                            r = self.http.send(method,nurl)
-                        else:
-                            r = self.http.send(method,self.opts['url'].split('?')[0],body=urlparse(nurl).query)
-                        if r != 0 and payload in r.text:
+                        response = self.send_request(method, nurl, self.opts['url'])
+                        if response != 0 and payload in response.text:
                             print(f'[XSS Parameter Name: {method}] :> {nurl}\n')
                             return {method:nurl}

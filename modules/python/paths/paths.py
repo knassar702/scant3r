@@ -23,17 +23,17 @@ class Paths(Scan):
             host = urljoin(self.opts['url'], path)
             try:
                 log.debug('send http request to the target')
-                r = self.http.send('GET',host)
-                if r != 0:
+                response = self.http.send('GET',host)
+                if response != 0:
                     try:
                         msg = int(msg)
                         log.debug('matching by http status code')
-                        if msg == r.status_code:
-                            alert_bug('paths',r,found=host,match=f'status Code: [{r.status_code}]')
+                        if msg == response.status_code:
+                            alert_bug('paths', response, found=host, match=f'status Code: [{response.status_code}]')
                     except:
                         log.debug('matching by http response body')
-                        if msg in r.text:
-                            alert_bug('paths',r,found=host,match=f'Text: {msg}')
+                        if msg in response.text:
+                            alert_bug('paths', response, found=host, match=f'Text: {msg}')
             except Exception as e:
                 log.error(e)
             finally: 

@@ -13,16 +13,15 @@ class Reflect(Scan):
         txt = f'scan{random_str(3)}tr'
         
         for method in self.opts['methods']:
-            if urlparse(self.opts['url']).query:
-                nurls = ur(self.opts['url'],txt)
-            else:
+            if not urlparse(self.opts['url']).query:
                 return []
-            for nurl in nurls:
-                if method == 'GET':
-                    r = self.http.send(method,nurl)
-                else:
-                    r = self.http.send(method,nurl.split('?')[0],body=urlparse(nurl).query)
-                if txt in r.text:
+            
+            list_url = ur(self.opts['url'],txt)
+            
+            for url in list_url:
+                response = self.send_request(method, url)
+                
+                if txt in response.text:
                     found = method
   
         return found

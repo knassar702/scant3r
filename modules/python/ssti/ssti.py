@@ -1,5 +1,4 @@
 from wordlists import ssti_payloads as ssti
-from urllib.parse import urlparse
 from core.libs import insert_to_params_urls, Http
 from modules import Scan
 class Ssti(Scan):
@@ -9,17 +8,14 @@ class Ssti(Scan):
     def start(self):
         for method in self.opts['methods']:
             for payload,match in ssti().items():
-                nurl = insert_to_params_urls(self.opts['url'],payload)
-                for n in nurl:
-                    if method == 'GET':
-                        r = self.http.send(method,n)
-                    else:
-                        r = self.http.send(method, self.opts['url'].split('?')[0], body=urlparse(n).query)
-                    if r != 0: # 0 = Connection error:
-                        if match in r.text:
-                            return {
-                                'http':r,
-                                'target':n,
-                                'match':match,
-                                'payload':payload,
-                            }
+                list_url = insert_to_params_urls(self.opts['url'],payload)
+                for url in list_url:
+                    response = self.send_request(method, url, self.opts['url'])
+                    # 0 = Connection error:
+                    if response != 0 and match in response.text: 
+                        return {
+                            'http': response,
+                            'target': url,
+                            'match': match,
+                            'payload': payload,
+                        }
