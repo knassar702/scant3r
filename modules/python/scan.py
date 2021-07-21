@@ -1,6 +1,7 @@
 from urllib.parse import urlparse
 from core.libs import post_data
 from logging import getLogger
+from yaml import safe_load
 
 PATH_PYTHON_MODULE = 'modules/python/'
 
@@ -12,7 +13,8 @@ class Scan:
         self.log = getLogger('scant3r')
     def open_yaml_file(self,file_name: str): 
         try:
-            read_file = open(file_name,'r')
+            read_file = safe_load(open(file_name,'r'))
+            return read_file
         except Exception as e:
             self.log.error(e)
             return None
