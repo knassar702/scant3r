@@ -6,11 +6,9 @@ __version__ = '0.8#Beta'
 from .colors import Colors as c
 from .data import dump_request
 from urllib.parse import urlparse 
-from os.path import splitext
 from logging import getLogger
 from os import mkdir
 import random, re
-
 
 log = getLogger('scant3r')
 
