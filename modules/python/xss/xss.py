@@ -46,7 +46,6 @@ class Xss(Scan):
                             'payload':P,
                             'http': response
                         })
-                        break
                     
         result_list = []
         for bug in bugs:             

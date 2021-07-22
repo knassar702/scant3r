@@ -6,3 +6,4 @@ Flask-Limiter
 colorama
 pyyaml
 tldextract
+fuzzywuzzy
