@@ -41,7 +41,7 @@ def dump_request(request : Response) -> str:
 def dump_response(request : Response) -> str:
     if request == 0:
         return ''
-    body = "HTTP /1.1"
+    body = "HTTP /1.1 "
     body += str(request.status_code)
     body += " "
     body += request.reason

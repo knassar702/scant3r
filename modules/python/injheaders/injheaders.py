@@ -12,13 +12,13 @@ class Injheaders(Scan):
         self.conf = self.define_conf()
         
     def define_conf(self):
-        conf = self.open_yaml_file("injheaders/payloads.yaml")
+        conf = self.open_yaml_file("injheaders/payloads.yaml", True)
         for i in XSS(self.opts['blindxss']).blind:
             conf[i] = [{'text':i},{'regex':False}]
         return conf
                     
     def start(self): 
-        headers = self.open_yaml_file('injheaders/headers.yaml')
+        headers = self.open_yaml_file('injheaders/headers.yaml', True)
         for method in self.opts['methods']:
             for payload, matcher in self.conf.items(): 
                 for h, v in headers.copy().items(): 
