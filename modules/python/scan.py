@@ -27,7 +27,7 @@ class Scan:
     def send_request(self, method: str, url: str, second_url: Union[str, None] = None) -> Response:
         if method == 'GET':
             return self.http.send(method, url)
-        if second_url is None:
+        if second_url is not None:
             return self.http.send(method, second_url.split('?')[0], body = urlparse(url).query)
         return self.http.send(method, url.split('?')[0], body = urlparse(url).query)
     
