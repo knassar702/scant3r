@@ -5,3 +5,4 @@ clean-text
 Flask-Limiter
 colorama
 pyyaml
+tldextract
