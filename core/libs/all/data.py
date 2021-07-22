@@ -150,7 +150,7 @@ def post_data(params: str, debug: bool = False) -> dict:
         return {}
 
 # Convert string headers to a dict Headers
-def extract_headers(headers: str='' ,debug: bool =False) -> dict:
+def extract_headers(headers: str = '', debug: bool =False) -> dict:
     try:
         if headers:
             headers = headers.replace('\\n', '\n')
@@ -171,6 +171,20 @@ def extract_headers(headers: str='' ,debug: bool =False) -> dict:
     except Exception as e:
         log.error(e)
         return {}
+    
+# Convert cookie string to a dict 
+def extract_cookie(cookies: str)-> dict: 
+    dict_cookies = {}
+    if cookies: 
+        cookies = cookies.strip()
+        list_cookie = cookies.split(';')
+        for cookie in list_cookie: 
+            cookie = cookie.strip()
+            list_value_name_cookie = cookie.split('=')
+            dict_cookies[list_value_name_cookie[0].strip()] = list_value_name_cookie[1].strip()
+            
+    return dict_cookies          
+    
 #  Insert some string into given string at given index
 def insert_after(haystack: str, needle: str, newText: str) -> str:
   i = haystack.find(needle)
