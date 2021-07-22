@@ -21,28 +21,31 @@ class Xss(Scan):
     def start(self):
         bugs = []
         for method in self.opts['methods']:
-            
-            ref: list = []
+            list_potential_vulnerable_url: list = []
             txt = f'scan{random_str(3)}tr'
-            list_url = remove_dups_urls(insert_to_params_urls(self.opts['url'],txt))
+            # Create a list of url with value for each parameter 
+            # if text is display append it in ref list
+            target_url = self.transform_url(self.opts['url'])
+            list_url = remove_dups_urls(insert_to_params_urls(target_url, txt))
             for url in list_url:
                 response = self.send_request(method, url)
                 if response != 0 and txt in response.text:
-                    ref.append(url)
-                    
-            for rp in ref:
+                    list_potential_vulnerable_url.append(url)
+            
+            for potential_vulnerable_url in list_potential_vulnerable_url:
                 for P in self.payloads:
                     # remove new lines from payloads
                     P = P.rstrip()  
-                    nurl = rp.replace(txt,P)
-                    response = self.send_request(method, nurl)
+                    # replace the text by the payload
+                    payload_url = potential_vulnerable_url.replace(txt,P)
+                    response = self.send_request(method, payload_url)
+                    # If the payload in the response show this message
                     if response != 0 and P in response.text:
                         bugs.append({
-                            'params':urlparse(nurl).query,
+                            'params':urlparse(payload_url).query,
                             'payload':P,
                             'http': response
                         })
-                        break
                     
         result_list = []
         for bug in bugs:             

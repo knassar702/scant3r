@@ -5,8 +5,18 @@ headers:
   - type: string
   - default: '{}'
   - save_content: true
-  - help: "add custom header (ex:-H='Cookies: test=1')"
+  - help: "add custom header (ex:-H='Cookie: test=1; PHPSESSID=test')"
   - exec: "dict_args['headers'] = extract_headers(value)"
+
+cookies: 
+  - option:
+    - '-C'
+    - '--cookie'
+  - type : string
+  - default: '{}'
+  - save_content : true 
+  - help: "add cookie to the header (ex: 'cookie1=1; cookie2=2')"
+  - exec: "dict_args['cookies'] = extract_cookie(value)"
 
 log_mode:
   - option: 

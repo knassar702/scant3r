@@ -36,3 +36,12 @@ class Scan:
         if path[-3:] == ".py": 
             path = path[:-3]            
         return path
+    
+    # In some module if we have a # in the url it's doesn't work
+    # Clean the url  
+    def transform_url(self, url: str) -> str: 
+        parse_url = urlparse(url)
+        new_url = f'{parse_url.scheme}://{parse_url.netloc}{parse_url.path}'
+        if parse_url.query: 
+            new_url += f'?{parse_url.query}'
+        return new_url

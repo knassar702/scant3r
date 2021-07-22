@@ -36,6 +36,7 @@ class Http:
     def __init__(self, opts : dict):
         self.timeout = opts['timeout']
         self.headers = opts['headers']
+        self.cookies = opts['cookies']
         self.random_agents = opts['random_agents']
         self.debug = opts['debug']
         self.proxy: dict = opts['proxy']
@@ -45,8 +46,8 @@ class Http:
         self.content_types: list = opts['content_types']
         
     # Send a request 
-    def send(self, method: str = 'GET', url: Union[str, None] = None, body: dict = {}, headers: dict = {}, allow_redirects: bool = False, org: bool = True,timeout:int = 10,IgnoreErrors: bool = False,contentType:str ='plane') -> Response:
-        try:
+    def send(self, method: str = 'GET', url: Union[str, None] = None, body: dict = {}, headers: dict = {}, allow_redirects: bool = False, org: bool = True, timeout:int = 10, IgnoreErrors: bool = False, content_type : str = 'plane') -> Response:
+        try: 
             # Generate user agent
             user_agents = Agent()
             if self.random_agents:
@@ -57,9 +58,15 @@ class Http:
                 headers['User-agent'] = user_agents.random
 
             # set headers     
-            if self.headers:
+            if self.headers :
                 for h,v in self.headers.items():
-                    headers[h] = v
+                    if not self.cookies and 'Cookie' in h:
+                        headers[h] = v
+            
+            # Specify cookie
+            cookies = {}
+            if self.cookies:
+                cookies = self.cookies
 
             # follow 302 redirects   
             allow_redirects = False
@@ -92,10 +99,12 @@ class Http:
                         log.debug('convert body to json query')
                         body = json.dumps(body) # convert query parameters to json
                     headers['Content-Type'] = content_type
-            if contentType == 'json' and method != 'GET':
+                    
+            if content_type == 'json' and method != 'GET':
                 body = json.dumps(body)
                 headers['Content-Type'] = 'application/json'
-            req = request(method, url, data=body, headers=headers, allow_redirects=allow_redirects, verify=False, timeout=timeout, proxies=proxy)
+                
+            req = request(method, url, data=body, headers=headers, cookies=cookies, allow_redirects=allow_redirects, verify=False, timeout=timeout, proxies=proxy)
                                 
             if self.delay > 0:
                 log.debug(f'sleep {self.delay}')
