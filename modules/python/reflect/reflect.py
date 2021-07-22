@@ -1,6 +1,5 @@
 from core.libs import insert_to_params_urls  as ur
 from core.libs import random_str, Http
-from urllib.parse import urlparse
 from scan import Scan
 from typing import Union
 

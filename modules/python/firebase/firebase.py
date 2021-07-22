@@ -24,7 +24,7 @@ class Firebase(Scan):
             if read_request.status_code == 200:
                 alert_bug('Firebase',read_request,permission="Read enabled",status=200,content_length=len(read_request.text))
                 
-            write_request = self.http.send('PUT',firebase + '/firebase/security.json',body={"msg":"scant3r"},contentType='json',org=False)
+            write_request = self.http.send('PUT',firebase + '/firebase/security.json',body={"msg":"scant3r"},content_type='json',org=False)
             if write_request.status_code == 200:
                 alert_bug('Firebase',read_request,permission="Write enabled",status=200,content_length=len(write_request.text))
         
