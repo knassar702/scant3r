@@ -54,6 +54,7 @@ def alert_bug(name,http,**kwargs) -> dict:
             'output':kwargs
             }
 
+
 # Display errors
 def show_error(name : str, message : str):
     f = "\n---- Errors -----"
