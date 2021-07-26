@@ -77,7 +77,7 @@ def remove_dups_urls(l : list) -> list:
     return v
 
 # Insert param 
-def insert_to_params_name(url: str, txt: str) -> list:
+def insert_to_params_name(url: str, text: str) -> list:
     try:
         parse_url = urlparse(url)
         query = parse_url.query
@@ -94,7 +94,7 @@ def insert_to_params_name(url: str, txt: str) -> list:
         return []
 
 # Insert param to custom parameter name
-def insert_to_custom_params(url: str,parameter: str, txt: str) -> str:
+def insert_to_custom_params(url: str,parameter: str, text: str, remove_content: bool = False) -> str:
     try:
         parse_url = urlparse(url)
         query = parse_url.query
@@ -103,6 +103,8 @@ def insert_to_custom_params(url: str,parameter: str, txt: str) -> str:
             log.debug('cant find the parameter')
             return url
         for param,value in url_dict.copy().items():
+            if remove_content:
+                url_dict[param] = text
             url_dict[param] = value + text
         new_url = urlencode(url_dict)
         parse_url = parse_url._replace(query=new_url)
@@ -120,12 +122,14 @@ def add_path(url: str, path: str) -> str:
     return urljoin(url,path)
 
 # Add a string to url parameters
-def insert_to_params_urls(url: str, text: str) -> list :
+def insert_to_params_urls(url: str, text: str, remove_content: bool = False) -> list :
     try:
         parse_url = urlparse(url)
         query = parse_url.query
         url_dict = dict(parse_qsl(query))
         for param,value in url_dict.copy().items():
+            if remove_content:
+                url_dict[param] = text
             url_dict[param] = value + text
         new_url = urlencode(url_dict)
         parse_url = parse_url._replace(query=new_url)

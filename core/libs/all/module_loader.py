@@ -87,7 +87,11 @@ class MLoader:
                 
                 # Execution of modules     
                 for _, module in self.modules.items():
-                    mres.append(executor.submit(module.main, opt, http))
+                    if opts['wait']:
+                        # wait the module for finsh his work
+                        executor.submit(module.main,opt,http)
+                    else:
+                        mres.append(executor.submit(module.main, opt, http))
             
             # When the scan is completed
             for future in concurrent.futures.as_completed(mres):
