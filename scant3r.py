@@ -65,8 +65,12 @@ if __name__ == '__main__':
     if opts['modules']:
         # load modules
         for module in opts['modules']:
-            log.info(f'Load {color.bwhite}{module}{color.rest} Module')
-            M.get(module)
+            if module == 'lorsrf' and opts['host'] == '':
+                log.warning('Ignore Lorsrf , this module require host option (--host) ,')
+            else:
+                log.info(f'Load {color.bwhite}{module}{color.rest} Module')
+                M.get(module)
         # start all modules (main function)
-        log.info('run modules')
+        for Module in M.modules.keys():
+            log.info(f'Run {color.bwhite}{Module}{color.rest}')
         M.run(opts, Http(opts))
