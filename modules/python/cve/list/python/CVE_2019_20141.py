@@ -14,10 +14,11 @@ def main(url: str, http: Http) -> dict:
     for path in paths:
         new_url = urljoin(url,path)
         request = http.send('GET', new_url)
-        if request != 0 and MATCH in request.text:
-            alert_bug(
-                "CVE-2019-20141",
-                request,
-                match=MATCH
-            )
+        if type(request) != list:
+            if request != 0 and MATCH in request.text:
+                alert_bug(
+                    "CVE-2019-20141",
+                    request,
+                    match=MATCH
+                )
     return {}
