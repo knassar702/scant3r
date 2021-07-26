@@ -11,6 +11,9 @@ from wordlists import ssrf_parameters # ssrf parameters wordlist
 from modules import Scan
 from modules.python.xss import main as xss_main
 from modules.python.xss_param import main as xss_param_main
+from modules.python.sqli import main as sqli_main
+from modules.python.ssrf import main as ssrf_main
+from modules.python.ssti import main as ssti_main
 from core.libs import Http
 
 q = Queue()
@@ -50,9 +53,12 @@ class Lorsrf(Scan):
                 op = self.opts.copy()
                 op['url'] = url
                 op['method'] = method
-                log.debug('Scannig with XSS modules')
+                log.debug('Scannig with another modules')
                 xss_main(op,self.http)
                 xss_param_main(op,self.http)
+                ssrf_main(op,self.http)
+                ssti_main(op,self.http)
+                sqli_main(op,self.http)
     def check_url(self, url: str, param: str, payload: str) -> str:
         if len(urlparse(url).query) > 0:
             return f'&{param}={payload}'
