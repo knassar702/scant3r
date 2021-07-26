@@ -6,12 +6,15 @@ __version__ = '0.8#Beta'
 from threading import Thread
 from queue import Queue
 from urllib.parse import urlparse # url parsing
+from logging import getLogger
 from wordlists import ssrf_parameters # ssrf parameters wordlist
 from modules import Scan
+from modules.python.xss import main as xss_main
+from modules.python.xss_param import main as xss_param_main
 from core.libs import Http
 
 q = Queue()
-
+log = getLogger('scant3r')
 
 # send requests per sec
 parameters_in_one_request = 10
@@ -31,6 +34,7 @@ class Lorsrf(Scan):
             p1.start()
         for url in self.org():
             q.put(url)
+        log.info(f'Started on {self.opts["url"]} with 10 parameters per secound ({self.opts["methods"]})')
         q.join()
 
     def threader(self):
@@ -41,7 +45,14 @@ class Lorsrf(Scan):
 
     def lor(self, url: str):
         for method in self.opts['methods']:
-            self.send_request(method, url)
+            req = self.send_request(method, url)
+            if type(req) != list:
+                op = self.opts.copy()
+                op['url'] = url
+                op['method'] = method
+                log.debug('Scannig with XSS modules')
+                xss_main(op,self.http)
+                xss_param_main(op,self.http)
     def check_url(self, url: str, param: str, payload: str) -> str:
         if len(urlparse(url).query) > 0:
             return f'&{param}={payload}'
