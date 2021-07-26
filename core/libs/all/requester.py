@@ -77,7 +77,7 @@ class Http:
             if timeout == 10:
                 if self.timeout:
                     timeout = self.timeout
-            # set proxy 
+            # set proxy
             proxy = {}
             if type(self.proxy) == dict:
                 proxy = self.proxy
@@ -86,13 +86,15 @@ class Http:
             if org:
                 if body:
                     log.debug('convert body to dict')
+                    if body.startswith('?'):
+                        pass
+                    else:
+                        body = '?' + body
                     body = post_data(body)
-
                 if method != 'GET' and not body:
                     log.debug('convert body to dict')
-                    body = post_data(urlparse(url).query)
+                    body = post_data(url)
                     url = url.split('?')[0]
-                    
             if self.content_types:
                 for content_type in self.content_types:
                     if content_type.split('/')[1] == 'json' and method != 'GET':
