@@ -1,5 +1,5 @@
 from wordlists import rce_payloads
-from core.libs import insert_to_params_urls ,dump_response, Http
+from core.libs import insert_to_params_urls, alert_bug ,dump_response, Http
 from urllib.parse import urlparse
 from modules import Scan
 
@@ -10,14 +10,11 @@ class Rce(Scan):
     def start(self) -> dict:
         for method in self.opts['methods']:
             for payload,match in rce_payloads().items():
-                list_url = insert_to_params_urls(self.opts['url'],payload.replace('\n','%0a').replace('\t','%0d'))
-                for url in list_url:
-                    response = self.send_request(method, url)
-                    # 0 = connection error
-                    if response != 0 and match in dump_response(response): 
-                        return {
-                            'payload':payload.replace('\n','%0a').replace('\t','%0d'),
-                            'match':match,
-                            'http':response
-                        }
+                new_url = insert_to_params_urls(self.opts['url'],payload.replace('\n','%0a').replace('\t','%0d'))
+                response = self.send_request(method, new_url)
+                if type(response) == list:
+                    return # connection error
+                if match in dump_response(response):
+                    alert_bug('RCE',response,payload=payload,match=match)
+                    break
         return {}
