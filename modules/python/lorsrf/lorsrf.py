@@ -13,6 +13,7 @@ from core.libs import Http
 q = Queue()
 
 
+# send requests per sec
 parameters_in_one_request = 10
 
 # parameters_in_one_request = 2
@@ -41,19 +42,18 @@ class Lorsrf(Scan):
     def lor(self, url: str):
         for method in self.opts['methods']:
             self.send_request(method, url)
-
-    def check_url(self, url: str, par: str, pay: str) -> str:
+    def check_url(self, url: str, param: str, payload: str) -> str:
         if len(urlparse(url).query) > 0:
-            return f'&{par}={pay}'
-        return f'?{par}={pay}'
+            return f'&{param}={payload}'
+        return f'?{param}={payload}'
     
-    def org(self):
+    def org(self) -> list:
         l = len(ssrf_parameters())
         newurl = self.opts['url']
         allu = []
         for par in ssrf_parameters():
             pay = f"{self.opts['host']}/{par}"
-            newurl = self.check_url(newurl, par, pay)
+            newurl += self.check_url(newurl, par, pay)
             if len(urlparse(newurl).query.split('=')) == parameters_in_one_request + 1:
                 allu.append(newurl)
                 newurl = self.opts['url']
