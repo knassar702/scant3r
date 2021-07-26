@@ -66,10 +66,9 @@ if __name__ == '__main__':
         # load modules
         for module in opts['modules']:
             if module == 'lorsrf' and opts['host'] == '':
-                log.warning('Ignore Lorsrf , this module require host option (--host) ,')
-            else:
-                log.info(f'Load {color.bwhite}{module}{color.rest} Module')
-                M.get(module)
+                log.warning('Lorsrf module require host option (--host) ,so will run it for guess parameters and scan it with another modules')
+            log.info(f'Load {color.bwhite}{module}{color.rest} Module')
+            M.get(module)
         # start all modules (main function)
         for Module in M.modules.keys():
             log.info(f'Run {color.bwhite}{Module}{color.rest}')
