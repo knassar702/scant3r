@@ -41,10 +41,6 @@ class Server:
     def restart(self):
         exe = sys.executable
         user_args = sys.argv
-        if '-n' in user_args or '--no-logo' in user_args:
-            pass
-        else:
-            user_args.append('-n')
         os.execl(exe, exe, * sys.argv)
         return
     def clearme(self):
