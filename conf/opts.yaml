@@ -102,15 +102,15 @@ modules:
         dict_args['modules'] = value
       else:
         dict_args['modules'] = value.split(",")
-nologo :
+wait:
   - option: 
-    - '-n'
-    - '--no-logo'
-  - help: 'Silent Mode'
+    - '-ww'
+    - '--wait'
+  - help: 'start scanning modules one by one'
   - type: boolean
   - default: false
   - save_content: false
-  - exec: "dict_args['nologo'] = value"
+  - exec: "dict_args['wait'] = value"
   
 targetlist:
   - option: 
@@ -147,7 +147,7 @@ proxy:
   - type: string
   - default: '{}'
   - save_content: true
-  - exec: "dict_args['proxy'] = {'http':value,'https':value}"
+  - exec: "dict_args['proxy'] = {'http':value.replace('https://','http://'),'https':value}"
 
 allow_redirects:
   - option: 

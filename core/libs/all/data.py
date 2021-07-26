@@ -249,7 +249,7 @@ def post_data(url: str) -> dict:
  
     """
     try:
-       c = dict(parse_qsl(urlsplit(url).query))
+       return dict(parse_qsl(urlsplit(url).query))
     except Exception as e:
         log.debug(e)
         return {}
