@@ -23,6 +23,14 @@ and scant3r will help you  write your own python script faster , you don't need 
 
 ### All Modules
 
+<details align="center">
+  <summary> <samp>&#9776; Statistics Scant3r</samp></summary>
+    <p>
+
+    </p>
+</details>
+      
+
 | Module         | Description                                                  |
 | :------------- | :-------------                                               |
 | **lorsrf**     | Bruteforcing on Hidden parameters to find SSRF vulnerability |
