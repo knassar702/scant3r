@@ -3,8 +3,12 @@ from yaml import safe_load
 from urllib.parse import urlparse
 from core.libs import alert_bug, dump_response, Http
 from wordlists import XSS
-import re
+from logging import getLogger
 from modules import Scan
+import re
+
+
+log = getLogger('scant3r')
 
 class Injheaders(Scan):
     def __init__(self, opts: dict, http: Http):
@@ -18,6 +22,7 @@ class Injheaders(Scan):
         return conf
                     
     def start(self): 
+        log.debug('Load headers.yaml file')
         headers = self.open_yaml_file('injheaders/headers.yaml', True)
         for method in self.opts['methods']:
             for payload, matcher in self.conf.items(): 
@@ -29,7 +34,7 @@ class Injheaders(Scan):
                         else:
                             response = self.http.send(method, self.opts['url'], headers=headers)
                             
-                        if response != 0:
+                        if type(response) != list:
                             if matcher[1]['regex']:
                                 c = re.compile(matcher[0]['text'])
                                 c = c.findall(dump_response(c))

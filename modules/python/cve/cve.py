@@ -19,9 +19,10 @@ class Cve(Scan):
         results = []
         # load python CVE modules
         for module in glob(f'{self.path}cve/list/python/*.py'):
-            module = import_module(self.transform_path_to_module_import(module))
+            nmodule = import_module(self.transform_path_to_module_import(module))
             with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-                results.append(executor.submit(module.main(self.opts['url'], self.http)))
+                log.info(f'{self.transform_path_to_module_import(module)} Started')
+                results.append(executor.submit(nmodule.main(self.opts['url'], self.http)))
 
         # load YAML CVE templates
         for template in glob(f'{self.path}cve/list/templates/*.yaml'):
@@ -37,6 +38,7 @@ class Cve(Scan):
 
             headers = {}
             if all_headers:
+                log.debug('Add Headers')
                 for header in all_headers:
                     for the_header,the_value in header.items():
                         headers[the_header] = the_value
@@ -46,10 +48,11 @@ class Cve(Scan):
             urls = []
             if paths:
                 for path in paths:
+                    log.debug(f'Join Path : {path}')
                     urls.append(urljoin(self.opts['url'],path))
             else:
                 urls.append(self.opts['url'])
-
+            log.info(f'{template["id"]} Started')
             for url in urls:
                 for method in methods:
                     request = self.http.send(method, url, allow_redirects=follow_redirects, headers=headers)
