@@ -32,9 +32,13 @@ def alert_bug(name,http,**kwargs) -> dict:
     log.info(output)
     try:
         mkdir(f'log/{target}')
-    except:
+        log.debug('Output folder Created')
+    except FileExistsError:
         pass
-    # open output fule with the name of module and random number from 1 to 100
+    except Exception as e:
+        log.error(e)
+        return {}
+    # open output file with the name of module and random number from 1 to 100
     output_file = open(f'log/{target}/{name}_{random.randint(1,100)}.txt','w')
     output = re.compile(r'''
     \x1B  # ESC

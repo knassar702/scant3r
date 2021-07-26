@@ -11,7 +11,7 @@ if sys.version_info < (3, 6):
     sys.exit()
 
 import colorama , logging
-from core.libs import Args, Http, MLoader, logo
+from core.libs import Args, Http, MLoader, logo, Colors
 from core.api import Server
 from urllib.parse import urlparse
 
@@ -23,11 +23,16 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 opts = Args().get_args()
 
 # Display Logo
-if opts['nologo'] == False:
-    logo()
+logo()
 
 # Start Module Loader Class
 M = MLoader()
+
+# scant3r logger
+log = logging.getLogger('scant3r')
+
+# Colors Class
+color = Colors()
 
 if __name__ == '__main__':
     # launch scant3r api server
@@ -38,11 +43,13 @@ if __name__ == '__main__':
     
     if len(opts['urls']) <= 0:
         # listen to pipe
+        log.debug('listen to pipe input')
         for url in sys.stdin:
             opts['urls'].append(url.rstrip())
         
     # (-g option) , add famous parameters
     if opts['genparam']:
+        log.debug('add parameters for url')
         np = 'q=&searchFor=&query=&Searchfor=goButton=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist=&user=&username=&group='
         for url in opts['urls']:
             url = url.rstrip()
@@ -58,7 +65,8 @@ if __name__ == '__main__':
     if opts['modules']:
         # load modules
         for module in opts['modules']:
+            log.info(f'Load {color.bwhite}{module}{color.rest} Module')
             M.get(module)
-            
         # start all modules (main function)
+        log.info('run modules')
         M.run(opts, Http(opts))
