@@ -3,8 +3,12 @@
 from modules import Scan
 from core.libs import alert_bug
 from wordlists import TLD
+from logging import getLogger
 import tldextract
 from core.libs import Http
+
+log = getLogger('scant3r')
+
 FIREBASE_URL = 'https://%s.firebaseio.com'
 class Firebase(Scan):
     def __init__(self, opts: dict, http: Http):
@@ -21,10 +25,14 @@ class Firebase(Scan):
             firebase = FIREBASE_URL % target_host
             
             read_request = self.http.send('GET',firebase + '/.json')
+            if type(read_request) == list:
+                return
             if read_request.status_code == 200:
                 alert_bug('Firebase',read_request,permission="Read enabled",status=200,content_length=len(read_request.text))
                 
             write_request = self.http.send('PUT',firebase + '/firebase/security.json',body={"msg":"scant3r"},convert_content_type='json',org=False)
+            if type(write_request) == list:
+                return
             if write_request.status_code == 200:
                 alert_bug('Firebase',read_request,permission="Write enabled",status=200,content_length=len(write_request.text))
         

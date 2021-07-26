@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 from urllib.parse import urlparse
+from logging import getLogger
 from core.libs import alert_bug, Http
-import re
 from modules import Scan
+import re
+
+log = getLogger('scant3r')
 
 regexs = {
     'google_api' : 'AIza[0-9A-Za-z-_]{35}',
@@ -38,21 +41,21 @@ class Secrets(Scan):
     def __init__(self, opts: dict, http : Http):
         super().__init__(opts, http)
         
-    def start(self) -> list:
+    def start(self) -> dict:
         try:
             url = self.opts['url']
-            rr = r"[:|=|\'|\"|\s*|`|´| |,|?=|\]|\|//|/\*}]({{REGEX}})[:|=|\'|\"|\s*|`|´| |,|?=|\]|\}|&|//|\*/]"
+            Regex = r"[:|=|\'|\"|\s*|`|´| |,|?=|\]|\|//|/\*}]({{REGEX}})[:|=|\'|\"|\s*|`|´| |,|?=|\]|\}|&|//|\*/]"
             
             for method in self.opts['methods']:    
                 response = self.send_request(method, url)
                 
-                if response != 0: # 0 = Connection Error
+                if type(response) != list : # list value = Connection Error
                     for option,match in regexs.items():
-                        c = re.compile(rr.replace('{{REGEX}}',match))
-                        mm = c.findall(response.text)
-                        if len(mm) > 0:
-                            alert_bug('SECRET', response, Found=option, Match=mm)
-            return list() 
+                        c = re.compile(Regex.replace('{{REGEX}}',match))
+                        finder = c.findall(response.text)
+                        if len(finder) > 0:
+                            alert_bug('SECRET', response, Found=option, Match=finder)
+            return {}
         except Exception as e:
-            print(e)
-            return list()
+            log.debug(e)
+            return {}

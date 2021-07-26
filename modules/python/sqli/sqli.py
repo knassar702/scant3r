@@ -8,18 +8,19 @@ class Sqli(Scan):
     def __init__(self, opts: dict, http: Http):
         super().__init__(opts, http)
         
-    def start(self) -> list:
+    def start(self) -> dict:
         for method in self.opts['methods']:
             for payload in sqli_payloads:
                 payload = payload.rstrip()
-                list_url = insert_to_params_urls(self.opts['url'],payload)
-                for url in list_url:
-                    response = self.send_request(method, url, self.opts['url'])
-                    for v in sql_err:
-                        v = v.rstrip()
-                        if len(v.rstrip()) >= 1:
-                            hmm = findall(v,response.text)
-                            for i in hmm:
-                                if i:
-                                    alert_bug('SQL injection', response, payload=urlparse(url).query,match=v)
+                new_url = insert_to_params_urls(self.opts['url'],payload)
+                response = self.send_request(method, new_url)
+                if type(response) == list:
+                    return # connection error
+                for err in sql_err:
+                    err = err.rstrip()
+                    if len(err.rstrip()) >= 1:
+                        finder = findall(err,response.text)
+                        for found in finder:
+                            if found:
+                                alert_bug('SQL injection', response, payload=urlparse(new_url).query,match=err)
         return {}

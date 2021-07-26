@@ -1,21 +1,19 @@
 from wordlists import ssti_payloads as ssti
-from core.libs import insert_to_params_urls, Http
+from core.libs import insert_to_params_urls, alert_bug ,Http
 from modules import Scan
+
+
+
 class Ssti(Scan):
     def __init__(self, opts: dict, http: Http):
         super().__init__(opts, http)
     
-    def start(self):
+    def start(self) -> dict:
         for method in self.opts['methods']:
             for payload,match in ssti().items():
-                list_url = insert_to_params_urls(self.opts['url'],payload)
-                for url in list_url:
-                    response = self.send_request(method, url, self.opts['url'])
-                    # 0 = Connection error:
-                    if response != 0 and match in response.text: 
-                        return {
-                            'http': response,
-                            'target': url,
-                            'match': match,
-                            'payload': payload,
-                        }
+                new_url = insert_to_params_urls(self.opts['url'],payload)
+                response = self.send_request(method, new_url, self.opts['url'])
+                if type(response) != list: # 0 = Connection error:
+                    if match in response.text: 
+                        alert_bug('SSTI',response,payload=payload,match=match)
+        return {}
