@@ -18,7 +18,7 @@ log = logging.getLogger('scant3r')
 def random_str(num: int) -> str:
     """
     >>> random_txt = random_str(5)
-    geCr159
+    geCr15
     """
     num = int(num)
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(num))
@@ -36,7 +36,7 @@ def dump_request(request : Response) -> str:
     Connection: Closed
     Content-Type: text/html
     """
-    if request == 0:
+    if type(request) == list:
         return ''
     body = ""
     body += request.request.method
@@ -68,7 +68,7 @@ def dump_response(request : Response) -> str:
 	content-length: 2915
 
     """
-    if request == 0:
+    if type(request) == list:
         return ''
     body = "HTTP /1.1 "
     body += str(request.status_code)
@@ -207,7 +207,7 @@ def insert_to_params_urls(url: str, text: str, remove_content: bool = False) -> 
         parse_url = parse_url._replace(query=new_url)
         return urlunparse(parse_url)
     except Exception as e:
-        log.debug(e)
+        log.error(e)
         return list()
 
 # insert text to url path
@@ -230,7 +230,7 @@ def insert_text_to_urlpath(url: str, text: str) -> list:
                 new_urls.append("".join(u))
         return new_urls
     except Exception as e:
-        log.debug(e)
+        log.error(e)
         return []
 
 # Convert url parameters to dict (for cookies,request body parameters)
@@ -251,12 +251,12 @@ def post_data(url: str) -> dict:
     try:
        return dict(parse_qsl(urlsplit(url).query))
     except Exception as e:
-        log.debug(e)
+        log.error(e)
         return {}
 
 
 # Convert string headers to a dict Headers
-def extract_headers(headers: str = '', debug: bool =False) -> dict:
+def extract_headers(headers: str = '') -> dict:
     """
     >>> extract_headers('User-agent: YES')
     {'User-agent':'YES'}
@@ -276,12 +276,12 @@ def extract_headers(headers: str = '', debug: bool =False) -> dict:
                         value = value[:-1]
                     sorted_headers[header] = value
                 except Exception as e:
-                    log.debug(e)
+                    log.error(e)
                     return {}
             return sorted_headers
         return {}
     except Exception as e:
-        log.debug(e)
+        log.error(e)
         return {}
     
 # Convert cookie string to a dict 

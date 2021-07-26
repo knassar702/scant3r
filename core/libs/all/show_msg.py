@@ -5,12 +5,21 @@ __version__ = '0.8#Beta'
 
 from .colors import Colors as c
 from .data import dump_request
+from .log import CustomFormatter
 from urllib.parse import urlparse 
-from logging import getLogger
 from os import mkdir
-import random, re
+import random, logging ,re
 
-log = getLogger('scant3r')
+# Core Logger
+log = logging.getLogger('scant3r')
+
+# Alert Logger
+logger = logging.getLogger("alert")
+logger.setLevel(logging.INFO)
+ch = logging.StreamHandler()
+ch.setLevel(logging.INFO)
+ch.setFormatter(CustomFormatter())
+logger.addHandler(ch)
 
 # Alert about bugs
 def alert_bug(name,http,**kwargs) -> dict:
@@ -29,7 +38,7 @@ def alert_bug(name,http,**kwargs) -> dict:
     '''
     target = urlparse(http.request.url).netloc
     # display the output in console
-    log.info(output)
+    logger.info(output)
     try:
         mkdir(f'log/{target}')
         log.debug('Output folder Created')
