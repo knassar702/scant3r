@@ -8,7 +8,7 @@ import binascii
 import random
 import logging
 import string
-from urllib.parse import urljoin, urlparse , urlencode , urlunparse ,urlunparse , parse_qsl
+from urllib.parse import urljoin, urlparse , urlencode , urlunparse ,urlunparse , parse_qsl , urlsplit
 from requests.models import Response
 from .colors import *
 
@@ -130,7 +130,8 @@ def insert_to_params_urls(url: str, text: str, remove_content: bool = False) -> 
         for param,value in url_dict.copy().items():
             if remove_content:
                 url_dict[param] = text
-            url_dict[param] = value + text
+            else:
+                url_dict[param] = value + text
         new_url = urlencode(url_dict)
         parse_url = parse_url._replace(query=new_url)
         return urlunparse(parse_url)
@@ -138,8 +139,23 @@ def insert_to_params_urls(url: str, text: str, remove_content: bool = False) -> 
         log.debug(e)
         return list()
 
+# insert text to url path
+def insert_text_to_urlpath(url: str, text: str) -> list:
+    try:
+        new_urls = []
+        path = urlparse(url).path
+        for Path in path.split('/'):
+            if Path:
+                path_index = url.index(Path)
+                u = list(url)
+                u[path_index] = Path + text
+                new_urls.append("".join(u))
+        return new_urls
+    except Exception as e:
+        log.debug(e)
+        return []
 # add parameters to url 
-def insert_to_params(param: str, text: str, debug : bool=False) -> str:
+def insert_to_params(param: str, text: str) -> str:
     u = list()
     try:
         if len(param.split('&')) > 0:
@@ -150,22 +166,14 @@ def insert_to_params(param: str, text: str, debug : bool=False) -> str:
         log.debug(e)
         return u
 
-# add string value to dictionary (for cookies,post/put parameters)
-def post_data(params: str, debug: bool = False) -> dict:
+# Convert url parameters to dict (for cookies,request body parameters)
+def post_data(url: str) -> dict:
     try:
-        if '?' not in params or '&' not in params:
-            return {}
-        if params:
-            prePostData = params.split("&")
-            postData = {}
-            for d in prePostData:
-                p = d.split("=", 1)
-                postData[p[0]] = p[1]
-            return postData
-        return {}
+       c = dict(parse_qsl(urlsplit(url).query))
     except Exception as e:
         log.debug(e)
         return {}
+
 
 # Convert string headers to a dict Headers
 def extract_headers(headers: str = '', debug: bool =False) -> dict:
