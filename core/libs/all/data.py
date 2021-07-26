@@ -8,7 +8,7 @@ import binascii
 import random
 import logging
 import string
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin, urlparse , urlencode , urlunparse ,urlunparse , parse_qsl
 from requests.models import Response
 from .colors import *
 
@@ -78,27 +78,38 @@ def remove_dups_urls(l : list) -> list:
 
 # Insert param 
 def insert_to_params_name(url: str, txt: str) -> list:
-    out = list()
     try:
-        for param in url.split('?')[1].split('&'):
-            p = param.split('=')
-            out.append(url.replace(p[0],p[0]+txt))
-    except:
-        return list()
-    finally:
-        return out
+        parse_url = urlparse(url)
+        query = parse_url.query
+        url_dict = dict(parse_qsl(query))
+        for param,value in url_dict.copy().items():
+            new_param = param + text
+            url_dict.pop(param)
+            url_dict[new_param] = value
+        new_url = urlencode(url_dict)
+        parse_url = parse_url._replace(query=new_url)
+        return urlunparse(parse_url)
+    except Exception as e :
+        log.error(e)
+        return []
 
-# Insert param
-def force_insert_to_params_urls(url: str, txt: str) -> list():
-    our = list()
+# Insert param to custom parameter name
+def insert_to_custom_params(url: str,parameter: str, txt: str) -> str:
     try:
-        for param in url.split('?')[1].split('&'):
-            our.append(url.replace(param,param.split('=')[0]+'='+txt))
-        return our
-    except:
-        return list()
-    finally:
-        return our
+        parse_url = urlparse(url)
+        query = parse_url.query
+        url_dict = dict(parse_qsl(query))
+        if parameter not in url_dict:
+            log.debug('cant find the parameter')
+            return url
+        for param,value in url_dict.copy().items():
+            url_dict[param] = value + text
+        new_url = urlencode(url_dict)
+        parse_url = parse_url._replace(query=new_url)
+        return urlunparse(parse_url)
+    except Exception as e:
+        log.error(e)
+        return url
 
 # Return the query from the url 
 def dump_params(url: str):
@@ -109,15 +120,18 @@ def add_path(url: str, path: str) -> str:
     return urljoin(url,path)
 
 # Add a string to url parameters
-def insert_to_params_urls(url: str, text:str, debug: bool = False) -> list :
-    u = list()
+def insert_to_params_urls(url: str, text: str) -> list :
     try:
-        if len(url.split('?')) >= 1:
-            for param in url.split('?')[1].split('&'):
-                u.append(url.replace(param,param + text))
-        return remove_dups(u)
+        parse_url = urlparse(url)
+        query = parse_url.query
+        url_dict = dict(parse_qsl(query))
+        for param,value in url_dict.copy().items():
+            url_dict[param] = value + text
+        new_url = urlencode(url_dict)
+        parse_url = parse_url._replace(query=new_url)
+        return urlunparse(parse_url)
     except Exception as e:
-        log.error(e)
+        log.debug(e)
         return list()
 
 # add parameters to url 
@@ -129,7 +143,7 @@ def insert_to_params(param: str, text: str, debug : bool=False) -> str:
                 u.append(p.replace(p,p + text))
         return u
     except Exception as e:
-        log.error(e)
+        log.debug(e)
         return u
 
 # add string value to dictionary (for cookies,post/put parameters)
@@ -146,7 +160,7 @@ def post_data(params: str, debug: bool = False) -> dict:
             return postData
         return {}
     except Exception as e:
-        log.error(e)
+        log.debug(e)
         return {}
 
 # Convert string headers to a dict Headers
@@ -164,12 +178,12 @@ def extract_headers(headers: str = '', debug: bool =False) -> dict:
                         value = value[:-1]
                     sorted_headers[header] = value
                 except Exception as e:
-                    log.error(e)
+                    log.debug(e)
                     return {}
             return sorted_headers
         return {}
     except Exception as e:
-        log.error(e)
+        log.debug(e)
         return {}
     
 # Convert cookie string to a dict 
@@ -186,6 +200,6 @@ def extract_cookie(cookies: str)-> dict:
     return dict_cookies          
     
 #  Insert some string into given string at given index
-def insert_after(haystack: str, needle: str, newText: str) -> str:
-  i = haystack.find(needle)
-  return haystack[:i + len(needle)] + newText + haystack[i + len(needle):]
+def insert_after(text: str, find_this: str, newText: str) -> str:
+  i = text.find(find_this)
+  return text[:i + len(find_this)] + newText + text[i + len(find_this):]
