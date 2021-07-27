@@ -57,16 +57,16 @@ class Cve(Scan):
                 for method in methods:
                     request = self.http.send(method, url, allow_redirects=follow_redirects, headers=headers)
                     if type(request) != list:
-                        if match[1]['regex'] == True:
-                            finder = re.findall(match[0]['word'], request.text,re.DOTALL)
+                        if match['regex'] == True:
+                            finder = re.findall(match['word'], request.text,re.DOTALL)
                             if finder:
                                 if len(''.join(finder)) > 700:
                                     for i in finder:
                                         if len(i) > 700:
                                             finder.remove(i)
                                             finder.append(i[0:700] + '   <<<<< ETC >>>>>')
-                                alert_bug(name, request,match=match[0]['word'],regex=True, found=finder)
+                                alert_bug(name, request,match=match['word'],regex=True, found=finder)
                         else:
-                            if match[0]['word'] in request.text:
-                                alert_bug(name,request,match=match[0]['word'],regex=False)
+                            if match['word'] in request.text:
+                                alert_bug(name,request,match=match['word'],regex=False)
 

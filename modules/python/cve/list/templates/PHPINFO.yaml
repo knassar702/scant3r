@@ -16,6 +16,5 @@ request:
   headers:
   follow_redirects: true
   match:
-    - word: '(?=.*PHP Version \d.\d.\d)(?=.*Registered PHP Streams )(?=.*PHP License).*'
-    - regex: true
-  show_match: false 
+    word: '(?=.*PHP Version \d.\d.\d)(?=.*Registered PHP Streams )(?=.*PHP License).*'
+    regex: true
