@@ -13,7 +13,7 @@ class Args:
         try:
             log.debug('load opts & help config files')
             self.conf = yaml.safe_load(open('conf/opts.yaml','r'))
-            self.help = yaml.safe_load(open('conf/help.yaml','r'))
+            self.help = open('conf/help.txt','r')
         except Exception as e:
             log.error(e)
             exit()
@@ -79,9 +79,9 @@ class Args:
     # Take text from Help.yaml and transfrom to str
     def epilog_text(self) -> str: 
         text = ''
-        for v,i in self.help.items():
-            i = i.replace(r'\t','\t').replace(r'\n','\n')
-            text += f'\n{v}:{i}'
+        for txt in self.help:
+            txt = txt.replace(r'\t','\t').replace(r'\n','\n')
+            text += txt
         return text
      
     # Return args in dict 
