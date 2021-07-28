@@ -76,7 +76,7 @@ class Args:
                     exec(dict_exe['exec'])
         return dict_args
     
-    # Take text from Help.yaml and transfrom to str
+    # Take text from help.txt and transfrom to str
     def epilog_text(self) -> str: 
         text = ''
         for txt in self.help:
