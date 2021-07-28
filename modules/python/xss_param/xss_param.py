@@ -24,7 +24,7 @@ class XssParam(Scan):
             if len(reflected) > 0:
                 for payload in self.payloads:
                     payload = payload.rstrip()
-                    with insert_to_params_name(self.opts['url'],urlencoder(payload)) as nurl:
-                        response = self.send_request(method, nurl)
-                        if payload in response.text:
-                            alert_bug('XSS PARAMETER NAME',response,payload=payload)
+                    nurl = insert_to_params_name(self.opts['url'],urlencoder(payload))
+                    response = self.send_request(method, nurl)
+                    if payload in response.text:
+                        alert_bug('XSS PARAMETER NAME',response,payload=payload)

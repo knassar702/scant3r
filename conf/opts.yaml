@@ -102,15 +102,15 @@ modules:
         dict_args['modules'] = value
       else:
         dict_args['modules'] = value.split(",")
-wait:
+one_scan:
   - option: 
-    - '-ww'
-    - '--wait'
-  - help: 'start scanning modules one by one'
+    - '-O'
+    - '--one-scan'
+  - help: 'scanning with the current module without import another modules (eg: lorsrf xss/ssti scanner)'
   - type: boolean
   - default: false
   - save_content: false
-  - exec: "dict_args['wait'] = value"
+  - exec: "dict_args['one_scan'] = value"
   
 targetlist:
   - option: 

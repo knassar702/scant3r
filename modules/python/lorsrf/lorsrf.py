@@ -53,12 +53,13 @@ class Lorsrf(Scan):
                 op = self.opts.copy()
                 op['url'] = url
                 op['method'] = method
-                log.debug('Scannig with another modules')
-                xss_main(op,self.http)
-                xss_param_main(op,self.http)
-                ssrf_main(op,self.http)
-                ssti_main(op,self.http)
-                sqli_main(op,self.http)
+                if self.opts['one_scan'] == True:
+                    log.debug('Scannig with another modules')
+                    xss_main(op,self.http)
+                    xss_param_main(op,self.http)
+                    ssrf_main(op,self.http)
+                    ssti_main(op,self.http)
+                    sqli_main(op,self.http)
     def check_url(self, url: str, param: str, payload: str) -> str:
         if len(urlparse(url).query) > 0:
             return f'&{param}={payload}'

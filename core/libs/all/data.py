@@ -148,7 +148,7 @@ def insert_to_custom_params(url: str,parameter: str, text: str, remove_content: 
     >>> insert_to_custom_params('http://google.com/?test=TEST&name=5',"test","YES")
     http://google.com/?test=TESTYES&name=5
     
-    >>> insert_to_params_params('http://google.com/?test=1&name=5',"test","YES",True)
+    >>> insert_to_custom_params('http://google.com/?test=1&name=5',"test","YES",True)
     http://google.com/?test=YES&name=5
     """
     try:
