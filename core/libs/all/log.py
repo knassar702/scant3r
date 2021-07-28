@@ -30,5 +30,5 @@ class CustomFormatter(logging.Formatter):
 
     def format(self, record):
         log_fmt = self.FORMATS.get(record.levelno)
-        formatter = logging.Formatter(log_fmt)
+        formatter = logging.Formatter(log_fmt,datefmt='%Y-%m-%d,%H:%M:%S')
         return formatter.format(record)
