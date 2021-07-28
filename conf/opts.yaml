@@ -78,7 +78,7 @@ api:
       
 methods:
   - option: 
-    - '-y'
+    - '-M'
     - '--method'
   - type: string
   - default: 'GET,POST'
