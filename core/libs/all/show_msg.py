@@ -22,6 +22,41 @@ ch.setLevel(logging.INFO)
 ch.setFormatter(CustomFormatter())
 logger.addHandler(ch)
 
+# Alert about script results
+def alert_script(name: str , command : str ,**kwargs) -> dict:
+    output = f'\n{c.good} {c.red}{name}{c.rest}: \n -> $ {command}'
+    extra_text = ''
+    for parameter,value in kwargs.items():
+        extra_text += f'\n  {parameter}: {value}'
+    output += extra_text + '\n\n----------------------------\n'
+    # display the output in console
+    logger.info(output)
+    try:
+        mkdir(f'log/{target}')
+        log.debug('Output folder Created')
+    except FileExistsError:
+        pass
+    except Exception as e:
+        log.error(e)
+        return {}
+    # open output file with the name of module and random number from 1 to 100
+    output_file = open(f'log/{target}/{name}_{random.randint(1,100)}.txt','w')
+    output = re.compile(r'''
+    \x1B  # ESC
+    (?:   # 7-bit C1 Fe (except CSI)
+        [@-Z\\-_]
+    |     # or [ for CSI, followed by a control sequence
+        \[
+        [0-?]*  # Parameter bytes
+        [ -/]*  # Intermediate bytes
+        [@-~]   # Final byte
+    )
+''', re.VERBOSE).sub('',output) # remove colors value from text
+    output_file.write(output)
+    output_file.close()
+    return {'Name':name,'output':kwargs}
+
+
 
 # Alert about bugs
 def alert_bug(name: str ,http: Http,**kwargs) -> dict:

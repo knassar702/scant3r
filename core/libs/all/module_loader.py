@@ -4,14 +4,11 @@ __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
 __version__ = '0.7#Beta'
 
-import importlib
-import concurrent.futures
-import yaml
-import subprocess, logging
+import importlib , re , concurrent.futures , yaml , subprocess, logging
 from urllib.parse import urlparse
 from os.path import isfile
 from glob import glob
-from core.libs import Http
+from core.libs import Http , alert_bug,alert_script ,show_error
 
 log = logging.getLogger('scant3r')
 
@@ -52,31 +49,37 @@ class MLoader:
                 return c
         except Exception as e:
             log.error(e)
-            
-    def exeman(self, name: str, cmd: str, opts: dict):
-        # find run.yaml file
-        module_folder = glob(f'modules/scripts/{name}/run.yaml')
-
-        if type(module_folder) is list:
-            module_folder = module_folder[0]
-        # load run.yaml config file
-        file_config = yaml.safe_load(open(module_folder,'r'))
-        opts['domain'] = urlparse(opts['url']).netloc
-        new_opts = opts.copy()
-        new_opts['ALL'] = opts.copy()
-        acmd = cmd.format(**oc).replace(r'$SCPATH',f'modules/scripts/{name}')
-        # Execute the command
-        exec_cmd = subprocess.Popen([acmd],shell=True, universal_newlines=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        script_results , _err = s.communicate() # Get the output of the command
-        if len(script_results) > 0:
-            if file_config['remove']['regex']:
-                # remove custom text from scripts output (eg: logo,logging)
-                remove_from_script = re.sub(file_config['remove']['word'],script_results)
-            else:
-                script_results = script_results.lstrip(file_config['remove']['word'])
-            return alert_bug(script_results) # Display scirpt output
-        return alert_error(_err) # Display the Error
-    
+    def exeman(self, name: str, cmd: str, opts: dict) -> str:
+        try:
+            # find run.yaml file
+            module_folder = f'modules/scripts/{name}/run.yaml'
+            # load run.yaml config file
+            file_config = yaml.safe_load(open(module_folder,'r'))
+            opts['domain'] = urlparse(opts['url']).netloc
+            new_opts = opts.copy()
+            new_opts['ALL'] = opts.copy()
+            acmd = cmd.format(**new_opts).replace(r'$SCPATH',f'modules/scripts/{name}')
+            # Execute the command
+            exec_cmd = subprocess.Popen([acmd],shell=True, universal_newlines=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            script_results , err = exec_cmd.communicate() # Get the output of the command
+            if len(script_results) > 0:
+                if 'remove' in file_config.keys():
+                    if file_config['remove']['regex']:
+                        # remove custom text from scripts output (eg: logo,logging)
+                        script_results = re.sub(file_config['remove']['word'],script_results)
+                    else:
+                        script_results = script_results.lstrip(file_config['remove']['word'])
+                if 'stop_matching' in file_config.items():
+                    pass
+                else: 
+                    # matching for script results
+                    script_results = re.findall(file_config['match'],script_results)
+                    if len(script_results):
+                        script_results = "\n".join(script_results)
+                        alert_script(name=name,command=acmd,results='\n\n'+err+'\n\n'+script_results) # Display scirpt output
+        except Exception as e:
+            log.debug(e)
+            return 
     def run(self, opts: dict, http: Http):
         # Start threading
         with concurrent.futures.ThreadPoolExecutor(max_workers=opts['threads']) as executor:
