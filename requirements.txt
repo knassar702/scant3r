@@ -1,8 +1,4 @@
 requests
-flask
-jinja2
-clean-text
-Flask-Limiter
 colorama
 pyyaml
 tldextract

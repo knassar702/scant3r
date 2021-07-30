@@ -69,4 +69,5 @@ class Cve(Scan):
                         else:
                             if match['word'] in request.text:
                                 alert_bug(name,request,match=match['word'],regex=False)
+        return {}
 

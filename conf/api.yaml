@@ -1,9 +1,0 @@
-# ScanT3r API Config
-host: '0.0.0.0'
-debug: true
-port: 6030
-token: $RANDOM$ # $RANDOM$ = generate random value
-check_token: false
-limits:
-  - 200 per day
-  - 50 per hour

@@ -66,16 +66,7 @@ content_types:
                     pass
         finally:
             dict_args["content_types"] = idkk
-api:
-  - option: 
-    - '-a'
-    - '--api'
-  - type: boolean
-  - default: false
-  - save_content: false
-  - help: 'Start Scant3r API'
-  - exec: "dict_args['api'] = True"
-      
+
 methods:
   - option: 
     - '-M'

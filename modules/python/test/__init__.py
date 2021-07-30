@@ -3,5 +3,5 @@ import time
 
 def main(opts,r):
     for i in range(5):
-        print(f'Your Options: {opts}\n\n')
+        return f'Your Options: {opts}\n\n'
         time.sleep(0.6)

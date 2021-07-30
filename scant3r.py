@@ -12,7 +12,6 @@ if sys.version_info < (3, 6):
 
 import colorama , logging
 from core.libs import Args, Http, MLoader, logo, Colors
-from core.api import Server
 from urllib.parse import urlparse
 
 colorama.init()
@@ -35,11 +34,6 @@ log = logging.getLogger('scant3r')
 color = Colors()
 
 if __name__ == '__main__':
-    # launch scant3r api server
-    if opts['api']:
-        app = Server(opts)
-        app.run()
-        sys.exit()
     
     if len(opts['urls']) <= 0:
         # listen to pipe

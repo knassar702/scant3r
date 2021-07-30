@@ -7,13 +7,14 @@ __version__ = '0.7#Beta'
 import importlib
 import concurrent.futures
 import yaml
-from urllib.parse import urlparse as ur
+import subprocess, logging
+from urllib.parse import urlparse
 from os.path import isfile
 from glob import glob
-import subprocess, logging
 from core.libs import Http
 
 log = logging.getLogger('scant3r')
+
 
 class MLoader:
     def __init__(self):
@@ -50,26 +51,31 @@ class MLoader:
                         self.modules[name] = c
                 return c
         except Exception as e:
-            print(e)
+            log.error(e)
             
-    def exeman(self, name, cmd, oo):
-        module_folder = glob(f'modules/*/{name}/run.yaml')
+    def exeman(self, name: str, cmd: str, opts: dict):
+        # find run.yaml file
+        module_folder = glob(f'modules/scripts/{name}/run.yaml')
+
         if type(module_folder) is list:
             module_folder = module_folder[0]
-        ff = yaml.safe_load(open(module_folder,'r'))
-        oo['domain'] = ur(oo['url']).netloc
-        oc = oo.copy()
-        oc['ALL'] = oo.copy()
-        acmd = cmd.format(**oc).replace(r'$SCPATH',f'modules/{module_folder.split("/")[1]}/{name}')
-        s = subprocess.Popen([acmd],shell=True, universal_newlines=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        sres,_err = s.communicate()
-        resu = f'\n[MODULE-{name.upper()}] {acmd}\n[OUTPUT]: [\n\n{sres}\n]\n-------\n'
-        if 'pass' in ff.keys():
-            module_name = ff['pass']['module']
-            change_option = ff['pass']['option']
-        if len(sres) > 0:
-            return resu
-        return 
+        # load run.yaml config file
+        file_config = yaml.safe_load(open(module_folder,'r'))
+        opts['domain'] = urlparse(opts['url']).netloc
+        new_opts = opts.copy()
+        new_opts['ALL'] = opts.copy()
+        acmd = cmd.format(**oc).replace(r'$SCPATH',f'modules/scripts/{name}')
+        # Execute the command
+        exec_cmd = subprocess.Popen([acmd],shell=True, universal_newlines=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        script_results , _err = s.communicate() # Get the output of the command
+        if len(script_results) > 0:
+            if file_config['remove']['regex']:
+                # remove custom text from scripts output (eg: logo,logging)
+                remove_from_script = re.sub(file_config['remove']['word'],script_results)
+            else:
+                script_results = script_results.lstrip(file_config['remove']['word'])
+            return alert_bug(script_results) # Display scirpt output
+        return alert_error(_err) # Display the Error
     
     def run(self, opts: dict, http: Http):
         # Start threading
@@ -89,9 +95,11 @@ class MLoader:
                 for _, module in self.modules.items():
                     mres.append(executor.submit(module.main, opt, http))
             
-            # When the scan is completed
-            for future in concurrent.futures.as_completed(mres):
-                res = future.result()
-                if res:
-                    res = str(res)
-                    print(res.replace(r'$EX$',''))
+#            # When the scan is completed
+#            for future in concurrent.futures.as_completed(mres):
+#                res = future.result()
+#                if res:
+#                    if res[0] == 'alert':
+#                        self.msg.Alert(res[1])
+#                    else:
+#                        self.msg.Error(res[1])

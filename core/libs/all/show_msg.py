@@ -4,6 +4,7 @@ __email__ = 'knassar702@gmail.com'
 __version__ = '0.8#Beta'
 
 from .colors import Colors as c
+from .requester import Http
 from .data import dump_request
 from .log import CustomFormatter
 from urllib.parse import urlparse 
@@ -21,8 +22,9 @@ ch.setLevel(logging.INFO)
 ch.setFormatter(CustomFormatter())
 logger.addHandler(ch)
 
+
 # Alert about bugs
-def alert_bug(name,http,**kwargs) -> dict:
+def alert_bug(name: str ,http: Http,**kwargs) -> dict:
     output = f'\n{c.good} {c.red}{name}{c.rest}: {http.request.url.split("?")[0]}'
     output += f'\n  Method: {http.request.method}'
     extra_text = ''
@@ -62,16 +64,14 @@ def alert_bug(name,http,**kwargs) -> dict:
 ''', re.VERBOSE).sub('',output) # remove colors value from text
     output_file.write(output)
     output_file.close()
-    return {'Name':name,
-            'request':dump_request(http),
-            'output':kwargs
-            }
+    return {'Name':name,'request':dump_request(http),'output':kwargs}
 
 
 # Display errors
-def show_error(name : str, message : str):
-    f = "\n---- Errors -----"
-    f += f"\nModule Name : {name}"
-    f += f'\n{message}'   
-    f += '\n-----------------'
-    log.error(f)
+def Error(name : str, message : str) -> str:
+    output = "\n---- Errors -----"
+    output += f"\nModule Name : {name}"
+    output += f'\n{message}'   
+    output += '\n-----------------'
+    log.error(output)
+    return output
