@@ -1,7 +1,0 @@
-exec: bash $SCPATH/main.sh {url} 
-remove:
-  word: ''
-  regex: false
-
-match: ".*."
-

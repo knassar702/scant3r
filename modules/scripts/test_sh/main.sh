@@ -1,1 +1,1 @@
-echo Your URL $1
+echo hello $1
