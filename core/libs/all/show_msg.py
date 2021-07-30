@@ -68,7 +68,7 @@ def alert_bug(name: str ,http: Http,**kwargs) -> dict:
 
 
 # Display errors
-def Error(name : str, message : str) -> str:
+def show_error(name : str, message : str) -> str:
     output = "\n---- Errors -----"
     output += f"\nModule Name : {name}"
     output += f'\n{message}'   
