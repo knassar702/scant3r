@@ -7,7 +7,7 @@ on:
       - 'wiki/**'
     branches:
       # And only on master branch
-      - master
+      - wiki
 
 jobs:
   deploy-wiki:

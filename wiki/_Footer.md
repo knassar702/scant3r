@@ -1,1 +1,0 @@
-**ScanT3r Documentation &copy; 2021 Khaled Nassar**
