@@ -9,11 +9,10 @@ import os,sys
 if sys.version_info < (3, 6):
     print('[-] Scant3r requires python >= 3.6')
     sys.exit()
-    
-import colorama
-from core.libs import Args, Http, Colors, MLoader, logo
-from core.api import Server
-from urllib.parse import urlparse, urljoin
+
+import colorama , logging
+from core.libs import Args, Http, MLoader, logo, Colors
+from urllib.parse import urlparse
 
 colorama.init()
 # set the path to scant3r folder
@@ -23,42 +22,54 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 opts = Args().get_args()
 
 # Display Logo
-if opts['nologo'] == False:
-    logo()
+logo()
 
 # Start Module Loader Class
 M = MLoader()
 
+# scant3r logger
+log = logging.getLogger('scant3r')
+
+# Colors Class
+color = Colors()
+
 if __name__ == '__main__':
-    # launch scant3r api server
-    if opts['api']:
-        app = Server(opts)
-        app.run()
-        sys.exit()
     
     if len(opts['urls']) <= 0:
         # listen to pipe
+        log.debug('listen to pipe input')
         for url in sys.stdin:
             opts['urls'].append(url.rstrip())
         
     # (-g option) , add famous parameters
     if opts['genparam']:
-            np = 'q=&searchFor=&query=&Searchfor=goButton=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist=&user=&username=&group='
-            for url in opts['urls']:
-                url = url.rstrip()
-                ind = opts['urls'].index(url)
+        log.debug('add parameters for url')
+        np = 'q=&searchFor=&query=&Searchfor=goButton=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist=&user=&username=&group='
+        for url in opts['urls']:
+            url = url.rstrip()
+            ind = opts['urls'].index(url)
+            
+            if len(urlparse(url).query) > 0:
+                np = '&{}'.format(np)
+            else:
+                np = '?{}'.format(np)
                 
-                if len(urlparse(url).query) > 0:
-                    np = '&{}'.format(np)
-                else:
-                    np = '?{}'.format(np)
-                    
-                opts['urls'][ind] = '{url}{np}'.format(url=url,np=np)
-    
+            opts['urls'][ind] = '{url}{np}'.format(url=url,np=np)
+            
     if opts['modules']:
         # load modules
         for module in opts['modules']:
+
+            if module == 'lorsrf' and opts['host'] == '' and opts['one_scan'] == True:
+                log.warning('Lorsrf module require host option (--host) ,so will run it for guess parameters and scan it with another modules')
+
+            if module == 'lorsrf' and opts['host'] == '' and opts['one_scan'] == False:
+                log.warning('Lorsrf module require host option (--host)')
+
+            log.info(f'Load {color.bwhite}{module}{color.rest} Module')
             M.get(module)
-    
+
         # start all modules (main function)
+        for Module in M.modules.keys():
+            log.info(f'Run {color.bwhite}{Module}{color.rest}')
         M.run(opts, Http(opts))

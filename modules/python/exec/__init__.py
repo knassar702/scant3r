@@ -1,5 +1,5 @@
-from .exeec import Start
+from .exec import Exec
+from core.libs import Http
 
-def main(opts,r):
-    m = Start(opts)
-    m.run()
+def main(opts: dict, http: Http):
+    Exec(opts,http).start()

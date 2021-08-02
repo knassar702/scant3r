@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
-from .lorsrf import start
+from .lorsrf import Lorsrf
+from core.libs import Http
 
-def main(opts,msg):
-    if opts['host']:
-        pass
-    else:
-        return {'Lorsrf':'Error , add your host (-x)'}
-    start(opts['url'],opts['host'],msg)
-    return {'Lorsrf':"Done :D"}
+def main(opts: dict, http: Http):
+    Lorsrf(opts , http).start()

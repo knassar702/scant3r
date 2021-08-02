@@ -5,8 +5,35 @@ headers:
   - type: string
   - default: '{}'
   - save_content: true
-  - help: "add custom header (ex:-H='Cookies: test=1')"
-  - exec: "dict_args['headers'] = extractHeaders(value)"
+  - help: "add custom header (ex:-H='Cookie: test=1; PHPSESSID=test')"
+  - exec: "dict_args['headers'] = extract_headers(value)"
+
+cookies: 
+  - option:
+    - '-C'
+    - '--cookie'
+  - type : string
+  - default: '{}'
+  - save_content : true 
+  - help: "add cookie to the header (ex: 'cookie1=1; cookie2=2')"
+  - exec: "dict_args['cookies'] = extract_cookie(value)"
+
+log_mode:
+  - option: 
+    - '-v'
+    - '--logger-mode'
+  - type: int
+  - default: 1
+  - save_content: true
+  - help: 'change debug messages mode (1: info 2: debug 3: warning 4: error)'
+  - exec: |
+      logs = {1:logging.INFO,2:logging.DEBUG,3:logging.WARNING,4:logging.ERROR}
+      logger = logging.getLogger("scant3r")
+      logger.setLevel(logs[value])
+      ch = logging.StreamHandler()
+      ch.setLevel(logs[value])
+      ch.setFormatter(CustomFormatter())
+      logger.addHandler(ch)
 
 delay:
   - option: 
@@ -39,19 +66,10 @@ content_types:
                     pass
         finally:
             dict_args["content_types"] = idkk
-api:
-  - option: 
-    - '-a'
-    - '--api'
-  - type: boolean
-  - default: false
-  - save_content: false
-  - help: 'Start Scant3r API'
-  - exec: "dict_args['api'] = True"
-      
+
 methods:
   - option: 
-    - '-y'
+    - '-M'
     - '--method'
   - type: string
   - default: 'GET,POST'
@@ -59,7 +77,6 @@ methods:
   - help: 'Methods Allowed on your target'
   - exec: | 
       dict_args['methods'] = value.split(",")
-    
 
 modules:
   - option: 
@@ -68,19 +85,23 @@ modules:
   - help: 'run scant3r module (ex: -m=example)'
   - type: string
   - default: '[]'
+  - default_action: |
+      yaml.safe_load(open('conf/main_scan.yaml','r'))
   - save_content: true
   - exec: |
-      dict_args['modules'] = value.split(",")
-
-nologo :
+      if type(value) == list:
+        dict_args['modules'] = value
+      else:
+        dict_args['modules'] = value.split(",")
+one_scan:
   - option: 
-    - '-n'
-    - '--no-logo'
-  - help: 'Silent Mode'
+    - '-O'
+    - '--one-scan'
+  - help: 'scanning with the current module without import another modules (eg: lorsrf xss/ssti scanner)'
   - type: boolean
   - default: false
   - save_content: false
-  - exec: "dict_args['nologo'] = value"
+  - exec: "dict_args['one_scan'] = value"
   
 targetlist:
   - option: 
@@ -117,7 +138,7 @@ proxy:
   - type: string
   - default: '{}'
   - save_content: true
-  - exec: "dict_args['proxy'] = {'http':value,'https':value}"
+  - exec: "dict_args['proxy'] = {'http':value.replace('https://','http://'),'https':value}"
 
 allow_redirects:
   - option: 

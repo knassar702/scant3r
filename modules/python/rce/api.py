@@ -1,7 +1,7 @@
-from . import scan
-from core.libs import alert_bug
+from .rce import Rce
+from core.libs import alert_bug, Http
 
-def main(opts,r):
-    s = scan(r,opts['url'],opts['methods'])
-    if s:
-        return alert_bug('Remote Code Execution',**s)
+def main(opts: dict, http : Http):
+    dict_result = Rce(opts, http).start()
+    if dict_result:
+        return alert_bug('Remote Code Execution',**dict_result)

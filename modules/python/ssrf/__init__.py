@@ -1,5 +1,6 @@
-from .ssrf import start
+from .ssrf import Ssrf
+from core.libs import Http
 
-def main(opts,r):
-    start(opts,opts['url'],r,methods=opts['methods'])
-    return
+def main(opts: dict, http: Http):
+    return Ssrf(opts, http).start()
+    

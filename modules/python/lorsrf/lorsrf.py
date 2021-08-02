@@ -1,66 +1,79 @@
 #!/usr/bin/env python3
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.6#Beta'
-from core.libs import post_data,urlencoder
+__version__ = '0.8#Beta'
+
 from threading import Thread
 from queue import Queue
 from urllib.parse import urlparse # url parsing
+from logging import getLogger
 from wordlists import ssrf_parameters # ssrf parameters wordlist
+from modules import Scan
+from modules.python.xss import main as xss_main
+from modules.python.xss_param import main as xss_param_main
+from modules.python.sqli import main as sqli_main
+from modules.python.ssrf import main as ssrf_main
+from modules.python.ssti import main as ssti_main
+from core.libs import Http
 
 q = Queue()
+log = getLogger('scant3r')
 
-
+# send requests per sec
 parameters_in_one_request = 10
 
 # parameters_in_one_request = 2
 
 # ?ex1=http://google.com&ex2=http://google.com
 
+class Lorsrf(Scan):
+    def __init__(self, opts: dict, http: Http):
+        super().__init__(opts, http)
+    
+    def start(self): 
+        for _ in range(int(self.opts['threads'])):
+            p1 = Thread(target=self.threader)
+            p1.daemon = True
+            p1.start()
+        for url in self.org():
+            q.put(url)
+        log.info(f'Started on {self.opts["url"]} with 10 parameters per secound ({self.opts["methods"]})')
+        q.join()
 
-def threader(host,http,methods):
-    while True:
-        item = q.get()
-        lor(item,host,http,methods)
-        q.task_done()
+    def threader(self):
+        while True: 
+            url = q.get()
+            self.lor(url)
+            q.task_done()
 
-def org(url,host):
-    l = len(ssrf_parameters())
-    newurl = url
-    allu = []
-    for par in ssrf_parameters():
-        pay = f'{host}/{par}'
-        if newurl != url:
-            if len(urlparse(newurl).query) > 0:
-                newurl += f'&{par}={pay}'
-            else:
-                newurl += f'?{par}={pay}'
-        else:
-            if len(urlparse(url).query) > 0:
-                newurl += f'&{par}={pay}'
-            else:
-                newurl += f'?{par}={pay}'
-        if len(urlparse(newurl).query.split('=')) == parameters_in_one_request + 1:
-            allu.append(newurl)
-            newurl = url
-    return allu
-
-def lor(url,host,http,methods=['GET','POST']):
-    for method in methods:
-        if method == 'GET':
-            r = http.send(method,url)
-        else:
-            r = http.send(method,url.split('?')[0],body=urlparse(url).query)
-
-def start(opts,http):
-    if opts['host']:
-        pass
-    else:
-        return
-    for _ in range(int(opts['threads'])):
-        p1 = Thread(target=threader,args=(opts['host'],http,opts['methods']))
-        p1.daemon = True
-        p1.start()
-    for url in org(opts['url'],opts['host']):
-        q.put(url)
-    q.join()
+    def lor(self, url: str):
+        for method in self.opts['methods']:
+            req = self.send_request(method, url)
+            if type(req) != list:
+                op = self.opts.copy()
+                op['url'] = url
+                op['method'] = method
+                if self.opts['one_scan'] == True:
+                    log.debug('Scannig with another modules')
+                    xss_main(op,self.http)
+                    xss_param_main(op,self.http)
+                    ssrf_main(op,self.http)
+                    ssti_main(op,self.http)
+                    sqli_main(op,self.http)
+    def check_url(self, url: str, param: str, payload: str) -> str:
+        if len(urlparse(url).query) > 0:
+            return f'&{param}={payload}'
+        return f'?{param}={payload}'
+    
+    def org(self) -> list:
+        l = len(ssrf_parameters())
+        newurl = self.opts['url']
+        allu = []
+        for par in ssrf_parameters():
+            pay = f"{self.opts['host']}/{par}"
+            newurl += self.check_url(newurl, par, pay)
+            if len(urlparse(newurl).query.split('=')) == parameters_in_one_request + 1:
+                allu.append(newurl)
+                newurl = self.opts['url']
+        return allu 
+        

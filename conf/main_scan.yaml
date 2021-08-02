@@ -1,0 +1,11 @@
+- xss
+- xss_param
+- sqli
+- rce
+- injheaders
+- cve
+- firebase
+- paths
+- secrets
+- ssrf
+- ssti 

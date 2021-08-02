@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
-import argparse
+import argparse , logging, yaml
 from .data import *
+from .log import CustomFormatter
 from .colors import Colors
 from .logo import logo
-import yaml
+
+
+log = logging.getLogger('scant3r')
 
 class Args:
     def __init__(self):
         try:
+            log.debug('load opts & help config files')
             self.conf = yaml.safe_load(open('conf/opts.yaml','r'))
-            self.help = yaml.safe_load(open('conf/help.yaml','r'))
+            self.help = open('conf/help.txt','r')
         except Exception as e:
-            print(f"[Args] {e}")
+            log.error(e)
             exit()
     
     # Add an argument to a parser 
@@ -37,14 +41,18 @@ class Args:
                     
             if 'help' in option.keys():
                 dict_option['help'] = option['help']
-           
             if 'default' in option.keys():
                 dict_option['default'] = option['default']
                 if option['default'] == "{}":
                     dict_option['default'] = {}
                 if option["default"] == "[]":
                     dict_option['default'] = []
-        
+            if 'default_action' in option.keys():
+                try:
+                    # execute command for default value :D
+                    dict_option['default'] = eval(option['default_action'])
+                except Exception as e:
+                    log.error(e)
         if dict_option['type'] != bool: 
             parser.add_argument(dict_option['small'], dict_option['large'], 
                         dest=dict_option['name'], type=dict_option['type'], 
@@ -68,12 +76,12 @@ class Args:
                     exec(dict_exe['exec'])
         return dict_args
     
-    # Take text from Help.yaml and transfrom to str
+    # Take text from help.txt and transfrom to str
     def epilog_text(self) -> str: 
         text = ''
-        for v,i in self.help.items():
-            i = i.replace(r'\t','\t').replace(r'\n','\n')
-            text += f'\n{v}:{i}'
+        for txt in self.help:
+            txt = txt.replace(r'\t','\t').replace(r'\n','\n')
+            text += txt
         return text
      
     # Return args in dict 

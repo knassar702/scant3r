@@ -1,10 +1,9 @@
-from . import Reflect
+from reflect import Reflect
+from core.libs import Http
 
-
-def main(opts,r):
-    R = Reflect(r)
-    v = R.start(opts['url'],opts['methods'])
-    if v:
-        for i in v.keys():
-            print(f'[Refelct] Found :> {v[i]} {i}')
-    return v
+def main(opts: dict, http : Http):
+    list_result = Reflect(opts, http).start()
+    if list_result:
+        for i in list_result.keys():
+            print(f'[Refelct] Found :> {list_result[i]} {i}')
+    return list_result

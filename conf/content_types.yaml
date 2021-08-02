@@ -5,7 +5,6 @@
 plane:
     - application/x-www-form-urlencoded
     - text/html
-
 xml:
     - text/xml
     - application/xml
@@ -13,11 +12,12 @@ xml:
     - appliction/image+svg
     - application/xhtml-xml
 
-json:
-    - application/json
-
 form:
     - multipart/form-data
+
+
+json:
+    - application/json
 
 javascript:
     - application/javascript

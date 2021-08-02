@@ -1,66 +1,48 @@
 #!/usr/bin/env python3
-import random
-from core.libs import insert_to_params,remove_dups_urls,random_str,alert_bug,post_data,urlencoder,insert_to_params_urls
+from core.libs import remove_dups_urls, random_str, alert_bug, insert_to_params_urls, Http
 from urllib.parse import urlparse
 from wordlists import XSS
+from modules import Scan
 
-
-class Scan:
-    def __init__(self,opts,r):
-        self.http = r
-        self.opts = opts
+class Xss(Scan):
+    def __init__(self, opts: dict, http: Http):
+        super().__init__(opts, http)
         self.payloads = XSS(opts['blindxss']).payloads
-    def check_method(self,methods,url):
-        self.method_allowed = {}
-        if self.method_allowed:
-            self.method_allowed.clear()
-        for u in methods:
-            self.method_allowed[u] = {}
+        
+    def check_method(self, methods: list, url: str) -> dict:
+        method_allowed = dict()
         for method in methods:
-            r = self.http.send(method,url)
-            if r != 0:
-                if r.status_code != 405:
-                    self.method_allowed[method] = {url:r.status_code}
-        return self.method_allowed
-    def start(self,url,methods=['GET','POST']):
-        self.bugs = []
-        for i in methods:
-            self.ref = []
+            method_allowed[method] = {}
+            response = self.http.send(method,url)
+            if response != 0 and response.status_code != 405:
+                method_allowed[method] = {url: response.status_code}
+        return method_allowed
+    
+    def start(self) -> dict:
+        for method in self.opts['methods']:
+            list_potential_vulnerable_url: list = []
             txt = f'scan{random_str(3)}tr'
-            n = remove_dups_urls(insert_to_params_urls(url,txt))
-            for wp in n:
-                if i != 'GET':
-                    r = self.http.send(i,wp.split('?')[0],body=urlparse(wp).query)
-                    if r != 0:
-                        if txt in r.text:
-                            self.ref.append(wp)
-                else:
-                    r = self.http.send(i,wp)
-                    if r != 0:
-                        if txt in r.text:
-                            self.ref.append(wp)
-            for rp in self.ref:
-                for P in self.payloads:
-                    P = P.rstrip() # remove new lines from payloads 
-                    nurl = rp.replace(txt,P)
-                    if i == 'GET':
-                        r = self.http.send(i,nurl)
-                    else:
-                        r = self.http.send(i,nurl.split('?')[0],body=urlparse(nurl).query)
-                    if r != 0:
-                        if P in r.text:
-                            self.bugs.append({
-                                'params':urlparse(nurl).query,
+            # Create a list of url with value for each parameter 
+            # if text is display append it in ref list
+            target_url = self.transform_url(self.opts['url'])
+            new_url = insert_to_params_urls(target_url, txt)
+            response = self.send_request(method, new_url)
+            if type(response) != list:
+                if txt in response.text:
+                    list_potential_vulnerable_url.append(new_url)
+                
+                for potential_vulnerable_url in list_potential_vulnerable_url:
+                    for P in self.payloads:
+                        # remove new lines from payloads
+                        P = P.rstrip()  
+                        # replace the text by the payload
+                        payload_url = potential_vulnerable_url.replace(txt,P)
+                        response = self.send_request(method, payload_url)
+                        if response != 0 and P in response.text:
+                            alert_bug('XSS',response,**{
+                                'params':urlparse(payload_url).query,
                                 'payload':P,
-                                'http':r
-                                })
-                            break
-        self.fbug = []
-        for bu in self.bugs:
-            self.fbug.append(alert_bug('XSS',**bu))
-        return self.fbug
+                            })
+                    
+        return {}
 
-def main(opts,r):
-    scanner = Scan(opts,r)
-    if urlparse(opts['url']).query:
-        scanner.start(url=opts['url'],methods=opts['methods'])

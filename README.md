@@ -7,31 +7,40 @@
 
 <p align="center">
   <a href="https://github.com/knassar702/scant3r/wiki">Scant3r Wiki</a> •
-  <a href="https://github.com/knassar702/scant3r/wiki/Usage">Usage</a> •
-  <a href="https://github.com/knassar702/scant3r/wiki/FAQ">FAQ</a> •
+  <a href="https://github.com/knassar702/scant3r/wiki/Usage">Main Usage</a> •
   <a href="https://github.com/knassar702/scant3r/wiki/for-developers">For Developers</a> •
   <a href="https://github.com/knassar702/scant3r#Media">Media</a> •
-  <a href="https://github.com/knassar702/scant3r#Collaborators">Collaborators</a>
+  <a href="https://github.com/knassar702/scant3r#Collaborators">Collaborators</a>  • 
+  <a href="https://github.com/knassar702/scant3r/wiki/TIPS">TIPS</a> •
 </p>
 
 ***
 
-**Why would you use Scant3r?**
+### Description
+scant3r is a module-based web security tool, our goal is to make customizable tool with providing many functions and features that what you need for write a security module for an example (cookie parser/http request class/opts parsing etc ..) to make write a security module easy and simple for saving your time also we made it customizable as possible for example you can change what you want for example options parser you can change/add more options by a config file and scanning map content_types help message logos etc ...
 
-Scant3r Scans all URLs with multiple HTTP Methods and content-types also,it Tries to look for bugs with basic exploits from Headers and URL Parameters By chaining waybackurls or gau with Scant3r you will have more time to look into functions and get Easy bugs on the way
-and scant3r will help you  write your own python script faster , you don't need to configure http/threads/errors/options/etc... , just by writing `main` function in your script (also you can import scant3r function for write a awesome script), you can run it in your terminal or access your script from api 😃
+### How can I benefit from this project?
+* for bug bounty hunters : <br>
+you can use it with the main modules in the table below or write your own module
+* for developers : <br>
+you can read the source code and try to understand how to make a project like this, or you can get all functions of scant3r in your projects (based on) and try to add more features with scant3r team support :D
 
-### All Modules
 
-| Module         | Description                                                  |
+### Modules
+
+this the modules we providing for our community for you need new module open an issue with `Feature request
+` template or write your own module ;D 
+
+| module         | Short description                                           |
 | :------------- | :-------------                                               |
 | **lorsrf**     | Bruteforcing on Hidden parameters to find SSRF vulnerability |
 | **ssrf**       | simple ssrf scanner                                          |
-| **paths**      | checking for custom paths                                       |
+| **cve**        | cve checks module wtih python scripts and YAML template      |
+| **firebase**   | checks for public firebase database (write/read) permission  |
+| **paths**      | checking for custom paths                                    |
 | **xss**        | inject xss payload in parameter value                        |
 | **sqli**       | simple sqli scanner                                          |
 | **rce**        | simple RCE scanner
-| **finder**     | text Matcher in request/response                                                              |
 | **xss_param** | inject xss payload in parameter name
 | **ssti** | simple server side template injection scanner |
 | **exec** | run multi tasks for automate your work/recon |
@@ -41,7 +50,14 @@ and scant3r will help you  write your own python script faster , you don't need 
 
 
 
-### Linux ![Linux](http://icons.iconarchive.com/icons/dakirby309/simply-styled/32/OS-Linux-icon.png)
+
+#### Requirements
+* python >= 3.6
+* pip
+* Git
+
+#### install
+* Unix & MS-DOS
 
 ```bash
 $ git clone https://github.com/knassar702/scant3r
@@ -56,31 +72,25 @@ $ ./scant3r.py -h
 
 ## Collaborators
 * [@knassar702](https://github.com/knassar702)
-* [@MariusVinaschi](https://github.com/MariusVinaschi)
+* [@MariusVinaschi](https://github.com/MariusVinaschi) (big thanks)
 * [@0xflotus](https://github.com/0xflotus)
 * [@pdelteil](https://github.com/pdelteil)
 * [@oppsec](https://github.com/oppsec)
-#### How to Contribute to the Project ?
-* fork this repo and make sure to read devs wikie
-* create new branch and add your changes and make pull requets
-* please please write your changes with clean code 🙆‍♂️
+
+
+#### wanna to Help us ?
+* Read this wikie page : https://github.com/knassar702/scant3r/wiki/helpup 
 
 ## License
 * [GPL 3v](https://github.com/knassar702/scant3r/blob/master/LICENSE)
 
-### Media 
 
-* **Version: 0.7/0.8**
-<img src='.src/scant3r.png'>
+### Stars Rate
+![stars](https://starchart.cc/knassar702/scant3r.svg)
 
+***
 
-<img src=.src/1.gif>
-
-* XSS Scanner
-[![asciicast](https://asciinema.org/a/ROYOYuR7u7Ebjc81gf9iqisfw.svg)](https://asciinema.org/a/ROYOYuR7u7Ebjc81gf9iqisfw)
-
-* injheaders
-[![asciicast](https://asciinema.org/a/400245.svg)](https://asciinema.org/a/400245)*** 
+## Media
 
 #### Version: [0.6](https://github.com/knassar702/scant3r/releases/tag/0.6)
 

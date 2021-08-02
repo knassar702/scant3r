@@ -1,0 +1,20 @@
+---
+id: PHP INFO
+
+request:
+  method: 
+    - GET
+  paths:
+    - phpinfo.php
+    - phpinfo.php3
+    - PI.php 
+    - PH.php
+    - phpINFO.php
+    - info.php
+    - about.php
+  body:
+  headers:
+  follow_redirects: true
+  match:
+    word: '(?=.*PHP Version \d.\d.\d)(?=.*Registered PHP Streams )(?=.*PHP License).*'
+    regex: true

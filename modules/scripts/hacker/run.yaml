@@ -1,0 +1,6 @@
+exec: echo {url} | xargs curl -vv 
+remove:
+  word: LOL
+  regex: false
+
+match: ".*."
