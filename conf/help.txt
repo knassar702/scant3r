@@ -1,1 +1,2 @@
 for Questions/suggestions/Bugs : https://github.com/knassar702/scant3r/issues
+wiki: https://github.com/knassar702/scant3r/wiki
