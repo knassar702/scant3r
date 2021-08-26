@@ -8,6 +8,7 @@ from queue import Queue
 from urllib.parse import urlparse # url parsing
 from logging import getLogger
 from wordlists import ssrf_parameters # ssrf parameters wordlist
+from core.libs import alert_bug
 from modules import Scan
 from modules.python.xss import main as xss_main
 from modules.python.xss_param import main as xss_param_main
@@ -21,8 +22,6 @@ log = getLogger('scant3r')
 
 # send requests per sec
 parameters_in_one_request = 10
-
-# parameters_in_one_request = 2
 
 # ?ex1=http://google.com&ex2=http://google.com
 
@@ -53,7 +52,7 @@ class Lorsrf(Scan):
                 op = self.opts.copy()
                 op['url'] = url
                 op['method'] = method
-                if self.opts['one_scan'] == True:
+                if self.opts['one_scan'] == False:
                     log.debug('Scannig with another modules')
                     xss_main(op,self.http)
                     xss_param_main(op,self.http)
@@ -69,11 +68,17 @@ class Lorsrf(Scan):
         l = len(ssrf_parameters())
         newurl = self.opts['url']
         allu = []
+        proto = ['http://','https://','smpt://','']
+        if self.opts['host']:
+            pass
+        else:
+            return
         for par in ssrf_parameters():
-            pay = f"{self.opts['host']}/{par}"
-            newurl += self.check_url(newurl, par, pay)
-            if len(urlparse(newurl).query.split('=')) == parameters_in_one_request + 1:
-                allu.append(newurl)
-                newurl = self.opts['url']
+            for pr in proto:
+                pay = f"{pr}{par}.{self.opts['host']}"
+                newurl += self.check_url(newurl, par, pay)
+                if len(urlparse(newurl).query.split('=')) == parameters_in_one_request + 1:
+                    allu.append(newurl)
+                    newurl = self.opts['url']
         return allu 
         
