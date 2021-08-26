@@ -129,7 +129,7 @@ class Http:
             return [0,e]
         
     # send a request with custom options (without user options)
-    def custom(self, method='GET', url=None, body={}, headers={}, timeout={}, allow_redirects=False, proxy={}):
+    def custom(self, method='GET', url=None, body={}, headers={}, timeout=10, allow_redirects=False, proxy={}):
         try:
             time.sleep(self.delay)
             req = Request(method, url, data=body, headers=headers)
