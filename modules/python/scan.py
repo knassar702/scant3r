@@ -3,7 +3,10 @@ from urllib.parse import urlparse
 from logging import getLogger
 from core.libs import Http
 from requests.models import Response
+from core.libs import random_str
 from yaml import safe_load
+from secrets import token_bytes
+from base64 import b64encode
 
 PATH_PYTHON_MODULE = 'modules/python/'
 
@@ -36,7 +39,16 @@ class Scan:
         if path[-3:] == ".py": 
             path = path[:-3]            
         return path
-    
+    # simple function for out-of-band host
+    def oob_host(self,key: str = None) -> dict:
+        if key: # for get resutls of host
+            req = self.http.custom(url='https://odiss.eu:1337/events',headers={"Authorization":f"Secret {key}"})
+            return req.json()['events'][0]
+        else: # for generate a new host
+            key = b64encode(token_bytes(32)).decode()
+            req = self.http.custom(url='https://odiss.eu:1337/events',headers={"Authorization":f"Secret {key}"})
+            return {'host':req.json()['id'] + '.odiss.eu','key':key}
+
     # In some module if we have a # in the url it's doesn't work
     # Clean the url  
     def transform_url(self, url: str) -> str: 
