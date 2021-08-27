@@ -29,12 +29,12 @@ class Lorsrf(Scan):
     def __init__(self, opts: dict, http: Http):
         super().__init__(opts, http)
     
-    def start(self): 
+    def start(self):
         for _ in range(int(self.opts['threads'])):
             p1 = Thread(target=self.threader)
             p1.daemon = True
             p1.start()
-        for url in self.org():
+        for url in self.make_params():
             q.put(url)
         log.info(f'Started on {self.opts["url"]} with 10 parameters per secound ({self.opts["methods"]})')
         q.join()
@@ -42,10 +42,10 @@ class Lorsrf(Scan):
     def threader(self):
         while True: 
             url = q.get()
-            self.lor(url)
+            self.sender(url)
             q.task_done()
 
-    def lor(self, url: str):
+    def sender(self, url: str):
         for method in self.opts['methods']:
             req = self.send_request(method, url)
             if type(req) != list:
@@ -59,26 +59,27 @@ class Lorsrf(Scan):
                     ssrf_main(op,self.http)
                     ssti_main(op,self.http)
                     sqli_main(op,self.http)
+
     def check_url(self, url: str, param: str, payload: str) -> str:
         if len(urlparse(url).query) > 0:
             return f'&{param}={payload}'
         return f'?{param}={payload}'
     
-    def org(self) -> list:
-        l = len(ssrf_parameters())
+    def make_params(self) -> list:
+        parameters_lenght = len(ssrf_parameters())
         newurl = self.opts['url']
-        allu = []
-        proto = ['http://','https://','smpt://','']
+        all_urls = []
+        protocols = ['http://','https://','smpt://','']
         if self.opts['host']:
             pass
         else:
-            return
-        for par in ssrf_parameters():
-            for pr in proto:
-                pay = f"{pr}{par}.{self.opts['host']}"
-                newurl += self.check_url(newurl, par, pay)
+            return []
+        for parameter in ssrf_parameters():
+            for protocol in protocols:
+                new_host = f"{protocol}{parameter}.{self.opts['host']}"
+                newurl += self.check_url(newurl, parameter, new_host)
                 if len(urlparse(newurl).query.split('=')) == parameters_in_one_request + 1:
-                    allu.append(newurl)
+                    all_urls.append(newurl)
                     newurl = self.opts['url']
-        return allu 
+        return all_urls 
         
