@@ -93,16 +93,26 @@ modules:
         dict_args['modules'] = value
       else:
         dict_args['modules'] = value.split(",")
-one_scan:
+more_scan:
   - option: 
     - '-O'
-    - '--one-scan'
-  - help: 'scanning with the current module without import another modules (eg: lorsrf xss/ssti scanner)'
+    - '--more-scan'
+  - help: 'scanning with the current module with import another modules (eg: lorsrf xss/ssti scanner)'
   - type: boolean
   - default: false
   - save_content: false
-  - exec: "dict_args['one_scan'] = value"
-  
+  - exec: "dict_args['more_scan'] = value"
+
+lorsrf_parameters:
+  - option:
+    - '-P'
+    - '--lorsrf-parameters'
+  - help: 'how many parameters in one request for lorsrf module'
+  - type: int
+  - default: 10
+  - save_content: true
+  - exec: "dict_args['lorsrf_parameters'] = value" 
+
 targetlist:
   - option: 
     - '-l'
