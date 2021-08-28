@@ -3,12 +3,10 @@ __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
 __version__ = '0.8#Beta'
 
-from threading import Thread
-from queue import Queue
 from urllib.parse import urlparse # url parsing
 from logging import getLogger
 from wordlists import ssrf_parameters # ssrf parameters wordlist
-from core.libs import alert_bug
+from core.libs import OOB , alert_bug
 from modules import Scan
 from modules.python.xss import main as xss_main
 from modules.python.xss_param import main as xss_param_main
@@ -27,23 +25,15 @@ parameters_in_one_request = 10
 
 class Lorsrf(Scan):
     def __init__(self, opts: dict, http: Http):
+        self.oob_host = OOB(http)
+        self.host = self.oob_host.new()
         super().__init__(opts, http)
     
     def start(self):
-        for _ in range(int(self.opts['threads'])):
-            p1 = Thread(target=self.threader)
-            p1.daemon = True
-            p1.start()
         for url in self.make_params():
-            q.put(url)
-        log.info(f'Started on {self.opts["url"]} with 10 parameters per secound ({self.opts["methods"]})')
-        q.join()
-
-    def threader(self):
-        while True: 
-            url = q.get()
             self.sender(url)
-            q.task_done()
+        log.debug(f'Started on {self.opts["url"]} with 10 parameters per secound ({self.opts["methods"]})')
+        q.join()
 
     def sender(self, url: str):
         for method in self.opts['methods']:
@@ -52,6 +42,8 @@ class Lorsrf(Scan):
                 op = self.opts.copy()
                 op['url'] = url
                 op['method'] = method
+                if self.oob_host.poll():
+                    alert_bug('Lorsrf -> New Request',req,host=self.host,results=f'$ curl -H "Authorization: Secret {self.oob_host.key}" https://odiss.eu:1337/events -sk')
                 if self.opts['one_scan'] == False:
                     log.debug('Scannig with another modules')
                     xss_main(op,self.http)
@@ -70,13 +62,9 @@ class Lorsrf(Scan):
         newurl = self.opts['url']
         all_urls = []
         protocols = ['http://','https://','smpt://','']
-        if self.opts['host']:
-            pass
-        else:
-            return []
         for parameter in ssrf_parameters():
             for protocol in protocols:
-                new_host = f"{protocol}{parameter}.{self.opts['host']}"
+                new_host = f"{protocol}{parameter}.{self.host}"
                 newurl += self.check_url(newurl, parameter, new_host)
                 if len(urlparse(newurl).query.split('=')) == parameters_in_one_request + 1:
                     all_urls.append(newurl)
