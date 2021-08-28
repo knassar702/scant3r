@@ -103,10 +103,10 @@ more_scan:
   - save_content: false
   - exec: "dict_args['more_scan'] = value"
 
-lorsrf_parameters:
+lorsrf_params:
   - option:
     - '-P'
-    - '--lorsrf-parameters'
+    - '--lorsrf-params'
   - help: 'how many parameters in one request for lorsrf module'
   - type: int
   - default: 10
