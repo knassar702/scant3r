@@ -21,7 +21,7 @@ class Cve(Scan):
         for module in glob(f'{self.path}cve/list/python/*.py'):
             nmodule = import_module(self.transform_path_to_module_import(module))
             with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-                log.info(f'{self.transform_path_to_module_import(module)} Started')
+                log.debug(f'{self.transform_path_to_module_import(module)} Started')
                 results.append(executor.submit(nmodule.main(self.opts['url'], self.http)))
 
         # load YAML CVE templates
@@ -52,7 +52,7 @@ class Cve(Scan):
                     urls.append(urljoin(self.opts['url'],path))
             else:
                 urls.append(self.opts['url'])
-            log.info(f'{template["id"]} Started')
+            log.debug(f'{template["id"]} Started')
             for url in urls:
                 for method in methods:
                     request = self.http.send(method, url, allow_redirects=follow_redirects, headers=headers)
