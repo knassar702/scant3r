@@ -15,7 +15,6 @@ from modules.python.ssrf import main as ssrf_main
 from modules.python.ssti import main as ssti_main
 from core.libs import Http
 
-q = Queue()
 log = getLogger('scant3r')
 
 # send requests per sec
