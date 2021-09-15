@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-
 import logging
 from .colors import Colors
+
 
 class CustomFormatter(logging.Formatter):
     colors = Colors()
@@ -30,5 +30,5 @@ class CustomFormatter(logging.Formatter):
 
     def format(self, record):
         log_fmt = self.FORMATS.get(record.levelno)
-        formatter = logging.Formatter(log_fmt,datefmt='%Y-%m-%d,%H:%M:%S')
+        formatter = logging.Formatter(log_fmt, datefmt='%Y-%m-%d,%H:%M:%S')
         return formatter.format(record)
