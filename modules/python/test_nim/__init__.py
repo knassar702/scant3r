@@ -6,7 +6,8 @@ from logging import getLogger
 
 log = getLogger('scant3r')
 
-def main(opts: dict,http: Http) -> str:
+
+def main(opts: dict, http: Http) -> str:
     c = Url(opts['url'])
     log.info(f"NIM: YOUR URL: {c}")
     return c
