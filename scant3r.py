@@ -36,7 +36,6 @@ log = logging.getLogger('scant3r')
 color = Colors()
 
 if __name__ == '__main__':
-
     if len(opts['urls']) <= 0:
         # listen to pipe
         log.debug('listen to pipe input')

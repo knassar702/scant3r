@@ -338,3 +338,4 @@ def insert_after(text: str, find_this: str, new_text: str) -> str:
     """
     i = text.find(find_this)
     return text[:i + len(find_this)] + new_text + text[i + len(find_this):]
+    
