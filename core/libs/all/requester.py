@@ -61,8 +61,10 @@ class Http:
              headers: dict = {},
              allow_redirects: bool = False,
              org: bool = True,
+             files: Union[dict, None] = None,
              timeout: int = 10,
              ignore_errors: bool = False,
+             remove_content_type: bool = False,
              convert_content_type: str = 'plane') -> Response:
         try:
             # Generate user agent
@@ -91,9 +93,8 @@ class Http:
                 allow_redirects = True
 
             # Set timeout
-            if timeout == 10:
-                if self.timeout:
-                    timeout = self.timeout
+            if timeout == 10 and self.timeout:
+                timeout = self.timeout
 
             # set proxy
             proxy = {}
@@ -102,8 +103,7 @@ class Http:
 
             # convert body to parameters
             if org:
-                if body:
-
+                if type(body) is str:
                     log.debug('convert body to dict')
                     if body.startswith('?'):
                         pass
@@ -128,15 +128,21 @@ class Http:
                 body = json.dumps(body)
                 headers['Content-Type'] = 'application/json'
 
-            req = request(method,
-                          url,
-                          data=body,
-                          headers=headers,
-                          cookies=cookies,
-                          allow_redirects=allow_redirects,
-                          verify=False,
-                          timeout=timeout,
-                          proxies=proxy)
+            if remove_content_type:
+                del headers['Content-Type']
+
+            req = request(
+                method,
+                url,
+                data=body,
+                headers=headers,
+                cookies=cookies,
+                files=files,
+                allow_redirects=allow_redirects,
+                verify=False,
+                timeout=timeout,
+                proxies=proxy
+            )
 
             if self.delay > 0:
                 log.debug(f'sleep {self.delay}')

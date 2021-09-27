@@ -44,9 +44,10 @@ class Colors:
     bad = f'{yellow}[{rest}{red}-{rest}{yellow}]{rest}'
     info = f'{yellow}[{yellow}!{rest}{yellow}]{rest}'
 
-    def dump_colors():
-        ac = {}
-        for color, value in vars(Colors).items():
-            if len(re.findall(r'__.*.', color)) == 0:
-                ac[color] = value
-        return ac
+
+def dump_colors():
+    ac = {}
+    for color, value in vars(Colors).items():
+        if len(re.findall(r'__.*.', color)) == 0:
+            ac[color] = value
+    return ac
