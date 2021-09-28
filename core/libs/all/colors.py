@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import re
 
+
 class Colors:
     # normal colors
     red = '\u001b[31m'
@@ -42,10 +43,11 @@ class Colors:
     good = f'{yellow}[{rest}{green}+{rest}{yellow}]{rest}'
     bad = f'{yellow}[{rest}{red}-{rest}{yellow}]{rest}'
     info = f'{yellow}[{yellow}!{rest}{yellow}]{rest}'
-    
+
+
 def dump_colors():
     ac = {}
-    for c,v in vars(Colors).items():
-        if len(re.findall(r'__.*.',c)) == 0:
-           ac[c] = v
+    for color, value in vars(Colors).items():
+        if len(re.findall(r'__.*.', color)) == 0:
+            ac[color] = value
     return ac

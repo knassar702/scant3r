@@ -3,14 +3,16 @@ __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
 __version__ = '0.8#Beta'
 
-import os,sys
+import os
+import sys
+import colorama
+import logging
 
 # check if python version high up 3.6
 if sys.version_info < (3, 6):
     print('[-] Scant3r requires python >= 3.6')
     sys.exit()
 
-import colorama , logging
 from core.libs import Args, Http, MLoader, logo, Colors
 from urllib.parse import urlparse
 
@@ -34,13 +36,12 @@ log = logging.getLogger('scant3r')
 color = Colors()
 
 if __name__ == '__main__':
-    
     if len(opts['urls']) <= 0:
         # listen to pipe
         log.debug('listen to pipe input')
         for url in sys.stdin:
             opts['urls'].append(url.rstrip())
-        
+
     # (-g option) , add famous parameters
     if opts['genparam']:
         log.debug('add parameters for url')
@@ -48,14 +49,14 @@ if __name__ == '__main__':
         for url in opts['urls']:
             url = url.rstrip()
             ind = opts['urls'].index(url)
-            
+
             if len(urlparse(url).query) > 0:
                 np = '&{}'.format(np)
             else:
                 np = '?{}'.format(np)
-                
-            opts['urls'][ind] = '{url}{np}'.format(url=url,np=np)
-            
+
+            opts['urls'][ind] = '{url}{np}'.format(url=url, np=np)
+
     if opts['modules']:
         # load modules
         for module in opts['modules']:

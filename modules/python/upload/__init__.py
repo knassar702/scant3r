@@ -1,6 +1,6 @@
-from .exec import Exec
 from core.libs import Http
+from .upload import Upload
 
 
 def main(opts: dict, http: Http):
-    Exec(opts, http).start()
+    Upload(opts, http).start()

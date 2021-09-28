@@ -4,3 +4,5 @@ nimporter
 pyyaml
 tldextract
 fuzzywuzzy
+python-Wappalyzer
+validators
