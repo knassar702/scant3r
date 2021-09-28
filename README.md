@@ -34,6 +34,8 @@ this the modules we providing for our community for you need new module open an 
 | module         | Short description                                           |
 | :------------- | :-------------                                               |
 | **lorsrf**     | Bruteforcing on Hidden parameters to find SSRF vulnerability |
+| **upload**     | file uploader scanner ( by [@MariusVinaschi](https://github.com/MariusVinaschi) )|
+| **Wappalyzer**   | shows you what websites are built  ( by [@MariusVinaschi](https://github.com/MariusVinaschi) )|
 | **ssrf**       | simple ssrf scanner                                          |
 | **cve**        | cve checks module wtih python scripts and YAML template      |
 | **firebase**   | checks for public firebase database (write/read) permission  |
