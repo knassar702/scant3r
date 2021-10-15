@@ -16,7 +16,7 @@ from .data import post_data, dump_request, dump_response
 packages.urllib3.disable_warnings()
 
 # scant3r logger
-log = logging.getLogger('scant3r')
+log = logging.getLogger('rich')
 
 # Create an User Agent
 # Choice one user agent from  the text file agents.txt
@@ -30,10 +30,12 @@ class Agent:
 
     def load(self):
         try:
+            log.debug('loading agents.txt file')
             with open('wordlists/txt/agents.txt', 'r') as aw:
                 for i in aw:
                     if len(i.rstrip()) > 1:
                         self.all.append(i.rstrip())
+            log.debug('random choice of user agents')
             self.random = random.choice(self.all)
         except Exception as e:
             log.error(e)
@@ -50,8 +52,7 @@ class Http:
         self.proxy: dict = opts['proxy']
         self.allow_redirects: bool = opts['allow_redirects']
         self.delay = opts['delay']
-        self.count: int = 0
-        self.content_types: list = opts['content_types']
+        self.json : bool = opts['json']
 
     # Send a request
     def send(self,
@@ -64,8 +65,7 @@ class Http:
              files: Union[dict, None] = None,
              timeout: int = 10,
              ignore_errors: bool = False,
-             remove_content_type: bool = False,
-             convert_content_type: str = 'plane') -> Response:
+             json=False) -> Response:
         try:
             # Generate user agent
             user_agents = Agent()
@@ -104,7 +104,7 @@ class Http:
             # convert body to parameters
             if org:
                 if type(body) is str:
-                    log.debug('convert body to dict')
+                    log.debug(f'convert {body} to dict')
                     if body.startswith('?'):
                         pass
                     else:
@@ -116,20 +116,16 @@ class Http:
                     body = post_data(url)
                     url = url.split('?')[0]
 
-            if self.content_types:
-                for content_type in self.content_types:
-                    if content_type.split('/')[1] == 'json' and method != 'GET':
-                        log.debug('convert body to json query')
-                        # convert query parameters to json
-                        body = json.dumps(body)
-                    headers['Content-Type'] = content_type
-
-            if convert_content_type == 'json' and method != 'GET':
-                body = json.dumps(body)
-                headers['Content-Type'] = 'application/json'
-
-            if remove_content_type:
-                del headers['Content-Type']
+            if method.upper() != 'GET':
+                if not json:
+                    json = self.json
+                if json:
+                    json = body
+                    body = None
+                else:
+                    json = None
+            else:
+                json = None 
 
             req = request(
                 method,
@@ -141,24 +137,17 @@ class Http:
                 allow_redirects=allow_redirects,
                 verify=False,
                 timeout=timeout,
-                proxies=proxy
+                proxies=proxy,
+                json=json
             )
 
             if self.delay > 0:
                 log.debug(f'sleep {self.delay}')
                 time.sleep(self.delay)
 
-            # number of request
-            self.count += 1
+            log.debug(dump_request(req))
+            log.debug(dump_response(req))
             req.encoding = req.apparent_encoding
-
-            # show request and response (-d option)
-            if self.debug:
-                print(f'--- [#{self.count}] Request ---')
-                print(dump_request(req))
-                print('\n---- RESPONSE ----')
-                print(dump_response(req))
-                print('--------------------\n\n')
 
             return req
         except Exception as e:
@@ -188,5 +177,5 @@ class Http:
             )
             return res
         except Exception as e:
-            log.error(e)
+            log.exception(e)
             return [0, e]

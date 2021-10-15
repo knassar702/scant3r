@@ -5,25 +5,16 @@ __version__ = '0.8#Beta'
 
 import random
 import logging
+import yaml
 import re
 from .colors import Colors
 from .requester import Http
 from .data import dump_request
-from .log import CustomFormatter
 from urllib.parse import urlparse
-from os import mkdir
+from os import makedirs
 
 # Core Logger
-log = logging.getLogger('scant3r')
-
-# Alert Logger
-logger = logging.getLogger("alert")
-logger.setLevel(logging.INFO)
-ch = logging.StreamHandler()
-ch.setLevel(logging.INFO)
-ch.setFormatter(CustomFormatter())
-logger.addHandler(ch)
-
+log = logging.getLogger('rich')
 
 # Alert about script results
 def alert_script(name: str, command: str, **kwargs) -> dict:
@@ -36,10 +27,9 @@ def alert_script(name: str, command: str, **kwargs) -> dict:
     output += extra_text + '\n\n----------------------------\n'
 
     # display the output in console
-    logger.info(output)
 
     try:
-        mkdir(f'log/{target}')
+        makedirs(f'log/{target}')
         log.debug('Output folder Created')
     except FileExistsError:
         pass
@@ -62,31 +52,19 @@ def alert_script(name: str, command: str, **kwargs) -> dict:
 ''', re.VERBOSE).sub('', output)  # remove colors value from text
     output_file.write(output)
     output_file.close()
+    logger.info(output)
     return {'Name': name, 'output': kwargs}
 
 
 # Alert about bugs
-def alert_bug(name: str, http: Http, **kwargs) -> dict:
-    output = f'\n{Colors.good} {Colors.red}{name}{Colors.rest}: {http.request.url.split("?")[0]}'
-    output += f'\n  Method: {http.request.method}'
-    extra_text = ''
-
-    for parameter, value in kwargs.items():
-        extra_text += f'\n  {parameter}: {value}'
-    output += extra_text
-    output += f'''
-        ---- Request ----
-        {Colors.yellow}
-        {dump_request(http)}
-        {Colors.rest}
-        --------
-    '''
+def alert_bug(name: str, http: Http=None, **kwargs) -> dict:
+    output = {}
+    if http:
+        output['request'] = dump_request(http)
+    output.update(kwargs)
     target = urlparse(http.request.url).netloc
-    # display the output in console
-    logger.info(output)
-
     try:
-        mkdir(f'log/{target}')
+        makedirs(f'log/{target}')
         log.debug('Output folder Created')
     except FileExistsError:
         pass
@@ -95,19 +73,8 @@ def alert_bug(name: str, http: Http, **kwargs) -> dict:
         return {}
 
     # open output file with the name of module and random number from 1 to 100
-    output_file = open(f'log/{target}/{name}_{random.randint(1,100)}.txt', 'w')
-    output = re.compile(r'''
-    \x1B  # ESC
-    (?:   # 7-bit C1 Fe (except CSI)
-        [@-Z\\-_]
-    |     # or [ for CSI, followed by a control sequence
-        \[
-        [0-?]*  # Parameter bytes
-        [ -/]*  # Intermediate bytes
-        [@-~]   # Final byte
-    )
-''', re.VERBOSE).sub('', output)  # remove colors value from text
-    output_file.write(output)
+    output_file = open(f'log/{target}/{name}_{random.randint(1,100)}.yaml', 'w')
+    output_file.write(yaml.dump(output))
     output_file.close()
     return {'Name': name, 'request': dump_request(http), 'output': kwargs}
 

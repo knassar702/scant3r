@@ -18,7 +18,7 @@ class Scan:
         self.opts = opts
         self.http = http
         self.path = path
-        self.log = getLogger('scant3r')
+        self.log = getLogger('rich')
 
     def open_yaml_file(self, file_name: str, add_path: bool):
         try:
@@ -34,41 +34,40 @@ class Scan:
                      method: str,
                      url: str,
                      second_url: Union[str, None] = None,
-                     remove_content_type: bool = True,
+                     json: Union[bool,None] =None,
                      body: Union[dict, None] = None) -> Response:
 
         if method == 'GET':
-            return self.http.send(method, url, remove_content_type=remove_content_type)
+            return self.http.send(method, url)
 
         if second_url is not None:
             if body is not None:
                 return self.http.send(method,
                                       second_url.split('?')[0],
                                       body=body,
-                                      remove_content_type=remove_content_type)
+                                      json=json)
 
             return self.http.send(method,
                                   second_url.split('?')[0],
                                   body=urlparse(url).query,
-                                  remove_content_type=remove_content_type)
+                                  json=json)
 
         if body is not None:
             return self.http.send(method,
                                   url.split('?')[0],
                                   body=body,
-                                  remove_content_type=remove_content_type)
+                                  json=json)
 
         return self.http.send(method,
                               url.split('?')[0],
                               body=urlparse(url).query,
-                              remove_content_type=remove_content_type)
+                              json=json)
 
     def send_upload_file_request(self, url: str, files: dict, data: dict):
         return self.http.send(method='POST',
                               url=url,
                               body=data,
-                              files=files,
-                              remove_content_type=True)
+                              files=files)
 
     def transform_path_to_module_import(self, path: str) -> str:
         path = path.replace('/', '.').replace('\\', '.').strip()

@@ -8,7 +8,7 @@ from .colors import Colors
 from .logo import logo
 
 
-log = logging.getLogger('scant3r')
+log = logging.getLogger('rich')
 
 
 class Args:

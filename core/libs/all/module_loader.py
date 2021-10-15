@@ -15,7 +15,7 @@ from os.path import isfile
 from glob import glob
 from core.libs import Http, alert_script
 
-log = logging.getLogger('scant3r')
+log = logging.getLogger('rish')
 
 
 class MLoader:
@@ -107,21 +107,22 @@ class MLoader:
         # Start threading
         with concurrent.futures.ThreadPoolExecutor(max_workers=opts['threads']) as executor:
             mres = list()
+            # Execution of modules
+            log.info(f'🎯 Scanning {len(opts["urls"])} urls')
+            for _, module in self.modules.items():
+                log.info(f'🦘 {_} has started',extra={"markup": True})
+                for url in opts['urls']:
+                    # copy user options
+                    opt = opts.copy()
+                    opt['url'] = url
 
-            for url in opts['urls']:
-                # copy user options
-                opt = opts.copy()
-                opt['url'] = url
-
-                # Execution of scripts
-                for name, script in self.scripts.items():
-                    mres.append(executor.submit(self.exeman,
-                                                name.replace('$EX$', '').replace('/', '.'),
-                                                script, opt))
-
-                # Execution of modules
-                for _, module in self.modules.items():
                     mres.append(executor.submit(module.main, opt, http))
+                    # Execution of scripts
+                    #for name, script in self.scripts.items():
+                    #    mres.append(executor.submit(self.exeman,
+                    #                                name.replace('$EX$', '').replace('/', '.'),
+                    #                                script, opt))
+
 
 #            # When the scan is completed
 #            for future in concurrent.futures.as_completed(mres):

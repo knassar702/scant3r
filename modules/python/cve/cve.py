@@ -9,7 +9,7 @@ import concurrent.futures
 from core.libs import Http
 import re
 
-log = getLogger('scant3r')
+log = getLogger('rich')
 
 
 class Cve(Scan):
@@ -19,7 +19,9 @@ class Cve(Scan):
     def start(self) -> dict:
         results = []
         # load python CVE modules
+        log.debug('loading all python modules')
         for module in glob(f'{self.path}cve/list/python/*.py'):
+            log.debug(f'import {module}')
             nmodule = import_module(self.transform_path_to_module_import(module))
 
             with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
@@ -27,9 +29,10 @@ class Cve(Scan):
                 results.append(executor.submit(nmodule.main(self.opts['url'], self.http)))
 
         # load YAML CVE templates
+        log.debug('Loading all YAML templates')
         for template in glob(f'{self.path}cve/list/templates/*.yaml'):
             template = self.open_yaml_file(template, False)
-            log.debug('parsing Scanning template')
+            log.debug(f'Parsing {template} template')
             name = template['id']
             methods = template['request']['method']
             paths = template['request']['paths']

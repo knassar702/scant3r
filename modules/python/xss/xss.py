@@ -3,7 +3,10 @@ from core.libs import random_str, alert_bug, insert_to_params_urls, Http
 from urllib.parse import urlparse
 from wordlists import XSS
 from modules import Scan
+import logging
 
+
+log = logging.getLogger('rich')
 
 class Xss(Scan):
     def __init__(self, opts: dict, http: Http):
@@ -11,12 +14,16 @@ class Xss(Scan):
         self.payloads = XSS(opts['blindxss']).payloads
 
     def check_method(self, methods: list, url: str) -> dict:
+        """
+        - Check if this method is accepted or not
+        """
         method_allowed = dict()
         for method in methods:
             method_allowed[method] = {}
             response = self.http.send(method, url)
 
             if response != 0 and response.status_code != 405:
+                log.info('XSS module got 403 status code')
                 method_allowed[method] = {url: response.status_code}
 
         return method_allowed
@@ -25,7 +32,6 @@ class Xss(Scan):
         for method in self.opts['methods']:
             list_potential_vulnerable_url: list = []
             txt = f'scan{random_str(3)}tr'
-
             # Create a list of url with value for each parameter
             # if text is display append it in ref list
 
@@ -45,6 +51,7 @@ class Xss(Scan):
                         payload_url = potential_vulnerable_url.replace(txt, payload)
                         response = self.send_request(method, payload_url)
                         if response != 0 and payload in response.text:
+                            log.info(f':bug: Found XSS on {response.url} URL with {response.request.method} METHOD ', extra={"markup": True})
                             alert_bug('XSS', response, **{
                                 'params': urlparse(payload_url).query,
                                 'payload': payload,

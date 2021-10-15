@@ -8,6 +8,16 @@ headers:
   - help: "add custom header (ex:-H='Cookie: test=1; PHPSESSID=test')"
   - exec: "dict_args['headers'] = extract_headers(value)"
 
+json:
+  - option: 
+    - '-j'
+    - '--json'
+  - type: boolean
+  - default: false
+  - help: 'Send JSON request'
+  - save_content: false
+  - exec: "dict_args['json'] = value"
+
 cookies: 
   - option:
     - '-C'
@@ -27,14 +37,15 @@ log_mode:
   - save_content: true
   - help: 'change debug messages mode (1: info 2: debug 3: warning 4: error)'
   - exec: |
+      import logging
+      from rich.logging import RichHandler
       logs = {1:logging.INFO,2:logging.DEBUG,3:logging.WARNING,4:logging.ERROR}
-      logger = logging.getLogger("scant3r")
-      logger.setLevel(logs[value])
-      ch = logging.StreamHandler()
-      ch.setLevel(logs[value])
-      ch.setFormatter(CustomFormatter())
-      logger.addHandler(ch)
-
+      logging.basicConfig(
+          level=logs[value],
+          format="%(message)s",
+          datefmt="[%X]",
+          handlers=[RichHandler(rich_tracebacks=True)]
+      )
 delay:
   - option: 
     - '-s'
@@ -45,27 +56,6 @@ delay:
   - help: 'number of seconds to hold between each HTTP(S) requests.'
   - exec: "dict_args['delay'] = int(value)"
 
-content_types:
-    - option:
-        - '-c'
-        - '--content-types'
-    - type: list
-    - default: plane
-    - save_content: true
-    - help: 'content type support'
-    - exec: |
-        idkk = []
-        try:
-            idk = yaml.safe_load(open('conf/content_types.yaml','r'))
-            for i in value.split(','):
-                try:
-                    i = idk[i]
-                    for c in i:
-                        idkk.append(c)
-                except:
-                    pass
-        finally:
-            dict_args["content_types"] = idkk
 
 methods:
   - option: 

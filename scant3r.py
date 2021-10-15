@@ -60,10 +60,8 @@ if __name__ == '__main__':
     if opts['modules']:
         # load modules
         for module in opts['modules']:
-            log.debug(f'Load {color.bwhite}{module}{color.rest} Module')
+            log.debug(f'Load {module} Module')
             M.get(module)
 
         # start all modules (main function)
-        for Module in M.modules.keys():
-            log.info(f'Run {color.bwhite}{Module}{color.rest}')
         M.run(opts, Http(opts))

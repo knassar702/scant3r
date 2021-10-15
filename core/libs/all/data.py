@@ -48,7 +48,7 @@ def dump_request(request: Response) -> str:
         body += header + ": " + value + "\n"
 
     if request.request.body is not None:
-        body += '\n' + str(request.request.body)
+        body += '\n' + str(request.request.body) + '\n'
     return body
 
 
@@ -186,13 +186,20 @@ def insert_to_custom_params(url: str,
 
 
 # Return the query from the url
-def dump_params(url: str):
+def dump_params(url: str) -> str:
     """
         >>> dump_params('http://google.com/?test=1&name=5')
         test=1&name=5
     """
     return urlparse(url).query
 
+
+def params_to_dict(params: str ) -> dict:
+    """
+        >>> params_to_dict("?name=khaled")
+        {"name":"khaled"}
+    """
+    return dict(parse.parse_qsl(parse.urlsplit(url).query))
 
 # Add a path to an url
 def add_path(url: str, path: str) -> str:

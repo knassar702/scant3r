@@ -15,7 +15,7 @@ from modules.python.ssrf import main as ssrf_main
 from modules.python.ssti import main as ssti_main
 from core.libs import Http
 
-log = getLogger('scant3r')
+log = getLogger('rich')
 
 # send requests per sec
 parameters_in_one_request = 10
@@ -32,7 +32,7 @@ class Lorsrf(Scan):
     def start(self):
         for url in self.make_params():
             self.sender(url)
-        log.debug(f'Started on {self.opts["url"]} with 10 parameters per secound ({self.opts["methods"]})')
+        log.debug(f'Started on {self.opts["url"]} with {parameters_in_one_request} parameters per secound ({self.opts["methods"]})')
         q.join()
 
     def sender(self, url: str):
