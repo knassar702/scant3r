@@ -34,19 +34,18 @@ class Agent:
 
 class Http:
     def __init__(self, opts : dict):
-        self.timeout = opts['timeout']
-        self.headers = opts['headers']
-        self.cookies = opts['cookies']
-        self.random_agents = opts['random_agents']
-        self.debug = opts['debug']
+        self.timeout: int = opts['timeout']
+        self.headers: dict = opts['headers']
+        self.cookies: dict = opts['cookies']
+        self.random_agents: list = opts['random_agents']
         self.proxy: dict = opts['proxy']
         self.allow_redirects: bool = opts['allow_redirects']
-        self.delay = opts['delay']
+        self.json: bool = opts['json']
+        self.delay: int = opts['delay']
         self.count: int = 0
-        self.content_types: list = opts['content_types']
         
     # Send a request 
-    def send(self, method: str = 'GET', url: Union[str, None] = None, body: dict = {}, headers: dict = {}, allow_redirects: bool = False, org: bool = True, timeout:int = 10, IgnoreErrors: bool = False, convert_content_type : str = 'plane') -> Response:
+    def send(self, method: str = 'GET', url: Union[str, None] = None, body: dict = {}, headers: dict = {}, allow_redirects: bool = False, org: bool = True, timeout:int = 10, IgnoreErrors: bool = False, json=None) -> Response:
         try: 
             # Generate user agent
             user_agents = Agent()
@@ -95,18 +94,17 @@ class Http:
                     log.debug('convert body to dict')
                     body = post_data(url)
                     url = url.split('?')[0]
-            if self.content_types:
-                for content_type in self.content_types:
-                    if content_type.split('/')[1] == 'json' and method != 'GET':
-                        log.debug('convert body to json query')
-                        body = json.dumps(body) # convert query parameters to json
-                    headers['Content-Type'] = content_type
-            if convert_content_type == 'json' and method != 'GET':
-                body = json.dumps(body)
-                headers['Content-Type'] = 'application/json'
-                
-            req = request(method, url, data=body, headers=headers, cookies=cookies, allow_redirects=allow_redirects, verify=False, timeout=timeout, proxies=proxy)
-                                
+            if method.upper() != 'GET':
+                if self.json:
+                    if json:
+                        json.update(post_data(body))
+                    elif type(body) == dict:
+                        json = body
+                    else:
+                        json = post_data(str(body))
+
+                body = None
+            req = request(method, url, data=body, headers=headers, cookies=cookies, allow_redirects=allow_redirects, verify=False, timeout=timeout, proxies=proxy,json=json)
             if self.delay > 0:
                 log.debug(f'sleep {self.delay}')
                 time.sleep(self.delay)
@@ -115,12 +113,6 @@ class Http:
             req.encoding = req.apparent_encoding
             
             # show request and response (-d option)
-            if self.debug: 
-                print(f'--- [#{self.count}] Request ---')
-                print(dump_request(req))
-                print('\n---- RESPONSE ----')
-                print(dump_response(req))
-                print('--------------------\n\n')
                 
             return req
         except Exception as e:
@@ -129,7 +121,7 @@ class Http:
             return [0,e]
         
     # send a request with custom options (without user options)
-    def custom(self, method='GET', url=None, body={}, headers={}, timeout=10, allow_redirects=False, proxy={}):
+    def custom(self, method='GET', url=None, body={}, headers={}, timeout=10, allow_redirects=False, proxy={},json=None):
         try:
             time.sleep(self.delay)
             req = Request(method, url, data=body, headers=headers)
@@ -139,7 +131,8 @@ class Http:
                 timeout=timeout,
                 allow_redirects=allow_redirects,
                 verify=False,
-                proxies=proxy
+                proxies=proxy,
+                json=json
             )
             return res
         except Exception as e:

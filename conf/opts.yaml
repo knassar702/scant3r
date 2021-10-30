@@ -35,6 +35,8 @@ log_mode:
       ch.setFormatter(CustomFormatter())
       logger.addHandler(ch)
 
+
+
 delay:
   - option: 
     - '-s'
@@ -45,27 +47,6 @@ delay:
   - help: 'number of seconds to hold between each HTTP(S) requests.'
   - exec: "dict_args['delay'] = int(value)"
 
-content_types:
-    - option:
-        - '-c'
-        - '--content-types'
-    - type: list
-    - default: plane
-    - save_content: true
-    - help: 'content type support'
-    - exec: |
-        idkk = []
-        try:
-            idk = yaml.safe_load(open('conf/content_types.yaml','r'))
-            for i in value.split(','):
-                try:
-                    i = idk[i]
-                    for c in i:
-                        idkk.append(c)
-                except:
-                    pass
-        finally:
-            dict_args["content_types"] = idkk
 
 methods:
   - option: 
@@ -140,6 +121,16 @@ genparam:
   - save_content: false
   - exec: "dict_args['genparam'] = value"
 
+json:
+  - option:
+    - '-j'
+    - '--json'
+  - type: boolean
+  - default: false
+  - help: "JSON Request Body"
+  - save_content: false
+  - exec: "dict_args['json'] = value"
+
 proxy:
   - option: 
     - '-p'
@@ -169,16 +160,6 @@ blindxss:
   - help: 'add your xsshunter host (or any xss host)'
   - save_content: true
   - exec: "dict_args['blindxss'] = value"
-
-debug:
-  - option: 
-    - '-d'
-    - '--debug'
-  - help: 'debugging mode (show requests/responses)'
-  - type: boolean
-  - default: false
-  - save_content: false
-  - exec: "dict_args['debug'] = True"
 
 host:
   - option: 
