@@ -197,7 +197,7 @@ def insert_to_params_urls(url: str, text: str, remove_content: bool = False) -> 
     try:
         parse_url = urlparse(url)
         query = parse_url.query
-        url_dict = dict(parse_qsl(query))
+        url_dict = dict(parse_qsl(query,keep_blank_values=True))
         for param,value in url_dict.copy().items():
             if remove_content:
                 url_dict[param] = text
