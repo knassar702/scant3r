@@ -6,14 +6,14 @@ __version__ = '0.8#Beta'
 from urllib.parse import urlparse # url parsing
 from logging import getLogger
 from wordlists import ssrf_parameters # ssrf parameters wordlist
-from core.libs import OOB , alert_bug
+from core.libs import OOB , alert_bug , post_data , Http 
+from urllib.parse import urlparse
 from modules import Scan
 from modules.python.xss import main as xss_main
 from modules.python.xss_param import main as xss_param_main
 from modules.python.sqli import main as sqli_main
 from modules.python.ssrf import main as ssrf_main
 from modules.python.ssti import main as ssti_main
-from core.libs import Http
 
 log = getLogger('scant3r')
 
@@ -34,7 +34,7 @@ class Lorsrf(Scan):
         log.debug(f'Started on {self.opts["url"]} with 10 parameters per secound ({self.opts["methods"]})')
         q.join()
 
-    def sender(self, url: str):
+    def sender(self, url: str,body : dict = {}):
         for method in self.opts['methods']:
             req = self.send_request(method, url)
             if type(req) != list:
