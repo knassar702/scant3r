@@ -18,7 +18,7 @@ from modules.python.ssti import main as ssti_main
 log = getLogger('scant3r')
 
 # send requests per sec
-parameters_in_one_request = 10
+parameters_in_one_request = 30
 
 # ?ex1=http://google.com&ex2=http://google.com
 
@@ -32,7 +32,6 @@ class Lorsrf(Scan):
         for url in self.make_params():
             self.sender(url)
         log.debug(f'Started on {self.opts["url"]} with 10 parameters per secound ({self.opts["methods"]})')
-        q.join()
 
     def sender(self, url: str,body : dict = {}):
         for method in self.opts['methods']:
