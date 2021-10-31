@@ -14,6 +14,8 @@ from modules.python.xss_param import main as xss_param_main
 from modules.python.sqli import main as sqli_main
 from modules.python.ssrf import main as ssrf_main
 from modules.python.ssti import main as ssti_main
+from queue import Queue
+from threading import Thread
 
 log = getLogger('scant3r')
 
@@ -26,12 +28,30 @@ class Lorsrf(Scan):
     def __init__(self, opts: dict, http: Http):
         self.oob_host = OOB(http)
         self.host = self.oob_host.new()
+        self.queue = Queue()
         super().__init__(opts, http)
     
-    def start(self):
+    def guess(self):
+        urls = []
         for url in self.make_params():
-            self.sender(url)
+            urls.append(url)
+        for url in urls:
+            self.queue.put(url)
+
         log.debug(f'Started on {self.opts["url"]} with 10 parameters per secound ({self.opts["methods"]})')
+        self.queue.join()
+    
+    def threader(self):
+        while True:
+            item = self.queue.get()
+            self.sender(item)
+            self.queue.task_done()
+
+    def start(self):
+        thread = Thread(target=self.threader)
+        thread.daemon = True
+        thread.start()
+        self.guess()
 
     def sender(self, url: str,body : dict = {}):
         for method in self.opts['methods']:
