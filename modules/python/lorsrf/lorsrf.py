@@ -43,7 +43,7 @@ class Lorsrf(Scan):
                 op['method'] = method
                 if self.oob_host.poll():
                     alert_bug('Lorsrf -> New Request',req,host=self.host,results=f'$ curl -H "Authorization: Secret {self.oob_host.key}" https://odiss.eu:1337/events -sk | jq')
-                if self.opts['more_scan'] == False:
+                if self.opts['more_scan'] == True:
                     log.debug('Scannig with another modules')
                     xss_main(op,self.http)
                     xss_param_main(op,self.http)
