@@ -33,10 +33,7 @@ class Scan:
 
         params = dict(parse_qsl(urlparse(url).query))
         if second_url is not None:
-            print(params)
             return self.http.send(method, second_url.split('?')[0], body = params)
-        #print(params)
-        #print(5)
         return self.http.send(method, url.split('?')[0], body = params)
     
     def transform_path_to_module_import(self, path: str) -> str:
