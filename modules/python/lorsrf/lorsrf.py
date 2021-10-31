@@ -18,7 +18,7 @@ from modules.python.ssti import main as ssti_main
 log = getLogger('scant3r')
 
 # send requests per sec
-parameters_in_one_request = 30
+parameters_in_one_request = 10
 
 # ?ex1=http://google.com&ex2=http://google.com
 
