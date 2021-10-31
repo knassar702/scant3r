@@ -45,7 +45,7 @@ class Http:
         self.count: int = 0
         
     # Send a request 
-    def send(self, method: str = 'GET', url: Union[str, None] = None, body: dict = {}, headers: dict = {}, allow_redirects: bool = False, org: bool = True, timeout:int = 10, IgnoreErrors: bool = False, json=None) -> Response:
+    def send(self, method: str = 'GET', url: Union[str, None] = None, body: dict = {}, headers: dict = {}, allow_redirects: bool = False, org: bool = False, timeout:int = 10, IgnoreErrors: bool = False, json=None) -> Response:
         try: 
             # Generate user agent
             user_agents = Agent()
@@ -85,11 +85,12 @@ class Http:
             if org:
                 if body:
                     log.debug('convert body to dict')
-                    if body.startswith('?'):
-                        pass
-                    else:
-                        body = '?' + body
-                    body = post_data(body)
+                    if type(body) == str:
+                            if body.startswith('?'):
+                                pass
+                            else:
+                                body = '?' + body
+                            body = post_data(body)
                 if method != 'GET' and not body:
                     log.debug('convert body to dict')
                     body = post_data(url)
@@ -102,8 +103,7 @@ class Http:
                         json = body
                     else:
                         json = post_data(str(body))
-
-                body = None
+                    body = {}
             req = request(method, url, data=body, headers=headers, cookies=cookies, allow_redirects=allow_redirects, verify=False, timeout=timeout, proxies=proxy,json=json)
             if self.delay > 0:
                 log.debug(f'sleep {self.delay}')
