@@ -123,8 +123,17 @@ class Http:
     # send a request with custom options (without user options)
     def custom(self, method='GET', url=None, body={}, headers={}, timeout=10, allow_redirects=False, proxy={},json=None):
         try:
+            if method.upper() != 'GET':
+                if self.json:
+                    if json:
+                        json.update(post_data(body))
+                    elif type(body) == dict:
+                        json = body
+                    else:
+                        json = post_data(str(body))
+
             time.sleep(self.delay)
-            req = Request(method, url, data=body, headers=headers)
+            req = Request(method, url, data=body, headers=headers,json=json)
             s = Session()
             res = s.send(
                 req.prepare(),
@@ -132,7 +141,6 @@ class Http:
                 allow_redirects=allow_redirects,
                 verify=False,
                 proxies=proxy,
-                json=json
             )
             return res
         except Exception as e:
