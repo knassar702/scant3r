@@ -99,9 +99,10 @@ class MLoader:
                     mres.append(executor.submit(module.main, opt, http))
             
 #            # When the scan is completed
-#            for future in concurrent.futures.as_completed(mres):
-#                res = future.result()
-#                if res:
+            for future in concurrent.futures.as_completed(mres):
+                res = future.result()
+                if res:
+                    print(res)
 #                    if res[0] == 'alert':
 #                        self.msg.Alert(res[1])
 #                    else:
