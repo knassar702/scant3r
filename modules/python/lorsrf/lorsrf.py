@@ -86,7 +86,7 @@ class Lorsrf(Scan):
         for parameter in ssrf_parameters():
             for protocol in protocols:
                 if self.opts.get('host'):
-                    new_host = self.opts.get('host').replace("%PARAM%",parameter)
+                    new_host = self.opts.get('host').replace("%PARAM%",parameter).replace('%HOST%',urlparse(newurl).netloc).replace("%PATH%",urlparse(newurl).path).replace("%PORT%",str(urlparse(newurl).port))
                 else:
                     new_host = f"{protocol}{parameter}.{self.host}"
                 newurl += self.check_url(newurl, parameter, new_host)
