@@ -60,8 +60,11 @@ class Lorsrf(Scan):
                 op = self.opts.copy()
                 op['url'] = url
                 op['method'] = method
-                if self.oob_host.poll():
-                    alert_bug('Lorsrf -> New Request',req,host=self.host,results=f'$ curl -H "Authorization: Secret {self.oob_host.key}" https://odiss.eu:1337/events -sk | jq')
+                if self.opts.get('host'):
+                    pass
+                else:
+                    if self.oob_host.poll():
+                        alert_bug('Lorsrf -> New Request',req,host=self.host,results=f'$ curl -H "Authorization: Secret {self.oob_host.key}" https://odiss.eu:1337/events -sk | jq')
                 if self.opts['more_scan'] == True:
                     log.debug('Scannig with another modules')
                     xss_main(op,self.http)
@@ -79,10 +82,13 @@ class Lorsrf(Scan):
         parameters_lenght = len(ssrf_parameters())
         newurl = self.opts['url']
         all_urls = []
-        protocols = ['http://','https://','smpt://','']
+        protocols = ['http://','https://','']
         for parameter in ssrf_parameters():
             for protocol in protocols:
-                new_host = f"{protocol}{parameter}.{self.host}"
+                if self.opts.get('host'):
+                    new_host = self.opts.get('host').replace("%PARAM%",parameter)
+                else:
+                    new_host = f"{protocol}{parameter}.{self.host}"
                 newurl += self.check_url(newurl, parameter, new_host)
                 if len(urlparse(newurl).query.split('=')) == parameters_in_one_request + 1:
                     all_urls.append(newurl)
