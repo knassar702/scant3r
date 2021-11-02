@@ -91,6 +91,8 @@ $ ./scant3r.py -h
 ***
 
 ## Media
+* LorSrf
+![](.src/output.gif)
 
 #### Version: [0.6](https://github.com/knassar702/scant3r/releases/tag/0.6)
 
