@@ -32,12 +32,14 @@ log = logging.getLogger('scant3r')
 
 # Colors Class
 color = Colors()
-
 if __name__ == '__main__':
     
     if len(opts['urls']) <= 0:
         # listen to pipe
         log.debug('listen to pipe input')
+        if os.isatty(0):
+            log.error('No Targets ')
+            exit()
         for url in sys.stdin:
             opts['urls'].append(url.rstrip())
         
