@@ -27,11 +27,11 @@ class Firebase(Scan):
             read_request = self.http.send('GET',firebase + '/.json')
             if type(read_request) == list:
                 return
-            log.debug(f'Check for Read permission -> {host}')
+            log.debug(f'Check for Read permission -> {firebase}')
             if read_request.status_code == 200:
                 alert_bug('Firebase',read_request,permission="Read enabled",status=200,content_length=len(read_request.text))
-            log.debug(f'Check for Write permission -> {host}')
-            write_request = self.http.send('PUT',firebase + '/firebase/security.json',body={"msg":"scant3r"},convert_content_type='json',org=False)
+            log.debug(f'Check for Write permission -> {firebase}')
+            write_request = self.http.send('PUT',firebase + '/firebase/security.json',body={"msg":"scant3r"},org=False)
             if type(write_request) == list:
                 return
             if write_request.status_code == 200:
