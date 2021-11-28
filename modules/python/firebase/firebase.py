@@ -27,8 +27,8 @@ class Firebase(Scan):
             read_request = self.http.send('GET',firebase + '/.json')
             if type(read_request) == list:
                 return
+            log.debug(f'Check for Read permission -> {host}')
             if read_request.status_code == 200:
-                log.debug(f'Check for Read permission -> {host}')
                 alert_bug('Firebase',read_request,permission="Read enabled",status=200,content_length=len(read_request.text))
             log.debug(f'Check for Write permission -> {host}')
             write_request = self.http.send('PUT',firebase + '/firebase/security.json',body={"msg":"scant3r"},convert_content_type='json',org=False)
