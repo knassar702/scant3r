@@ -1,3 +1,4 @@
+rich
 requests
 colorama
 nimporter
