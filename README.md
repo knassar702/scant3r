@@ -49,6 +49,8 @@ this the modules we providing for our community for you need new module open an 
 | **secrets** | find interesting variables content (API Keys , Debug Mode , etc ..) |
 
 
+### Blogs
+* https://knassar702.github.io/tags/#scant3r
 
 
 #### Requirements
