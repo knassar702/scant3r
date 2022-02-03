@@ -9,83 +9,37 @@ pub fn args() -> ArgMatches {
             App::new("scan")
                 .about("Scan a website")
                 .arg(
-                    Arg::with_name("url")
+                    Arg::new("url")
                         .help("The URL to scan")
                         .required(true)
                         .long("url")
                         .short('u')
                         .takes_value(true)
                 )
-                .arg( 
-                    Arg::with_name("urls")
-                        .help("The URLs to scan")
-                        .required(false)
-                        .long("urls")
-                        .short('U')
-                        .takes_value(true)
-                    )
                 .arg(
-                    Arg::with_name("threads")
-                        .help("The number of threads to use")
-                        .required(false)
+                    Arg::new("redirect")
+                        .help("The Number of redirects to follow")
+                        .long("redirect")
+                        .short('r')
+                        .takes_value(true)
+                )
+
+                .arg(
+                    Arg::new("threads")
+                        .help("The Number of threads to use")
                         .long("threads")
                         .short('t')
-                        .default_value("10")
                         .takes_value(true)
                 )
 
-                .arg(
-                    Arg::with_name("timeout")
-                        .help("The timeout in seconds")
-                        .required(false)
-                        .long("timeout")
-                        .short('o')
-                        .default_value("10")
-                        .takes_value(true)
-                )
 
                 .arg(
-                    Arg::with_name("output")
-                        .help("The output file")
-                        .required(false)
-                        .long("output")
-                        .short('o')
-                        .default_value("output.json")
-                        .takes_value(true)
-                )
-
-                .arg(
-                    Arg::with_name("verbose")
+                    Arg::new("verbose")
                         .help("Verbose output")
-                        .required(false)
                         .long("verbose")
                         .short('v')
                 )
 
-                .arg(
-                    Arg::with_name("debug")
-                        .help("Debug output")
-                        .required(false)
-                        .long("debug")
-                        .short('d')
-                ),
-            App::new("list")
-                .about("List all the scanned websites")
-                .arg(
-                    Arg::with_name("url")
-                        .help("The URL to scan")
-                        .required(false)
-                        .index(1),
-                ),
-
-            App::new("report")
-                .about("Generate a report")
-                .arg(
-                    Arg::with_name("url")
-                        .help("The URL to scan")
-                        .required(true)
-                        .index(1),
-                )
         ])
 
         .get_matches()

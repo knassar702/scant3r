@@ -22,6 +22,8 @@ clap = "3.0.14"
 serde_yaml = "0.8.23"
 serde_json = "1.0.78"
 home = "0.5.3"
+colog = "1.1.0"
+log = "0.4.14"
 actix-web = {version = "3" , optional = true}
 
 [features]

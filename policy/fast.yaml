@@ -9,4 +9,3 @@ modules:
   passive:
     - js
     - headers
-api: true
