@@ -27,7 +27,7 @@ impl Msg {
             proxy: proxy,
         }
     }
-    pub fn scan(&mut self) -> () {
+    pub fn send(&mut self) -> () {
         let mut response = Request::builder()
             .method(self.method.as_str())
             .proxy({
@@ -41,7 +41,10 @@ impl Msg {
             response = response.header(key.as_str(), value.as_str());
         }
         match response.uri(self.url.as_str()).body(self.body.clone().unwrap_or("".to_string())).unwrap().send() {
-            Ok(res) => {
+            Ok(mut res) => {
+                self.response = Some({
+                    res.text().unwrap().to_string()
+                });
                 self.status = Some(u16::from(res.status()));
             }
             Err(e) => {
@@ -57,6 +60,8 @@ impl Msg {
     pub fn set_header(&mut self, key: &str, value: &str) {
         self.headers.insert(key.to_string(), value.to_string());
     }
+
+
 
 }
 
