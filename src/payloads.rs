@@ -1,36 +1,37 @@
 use std::collections::HashMap;
 
-struct Injector {
-    request: HashMap<String, String>,
-    payload: String,
+pub struct Injector {
+    pub request: url::Url,
 }
 
 
 impl Injector {
-    pub fn new(payload: String,request: HashMap<String,String>) -> Self {
+    pub fn new(request: url::Url) -> Self {
         Injector {
             request,
-            payload,
         }
     }
 
-    pub fn headers(&self) -> Vec<HashMap<String,String>> {
-        let mut headers = HashMap::new();
-        let mut result = Vec::new();
-        headers.insert("Content-Type".to_string(), "application/json".to_string());
-        headers.insert("Accept".to_string(), "application/json".to_string());
-        headers.insert("User-Agent".to_string(), "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36".to_string());
-        result.push(headers);
-        result
-    }
+    pub fn url_parameters(&self,_payload: &str) -> Vec<url::Url> {
+        let mut url = self.request.clone();
+        let mut params: HashMap<_,_> = url.query_pairs().collect::<HashMap<_, _>>();
+        let mut scan_params = HashMap::new();
+        let mut urls = Vec::new();
+        for (key, value) in params.iter() {
+            scan_params.insert(key.to_string(), value.to_string());
+        }
+        for (key, value) in scan_params.iter() {
+            for payload in _payload.split("\n") {
+                let mut new_params = scan_params.clone();
+                new_params.insert(key.to_string(),value.as_str().to_owned() + payload);
+                let mut new_url = url.clone();
+                new_url.query_pairs_mut().clear();
+                new_url.query_pairs_mut().extend_pairs(&new_params);
 
-    pub fn url_parameters(&self) -> HashMap<String, String> {
-        let mut url_parameters = HashMap::new();
-        url_parameters.insert("payload".to_string(), self.payload.clone());
-        url_parameters
-    }
+                urls.push(new_url);
+            }
+        }
+        urls
+     }
 
-    pub fn request_body(&self) -> String {
-        self.payload.clone()
-    }
 }

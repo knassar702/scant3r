@@ -1,13 +1,22 @@
 #[path = "../requests.rs"]
 mod requests;
+#[path = "../payloads.rs"]
+mod payloads;
 use crate::requests::Msg;
 
+const PAYLOAD: &str = include_str!("../txt/xss.txt");
+
 pub fn scan(mut request: Msg ) {
-    let url = request.url.clone();
-    // get url query from url query hashmap Url
-    request.url.query_pairs_mut().clear();
-    url.query_pairs().for_each(|(key, value)| {
-        request.url.query_pairs_mut().append_pair(&key, format!("{}<script>alert()</script>", value).as_str());
-    });
-    request.send();
+    let mut url = request.url.clone();
+    let mut test = payloads::Injector::new(url);
+    for payload in PAYLOAD.split("\n"){
+        let scan = test.url_parameters(payload);
+        for url in scan.iter() {
+            request.url = url.clone();
+            request.send();
+            if request.response_body.as_ref().unwrap().contains(&payload) {
+                println!("[+] XSS found in {}", url);
+            }
+        }
+    }
 }
