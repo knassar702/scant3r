@@ -5,14 +5,6 @@ pub fn args() -> ArgMatches {
         .version("0.9.0")
         .author("Khaled Nassar <knassar702@gmail.com>")
         .about("A Web Application Scanner")
-        .arg(
-            // arg for upload option
-            Arg::new("upload")
-                .long("upload")
-                .value_name("FILE")
-                .help("Upload a file to the server")
-                .takes_value(true),
-            )
         .subcommands(vec![App::new("scan")
             .about("Scan a website")
             .arg(
@@ -41,31 +33,6 @@ pub fn args() -> ArgMatches {
                     .takes_value(true),
             )
 
-            // arg for http method option
-            .arg(
-                Arg::new("method")
-                    .help("The HTTP method to use (default: GET)")
-                    .long("method")
-                    .short('m')
-                    .default_value("GET")
-                    .takes_value(true),
-            )
-
-            // arg for headers option
-            .arg(
-                Arg::new("headers")
-                    .help("The headers to send with the request")
-                    .long("headers")
-                    .short('h')
-                    .validator(|s| {
-                        if s.parse::<String>().is_ok() {
-                            Ok(())
-                        } else {
-                            Err("Headers must be a string".to_string())
-                        }
-                    })
-                    .takes_value(true),
-            )
             .arg(
                 // validate is it a number  or not
                 Arg::new("redirect")
@@ -86,6 +53,7 @@ pub fn args() -> ArgMatches {
                     .help("The proxy to use")
                     .long("proxy")
                     .short('p')
+                    .default_value("")
                     .takes_value(true))
 
             .arg(
@@ -96,7 +64,7 @@ pub fn args() -> ArgMatches {
                     .takes_value(true)
                     .validator(|s| {
                         if s.parse::<u64>().is_ok() {
-                            Ok(())
+                            Ok(10)
                         } else {
                             Err("Timeout must be a number".to_string())
                         }
@@ -130,7 +98,7 @@ pub fn args() -> ArgMatches {
                         .takes_value(true)
                         .validator(|s| {
                             if s.parse::<u64>().is_ok() {
-                                Ok(())
+                                Ok(10)
                             } else {
                                 Err("Timeout must be a number".to_string())
                             }
@@ -142,10 +110,9 @@ pub fn args() -> ArgMatches {
                     .help("The Number of redirects to follow")
                     .long("redirect")
                     .short('r')
-                    .default_value("0")
                     .validator(|s| {
                         if s.parse::<u8>().is_ok() {
-                            Ok(())
+                            Ok(0)
                         } else {
                             Err("Redirects must be a number".to_string())
                         }

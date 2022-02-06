@@ -1,3 +1,5 @@
+// allow dead code
+#![allow(dead_code)]
 use isahc::prelude::*;
 use isahc::{Body, Request, Response};
 use std::collections::HashMap;

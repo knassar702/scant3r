@@ -6,15 +6,9 @@ pub struct Injector {
 
 
 impl Injector {
-    pub fn new(request: url::Url) -> Self {
-        Injector {
-            request,
-        }
-    }
-
     pub fn url_parameters(&self,_payload: &str) -> Vec<url::Url> {
-        let mut url = self.request.clone();
-        let mut params: HashMap<_,_> = url.query_pairs().collect::<HashMap<_, _>>();
+        let url = self.request.clone();
+        let params: HashMap<_,_> = url.query_pairs().collect::<HashMap<_, _>>();
         let mut scan_params = HashMap::new();
         let mut urls = Vec::new();
         for (key, value) in params.iter() {
@@ -33,5 +27,6 @@ impl Injector {
         }
         urls
      }
+
 
 }
