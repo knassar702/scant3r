@@ -14,8 +14,11 @@ pub fn scan(mut request: Msg ) {
         for url in scan.iter() {
             request.url = url.clone();
             request.send();
-            if request.response_body.as_ref().unwrap().contains(&payload) {
-                println!("[+] XSS found in {}", url);
+            if &payload.len() > &0 {
+                if request.response_body.as_ref().unwrap().contains(&payload) {
+                    println!("[+] {}", &payload);
+                    println!("[+] XSS found in {}", url);
+                }
             }
         }
     }

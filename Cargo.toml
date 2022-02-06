@@ -24,8 +24,12 @@ serde_json = "1.0.78"
 home = "0.5.3"
 colog = "1.1.0"
 log = "0.4.14"
-tokio = { version = "1.16.1", features = ["full"] }
+tokio = { version = "0.2.18", features = ["full"] }
 actix-web = {version = "3" , optional = true}
+rand = "0.8.4"
+futures = "0.3.19"
+indicatif = "0.16.2"
 
 [features]
 webapi = ["actix-web"]
+

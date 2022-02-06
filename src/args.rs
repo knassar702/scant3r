@@ -23,6 +23,49 @@ pub fn args() -> ArgMatches {
                     .short('u')
                     .takes_value(true),
             )
+
+            // arg for concurrency option
+            .arg(
+                Arg::new("concurrency")
+                    .help("The number of concurrent requests to make (default: 10)")
+                    .long("concurrency")
+                    .short('c')
+                    .default_value("10")
+                    .validator(|s| {
+                        if s.parse::<u32>().is_ok() {
+                            Ok(())
+                        } else {
+                            Err("Concurrency must be a number".to_string())
+                        }
+                    })
+                    .takes_value(true),
+            )
+
+            // arg for http method option
+            .arg(
+                Arg::new("method")
+                    .help("The HTTP method to use (default: GET)")
+                    .long("method")
+                    .short('m')
+                    .default_value("GET")
+                    .takes_value(true),
+            )
+
+            // arg for headers option
+            .arg(
+                Arg::new("headers")
+                    .help("The headers to send with the request")
+                    .long("headers")
+                    .short('h')
+                    .validator(|s| {
+                        if s.parse::<String>().is_ok() {
+                            Ok(())
+                        } else {
+                            Err("Headers must be a string".to_string())
+                        }
+                    })
+                    .takes_value(true),
+            )
             .arg(
                 // validate is it a number  or not
                 Arg::new("redirect")
