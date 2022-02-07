@@ -1,30 +1,32 @@
 use std::collections::HashMap;
-use futures::{stream, StreamExt};
+use futures::{stream, StreamExt, AsyncReadExt};
 use indicatif::{ProgressBar, ProgressStyle};
+use std::fs::File;
+use std::io::BufReader;
+use std::io::prelude::*;
 
 #[path = "scan/xss.rs"]
 mod xss;
+mod scan;
 mod args;
 mod requests;
 
 
 #[tokio::main]
 async fn main() {
-    let bar = ProgressBar::new(151);
+    let bar = ProgressBar::new(2000);
+    let name = "Khaled";
     bar.set_style(ProgressStyle::default_bar()
             .template("[{elapsed_precise}] {bar:40.cyan/blue} {pos:>7}/{len:7} {msg}")
             .progress_chars("#>-"));
     let arg = args::args();
     match arg.subcommand_name() {
         Some("scan") => {
-//            let sub = arg.subcommand_matches("scan").unwrap();
-            let urls = vec![
-                "http://testphp.vulnweb.com/listproducts.php?cat=1",
-                "http://testphp.vulnweb.com/artists.php?artist=1",
-                "http://192.168.1.2:5000/search?u="
-            ];
-            stream::iter(urls)
-                .for_each_concurrent(50, |job| {
+            let sub = arg.subcommand_matches("scan").unwrap();
+            let file = File::open(sub.value_of("urls").unwrap()).unwrap();
+            let urls = BufReader::new(file).lines().map(|x| x.unwrap()).collect::<Vec<String>>();
+            stream::iter(&urls)
+                .for_each_concurrent(100, |job| {
                     let bar = bar.clone();
                     async move {
                         let _msg = requests::Msg::new(
@@ -36,7 +38,6 @@ async fn main() {
                             Some(10_u64),
                             Some("http://localhost:8080".parse().unwrap())
                         );
-                        println!("{}", job);
                         xss::scan(_msg).await;
                         bar.inc(1);
                 }

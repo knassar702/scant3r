@@ -10,9 +10,9 @@ pub fn args() -> ArgMatches {
             .arg(
                 Arg::new("url")
                     .help("The URL to scan")
-                    .required(true)
                     .long("url")
                     .short('u')
+                    .required_if_eq("urls", "")
                     .takes_value(true),
             )
 
@@ -32,6 +32,22 @@ pub fn args() -> ArgMatches {
                     })
                     .takes_value(true),
             )
+
+            .arg(
+                Arg::new("urls")
+                    .help("The file containing the URLs to scan")
+                    .long("urls")
+                    .short('U')
+                    .validator(|s| {
+                        if std::path::Path::new(s).exists() {
+                            Ok(())
+                        } else {
+                            Err("File does not exist".to_string())
+                        }
+                    })
+                    .default_value("")
+                    .takes_value(true),
+                )
 
             .arg(
                 // validate is it a number  or not
