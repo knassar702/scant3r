@@ -28,7 +28,8 @@ tokio = { version = "0.2.18", features = ["full"] }
 actix-web = {version = "3" , optional = true}
 rand = "0.8.4"
 futures = "0.3.19"
-indicatif = "0.16.2"
+simplelog = "0.11.2"
+logbar = "0.1.1"
 
 [features]
 webapi = ["actix-web"]

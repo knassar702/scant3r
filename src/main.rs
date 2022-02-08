@@ -1,6 +1,8 @@
+#[macro_use] extern crate log;
+extern crate simplelog;
+use simplelog::*;
 use std::collections::HashMap;
 use futures::{stream, StreamExt, AsyncReadExt};
-use indicatif::{ProgressBar, ProgressStyle};
 use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
@@ -11,35 +13,44 @@ mod scan;
 mod args;
 mod requests;
 
-
 #[tokio::main]
 async fn main() {
-    let bar = ProgressBar::new(2000);
-    let name = "Khaled";
-    bar.set_style(ProgressStyle::default_bar()
-            .template("[{elapsed_precise}] {bar:40.cyan/blue} {pos:>7}/{len:7} {msg}")
-            .progress_chars("#>-"));
+     CombinedLogger::init(
+        vec![
+            TermLogger::new(LevelFilter::Warn, Config::default(), TerminalMode::Mixed, ColorChoice::Auto),
+            WriteLogger::new(LevelFilter::Info, Config::default(), File::create("my_rust_binary.log").unwrap()),
+        ]
+    ).unwrap();
     let arg = args::args();
     match arg.subcommand_name() {
         Some("scan") => {
             let sub = arg.subcommand_matches("scan").unwrap();
             let file = File::open(sub.value_of("urls").unwrap()).unwrap();
             let urls = BufReader::new(file).lines().map(|x| x.unwrap()).collect::<Vec<String>>();
+            let bar_style = logbar::Style::default()
+                    .width(80) // 80 characters wide
+                    .labels(false) // no XX% labels
+                    .tick('↓').bar('-') // rendered as ↓---↓---↓ etc.
+                    .indicator('V'); // indicating the progress with '█' characters
+            let bar = logbar::ProgressBar::with_style(urls.len() as usize,bar_style);
+            let mut scan_settings = scan::Scanner::new(vec!["xss"]);
+            scan_settings.load_payloads();
             stream::iter(&urls)
-                .for_each_concurrent(100, |job| {
-                    let bar = bar.clone();
+                .for_each_concurrent(100, |url| {
+                    let bar = &bar;
+                    let mut scan_settings = scan_settings.clone();
                     async move {
                         let _msg = requests::Msg::new(
                             "GET",
-                            job,
+                            &url,
                             HashMap::new(),
                             None,
                             Some(1_u32),
                             Some(10_u64),
                             Some("http://localhost:8080".parse().unwrap())
                         );
-                        xss::scan(_msg).await;
                         bar.inc(1);
+                        xss::scan(_msg, scan_settings.payloads.get("xss").unwrap()).await;
                 }
                 }).await;
         }

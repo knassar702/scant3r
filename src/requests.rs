@@ -5,6 +5,7 @@ use isahc::{Body, Request, Response};
 use std::collections::HashMap;
 use url::Url;
 
+#[derive(Debug, Clone)]
 pub struct Msg {
     pub method: String,
     pub url: Url,
@@ -12,7 +13,6 @@ pub struct Msg {
     pub body: Option<String>,
     pub redirect: Option<u32>,
     pub timeout: Option<u64>,
-    pub response: Option<Response<Body>>,
     pub response_body: Option<String>,
     pub error: Option<String>,
     pub proxy: Option<String>,
@@ -35,7 +35,7 @@ impl Msg {
             body,
             redirect,
             timeout,
-            response: None,
+            //response: None,
             response_body: None,
             error: None,
             proxy,
@@ -61,7 +61,7 @@ impl Msg {
         {
             Ok(mut res) => {
                 self.response_body = Some(res.text().unwrap());
-                self.response = Some(res);
+                // self.response = Some(res);
             
             }
             Err(e) => {

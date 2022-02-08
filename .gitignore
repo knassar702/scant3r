@@ -1,3 +1,6 @@
 target/
 test
 Cargo.lock
+.vimspector.*
+*.log
+*.txt
