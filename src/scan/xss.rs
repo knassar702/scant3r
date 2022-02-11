@@ -6,7 +6,7 @@ use crate::requests::Msg;
 use std::collections::HashMap;
 
 
-pub async fn scan(mut request: Msg ,payloads: &Vec<String>) -> bool {
+pub async fn scan(request: Msg ,payloads: &Vec<String>) -> bool {
     let inject_payloads = payloads::Injector{
         request: request.clone().url
     };
@@ -49,6 +49,7 @@ pub async fn scan(mut request: Msg ,payloads: &Vec<String>) -> bool {
             if req.response_body.unwrap().contains(payload) {
                 println!("[+] XSS found in {} on {}",req.url,param);
             }
+            break;
         }
     }
     false
