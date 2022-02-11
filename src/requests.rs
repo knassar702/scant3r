@@ -1,7 +1,6 @@
-// allow dead code
 #![allow(dead_code)]
 use isahc::prelude::*;
-use isahc::{Body, Request, Response};
+use isahc::Request;
 use std::collections::HashMap;
 use url::Url;
 
@@ -14,6 +13,8 @@ pub struct Msg {
     pub redirect: Option<u32>,
     pub timeout: Option<u64>,
     pub response_body: Option<String>,
+    pub response_status: Option<u16>,
+    pub response_headers: Option<HashMap<String, String>>,
     pub error: Option<String>,
     pub proxy: Option<String>,
 }
@@ -35,13 +36,14 @@ impl Msg {
             body,
             redirect,
             timeout,
-            //response: None,
             response_body: None,
+            response_status: None,
+            response_headers: None,
             error: None,
             proxy,
         }
     }
-    pub fn send(&mut self) {
+    pub async fn send(&mut self) {
         let mut response = Request::builder()
             .method(self.method.as_str())
             .ssl_options(isahc::config::SslOption::DANGER_ACCEPT_INVALID_CERTS)
@@ -57,14 +59,16 @@ impl Msg {
             .uri(self.url.as_str())
             .body(self.body.clone().unwrap_or_else(|| "".to_string()))
             .unwrap()
-            .send()
+            .send_async().await
         {
             Ok(mut res) => {
-                self.response_body = Some(res.text().unwrap());
+                self.response_body = Some(res.text().await.unwrap());
+                self.error = None;
                 // self.response = Some(res);
             
             }
             Err(e) => {
+                self.response_body = None;
                 self.error = Some(e.to_string());
             }
         };

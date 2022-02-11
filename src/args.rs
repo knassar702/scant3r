@@ -16,6 +16,25 @@ pub fn args() -> ArgMatches {
                     .takes_value(true),
             )
 
+            // arg for data option
+            .arg(
+                Arg::new("data")
+                    .help("The data to send")
+                    .long("data")
+                    .short('d')
+                    .default_value("")
+                    .takes_value(true),
+            )
+
+            // arg for http method options
+            // HEADERS AND COOKIES AND METHOD
+            .arg(
+                Arg::new("method")
+                    .help("The HTTP method to use")
+                    .long("method")
+                    .takes_value(true)
+                    .default_value("GET"),
+            )
             // arg for concurrency option
             .arg(
                 Arg::new("concurrency")
@@ -88,13 +107,17 @@ pub fn args() -> ArgMatches {
                     .default_value("20"),
             )
             .arg(
-                Arg::new("modules")
-                    .help("The modules to use")
-                    .long("modules")
+                // -m xss,headers
+                Arg::new("mode")
+                    .help("The mode to use")
+                    .long("mode")
                     .short('m')
                     .takes_value(true)
-                    .possible_values(&["headers", "links", "forms", "cookies", "sitemap", "xss"]),
-            ),
+                    .multiple_values(true)
+                    .possible_values(&["xss", "headers", "cookies"])
+                    .default_value("xss"),
+                )
+            ,
             App::new("passive")
                 .about("Scan a website passively")
                 .arg(
@@ -145,9 +168,8 @@ pub fn args() -> ArgMatches {
                     Arg::new("modules")
                         .help("The modules to use")
                         .long("modules")
-                        .short('m')
                         .takes_value(true)
-                        .default_value("xss")
+                        .multiple_values(true)
                         .possible_values(&["headers", "links", "forms", "cookies", "sitemap", "xss"]),
                 )
     ])
