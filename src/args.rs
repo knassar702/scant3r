@@ -16,6 +16,20 @@ pub fn args() -> ArgMatches {
                     .takes_value(true),
             )
 
+            .arg(
+                Arg::new("modules")
+                    .help("The modules to use")
+                    .long("modules")
+                    .validator(|module| {
+                        if module.contains(" ") {
+                            Err("Modules must be separated by a space")
+                        } else {
+                            Ok(())
+                        }
+                    })
+                    .possible_values(&["xss"])
+                    .takes_value(true),
+                )
             // arg for data option
             .arg(
                 Arg::new("data")
@@ -25,6 +39,32 @@ pub fn args() -> ArgMatches {
                     .default_value("")
                     .takes_value(true),
             )
+
+            // arg for headers option
+            .arg(
+                Arg::new("headers")
+                    .help("The headers to send")
+                    .long("headers")
+                    .validator(|s| {
+                        for header in s.split(',') {
+                            let mut header = header.split(':');
+                            if header.count() != 2 {
+                                return Err(String::from("Invalid headers"));
+                            }
+                        }
+                        Ok(())
+                    })
+                    .takes_value(true),
+            )
+
+            .arg(
+                Arg::new("content-type")
+                    .help("The content type of the data")
+                    .long("content-type")
+                    .default_value("application/x-www-form-urlencoded")
+                    .possible_values(&["application/x-www-form-urlencoded", "application/json"])
+                    .takes_value(true),
+                )
 
             // arg for http method options
             // HEADERS AND COOKIES AND METHOD
@@ -43,8 +83,8 @@ pub fn args() -> ArgMatches {
                     .short('c')
                     .default_value("10")
                     .validator(|s| {
-                        if s.parse::<u32>().is_ok() {
-                            Ok(())
+                        if s.parse::<usize>().is_ok() {
+                            Ok(s.parse::<usize>().unwrap())
                         } else {
                             Err("Concurrency must be a number".to_string())
                         }

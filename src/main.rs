@@ -23,16 +23,19 @@ async fn main() {
     match arg.subcommand_name() {
         Some("scan") => {
             let sub = arg.subcommand_matches("scan").unwrap();
-            let file = File::open(sub.value_of("urls").unwrap()).unwrap();
-            let urls = BufReader::new(file).lines().map(|x| x.unwrap()).collect::<Vec<String>>();
+            let urls = {
+                let read_file = File::open(sub.value_of("urls").unwrap()).unwrap();
+                BufReader::new(read_file).lines().map(|x| x.unwrap()).collect::<Vec<String>>()
+            };
+
             let bar = ProgressBar::new(urls.len() as u64);
-            let mut scan_settings = scan::Scanner::new(vec!["xss"]);
+            let mut scan_settings = scan::Scanner::new(vec!["xss"],true,false);
+            scan_settings.load_payloads();
             bar.set_style(ProgressStyle::default_bar()
                 .template("{msg} [{elapsed_precise}] {bar:40.cyan/blue} {pos:>7}/{len:7} ({eta})")
                 .progress_chars("#>-"));
-            scan_settings.load_payloads();
             stream::iter(&urls)
-                .for_each_concurrent(100, |url| {
+                .for_each_concurrent(sub.value_of("concurrency").unwrap().parse::<usize>().unwrap(), |url| {
                     let bar = &bar;
                     let scan_settings = &scan_settings;
                     async move {
@@ -40,7 +43,7 @@ async fn main() {
                             &sub.value_of("method").unwrap_or("GET"),
                             &url,
                             HashMap::new(),
-                            None,
+                            Some(sub.value_of("data").unwrap_or("").to_string()),
                             Some(1_u32),
                             Some(10_u64),
                             Some("http://localhost:8080".parse().unwrap())
@@ -50,7 +53,7 @@ async fn main() {
                         if live_check.clone().error.unwrap_or(String::from("")) != "" {
                             error!("{}", live_check.clone().error.unwrap());
                         } else {
-                            bar.inc(1);
+                            //bar.inc(1);
                             scan_settings.scan(_msg).await;
                         }
                 }

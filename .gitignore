@@ -4,3 +4,4 @@ Cargo.lock
 .vimspector.*
 *.log
 *.txt
+test*
