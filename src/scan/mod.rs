@@ -17,6 +17,7 @@ pub struct Scanner{
     pub inject_query: bool,
 }
 
+
 impl Scanner {
     pub fn new(modules: Vec<&'static str>,inject_query: bool, inject_body: bool) -> Scanner {
         Scanner {

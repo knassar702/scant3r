@@ -2,6 +2,7 @@
 mod requests;
 #[path = "../payloads.rs"]
 mod payloads;
+use payloads::url_injector;
 use crate::requests::Msg;
 use std::collections::HashMap;
 

@@ -7,6 +7,12 @@ struct Report {
     request: Msg,
 }
 
+trait ReportType {
+    fn json(&self) -> bool;
+    fn html(&self) -> bool;
+    fn csv(&self) -> bool;
+    fn xml(&self) -> bool;
+}
 
 impl Report {
     fn new(request: Msg,folder: String) -> Report {
