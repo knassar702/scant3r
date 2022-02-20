@@ -2,6 +2,8 @@
 mod requests;
 #[path = "../payloads.rs"]
 mod payloads;
+#[ path = "../report.rs" ]
+mod report;
 use payloads::url_injector;
 use crate::requests::Msg;
 use std::collections::HashMap;
@@ -62,8 +64,13 @@ impl Xss {
                     req.url
                 };
                 req.send().await;
-                if req.response_body.unwrap().contains(payload) {
-                    println!("[+] XSS found in {} on {}",req.url,param);
+                let body = req.response_body.unwrap();
+                if body.contains(payload) {
+                    body.lines().enumerate().for_each(|x|{
+                        if x.1.contains(payload) == true {
+                            println!("XSS");
+                        }
+                    });
                     break;
                 } else {
                     continue;
