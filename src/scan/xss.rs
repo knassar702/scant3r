@@ -2,10 +2,11 @@
 mod requests;
 #[path = "../payloads.rs"]
 mod payloads;
-#[ path = "../report.rs" ]
-mod report;
+#[ path = "../poc.rs" ]
+mod poc;
 use payloads::url_injector;
 use crate::requests::Msg;
+use poc::{Poc,Curl};
 use std::collections::HashMap;
 
 pub struct Xss {
@@ -68,7 +69,12 @@ impl Xss {
                 if body.contains(payload) {
                     body.lines().enumerate().for_each(|x|{
                         if x.1.contains(payload) == true {
-                            println!("XSS");
+                            let report = Poc {
+                                name: "sg".to_owned(),
+                                bruh: "xss".to_owned(),
+                            };
+                            report.curl();
+                            println!("[+] XSS {} found in {}\nBODY: {:?}",payload,x.0,x.1);
                         }
                     });
                     break;

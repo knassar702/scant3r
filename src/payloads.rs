@@ -92,7 +92,6 @@ impl headers_injector for Injector {
         new_url.query_pairs_mut().extend_pairs(&headers);
         urls.push(new_url);
         let mut testing = HashMap::new();
-        testing.insert("headers".to_string(), urls);
         testing
     }
 }

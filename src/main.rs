@@ -53,7 +53,7 @@ async fn main() {
                         if live_check.clone().error.unwrap_or(String::from("")) != "" {
                             error!("{}", live_check.clone().error.unwrap());
                         } else {
-                            //bar.inc(1);
+//                            bar.inc(1);
                             scan_settings.scan(_msg).await;
                         }
                 }

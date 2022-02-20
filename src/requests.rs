@@ -1,6 +1,11 @@
 #![allow(dead_code)]
 use isahc::prelude::*;
 use isahc::Request;
+use isahc::http::{
+    HeaderValue,
+    HeaderMap,
+    StatusCode
+};
 use std::collections::HashMap;
 use url::Url;
 
@@ -13,8 +18,8 @@ pub struct Msg {
     pub redirect: Option<u32>,
     pub timeout: Option<u64>,
     pub response_body: Option<String>,
-    pub response_status: Option<u16>,
-    pub response_headers: Option<HashMap<String, String>>,
+    pub response_status: Option<StatusCode>,
+    pub response_headers: Option<HeaderMap<HeaderValue>>,
     pub error: Option<String>,
     pub proxy: Option<String>,
 }
@@ -50,8 +55,8 @@ impl Msg {
             .ssl_options(isahc::config::SslOption::DANGER_ACCEPT_INVALID_HOSTS)
             .redirect_policy(isahc::config::RedirectPolicy::Limit(
                 self.redirect.unwrap_or(5),
-            ))
-            .proxy(self.proxy.as_ref().map(|proxy| proxy.as_str().parse().unwrap()));
+            ));
+//            .proxy(self.proxy.as_ref().map(|proxy| proxy.as_str().parse().unwrap()));
         for (key, value) in &self.headers {
             response = response.header(key.as_str(), value.as_str());
         }
@@ -62,10 +67,10 @@ impl Msg {
             .send_async().await
         {
             Ok(mut res) => {
+                self.response_status = Some(res.status());
                 self.response_body = Some(res.text().await.unwrap());
+                self.response_headers = Some(res.headers().clone());
                 self.error = None;
-                // self.response = Some(res);
-            
             }
             Err(e) => {
                 self.response_body = None;
@@ -74,5 +79,3 @@ impl Msg {
         };
     }
 }
-
-

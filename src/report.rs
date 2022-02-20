@@ -45,4 +45,8 @@ impl ReportType for Report {
         found
     }
 
+    fn poc(&self,msg: &str,pocType: &str) -> bool {
+        // create
+        true
+    }
 }

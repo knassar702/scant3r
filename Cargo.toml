@@ -28,6 +28,8 @@ rand = "0.8.4"
 futures = "0.3.19"
 simplelog = "0.11.2"
 indicatif = "0.16.2"
+regex = "1.5.4"
+fuzzywuzzy = "0.0.2"
 
 [features]
 webapi = ["actix-web"]
