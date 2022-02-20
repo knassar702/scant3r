@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use isahc::http::header::HeaderMap;
 use url::Url;
 
 pub struct Injector {
@@ -72,3 +73,26 @@ impl url_injector for Injector {
     }
 }
 
+pub trait headers_injector {
+    fn header(&self,map: &mut HashMap<String,String>) -> HashMap<String,String>;
+}
+
+impl headers_injector for Injector {
+    fn header(&self,map: &mut HashMap<String,String>) -> HashMap<String,String> {
+        let mut testing = HeaderMap::new();
+        testing.insert("TEST", isahc::http::header::HeaderValue::from_static("TEST"));
+        let url = self.request.clone();
+        let mut urls = Vec::new();
+        let mut headers = HashMap::new();
+        for (key, value) in map.iter() {
+            headers.insert(key.to_string(), value.to_string());
+        }
+        let mut new_url = url.clone();
+        new_url.query_pairs_mut().clear();
+        new_url.query_pairs_mut().extend_pairs(&headers);
+        urls.push(new_url);
+        let mut testing = HashMap::new();
+        testing.insert("headers".to_string(), urls);
+        testing
+    }
+}
