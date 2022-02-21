@@ -1658,12 +1658,23 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "73b4b750c782965c211b42f022f59af1fbceabdd026623714f104152f1ec149f"
 
 [[package]]
+name = "scanners"
+version = "0.1.0"
+dependencies = [
+ "home",
+ "log",
+ "scant3r_utils",
+ "url",
+]
+
+[[package]]
 name = "scant3r"
 version = "0.1.0"
 dependencies = [
  "actix-web",
  "clap",
  "colog",
+ "colored",
  "futures",
  "fuzzywuzzy",
  "home",
@@ -1672,10 +1683,20 @@ dependencies = [
  "log",
  "rand 0.8.4",
  "regex",
+ "scanners",
+ "scant3r_utils",
  "serde_json",
  "serde_yaml",
  "simplelog",
  "tokio",
+ "url",
+]
+
+[[package]]
+name = "scant3r_utils"
+version = "0.1.0"
+dependencies = [
+ "isahc",
  "url",
 ]
 

@@ -1,12 +1,15 @@
-pub mod xss;
-#[path = "../payloads.rs"]
-mod requests;
+extern crate scant3r_utils;
+use scant3r_utils::{
+    payloads,
+    requests::Msg
+};
+#[ path = "./xss.rs"]
+mod xss;
 use std::collections::HashMap;
 use std::io::prelude::*;
+use log::*;
 use std::path::Path;
 use home::home_dir;
-
-use crate::requests::Msg;
 
 
 #[derive(Debug, Clone)]
@@ -48,7 +51,7 @@ impl Scanner {
             }
     }
     pub async fn scan(&self,request: Msg) -> u32 {
-        let mut score = 0;
+        let score = 0;
         if self.payloads.len() == 0 {
             panic!("No payloads loaded");
         }

@@ -1,0 +1,10 @@
+[package]
+name = "scant3r_utils"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+isahc = "1.6.0"
+url = "2.2.2"

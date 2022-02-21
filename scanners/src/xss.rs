@@ -1,20 +1,24 @@
-#[path = "../requests.rs"]
-mod requests;
-#[path = "../payloads.rs"]
-mod payloads;
-#[ path = "../poc.rs" ]
-mod poc;
-use payloads::url_injector;
-use crate::requests::Msg;
-use poc::{Poc,Curl};
+extern crate scant3r_utils;
+use scant3r_utils::{
+    payloads::{
+        Injector,
+        url_injector
+    },
+    poc::{
+        Poc,
+        Curl
+    },
+    requests::Msg
+};
 use std::collections::HashMap;
 
 pub struct Xss {
     request: Msg,
     inject_body: bool,
     inject_query: bool,
-    injector: payloads::Injector,
+    injector: Injector,
 }
+
 
 impl Xss {
     pub fn new(request: Msg,inject_body: bool, inject_query: bool) -> Xss {
@@ -22,7 +26,7 @@ impl Xss {
             request: request.clone(),
             inject_body,
             inject_query,
-            injector: payloads::Injector{request: request.url},
+            injector: Injector{request: request.url},
         }
     }
 

@@ -1,4 +1,3 @@
-
 pub struct Poc {
     pub name: String,
     pub bruh: String,

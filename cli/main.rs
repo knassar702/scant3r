@@ -1,5 +1,7 @@
 #[macro_use] extern crate log;
+extern crate scant3r_utils;
 extern crate simplelog;
+extern crate scanners;
 use simplelog::*;
 use std::collections::HashMap;
 use futures::{stream, StreamExt};
@@ -7,9 +9,15 @@ use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
 use indicatif::{ProgressStyle,ProgressBar};
-mod scan;
+use scant3r_utils::{
+    requests,
+    poc::{
+        Poc,
+        Curl
+    },
+};
+use scanners::scan;
 mod args;
-mod requests;
 
 #[tokio::main]
 async fn main() {
