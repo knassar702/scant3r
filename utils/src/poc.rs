@@ -1,6 +1,11 @@
+#[path = "requests.rs"]
+mod requests;
+use crate::requests::Msg;
+
 pub struct Poc {
     pub name: String,
-    pub bruh: String,
+    pub payload: String,
+    pub request: Msg,
 }
 
 
@@ -10,7 +15,23 @@ pub trait Curl {
 
 impl Curl for Poc {
     fn curl(&self) -> String {
-        format!("curl -X POST -H 'Content-Type: application/json' -d '{}' {}", self.name, self.bruh)
+        // convert isahc request to curl
+        let mut curl = String::from("curl ");
+        // extract headers
+        for (key,value) in self.request.headers.iter() {
+            curl.push_str(&format!("-H \"{}:{}\" ", key, value));
+        }
+        // extract body
+        if self.request.body.as_ref().unwrap().len() > 0 {
+            curl.push_str(&format!("-d \"{:?}\" ", self.request.body.as_ref().unwrap()));
+        }
+        // extract url
+        curl.push_str(&format!("\"{}\"", self.request.url));
+        // extract method
+        curl.push_str(&format!(" -X {}", self.request.method));
+        println!("{}", curl);
+        curl
+
     }
 }
 
@@ -21,17 +42,17 @@ pub trait Plain {
 
 impl Plain for Poc {
     fn plain(&self) -> String {
-        format!("{} {}", self.name, self.bruh)
+        String::from("")
     }
 }
 
 
 pub trait Json {
     fn json(&self) -> String;
-}
+    }
 
 impl Json for Poc {
     fn json(&self) -> String {
-        format!("{} {}", self.name, self.bruh)
+        String::from("")
     }
 }
