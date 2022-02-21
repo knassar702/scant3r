@@ -11,10 +11,6 @@ use std::io::prelude::*;
 use indicatif::{ProgressStyle,ProgressBar};
 use scant3r_utils::{
     requests,
-    poc::{
-        Poc,
-        Curl
-    },
 };
 use scanners::scan;
 mod args;

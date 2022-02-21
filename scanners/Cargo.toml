@@ -10,3 +10,4 @@ scant3r_utils = {path = "../utils"}
 url = "2.2.2"
 home = "0.5.3"
 log = "0.4.14"
+async-trait = "0.1.52"

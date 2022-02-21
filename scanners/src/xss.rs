@@ -10,27 +10,47 @@ use scant3r_utils::{
     },
     requests::Msg
 };
+use async_trait::async_trait;
 use std::collections::HashMap;
 
 pub struct Xss {
     request: Msg,
-    inject_body: bool,
-    inject_query: bool,
+    blind: bool,
     injector: Injector,
+    poc_type: String,
 }
 
+pub trait XssHeaders {
+    fn find_reflected(&self) -> HashMap<String, String>;
+    fn scan(&self, payloads: &Vec<String>) -> bool;
+}
 
-impl Xss {
-    pub fn new(request: Msg,inject_body: bool, inject_query: bool) -> Xss {
+pub trait XssUrlParamsName {
+    // scan url params name
+    fn find_reflected(&self) -> HashMap<String, String>;
+    fn scan(&self, payloads: &Vec<String>) -> bool;
+}
+
+#[async_trait]
+pub trait XssUrlParamsValue {
+    // scan url params value
+    fn new(request: Msg, blind: bool, poc_type: String) -> Self;
+    async fn find_reflected(&self) -> HashMap<String,url::Url>;
+    async fn scan(&self, payloads: Vec<String>) -> bool;
+}
+
+#[async_trait]
+impl XssUrlParamsValue for Xss {
+    fn new(request: Msg,blind: bool, poc_type: String) -> Xss {
         Xss {
             request: request.clone(),
-            inject_body,
-            inject_query,
+            blind: blind,
             injector: Injector{request: request.url},
+            poc_type: poc_type
         }
     }
 
-    pub async fn find_reflected(&self) -> HashMap<String,url::Url> {
+    async fn find_reflected(&self) -> HashMap<String,url::Url> {
         let mut reflected_parameters: HashMap<String,url::Url> = HashMap::new();
         let check_requests = self.injector.url_parameters("scantrr");
         for (_param,urls) in check_requests {
@@ -47,9 +67,9 @@ impl Xss {
         reflected_parameters
     }
 
-    pub async fn scan(&self,payloads: &Vec<String>) -> bool {
+    async fn scan(&self,payloads: Vec<String>) -> bool {
         for (param,url) in self.find_reflected().await {
-            for payload in payloads {
+            for payload in &payloads {
                 let mut req = self.request.clone();
                 req.url = url.clone();
                 let new_params = {
@@ -69,16 +89,24 @@ impl Xss {
                     req.url
                 };
                 req.send().await;
-                let body = req.response_body.unwrap();
+                let body = req.response_body.as_ref().unwrap();
                 if body.contains(payload) {
                     body.lines().enumerate().for_each(|x|{
                         if x.1.contains(payload) == true {
                             let report = Poc {
                                 name: "sg".to_owned(),
-                                bruh: "xss".to_owned(),
+                                payload: payload.to_owned(),
+                                request: req.clone(),
                             };
-                            report.curl();
-                            println!("[+] XSS {} found in {}\nBODY: {:?}",payload,x.0,x.1);
+                            match &self.poc_type as &str {
+                                "curl" => {
+                                    let curl = report.curl();
+                                    println!("{}",curl);
+                                },
+                                _ => {
+                                    println!("BRUH");
+                                }
+                            }
                         }
                     });
                     break;

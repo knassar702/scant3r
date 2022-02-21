@@ -5,6 +5,10 @@ use scant3r_utils::{
 };
 #[ path = "./xss.rs"]
 mod xss;
+use xss::{
+    Xss,
+    XssUrlParamsValue
+};
 use std::collections::HashMap;
 use std::io::prelude::*;
 use log::*;
@@ -58,8 +62,8 @@ impl Scanner {
         for module in self.modules.clone() {
             match module {
                 "xss" => {
-                    let xss_scan = xss::Xss::new(request.clone(), self.inject_query, self.inject_body);
-                    xss_scan.scan(&self.payloads.get("xss").unwrap()).await;
+                    let xss_scan = xss::Xss::new(request.clone(), false,"curl".to_string());
+                    xss_scan.scan(self.payloads.get("xss").unwrap().clone()).await;
                 },
                 _ => {
                     println!("Module not found");
