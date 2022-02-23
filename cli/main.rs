@@ -58,7 +58,7 @@ async fn main() {
                             error!("{}", live_check.clone().error.unwrap());
                         } else {
 //                            bar.inc(1);
-                            scan_settings.scan(_msg).await;
+                            scan_settings.scan(_msg,&bar).await;
                         }
                 }
                 }).await;

@@ -1653,6 +1653,7 @@ version = "0.1.0"
 dependencies = [
  "async-trait",
  "home",
+ "indicatif",
  "log",
  "scant3r_utils",
  "url",

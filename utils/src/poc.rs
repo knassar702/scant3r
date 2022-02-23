@@ -29,7 +29,6 @@ impl Curl for Poc {
         curl.push_str(&format!("\"{}\"", self.request.url));
         // extract method
         curl.push_str(&format!(" -X {}", self.request.method));
-        println!("{}", curl);
         curl
 
     }

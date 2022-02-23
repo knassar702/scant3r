@@ -1,4 +1,5 @@
 extern crate scant3r_utils;
+use indicatif::ProgressBar;
 use scant3r_utils::{
     payloads,
     requests::Msg
@@ -54,7 +55,7 @@ impl Scanner {
                     }
             }
     }
-    pub async fn scan(&self,request: Msg) -> u32 {
+    pub async fn scan(&self,request: Msg,_prog: &ProgressBar) -> u32 {
         let score = 0;
         if self.payloads.len() == 0 {
             panic!("No payloads loaded");
@@ -63,7 +64,7 @@ impl Scanner {
             match module {
                 "xss" => {
                     let xss_scan = xss::Xss::new(request.clone(), false,"curl".to_string());
-                    xss_scan.scan(self.payloads.get("xss").unwrap().clone()).await;
+                    xss_scan.scan(self.payloads.get("xss").unwrap().clone(),&_prog).await;
                 },
                 _ => {
                     println!("Module not found");

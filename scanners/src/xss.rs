@@ -12,6 +12,7 @@ use scant3r_utils::{
 };
 use async_trait::async_trait;
 use std::collections::HashMap;
+use indicatif::ProgressBar;
 
 pub struct Xss {
     request: Msg,
@@ -36,7 +37,7 @@ pub trait XssUrlParamsValue {
     // scan url params value
     fn new(request: Msg, blind: bool, poc_type: String) -> Self;
     async fn find_reflected(&self) -> HashMap<String,url::Url>;
-    async fn scan(&self, payloads: Vec<String>) -> bool;
+    async fn scan(&self, payloads: Vec<String>,prog: &ProgressBar) -> bool;
 }
 
 #[async_trait]
@@ -67,7 +68,7 @@ impl XssUrlParamsValue for Xss {
         reflected_parameters
     }
 
-    async fn scan(&self,payloads: Vec<String>) -> bool {
+    async fn scan(&self,payloads: Vec<String>,prog: &ProgressBar) -> bool {
         for (param,url) in self.find_reflected().await {
             for payload in &payloads {
                 let mut req = self.request.clone();
@@ -101,7 +102,7 @@ impl XssUrlParamsValue for Xss {
                             match &self.poc_type as &str {
                                 "curl" => {
                                     let curl = report.curl();
-                                    println!("{}",curl);
+                                    prog.println(format!("TEST {}",curl));
                                 },
                                 _ => {
                                     println!("BRUH");
