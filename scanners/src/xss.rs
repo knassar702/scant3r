@@ -13,6 +13,7 @@ use scant3r_utils::{
 use async_trait::async_trait;
 use std::collections::HashMap;
 use indicatif::ProgressBar;
+use console::Emoji;
 
 pub struct Xss {
     request: Msg,
@@ -102,7 +103,8 @@ impl XssUrlParamsValue for Xss {
                             match &self.poc_type as &str {
                                 "curl" => {
                                     let curl = report.curl();
-                                    prog.println(format!("TEST {}",curl));
+                                    // emoji cat
+                                    prog.println(format!("{} TEST {}",Emoji("🐱", ""),curl));
                                 },
                                 _ => {
                                     println!("BRUH");
