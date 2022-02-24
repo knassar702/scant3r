@@ -11,6 +11,7 @@ use std::io::prelude::*;
 use indicatif::{ProgressStyle,ProgressBar};
 use scant3r_utils::{
     requests,
+    extract_headers
 };
 use scanners::scan;
 mod args;
@@ -35,6 +36,10 @@ async fn main() {
             let bar = ProgressBar::new(urls.len() as u64);
             let mut scan_settings = scan::Scanner::new(vec!["xss"],true,false);
             scan_settings.load_payloads();
+            let header = sub.value_of("headers").map(|x| {
+                                extract_headers(x)
+            }).unwrap();
+
             bar.set_style(ProgressStyle::default_bar()
                 .template("{msg} [{elapsed_precise}] {bar:40.cyan/blue} {pos:>7}/{len:7} ({eta})")
                 .progress_chars("#>-"));
@@ -42,11 +47,12 @@ async fn main() {
                 .for_each_concurrent(sub.value_of("concurrency").unwrap().parse::<usize>().unwrap(), |url| {
                     let bar = &bar;
                     let scan_settings = &scan_settings;
+                    let header = &header;
                     async move {
                         let _msg = requests::Msg::new(
                             &sub.value_of("method").unwrap_or("GET"),
                             &url,
-                            HashMap::new(),
+                            header.clone(),
                             Some(sub.value_of("data").unwrap_or("").to_string()),
                             Some(1_u32),
                             Some(10_u64),

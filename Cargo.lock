@@ -1689,6 +1689,7 @@ name = "scant3r_utils"
 version = "0.1.0"
 dependencies = [
  "isahc",
+ "regex",
  "url",
 ]
 

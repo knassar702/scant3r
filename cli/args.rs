@@ -1,3 +1,4 @@
+extern crate scant3r_utils;
 use clap::{App, Arg, ArgMatches};
 
 pub fn args() -> ArgMatches {
@@ -45,15 +46,7 @@ pub fn args() -> ArgMatches {
                 Arg::new("headers")
                     .help("The headers to send")
                     .long("headers")
-                    .validator(|s| {
-                        for header in s.split(',') {
-                            let mut header = header.split(':');
-                            if header.count() != 2 {
-                                return Err(String::from("Invalid headers"));
-                            }
-                        }
-                        Ok(())
-                    })
+                    .multiple_occurrences(true)
                     .takes_value(true),
             )
 
