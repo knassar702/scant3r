@@ -17,6 +17,19 @@ use std::path::Path;
 use home::home_dir;
 
 
+// create a Const with a list of blocking headers
+const BLOCKING_HEADERS: [&str; 10] = [ 
+        "application/json",
+		"application/javascript",
+		"text/javascript",
+		"text/plain",
+		"text/css",
+		"image/jpeg",
+		"image/png",
+		"image/bmp",
+		"image/gif",
+		"application/rss+xml"];
+
 #[derive(Debug, Clone)]
 pub struct Scanner{
     pub modules: Vec<&'static str>,
@@ -63,6 +76,18 @@ impl Scanner {
         for module in self.modules.clone() {
             match module {
                 "xss" => {
+                    // check if BLOCKING_HEADERS is in the response headers
+                    let mut check = request.clone();
+                    check.send().await;
+                    let mut blocking_headers = false;
+                    for header in BLOCKING_HEADERS.iter() {
+                        if check.response_headers.as_ref().unwrap().contains_key("Content-Type") {
+                            if check.response_headers.as_ref().unwrap().get("Content-Type").unwrap() == header {
+                                blocking_headers = true;
+                            }
+                        }
+                    }
+                    println!("{}",blocking_headers);
                     let xss_scan = xss::Xss::new(request.clone(), false,"curl".to_string());
                     xss_scan.scan(self.payloads.get("xss").unwrap().clone(),&_prog).await;
                 },
