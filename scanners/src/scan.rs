@@ -87,9 +87,10 @@ impl Scanner {
                             }
                         }
                     }
-                    println!("{}",blocking_headers);
-                    let xss_scan = xss::Xss::new(request.clone(), false,"curl".to_string());
-                    xss_scan.scan(self.payloads.get("xss").unwrap().clone(),&_prog).await;
+                    if !blocking_headers {
+                        let xss_scan = xss::Xss::new(request.clone(), false,"curl".to_string());
+                        xss_scan.scan(self.payloads.get("xss").unwrap().clone(),&_prog).await;
+                    }
                 },
                 _ => {
                     println!("Module not found");
