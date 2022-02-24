@@ -19,7 +19,7 @@ impl Curl for Poc {
         let mut curl = String::from("curl ");
         // extract headers
         for (key,value) in self.request.headers.iter() {
-            curl.push_str(&format!("-H \"{}:{}\" ", key, value));
+            curl.push_str(&format!("-H \"{}: {}\" ", key, value));
         }
         // extract body
         if self.request.body.as_ref().unwrap().len() > 0 {
