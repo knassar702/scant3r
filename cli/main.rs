@@ -41,7 +41,8 @@ async fn main() {
             }).unwrap();
 
             bar.set_style(ProgressStyle::default_bar()
-                .template("{msg} [{elapsed_precise}] {bar:40.cyan/blue} {pos:>7}/{len:7} ({eta})")
+                .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos:>7}/{len:7} {msg}")
+                .tick_chars("⠁⠂⠄⡀⢀⠠⠐⠈ ")
                 .progress_chars("#>-"));
             stream::iter(&urls)
                 .for_each_concurrent(sub.value_of("concurrency").unwrap().parse::<usize>().unwrap(), |url| {
@@ -56,16 +57,16 @@ async fn main() {
                             Some(sub.value_of("data").unwrap_or("").to_string()),
                             Some(1_u32),
                             Some(10_u64),
-                            Some("http://localhost:8080".parse().unwrap())
+                            Some(sub.value_of("proxy").clone().unwrap().to_string())
                         );
                         let mut live_check = _msg.clone();
                         live_check.send().await;
                         if live_check.clone().error.unwrap_or(String::from("")) != "" {
                             error!("{}", live_check.clone().error.unwrap());
                         } else {
-//                            bar.inc(1);
                             scan_settings.scan(_msg,&bar).await;
                         }
+                        bar.inc(1);
                 }
                 }).await;
             bar.finish();
