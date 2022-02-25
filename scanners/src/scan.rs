@@ -4,8 +4,7 @@ use scant3r_utils::{
     payloads,
     requests::Msg
 };
-#[ path = "./xss.rs"]
-mod xss;
+#[ path = "./xss.rs"] mod xss;
 use xss::{
     Xss,
     XssUrlParamsValue
@@ -76,13 +75,10 @@ impl Scanner {
         for module in self.modules.clone() {
             match module {
                 "xss" => {
-                    // check if BLOCKING_HEADERS is in the response headers
-                    let mut check = request.clone();
-                    check.send().await;
                     let mut blocking_headers = false;
                     for header in BLOCKING_HEADERS.iter() {
-                        if check.response_headers.as_ref().unwrap().contains_key("Content-Type") {
-                            if check.response_headers.as_ref().unwrap().get("Content-Type").unwrap() == header {
+                        if request.response_headers.as_ref().unwrap().contains_key("Content-Type") {
+                            if request.response_headers.as_ref().unwrap().get("Content-Type").unwrap() == header {
                                 blocking_headers = true;
                             }
                         }
