@@ -52,8 +52,6 @@ impl Msg {
         let mut response = Request::builder()
             .method(self.method.as_str())
             .ssl_options(isahc::config::SslOption::DANGER_ACCEPT_INVALID_CERTS)
-            .ssl_options(isahc::config::SslOption::DANGER_ACCEPT_INVALID_HOSTS)
-            .ssl_options(isahc::config::SslOption::DANGER_ACCEPT_REVOKED_CERTS)
             .redirect_policy(isahc::config::RedirectPolicy::Limit(
                 self.redirect.unwrap_or(5),
             ))
