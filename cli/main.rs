@@ -1,5 +1,6 @@
 #[macro_use] extern crate log;
 extern crate scant3r_utils;
+extern crate hlua;
 extern crate simplelog;
 extern crate scanners;
 use simplelog::*;
@@ -10,11 +11,15 @@ use std::io::BufReader;
 use std::io::prelude::*;
 use indicatif::{ProgressStyle,ProgressBar};
 use scant3r_utils::{
-    requests,
+    requests::{
+        Msg,
+        Settings
+    },
     extract_headers
 };
 use scanners::scan;
 mod args;
+
 
 #[tokio::main]
 async fn main() {
@@ -37,7 +42,7 @@ async fn main() {
             let mut scan_settings = scan::Scanner::new(vec!["xss"],true,false);
             scan_settings.load_payloads();
             let header = sub.value_of("headers").map(|x| {
-                                extract_headers(x)
+                                extract_headers(x.to_string())
             }).unwrap();
 
             bar.set_style(ProgressStyle::default_bar()
@@ -50,21 +55,17 @@ async fn main() {
                     let scan_settings = &scan_settings;
                     let header = &header;
                     async move {
-                        let _msg = requests::Msg::new(
-                            &sub.value_of("method").unwrap_or("GET"),
-                            &url,
-                            header.clone(),
-                            Some(sub.value_of("data").unwrap_or("").to_string()),
-                            Some(1_u32),
-                            Some(10_u64),
-                            Some(sub.value_of("proxy").clone().unwrap().to_string())
-                        );
-                        let mut live_check = _msg.clone();
+                        let mut live_check = Msg::new()
+                            .method(sub.value_of("method").unwrap().to_string())
+                            .url(url.clone())
+                            .headers(header.clone())
+                            .body(sub.value_of("data").unwrap_or("").to_string())
+                            .url(url.clone());
                         live_check.send().await;
                         if live_check.clone().error.unwrap_or(String::from("")) != "" {
                             error!("{}", live_check.clone().error.unwrap());
                         } else {
-                            scan_settings.scan(_msg,&bar).await;
+                            scan_settings.scan(live_check.clone(),&bar).await;
                         }
                         bar.inc(1);
                 }
@@ -74,15 +75,6 @@ async fn main() {
         Some("passive") => {
             let sub = arg.subcommand_matches("passive").unwrap();
             for _ in sub.value_of("modules").unwrap().split(",") {
-                let _msg = requests::Msg::new(
-                    "GET",
-                    sub.value_of("url").unwrap(),
-                    HashMap::new(),
-                    None,
-                    Some(sub.value_of("redirect").unwrap_or("0").parse::<u32>().unwrap()),
-                    Some(sub.value_of("timeout").unwrap_or("10").parse::<u64>().unwrap()),
-                    None,
-                );
             }
         },
         _ => println!("No subcommand was used"),

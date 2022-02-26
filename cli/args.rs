@@ -121,7 +121,13 @@ pub fn args() -> ArgMatches {
                     .short('p')
                     .default_value("")
                     .takes_value(true))
-
+            .arg(
+                Arg::new("location")
+                     .help("The location to inject the payload (headers or urls or body)")
+                    .long("location")
+                    .default_value("url")
+                    .possible_values(&["headers", "url", "body"])
+                    .takes_value(true))
             .arg(
                 Arg::new("timeout")
                     .help("The timeout in seconds")
@@ -194,6 +200,13 @@ pub fn args() -> ArgMatches {
                         .help("The proxy to use")
                         .long("proxy")
                         .short('p')
+                        .validator(|s| {
+                            if s.parse::<url::Url>().is_ok() {
+                                Ok(())
+                            } else {
+                                Err("Proxy must be in the format host:port".to_string())
+                            }
+                        })
                         .takes_value(true))
                 .arg(
                     Arg::new("modules")

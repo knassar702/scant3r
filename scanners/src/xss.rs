@@ -27,23 +27,23 @@ pub trait XssHeaders {
     fn scan(&self, payloads: &Vec<String>) -> bool;
 }
 
+#[async_trait]
 pub trait XssUrlParamsName {
     // scan url params name
     fn find_reflected(&self) -> HashMap<String, String>;
     fn scan(&self, payloads: &Vec<String>) -> bool;
 }
 
+
 #[async_trait]
 pub trait XssUrlParamsValue {
     // scan url params value
-    fn new(request: Msg, blind: bool, poc_type: String) -> Self;
     async fn find_reflected(&self) -> HashMap<String,url::Url>;
     async fn scan(&self, payloads: Vec<String>,prog: &ProgressBar) -> bool;
 }
 
-#[async_trait]
-impl XssUrlParamsValue for Xss {
-    fn new(request: Msg,blind: bool, poc_type: String) -> Xss {
+impl Xss {
+    pub fn new(request: Msg,blind: bool, poc_type: String) -> Xss {
         Xss {
             request: request.clone(),
             blind: blind,
@@ -51,6 +51,12 @@ impl XssUrlParamsValue for Xss {
             poc_type: poc_type
         }
     }
+
+}
+
+
+#[async_trait]
+impl XssUrlParamsValue for Xss {
 
     async fn find_reflected(&self) -> HashMap<String,url::Url> {
         let mut reflected_parameters: HashMap<String,url::Url> = HashMap::new();

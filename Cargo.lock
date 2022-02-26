@@ -408,6 +408,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "hlua"
+version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "943be6896e8b77886a45a0fbb823efa6550a17cf01a8745a8a24435c117144ea"
+dependencies = [
+ "libc",
+ "lua52-sys",
+]
+
+[[package]]
 name = "home"
 version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -568,6 +578,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "51b9bbe6c47d51fc3e1a9b945965946b4c44142ab8792c50835a980d362c2710"
 dependencies = [
  "cfg-if 1.0.0",
+]
+
+[[package]]
+name = "lua52-sys"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d451db153c94e455dc817d388f9674f6232425c28db3509e90251c55b8df2f94"
+dependencies = [
+ "cc",
+ "libc",
+ "pkg-config",
 ]
 
 [[package]]
@@ -855,6 +876,7 @@ dependencies = [
  "clap",
  "colog",
  "futures",
+ "hlua",
  "home",
  "indicatif",
  "isahc",
@@ -871,8 +893,10 @@ dependencies = [
 name = "scant3r_utils"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
  "isahc",
  "regex",
+ "tokio",
  "url",
 ]
 

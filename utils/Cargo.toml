@@ -9,3 +9,5 @@ edition = "2021"
 isahc = "1.6.0"
 url = "2.2.2"
 regex = "1.0"
+tokio = { version = "0.2.18", features = ["full"] }
+async-trait = "0.1.52"
