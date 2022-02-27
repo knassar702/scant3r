@@ -110,7 +110,7 @@ impl XssUrlParamsValue for Xss {
                                 "curl" => {
                                     let curl = report.curl();
                                     // emoji cat
-                                    prog.println(format!("{} TEST {}",Emoji("🐱", ""),curl));
+                                    prog.println(format!("{} TEST {}\nLine: {}",Emoji("🐱", ""),curl,&x.0));
                                 },
                                 _ => {
                                     println!("BRUH");

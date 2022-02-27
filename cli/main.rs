@@ -60,7 +60,9 @@ async fn main() {
                             .url(url.clone())
                             .headers(header.clone())
                             .body(sub.value_of("data").unwrap_or("").to_string())
-                            .url(url.clone());
+                            .url(url.clone())
+                            .delay(sub.value_of("delay").unwrap_or("0").parse::<u64>().unwrap())
+                            .proxy(sub.value_of("proxy").unwrap_or("").to_string());
                         live_check.send().await;
                         if live_check.clone().error.unwrap_or(String::from("")) != "" {
                             error!("{}", live_check.clone().error.unwrap());

@@ -1,5 +1,4 @@
 #![allow(dead_code)]
-use async_trait::async_trait;
 use isahc::prelude::*;
 use isahc::Request;
 use isahc::http::{
@@ -24,6 +23,7 @@ pub struct Msg {
     pub response_headers: Option<HeaderMap<HeaderValue>>,
     pub error: Option<String>,
     pub proxy: Option<String>,
+    pub delay: Option<u64>,
 }
 
 pub trait Settings {
@@ -34,6 +34,7 @@ pub trait Settings {
     fn redirect(&mut self,_many: u32) -> Self;
     fn timeout(&mut self,_sec: u64) -> Self;
     fn proxy(&mut self,_proxy: String) -> Self;
+    fn delay(&mut self,_sec: u64) -> Self;
 }
 
 
@@ -66,6 +67,10 @@ impl Settings for Msg {
         self.proxy = Some(_proxy);
         self.clone()
     }
+    fn delay(&mut self,_sec: u64) -> Self {
+        self.delay = Some(_sec);
+        self.clone()
+    }
 }
 
 impl Msg {
@@ -82,6 +87,7 @@ impl Msg {
             response_headers: None,
             error: None,
             proxy: None,
+            delay: None,
         }
     }
     pub async fn send(&mut self) {
@@ -113,5 +119,9 @@ impl Msg {
                 self.error = Some(e.to_string());
             }
         };
+        // sleep with tokio
+        if let Some(delay) = self.delay {
+            tokio::time::delay_for(Duration::from_secs(delay)).await;
+        }
     }
 }

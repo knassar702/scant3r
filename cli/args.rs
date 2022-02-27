@@ -31,6 +31,19 @@ pub fn args() -> ArgMatches {
                     .possible_values(&["xss"])
                     .takes_value(true),
                 )
+            .arg(
+                Arg::new("delay")
+                    .help("The delay between requests")
+                    .long("delay")
+                    .validator(|delay| {
+                        if delay.parse::<u64>().is_err() {
+                            Err("Delay must be a number")
+                        } else {
+                            Ok(())
+                        }
+                    })
+                    .takes_value(true),
+            )
             // arg for data option
             .arg(
                 Arg::new("data")
