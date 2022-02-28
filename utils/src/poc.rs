@@ -19,7 +19,7 @@ impl Curl for Poc {
         let mut curl = String::from("curl ");
         // extract headers
         for (key,value) in self.request.headers.iter() {
-            curl.push_str(&format!("-H \"{}: {}\" ", key, value));
+            curl.push_str(&format!("-H \"{}: {}\" ", key, value.replace("\"", "\\\"")));
         }
         // extract body
         if self.request.body.as_ref().unwrap().len() > 0 {
@@ -29,6 +29,10 @@ impl Curl for Poc {
         curl.push_str(&format!("\"{}\"", self.request.url));
         // extract method
         curl.push_str(&format!(" -X {}", self.request.method));
+        // proxy
+        if self.request.proxy.as_ref().unwrap().len() > 0 {
+            curl.push_str(&format!(" -x {}", self.request.proxy.as_ref().unwrap()));
+        }
         curl
 
     }

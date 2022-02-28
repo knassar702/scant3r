@@ -1,8 +1,9 @@
 extern crate scant3r_utils;
+
 use scant3r_utils::{
-    payloads::{
-        Injector,
-        url_injector
+    Injector::{
+        url_injector,
+        Injector
     },
     poc::{
         Poc,
@@ -17,9 +18,7 @@ use console::Emoji;
 
 pub struct Xss {
     request: Msg,
-    blind: bool,
     injector: Injector,
-    poc_type: String,
 }
 
 pub trait XssHeaders {
@@ -29,45 +28,54 @@ pub trait XssHeaders {
 
 #[async_trait]
 pub trait XssUrlParamsName {
-    // scan url params name
-    fn find_reflected(&self) -> HashMap<String, String>;
-    fn scan(&self, payloads: &Vec<String>) -> bool;
+    async fn name_reflected(&self) -> ();
+    async fn name_scan(&self, payloads: Vec<String>,_prog: &ProgressBar) -> ();
 }
-
 
 #[async_trait]
 pub trait XssUrlParamsValue {
     // scan url params value
-    async fn find_reflected(&self) -> HashMap<String,url::Url>;
-    async fn scan(&self, payloads: Vec<String>,prog: &ProgressBar) -> bool;
+    async fn value_reflected(&self) -> HashMap<String,url::Url>;
+    async fn value_scan(&self, payloads: Vec<String>,_prog: &ProgressBar) ->HashMap<url::Url, String>;
 }
 
+
+
 impl Xss {
-    pub fn new(request: Msg,blind: bool, poc_type: String) -> Xss {
+    pub fn new(request: Msg) -> Xss {
         Xss {
             request: request.clone(),
-            blind: blind,
             injector: Injector{request: request.url},
-            poc_type: poc_type
         }
     }
 
 }
 
 
+
+#[async_trait]
+impl XssUrlParamsName for Xss {
+    async fn name_reflected(&self) -> () {
+    }
+
+    async fn name_scan(&self,_payloads: Vec<String>, _prog: &ProgressBar) -> () {
+
+    }
+}
+
 #[async_trait]
 impl XssUrlParamsValue for Xss {
 
-    async fn find_reflected(&self) -> HashMap<String,url::Url> {
+    async fn value_reflected(&self) -> HashMap<String,url::Url>  {
         let mut reflected_parameters: HashMap<String,url::Url> = HashMap::new();
-        let check_requests = self.injector.url_parameters("scantrr");
+        let check_requests = self.injector.url_name("scanttrr");
         for (_param,urls) in check_requests {
             for url in urls {
                 let _param = _param.clone();
                 let mut req = self.request.clone();
                 req.url = url.clone();
                 req.send().await;
-                if req.response_body.unwrap().contains("scantrr") {
+                if req.response_body.unwrap().contains("scanttrr") {
                     reflected_parameters.insert(_param,url.clone());
                 }
             }
@@ -75,28 +83,18 @@ impl XssUrlParamsValue for Xss {
         reflected_parameters
     }
 
-    async fn scan(&self,payloads: Vec<String>,prog: &ProgressBar) -> bool {
-        for (param,url) in self.find_reflected().await {
+    async fn value_scan(&self,payloads: Vec<String>,_prog: &ProgressBar) -> HashMap<url::Url, String>{
+        let mut _found: HashMap<url::Url,String> = HashMap::new();
+        for (param,url) in self.value_reflected().await {
+
             for payload in &payloads {
+
                 let mut req = self.request.clone();
-                req.url = url.clone();
-                let new_params = {
-                        let params = req.url.query_pairs().into_iter().collect::<HashMap<_, _>>();
-                        let mut params2 = HashMap::new();
-                        for (key,value) in params.clone() {
-                            params2.insert(key.to_string(),value.clone().to_string());
-                        }
-                        *params2.get_mut(&param).unwrap() = payload.to_string();
-                        params2
-                };
-                req.url = {
-                    req.url.query_pairs_mut().clear();
-                    for (key,value) in new_params {
-                        req.url.query_pairs_mut().append_pair(&key,&value);
-                    }
-                    req.url
-                };
+                req.url = self.injector.set_urlname(&param, payload, url.clone());
                 req.send().await;
+                if req.error.is_some() {
+                    continue;
+                }
                 let body = req.response_body.as_ref().unwrap();
                 if body.contains(payload) {
                     body.lines().enumerate().for_each(|x|{
@@ -106,11 +104,12 @@ impl XssUrlParamsValue for Xss {
                                 payload: payload.to_owned(),
                                 request: req.clone(),
                             };
-                            match &self.poc_type as &str {
+                            match "curl" {
                                 "curl" => {
-                                    let curl = report.curl();
                                     // emoji cat
-                                    prog.println(format!("{} TEST {}\nLine: {}",Emoji("🐱", ""),curl,&x.0));
+                                    let m = format!("{} TEST {}\nLine: {}",Emoji("🐱", ""),report.curl(),&x.0);
+                                    _prog.println(&m);
+                                    _found.insert(req.url.clone(),m);
                                 },
                                 _ => {
                                     println!("BRUH");
@@ -124,6 +123,6 @@ impl XssUrlParamsValue for Xss {
                 }
             }
         }
-        false
+        _found
     }
 }

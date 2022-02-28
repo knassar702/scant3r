@@ -1,6 +1,6 @@
 pub mod requests;
-pub mod payloads;
 pub mod poc;
+#[path = "./injector.rs"] pub mod Injector;
 use std::collections::HashMap;
 use regex::Regex;
 

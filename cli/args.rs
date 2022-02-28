@@ -1,12 +1,12 @@
 extern crate scant3r_utils;
-use clap::{App, Arg, ArgMatches};
+use clap::{Command, Arg, ArgMatches};
 
 pub fn args() -> ArgMatches {
-    App::new("scant3r")
+    Command::new("scant3r")
         .version("0.9.0")
         .author("Khaled Nassar <knassar702@gmail.com>")
         .about("A Web Application Scanner")
-        .subcommands(vec![App::new("scan")
+        .subcommands(vec![Command::new("scan")
             .about("Scan a website")
             .arg(
                 Arg::new("url")
@@ -168,7 +168,7 @@ pub fn args() -> ArgMatches {
                     .default_value("xss"),
                 )
             ,
-            App::new("passive")
+            Command::new("passive")
                 .about("Scan a website passively")
                 .arg(
                     Arg::new("url")
