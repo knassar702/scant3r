@@ -1,10 +1,8 @@
 extern crate scant3r_utils;
 use indicatif::ProgressBar;
-use std::iter::from_fn;
 use scant3r_utils::requests::Msg;
 #[ path = "./xss.rs"] mod xss;
 use xss::{
-    Xss,
     XssUrlParamsValue,
     XssUrlParamsName
 };
@@ -65,10 +63,10 @@ impl Scanner {
                         .position(|x| *x == module)
                         .unwrap();
                     self.modules.remove(module_location);
-                }
+                    }
             }
     }
-    pub async fn scan(&self,request: Msg,__prog: &ProgressBar){
+    pub async fn scan(&self,request: Msg,_prog: &ProgressBar){
         if self.payloads.len() == 0 {
             panic!("No payloads loaded");
         }
@@ -85,13 +83,15 @@ impl Scanner {
                             if request.response_headers.as_ref().unwrap().get("Content-Type").unwrap() == header {
                                 blocking_headers = true;
                             }
+                        } else {
+                            blocking_headers = true;
                         }
                     }
 
                     if !blocking_headers {
                         let xss_scan = xss::Xss::new(request.clone());
-                        xss_scan.value_scan(self.payloads.get("xss").unwrap().clone(),&__prog).await;
-                        xss_scan.name_scan(self.payloads.get("xss").unwrap().clone(),&__prog).await;
+                        xss_scan.value_scan(self.payloads.get("xss").unwrap().clone(),&_prog).await;
+                        xss_scan.name_scan(self.payloads.get("xss").unwrap().clone(),&_prog).await;
                     }
                 }
                 _ => {

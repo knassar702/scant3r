@@ -2,7 +2,7 @@ extern crate scant3r_utils;
 
 use scant3r_utils::{
     Injector::{
-        url_injector,
+        Urlinjector,
         Injector
     },
     poc::{
@@ -68,7 +68,7 @@ impl XssUrlParamsValue for Xss {
 
     async fn value_reflected(&self) -> HashMap<String,url::Url>  {
         let mut reflected_parameters: HashMap<String,url::Url> = HashMap::new();
-        let check_requests = self.injector.url_name("scanttrr");
+        let check_requests = self.injector.url_value("scanttrr");
         for (_param,urls) in check_requests {
             for url in urls {
                 let _param = _param.clone();
@@ -90,7 +90,7 @@ impl XssUrlParamsValue for Xss {
             for payload in &payloads {
 
                 let mut req = self.request.clone();
-                req.url = self.injector.set_urlname(&param, payload, url.clone());
+                req.url = self.injector.set_urlvalue(&param, payload, url.clone());
                 req.send().await;
                 if req.error.is_some() {
                     continue;
@@ -107,7 +107,7 @@ impl XssUrlParamsValue for Xss {
                             match "curl" {
                                 "curl" => {
                                     // emoji cat
-                                    let m = format!("{} TEST {}\nLine: {}",Emoji("🐱", ""),report.curl(),&x.0);
+                                    let m = format!("{} {}\nLine: {}",Emoji("🐱", ""),report.curl(),&x.0);
                                     _prog.println(&m);
                                     _found.insert(req.url.clone(),m);
                                 },
