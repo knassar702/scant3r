@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use isahc::http::header::HeaderMap;
 use url::Url;
 
 pub struct Injector {
@@ -46,48 +45,29 @@ impl Urlinjector for Injector {
         let mut scan_params = HashMap::new();
         let mut bruh: HashMap<String,Vec<Url>> = HashMap::new();
         let mut param_list = Vec::new();
-        _params.iter().for_each(|(key, value)| {
-            scan_params.insert(key.to_string(), value.to_string());
-            param_list.push(key.to_string());
+        _params.iter()
+            .for_each(|(key, value)| {
+                scan_params.insert(key.to_string(), value.to_string());
+                param_list.push(key.to_string());
         });
         drop(_params);
 
-        scan_params.iter().for_each(|(key, value)| {
-            let mut p = Vec::new();
-            for payload in _payload.split("\n") {
-                let mut new_params = scan_params.clone();
-                new_params.insert(key.to_string(),value.as_str().to_owned() + payload);
-                let mut new_url = url.clone();
-                new_url.query_pairs_mut().clear();
-                new_url.query_pairs_mut().extend_pairs(&new_params);
-                p.push(new_url);
-//                urls.push(new_url);
-            }
-            bruh.insert(key.to_string(), p);
+        scan_params.iter()
+            .for_each(|(key, value)| {
+                let mut p = Vec::new();
+
+                _payload.split("\n").into_iter().for_each(|payload|{
+                    let mut new_params = scan_params.clone();
+                    new_params.insert(key.to_string(),value.as_str().to_owned() + payload);
+                    let mut new_url = url.clone();
+                    new_url.query_pairs_mut().clear();
+                    new_url.query_pairs_mut().extend_pairs(&new_params);
+                    p.push(new_url);
+                });
+
+                bruh.insert(key.to_string(), p);
         });
         bruh
     }
 }
 
-pub trait headers_injector {
-    fn header(&self,map: &mut HashMap<String,String>) -> HashMap<String,String>;
-}
-
-impl headers_injector for Injector {
-    fn header(&self,map: &mut HashMap<String,String>) -> HashMap<String,String> {
-        let mut testing = HeaderMap::new();
-        testing.insert("TEST", isahc::http::header::HeaderValue::from_static("TEST"));
-        let url = self.request.clone();
-        let mut urls = Vec::new();
-        let mut headers = HashMap::new();
-        for (key, value) in map.iter() {
-            headers.insert(key.to_string(), value.to_string());
-        }
-        let mut new_url = url.clone();
-        new_url.query_pairs_mut().clear();
-        new_url.query_pairs_mut().extend_pairs(&headers);
-        urls.push(new_url);
-        let mut testing = HashMap::new();
-        testing
-    }
-}

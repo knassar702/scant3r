@@ -21,10 +21,6 @@ pub struct Xss {
     injector: Injector,
 }
 
-pub trait XssHeaders {
-    fn find_reflected(&self) -> HashMap<String, String>;
-    fn scan(&self, payloads: &Vec<String>) -> bool;
-}
 
 #[async_trait]
 pub trait XssUrlParamsName {
