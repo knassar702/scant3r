@@ -11,3 +11,4 @@ url = "2.2.2"
 regex = "1.0"
 tokio = { version = "0.2.18", features = ["full"] }
 async-trait = "0.1.52"
+serde_json = "1.0.79"

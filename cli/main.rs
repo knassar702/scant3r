@@ -5,6 +5,7 @@ use futures::{stream, StreamExt};
 use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
+use std::collections::HashMap;
 use indicatif::{ProgressStyle,ProgressBar};
 use scant3r_utils::{
     requests::{
@@ -35,12 +36,12 @@ async fn main() {
 
             let bar = ProgressBar::new(urls.len() as u64);
             // setup the scanner module
-            let mut scan_settings = scan::Scanner::new(vec!["xss"],true,false);
+            let mut scan_settings = scan::Scanner::new(vec!["xss"]);
             scan_settings.load_payloads();
 
             let header = sub.value_of("headers").map(|x| {
                                 extract_headers(x.to_string())
-            }).unwrap();
+            }).unwrap_or(HashMap::new());
 
             bar.set_style(ProgressStyle::default_bar()
                 .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos:>7}/{len:7} {msg}")

@@ -39,6 +39,18 @@ impl Urlinjector for Injector {
     }
 
     fn url_value(&self,_payload: &str) -> HashMap<String,Vec<Url>> {
+        /*
+         * Set the payload to every GET parameter in the url
+         *
+         * ```rust
+         * let injector = Injector {
+         *    request: Url::parse("http://example.com/index.php?param1=value1&param2=value2").unwrap(),
+         *    };
+         * let mut urls = injector.url_value("hacker");
+         * assert_eq!(urls.len(),2);
+         * {"param1":url::Url::parse("http://example.com/index.php?param1=value1hacker&param2=value2").unwrap(),"param2":url::Url::parse("http://example.com/index.php?param1=value1&param2=value2hacker").unwrap()}
+         * ```
+         * */
         let url = self.request.clone();
         let _params: HashMap<_,_> = url.query_pairs()
                                        .collect::<HashMap<_, _>>();
@@ -58,10 +70,18 @@ impl Urlinjector for Injector {
 
                 _payload.split("\n").into_iter().for_each(|payload|{
                     let mut new_params = scan_params.clone();
-                    new_params.insert(key.to_string(),value.as_str().to_owned() + payload);
+                    new_params.insert(key.to_string()
+                                      ,value.as_str()
+                                      .to_owned() + payload);
                     let mut new_url = url.clone();
-                    new_url.query_pairs_mut().clear();
-                    new_url.query_pairs_mut().extend_pairs(&new_params);
+                    new_url
+                        .query_pairs_mut()
+                        .clear();
+
+                    new_url
+                        .query_pairs_mut()
+                        .extend_pairs(&new_params);
+
                     p.push(new_url);
                 });
 

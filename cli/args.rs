@@ -9,15 +9,6 @@ pub fn args() -> ArgMatches {
         .subcommands(vec![Command::new("scan")
             .about("Scan a website")
             .arg(
-                Arg::new("url")
-                    .help("The URL to scan")
-                    .long("url")
-                    .short('u')
-                    .required_if_eq("urls", "")
-                    .takes_value(true),
-            )
-
-            .arg(
                 Arg::new("modules")
                     .help("The modules to use")
                     .long("modules")
@@ -109,6 +100,7 @@ pub fn args() -> ArgMatches {
                             Err("File does not exist".to_string())
                         }
                     })
+                    .required(true)
                     .takes_value(true),
                 )
 
@@ -168,16 +160,8 @@ pub fn args() -> ArgMatches {
                     .default_value("xss"),
                 )
             ,
-            Command::new("passive")
+            Command::new("pipe")
                 .about("Scan a website passively")
-                .arg(
-                    Arg::new("url")
-                        .help("The URL to scan")
-                        .required(true)
-                        .long("url")
-                        .short('u')
-                        .takes_value(true),
-                )
 
                 .arg(
                     Arg::new("timeout")

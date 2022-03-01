@@ -93,7 +93,10 @@ impl XssUrlParamsValue for Xss {
                 }
                 let body = req.response_body.as_ref().unwrap();
                 if body.contains(payload) {
-                    body.lines().enumerate().for_each(|x|{
+                    body.lines()
+                        .enumerate()
+                        .for_each(|x|{
+
                         if x.1.contains(payload) == true {
                             let report = Poc {
                                 name: "sg".to_owned(),

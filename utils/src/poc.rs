@@ -1,7 +1,5 @@
-#[path = "requests.rs"]
-mod requests;
+#[path = "requests.rs"] mod requests;
 use crate::requests::Msg;
-
 pub struct Poc {
     pub name: String,
     pub payload: String,
@@ -18,9 +16,10 @@ impl Curl for Poc {
         // convert isahc request to curl
         let mut curl = String::from("curl ");
         // extract headers
-        for (key,value) in self.request.headers.iter() {
-            curl.push_str(&format!("-H \"{}: {}\" ", key, value.replace("\"", "\\\"")));
-        }
+        self.request.headers.iter()
+            .for_each(|(key,value)| {
+                curl.push_str(&format!("-H \"{}: {}\" ", key, value.replace("\"", "\\\"")));
+        });
         // extract body
         if self.request.body.as_ref().unwrap().len() > 0 {
             curl.push_str(&format!("-d \"{:?}\" ", self.request.body.as_ref().unwrap()));
