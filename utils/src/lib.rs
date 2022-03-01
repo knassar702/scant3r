@@ -1,5 +1,6 @@
 pub mod requests;
 pub mod poc;
+#[allow(non_snake_case)]
 #[path = "./injector.rs"] pub mod Injector;
 use std::collections::HashMap;
 use regex::Regex;

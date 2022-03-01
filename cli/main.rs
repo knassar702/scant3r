@@ -70,10 +70,12 @@ async fn main() {
                             .delay(sub.value_of("delay")
                                    .unwrap_or("0")
                                    .parse::<u64>()
-                                   .unwrap())
-                            .proxy(sub.value_of("proxy")
-                                   .unwrap_or("")
-                                   .to_string());
+                                   .unwrap());
+                        if sub.value_of("proxy").is_some() {
+                                live_check.proxy(sub.value_of("proxy")
+                                                 .unwrap()
+                                                 .to_string());
+                        }
 
                         live_check.send().await;
 

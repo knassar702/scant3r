@@ -96,8 +96,10 @@ impl Msg {
             .ssl_options(isahc::config::SslOption::DANGER_ACCEPT_INVALID_CERTS)
             .redirect_policy(isahc::config::RedirectPolicy::Limit(
                 self.redirect.unwrap_or(5),
-            ))
-            .proxy(self.proxy.as_ref().map(|proxy| proxy.as_str().parse().unwrap()));
+            ));
+        if self.proxy.as_ref().unwrap().len() > 0 {
+                response = response.proxy(self.proxy.as_ref().map(|proxy| proxy.as_str().parse().unwrap()));
+        }
 
         for (key, value) in &self.headers {
             response = response.header(key.as_str(), value.as_str());
