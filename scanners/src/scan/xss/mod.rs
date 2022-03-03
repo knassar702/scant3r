@@ -19,8 +19,8 @@ use console::Emoji;
 // create a struct with refrence Vec
 
 
-pub struct Xss<'T> {
-    request: &'T Msg,
+pub struct Xss<'t> {
+    request: &'t Msg,
     injector: Injector,
 }
 
@@ -43,7 +43,7 @@ pub trait XssUrlParamsValue {
 impl Xss<'_> {
     pub fn new(request: &Msg) -> Xss<'_> {
         Xss {
-            request: request,
+            request,
             injector: Injector{request: request.url.clone()},
         }
     }
@@ -98,25 +98,18 @@ impl XssUrlParamsValue for Xss<'_> {
                 if res.body.contains(payload) {
                     res.body.lines()
                         .enumerate()
-                        .for_each(|x|{
+                        .for_each(|(line,found)|{
 
-                        if x.1.contains(payload) == true {
+                        if found.contains(payload) == true {
                             let report = Poc {
                                 name: "sg".to_owned(),
                                 payload: payload.to_owned(),
-                                request: req.clone(),
+                                request: &req,
                             };
-                            match "curl" {
-                                "curl" => {
-                                    // emoji cat
-                                    let m = format!("{} {}\nLine: {}",Emoji("🐱", ""),report.curl(),&x.0);
-                                    _prog.println(&m);
-                                    _found.insert(req.url.clone(),m);
-                                },
-                                _ => {
-                                    println!("BRUH");
-                                }
-                            }
+                            // alert emoji
+                            let m = format!("{} {}\nLine: {}",Emoji("🚨", "alert"),report.curl(),&line);
+                            _prog.println(&m);
+                            _found.insert(req.url.clone(),m);
                         }
                     });
                     break;

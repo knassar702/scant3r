@@ -1,12 +1,9 @@
-#[macro_use] extern crate log;
 extern crate scant3r_utils;
 extern crate scanners;
-use futures::{stream, StreamExt};
 use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
 use std::collections::HashMap;
-use indicatif::{ProgressStyle,ProgressBar};
 use scant3r_utils::{
     requests::{
         Msg,

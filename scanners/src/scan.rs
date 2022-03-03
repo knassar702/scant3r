@@ -1,11 +1,9 @@
 extern crate scant3r_utils;
 use indicatif::{ProgressStyle,ProgressBar};
 use scant3r_utils::requests::Msg;
-#[ path = "./xss.rs"] mod xss;
-use xss::{
-    XssUrlParamsValue,
-    XssUrlParamsName
-};
+//#[ path = "./xss.rs"] mod xss;
+mod xss;
+use xss::XssUrlParamsValue;
 use futures::{stream, StreamExt};
 use std::collections::HashMap;
 use std::io::prelude::*;
@@ -84,7 +82,6 @@ impl Scanner {
             .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos:>7}/{len:7} {msg}")
             .tick_chars("//—\\\r")
             .progress_chars("#>-"));
-
         stream::iter(&self.requests)
             .for_each_concurrent(concurrency, |request| {
                 let modules = &self.modules;
@@ -108,8 +105,7 @@ impl Scanner {
 
                                 if !blocking_headers {
                                     let xss_scan = xss::Xss::new(request);
-                                    xss_scan.value_scan(self.payloads.get("xss").unwrap().clone(),pb).await;
-                                    xss_scan.name_scan(self.payloads.get("xss").unwrap().clone(),pb).await;
+                                    let _value = xss_scan.value_scan(self.payloads.get("xss").unwrap().clone(),pb).await;
                                 }
                                 pb.inc(1);
                             },
