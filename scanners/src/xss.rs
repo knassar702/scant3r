@@ -16,8 +16,11 @@ use std::collections::HashMap;
 use indicatif::ProgressBar;
 use console::Emoji;
 
-pub struct Xss {
-    request: Msg,
+// create a struct with refrence Vec
+
+
+pub struct Xss<'T> {
+    request: &'T Msg,
     injector: Injector,
 }
 
@@ -37,11 +40,11 @@ pub trait XssUrlParamsValue {
 
 
 
-impl Xss {
-    pub fn new(request: Msg) -> Xss {
+impl Xss<'_> {
+    pub fn new(request: &Msg) -> Xss<'_> {
         Xss {
-            request: request.clone(),
-            injector: Injector{request: request.url},
+            request: request,
+            injector: Injector{request: request.url.clone()},
         }
     }
 
@@ -50,7 +53,7 @@ impl Xss {
 
 
 #[async_trait]
-impl XssUrlParamsName for Xss {
+impl XssUrlParamsName for Xss<'_> {
     async fn name_reflected(&self) -> () {
     }
 
@@ -60,7 +63,7 @@ impl XssUrlParamsName for Xss {
 }
 
 #[async_trait]
-impl XssUrlParamsValue for Xss {
+impl XssUrlParamsValue for Xss<'_> {
 
     async fn value_reflected(&self) -> HashMap<String,url::Url>  {
         let mut reflected_parameters: HashMap<String,url::Url> = HashMap::new();

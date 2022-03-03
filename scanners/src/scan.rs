@@ -40,7 +40,7 @@ impl Scanner {
         Scanner {
             modules,
             payloads: HashMap::new(),
-            requests: requests,
+            requests,
         }
     }
 
@@ -95,25 +95,32 @@ impl Scanner {
                 let pb = &bar;
                 async move {
                     for module in modules.clone() {
-                            let mut blocking_headers = false;
-                            let resp = request.send().await;
-                            BLOCKING_HEADERS.iter().for_each(|header| {
-                                if resp.headers.contains_key("Content-Type") {
-                                    if resp.headers.get("Content-Type").unwrap() == header {
+                        match module {
+                            "xss" => {
+                                let mut blocking_headers = false;
+                                let resp = request.send().await;
+                                BLOCKING_HEADERS.iter().for_each(|header| {
+                                    if resp.headers.contains_key("Content-Type") {
+                                        if resp.headers.get("Content-Type").unwrap() == header {
+                                            blocking_headers = true;
+                                        }
+                                    } else {
                                         blocking_headers = true;
                                     }
-                                } else {
-                                    blocking_headers = true;
-                                }
-                            });
+                                });
 
-                            if !blocking_headers {
-                                let xss_scan = xss::Xss::new(request.clone());
-                                xss_scan.value_scan(self.payloads.get("xss").unwrap().clone(),pb).await;
-                                xss_scan.name_scan(self.payloads.get("xss").unwrap().clone(),pb).await;
-                            }
+                                if !blocking_headers {
+                                    let xss_scan = xss::Xss::new(request);
+                                    xss_scan.value_scan(self.payloads.get("xss").unwrap().clone(),pb).await;
+                                    xss_scan.name_scan(self.payloads.get("xss").unwrap().clone(),pb).await;
+                                }
+                            },
+                           _ => {
+                                panic!("Module not found");
                             }
                         }
+                    }
+                }
             }).await;
     }
 }
