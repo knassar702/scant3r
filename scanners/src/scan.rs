@@ -82,12 +82,9 @@ impl Scanner {
         let bar = ProgressBar::new(self.requests.len() as u64);
         bar.set_style(ProgressStyle::default_bar()
             .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos:>7}/{len:7} {msg}")
-            .tick_chars("⠁⠂⠄⡀⢀⠠⠐⠈ ")
+            .tick_chars("//—\\\r")
             .progress_chars("#>-"));
 
-        //let xss_scan = xss::Xss::new(requestt);
-        //xss_scan.value_scan(self.payloads.get("xss").unwrap().clone(),&_prog).await;
-        //xss_scan.name_scan(self.payloads.get("xss").unwrap().clone(),&_prog).await;
         stream::iter(&self.requests)
             .for_each_concurrent(concurrency, |request| {
                 let modules = &self.modules;
@@ -114,6 +111,7 @@ impl Scanner {
                                     xss_scan.value_scan(self.payloads.get("xss").unwrap().clone(),pb).await;
                                     xss_scan.name_scan(self.payloads.get("xss").unwrap().clone(),pb).await;
                                 }
+                                pb.inc(1);
                             },
                            _ => {
                                 panic!("Module not found");
