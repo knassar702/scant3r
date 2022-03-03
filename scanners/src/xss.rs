@@ -70,8 +70,8 @@ impl XssUrlParamsValue for Xss {
                 let _param = _param.clone();
                 let mut req = self.request.clone();
                 req.url = url.clone();
-                req.send().await;
-                if req.response_body.unwrap().contains("scanttrr") {
+                let resp = &req.send().await;
+                if resp.body.contains("scanttrr") {
                     reflected_parameters.insert(_param,url.clone());
                 }
             }
@@ -87,13 +87,13 @@ impl XssUrlParamsValue for Xss {
 
                 let mut req = self.request.clone();
                 req.url = self.injector.set_urlvalue(&param, payload, url.clone());
-                req.send().await;
-                if req.error.is_some() {
+                let res = req.send().await;
+                if res.error.is_some() {
+                    println!("\n\n\n\n{}",res.error.unwrap());
                     continue;
                 }
-                let body = req.response_body.as_ref().unwrap();
-                if body.contains(payload) {
-                    body.lines()
+                if res.body.contains(payload) {
+                    res.body.lines()
                         .enumerate()
                         .for_each(|x|{
 

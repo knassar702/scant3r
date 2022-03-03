@@ -29,7 +29,7 @@ impl Curl for Poc {
         // extract method
         curl.push_str(&format!(" -X {}", self.request.method));
         // proxy
-        if self.request.proxy.as_ref().unwrap().len() > 0 {
+        if self.request.proxy.as_ref().unwrap_or(&"".to_string()).len() > 0 {
             curl.push_str(&format!(" -x {}", self.request.proxy.as_ref().unwrap()));
         }
         curl

@@ -2,13 +2,23 @@
 use isahc::prelude::*;
 use isahc::Request;
 use isahc::http::{
-    HeaderValue,
     HeaderMap,
     StatusCode
 };
 use std::collections::HashMap;
 use tokio::time::Duration;
 use url::Url;
+use std::str::from_utf8;
+
+pub struct Resp {
+    pub url: Url,
+    pub status: StatusCode,
+    pub headers: HeaderMap,
+    pub body: String,
+    pub error: Option<String>
+}
+
+
 
 #[derive(Debug, Clone)]
 pub struct Msg {
@@ -18,10 +28,6 @@ pub struct Msg {
     pub body: Option<String>,
     pub redirect: Option<u32>,
     pub timeout: Option<u64>,
-    pub response_body: Option<String>,
-    pub response_status: Option<StatusCode>,
-    pub response_headers: Option<HeaderMap<HeaderValue>>,
-    pub error: Option<String>,
     pub proxy: Option<String>,
     pub delay: Option<u64>,
 }
@@ -82,22 +88,22 @@ impl Msg {
             body: None,
             redirect: None,
             timeout: None,
-            response_body: None,
-            response_status: None,
-            response_headers: None,
-            error: None,
             proxy: None,
             delay: None,
         }
     }
-    pub async fn send(&mut self) {
+    pub async fn send(&self) -> Resp {
+        // sleep with tokio
+        if let Some(delay) = self.delay {
+            tokio::time::delay_for(Duration::from_secs(delay)).await;
+        }
         let mut response = Request::builder()
             .method(self.method.as_str())
             .ssl_options(isahc::config::SslOption::DANGER_ACCEPT_INVALID_CERTS)
             .redirect_policy(isahc::config::RedirectPolicy::Limit(
                 self.redirect.unwrap_or(5),
             ));
-        if self.proxy.as_ref().unwrap().len() > 0 {
+        if self.proxy.as_ref().unwrap_or(&"".to_string()).len() > 0 {
                 response = response.proxy(self.proxy.as_ref().map(|proxy| proxy.as_str().parse().unwrap()));
         }
 
@@ -110,20 +116,23 @@ impl Msg {
             .unwrap()
             .send_async().await
         {
-            Ok(mut res) => {
-                self.response_status = Some(res.status());
-                self.response_body = Some(res.text().await.unwrap());
-                self.response_headers = Some(res.headers().clone());
-                self.error = None;
-            }
-            Err(e) => {
-                self.response_body = None;
-                self.error = Some(e.to_string());
-            }
-        };
-        // sleep with tokio
-        if let Some(delay) = self.delay {
-            tokio::time::delay_for(Duration::from_secs(delay)).await;
+            Ok(mut res) => async {
+                Resp {
+                    url: self.url.clone(),
+                    status: res.status(),
+                    headers: res.headers().clone(),
+                    body: from_utf8(&res.bytes().await.unwrap()).unwrap().to_string().clone(),
+                    error: None
+                }
+                }.await,
+            
+            Err(e) => Resp {
+                    url: self.url.clone(),
+                    status: StatusCode::INTERNAL_SERVER_ERROR,
+                    headers: HeaderMap::new(),
+                    body: "BRUH".to_string(),
+                    error: Some(e.to_string())
+                }
         }
     }
 }
