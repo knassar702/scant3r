@@ -50,6 +50,7 @@ pub fn args() -> ArgMatches {
                 Arg::new("headers")
                     .help("The headers to send")
                     .long("headers")
+                    .short('R')
                     .multiple_occurrences(true)
                     .takes_value(true),
             )

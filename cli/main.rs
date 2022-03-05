@@ -4,12 +4,13 @@ use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
 use std::collections::HashMap;
+use isahc::http::header;
 use scant3r_utils::{
     requests::{
         Msg,
         Settings
     },
-    extract_headers
+    extract_headers_vec
 };
 use scanners::scan;
 mod args;
@@ -33,11 +34,7 @@ async fn main() {
 
             // setup the scanner module
             let mut reqs = Vec::new();
-
-            let header = sub.value_of("headers").map(|x| {
-                                extract_headers(x.to_string())
-            }).unwrap_or(HashMap::new());
-
+            let header = extract_headers_vec(sub.values_of("headers").unwrap().map(|x| x.to_string()).collect::<Vec<String>>());
             urls.iter().for_each(|url| {
                 let mut live_check = Msg::new()
                     .method(sub.value_of("method")
@@ -60,6 +57,7 @@ async fn main() {
                 }
                 reqs.push(live_check.clone());
             });
+            drop(urls);
             let mut scan_settings = scan::Scanner::new(vec!["xss"], reqs);
             scan_settings.load_payloads();
             scan_settings.scan(sub.value_of("concurrency").unwrap().parse::<usize>().unwrap()).await;
