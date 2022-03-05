@@ -5,6 +5,8 @@ pub mod poc;
 use std::collections::HashMap;
 use regex::Regex;
 
+
+
 pub fn extract_headers(header: String) -> HashMap<String, String> {
     // regex to extract headers
     let re = Regex::new(r"(.*):\s(.*)").unwrap();
@@ -12,6 +14,19 @@ pub fn extract_headers(header: String) -> HashMap<String, String> {
     for cap in re.captures_iter(header.as_str()) {
         headers.insert(cap[1].to_string(), cap[2].to_string());
     }
+    headers
+}
+
+
+pub fn extract_headers_vec(header: Vec<String>) -> HashMap<String, String> {
+    // regex to extract headers
+    let re = Regex::new(r"(.*):\s(.*)").unwrap();
+    let mut headers: HashMap<String, String> = HashMap::new();
+    header.iter().for_each(|x| {
+        for cap in re.captures_iter(x.as_str()) {
+            headers.insert(cap[1].to_string(), cap[2].to_string());
+        }
+    });
     headers
 }
 
