@@ -26,11 +26,8 @@ scripting = {path = "./scripting"}
 serde_json = "1.0.79"
 clap = "3.0.14"
 home = "0.5.3"
-colog = "1.1.0"
-log = "0.4.14"
 tokio = { version = "0.2.18", features = ["full"] }
 futures = "0.3.19"
-simplelog = "0.11.2"
 indicatif = "0.16.2"
 regex = "1.5.4"
 hlua = "0.3"

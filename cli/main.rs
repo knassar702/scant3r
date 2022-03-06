@@ -59,7 +59,10 @@ async fn main() {
             drop(urls);
             let mut scan_settings = scan::Scanner::new(vec!["xss"], reqs);
             scan_settings.load_payloads();
-            scan_settings.scan(sub.value_of("concurrency").unwrap().parse::<usize>().unwrap()).await;
+            scan_settings.scan(sub.value_of("concurrency")
+                               .unwrap()
+                               .parse::<usize>()
+                               .unwrap()).await;
         }
         _ => println!("No subcommand was used"),
     }
