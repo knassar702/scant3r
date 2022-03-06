@@ -522,6 +522,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "hlua"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ed9db71fff2e55b83d24bbbdd9ad13f0d1ff79bc265f544370f39ee0825d54e4"
+dependencies = [
+ "libc",
+ "lua52-sys",
+]
+
+[[package]]
 name = "home"
 version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1151,7 +1161,7 @@ dependencies = [
  "clap",
  "colog",
  "futures",
- "hlua",
+ "hlua 0.3.1",
  "home",
  "indicatif",
  "isahc",
@@ -1159,6 +1169,7 @@ dependencies = [
  "regex",
  "scanners",
  "scant3r_utils",
+ "scripting",
  "serde_json",
  "simplelog",
  "tokio 0.2.25",
@@ -1185,6 +1196,13 @@ checksum = "8f05ba609c234e60bee0d547fe94a4c7e9da733d1c962cf6e59efa4cd9c8bc75"
 dependencies = [
  "lazy_static",
  "winapi 0.3.9",
+]
+
+[[package]]
+name = "scripting"
+version = "0.1.0"
+dependencies = [
+ "hlua 0.4.1",
 ]
 
 [[package]]

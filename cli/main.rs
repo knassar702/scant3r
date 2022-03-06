@@ -1,10 +1,9 @@
 extern crate scant3r_utils;
 extern crate scanners;
+
 use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
-use std::collections::HashMap;
-use isahc::http::header;
 use scant3r_utils::{
     requests::{
         Msg,
@@ -25,8 +24,6 @@ async fn main() {
         Some("scan") => {
 
             let sub = arg.subcommand_matches("scan").unwrap();
-
-            // read urls file
             let urls = {
                 let read_file = File::open(sub.value_of("urls").unwrap()).unwrap();
                 BufReader::new(read_file).lines().map(|x| x.unwrap()).collect::<Vec<String>>()
@@ -34,7 +31,9 @@ async fn main() {
 
             // setup the scanner module
             let mut reqs = Vec::new();
-            let header = extract_headers_vec(sub.values_of("headers").unwrap().map(|x| x.to_string()).collect::<Vec<String>>());
+            let header = extract_headers_vec(sub.values_of("headers").unwrap()
+                                             .map(|x| x.to_string())
+                                             .collect::<Vec<String>>());
             urls.iter().for_each(|url| {
                 let mut live_check = Msg::new()
                     .method(sub.value_of("method")

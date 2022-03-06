@@ -1,15 +1,14 @@
 extern crate scant3r_utils;
 use indicatif::{ProgressStyle,ProgressBar};
 use scant3r_utils::requests::Msg;
-//#[ path = "./xss.rs"] mod xss;
-mod xss;
-use xss::XssUrlParamsValue;
 use futures::{stream, StreamExt};
 use std::collections::HashMap;
 use std::io::prelude::*;
 use std::path::Path;
 use home::home_dir;
 
+mod xss;
+use xss::XssUrlParamsValue;
 
 // create a Const with a list of blocking headers
 const BLOCKING_HEADERS: [&str; 10] = [ 
@@ -92,7 +91,7 @@ impl Scanner {
                         match module {
                             "xss" => {
                                 let mut blocking_headers = false;
-                                let resp = request.send().await;
+                                let resp = request.send().await.unwrap();
                                 BLOCKING_HEADERS.iter().for_each(|header| {
                                     if resp.headers.contains_key("Content-Type") {
                                         if resp.headers.get("Content-Type").unwrap() == header {

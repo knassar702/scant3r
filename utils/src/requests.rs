@@ -92,7 +92,7 @@ impl Msg {
             delay: None,
         }
     }
-    pub async fn send(&self) -> Resp {
+    pub async fn send(&self) -> Result<Resp,isahc::Error> {
         // sleep with tokio
         if let Some(delay) = self.delay {
             tokio::time::delay_for(Duration::from_secs(delay)).await;
@@ -117,22 +117,18 @@ impl Msg {
             .send_async().await
         {
             Ok(mut res) => async {
-                Resp {
+                Ok(Resp {
                     url: self.url.clone(),
                     status: res.status(),
                     headers: res.headers().clone(),
                     body: from_utf8(&res.bytes().await.unwrap()).unwrap().to_string().clone(),
                     error: None
-                }
+                })
                 }.await,
             
-            Err(e) => Resp {
-                    url: self.url.clone(),
-                    status: StatusCode::INTERNAL_SERVER_ERROR,
-                    headers: HeaderMap::new(),
-                    body: "BRUH".to_string(),
-                    error: Some(e.to_string())
-                }
+            Err(e) => {
+                Err(e)
+            }
         }
     }
 }

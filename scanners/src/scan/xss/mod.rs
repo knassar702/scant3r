@@ -73,7 +73,7 @@ impl XssUrlParamsValue for Xss<'_> {
                 let _param = _param.clone();
                 let mut req = self.request.clone();
                 req.url = url.clone();
-                let resp = &req.send().await;
+                let resp = &req.send().await.unwrap();
                 if resp.body.contains("scanttrr") {
                     reflected_parameters.insert(_param,url.clone());
                 }
@@ -90,27 +90,23 @@ impl XssUrlParamsValue for Xss<'_> {
 
                 let mut req = self.request.clone();
                 req.url = self.injector.set_urlvalue(&param, payload, url.clone());
-                let res = req.send().await;
-                if res.error.is_some() {
-                    println!("\n\n\n\n{}",res.error.unwrap());
-                    continue;
-                }
+                let res = req.send().await.unwrap_or_else(|_| panic!("asfkasofk"));
                 if res.body.contains(payload) {
                     res.body.lines()
                         .enumerate()
                         .for_each(|(line,found)|{
 
-                        if found.contains(payload) == true {
-                            let report = Poc {
-                                name: "sg".to_owned(),
-                                payload: payload.to_owned(),
-                                request: &req,
-                            };
-                            // alert emoji
-                            let m = format!("{} {}\nLine: {}",Emoji("🚨", "alert"),report.curl(),&line);
-                            _prog.println(&m);
-                            _found.insert(req.url.clone(),m);
-                        }
+                            if found.contains(payload) == true {
+                                let report = Poc {
+                                    name: "sg".to_owned(),
+                                    payload: payload.to_owned(),
+                                    request: &req,
+                                };
+                                // alert emoji
+                                let m = format!("{} {}\nLine: {}",Emoji("🚨", "alert"),report.curl(),&line);
+                                _prog.println(&m);
+                                _found.insert(req.url.clone(),m);
+                            }
                     });
                     break;
                 } else {
