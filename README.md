@@ -16,6 +16,10 @@
 
 ***
 
+#### ⚠️ ATTENTION 
+* https://github.com/knassar702/scant3r/discussions/49
+--- 
+
 ### Description
 scant3r is a module-based web security tool, our goal is to make customizable tool with providing many functions and features that what you need for write a security module for an example (cookie parser/http request class/opts parsing etc ..) to make write a security module easy and simple for saving your time also we made it customizable as possible for example you can change what you want for example options parser you can change/add more options by a config file and scanning map content_types help message logos etc ...
 
