@@ -9,14 +9,14 @@ pub struct Injector {
 
 pub trait Urlinjector {
     fn url_value(&self,_payload: &str) -> HashMap<String,Vec<Url>>;
-    fn set_urlvalue(&self,param: &str,_payload: &str,_url: Url) -> Url;
+    fn set_urlvalue(&self,param: &str,_payload: &str) -> Url;
 }
 
 
 
 impl Urlinjector for Injector {
-    fn set_urlvalue(&self,param: &str,_payload: &str,_url: Url) -> Url {
-        let mut url = _url.clone();
+    fn set_urlvalue(&self,param: &str,_payload: &str) -> Url {
+        let mut url = self.request.clone();
         let mut final_params = HashMap::new();
 
         url.query_pairs()
@@ -27,7 +27,9 @@ impl Urlinjector for Injector {
                 final_params.insert(k.clone().to_string(),v.clone().to_string());
             });
         url.query_pairs_mut().clear();
-        *final_params.get_mut(param).unwrap() = _payload.to_string();
+        if final_params.get_mut(param).is_some() == true {
+            *final_params.get_mut(param).unwrap() = _payload.to_string();
+        }
 
 
         final_params.iter()
