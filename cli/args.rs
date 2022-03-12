@@ -161,6 +161,23 @@ pub fn args() -> ArgMatches {
                     .default_value("xss"),
                 )
             ,
+            Command::new("api")
+                .about("Scan a website using the API")
+                .arg(
+                    Arg::new("host")
+                        .help("The host to bind")
+                        .long("host")
+                        .takes_value(true)
+                        .default_value("localhost")
+                        )
+                .arg(
+                    Arg::new("port")
+                        .help("The port to bind")
+                        .long("port")
+                        .takes_value(true)
+                        .default_value("1338")
+                        )
+            ,
             Command::new("pipe")
                 .about("Scan a website passively")
 

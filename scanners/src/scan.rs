@@ -106,7 +106,7 @@ impl Scanner {
                                     let xss_scan = xss::Xss::new(request);
                                     let _value = xss_scan.value_scan(self.payloads.get("xss").unwrap().clone(),pb).await;
                                 }
-                                pb.inc(1);
+//                                pb.inc(1);
                             },
                            _ => {
                                 panic!("Module not found");

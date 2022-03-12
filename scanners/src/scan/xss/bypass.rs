@@ -1,23 +1,54 @@
 
-pub struct Analyzer {
-    pub response: String,
-    pub payload: String,
+#[path = "parser.rs"] mod parser;
+use parser::Location;
+
+pub trait Payloads {
+    fn generate(&self) -> String;
 }
 
-impl Analyzer {
-    pub fn new(response: String, payload: String) -> Analyzer {
-        Analyzer {
-            response: String::new(),
-            payload: String::new(),
+pub struct JSPayload {
+    pub reflect: Location
+}
+
+impl JSPayload {
+    pub fn new(reflect: Location) -> JSPayload {
+        JSPayload {
+            reflect: reflect
         }
     }
+}
 
-    pub fn analize(&self) -> String {
-        String::new()
-    }
-
-    pub fn gen_payload(&self) -> String {
-        String::new()
+impl Payloads for JSPayload {
+    fn generate(&self) -> String {
+        let mut payload = String::new();
+        match self.reflect {
+            Location::AttrName(ref attr) => {
+                payload.push_str("document.getElementById(\"");
+                payload.push_str(attr);
+                payload.push_str("\").value");
+            },
+            Location::AttrValue(ref attr) => {
+                payload.push_str("document.getElementById(\"");
+                payload.push_str(attr);
+                payload.push_str("\").value");
+            },
+            Location::Comment(ref attr) => {
+                payload.push_str("document.body.innerHTML");
+            },
+            Location::Text(ref attr) => {
+                payload.push_str("document.cookie");
+            },
+            Location::TagName(ref attr) => {
+                payload.push_str("document.getElementById(\"");
+                payload.push_str(attr);
+                payload.push_str("\").value");
+            },
+            _ => {
+                payload.push_str("document.getElementById(\"");
+                payload.push_str("\").value");
+            }
+        }
+        payload
     }
 }
 

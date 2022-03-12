@@ -1,6 +1,6 @@
 extern crate scant3r_utils;
 extern crate scanners;
-
+extern crate webapi;
 use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
@@ -17,7 +17,6 @@ mod args;
 
 #[tokio::main]
 async fn main() {
-
     let arg = args::args();
     match arg.subcommand_name() {
 
@@ -63,6 +62,10 @@ async fn main() {
                                .unwrap()
                                .parse::<usize>()
                                .unwrap()).await;
+        }
+        Some("api") => {
+            let sub = arg.subcommand_matches("api").unwrap();
+            webapi::main(sub.value_of("host").unwrap(), sub.value_of("port").unwrap().parse::<u16>().unwrap());
         }
         _ => println!("No subcommand was used"),
     }

@@ -1,0 +1,13 @@
+[package]
+name = "webapi"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-web = "4.0.0"
+scanners = { path = "../scanners"}
+scant3r_utils = {path = "../utils"}
+serde = "1.0"
+serde_json = "1.0"

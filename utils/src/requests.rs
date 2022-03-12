@@ -1,4 +1,5 @@
 #![allow(dead_code)]
+use isahc::AsyncBody;
 use isahc::prelude::*;
 use isahc::Request;
 use isahc::http::{
@@ -131,4 +132,5 @@ impl Msg {
             }
         }
     }
+
 }
