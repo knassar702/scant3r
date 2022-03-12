@@ -24,18 +24,22 @@ impl Urlinjector for Injector {
             .collect::<HashMap<_, _>>()
             .iter()
             .for_each(|(k,v)| {
-                final_params.insert(k.clone().to_string(),v.clone().to_string());
+                if k == param {
+                    final_params.insert(k.to_string(),format!("{}{}",v.to_string(),_payload));
+                } else {
+                    final_params.insert(k.to_string(),v.to_string());
+                }
             });
         url.query_pairs_mut().clear();
-        if final_params.get_mut(param).is_some() == true {
-            *final_params.get_mut(param).unwrap() = _payload.to_string();
-        }
+        url.query_pairs_mut().extend_pairs(final_params);
+        
+//        *final_params.get_mut(param).unwrap() = _payload.to_string();
 
-
+       /* *final_params.entry(param.to_string()).or_insert(_payload.to_string()) = _payload.to_string();
         final_params.iter()
             .for_each(|(k,v)| {
                 url.query_pairs_mut().append_pair(k,v);
-            });
+            });*/
         url
 
     }
