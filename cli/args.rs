@@ -51,6 +51,7 @@ pub fn args() -> ArgMatches {
                     .help("The headers to send")
                     .long("headers")
                     .short('R')
+                    .default_value("")
                     .multiple_occurrences(true)
                     .takes_value(true),
             )
