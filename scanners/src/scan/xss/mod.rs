@@ -5,25 +5,21 @@ use scant3r_utils::{
         Urlinjector,
         Injector
     },
-    poc::{
-        Poc,
-        Curl
-    },
     requests::Msg
 };
 use async_trait::async_trait;
 use std::collections::HashMap;
 use indicatif::ProgressBar;
-use console::Emoji;
-use crate::url_encode;
+use log::error;
 
 mod parser;
 use parser::{
     parse,
-    html_search,
-    Location
+    html_search
 };
+
 mod bypass;
+use bypass::generate_xss_payload;
 // create a struct with refrence Vec
 
 
@@ -42,7 +38,7 @@ pub trait XssUrlParamsName {
 #[async_trait]
 pub trait XssUrlParamsValue {
     // scan url params value
-    async fn value_reflected(&self) -> HashMap<String,url::Url>;
+    async fn value_reflected(&self) -> Vec<String>;
     async fn value_scan(&self, payloads: Vec<String>,_prog: &ProgressBar) ->HashMap<url::Url, String>;
 }
 
@@ -73,35 +69,26 @@ impl XssUrlParamsName for Xss<'_> {
 #[async_trait]
 impl XssUrlParamsValue for Xss<'_> {
 
-    async fn value_reflected(&self) -> HashMap<String,url::Url>  {
-        let mut reflected_parameters: HashMap<String,url::Url> = HashMap::new();
-        let mut bruh: HashMap<String,(url::Url,Vec<Location>)> = HashMap::new();
-        let check_chars = vec!["<",">","'","\"","=","`","/"," "];
-        let mut check_allowed: Vec<&str> = Vec::new();
+    async fn value_reflected(&self) -> Vec<String>  {
+        let mut reflected_parameters: Vec<String> = Vec::new();
         let check_requests = self.injector.url_value("scanttrr");
         for (_param,urls) in check_requests {
             for url in urls {
                 let _param = _param.clone();
                 let mut req = self.request.clone();
                 req.url = url.clone();
-                let resp = &req.send().await.unwrap();
-                let t = parse(resp.body.as_str(), "scanttrr".to_string());
-                if t.len() > 0 {
-                    bruh.insert(_param.clone(),(url.clone(),t));
-                }
-                if resp.body.contains("scanttrr") {
-                    for Char in check_chars.iter() {
-                        let c = self.injector.set_urlvalue(_param.as_str(), format!("scant3rrr{}",Char).as_str());
-                        let mut req = self.request.clone();
-                        req.url = c.clone();
-                        let resp = &req.send().await.unwrap();
-                        let t = parse(resp.body.as_str(), Char.to_string());
-                        if t.len() > 0 {
-                            bruh.insert(_param.clone(),(url.clone(),t));
+                match req.send().await {
+                    Ok(resp) => {
+                        if resp.body.contains("scanttrr") {
+                            reflected_parameters.push(_param);
                         }
+                    },
+                    Err(e) => {
+                        error!("{}",e);
+                        continue;
                     }
-                    reflected_parameters.insert(_param,url.clone());
-                }
+                };
+
             }
         }
         reflected_parameters
@@ -109,46 +96,38 @@ impl XssUrlParamsValue for Xss<'_> {
 
     async fn value_scan(&self,payloads: Vec<String>,_prog: &ProgressBar) -> HashMap<url::Url, String>{
         let mut _found: HashMap<url::Url,String> = HashMap::new();
-        for (param,url) in self.value_reflected().await {
+        for param in self.value_reflected().await {
 
             for payload in &payloads {
 
-                if payload.len() == 0 {
-                    continue;
-                }
-                let mut req = self.request.clone();
-                req.url = self.injector.set_urlvalue(&param, payload);
-                let res = req.send().await.unwrap_or_else(|_| panic!("asfkasofk"));
-                let _find = parse(res.body.as_str(), payload.to_string().replace("\n", ""));
-                if _find.len() > 0 {
-                    _find.iter().for_each(|x| {
-                        match x {
-                            Location::AttrName(name) => {
-                                println!("ATTR NAME {:?}", name);
-                            },
-                            Location::AttrValue(value) => {
-                                println!("ATTR VALUE {:?}", value);
-                            },
-                            Location::TagName(name) => {
-                                println!("TAG NAME {:?}", name);
-                            },
-                            Location::Comment(comment) => {
-                                req.url = self.injector.set_urlvalue(&param, "--><img src=x onerror=alert()>");
-                            },
-                            Location::Text(text) => {
-                                println!("TEXT {:?}", text);
-                            },
-                            e => {
-                                println!("{:?}", e);
-                            }
-                        }
-                    });
-                    let resp = html_search(req.send().await.unwrap_or_else(|_| panic!("asfkasofk")).body.as_str(), "a[onclick=alert()]");
-                    println!("{:?}", resp);
+                if payload.len() == 0 {continue;}
 
-                } else {
-                    continue;
-                }
+                let mut req = self.request.clone();
+                req.url = self.injector.set_urlvalue(&param, "hackerman");
+                let res = match req.send().await {
+                    Ok(resp) => resp,
+                    Err(e) => {
+                        error!("{}",e);
+                        continue;
+                    }
+                };
+                for x in parse(&res.body.as_str(), "hackerman".to_string()).iter() {
+                        /*
+                         * Check if the payload is in the html and analyze it for chosen tags
+                         * */
+                        let data = generate_xss_payload(x);
+                        for (js,generated_payload) in data.iter() {
+                            req.url = self.injector.set_urlvalue(&param, generated_payload);
+                            match req.send().await {
+                                Ok(resp) => {
+                                    let d = html_search(resp.body.as_str(), format!("*[{}='alert()']",js).as_str());
+                                    _prog.println(format!("vv {}",d));
+                                    _prog.println(format!("URL {}",req.url.as_str()));
+                                },
+                                Err(e) => error!("{}",e)
+                            };
+                        }
+                    }
             }
         }
         _found

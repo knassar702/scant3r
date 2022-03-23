@@ -1,6 +1,9 @@
 extern crate scant3r_utils;
 extern crate scanners;
-extern crate webapi;
+extern crate scripting;
+extern crate simplelog;
+use simplelog::*;
+
 use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
@@ -12,11 +15,19 @@ use scant3r_utils::{
     extract_headers_vec
 };
 use scanners::scan;
+use scripting::func;
 mod args;
 
 
 #[tokio::main]
 async fn main() {
+    CombinedLogger::init(
+        vec![
+            TermLogger::new(LevelFilter::Warn, Config::default(), TerminalMode::Mixed, ColorChoice::Auto),
+            WriteLogger::new(LevelFilter::Info, Config::default(), File::create("my_rust_binary.log").unwrap()),
+        ]
+    ).unwrap();
+    func::execute_lua("scripting/scripts/hello.lua");
     let arg = args::args();
     match arg.subcommand_name() {
 
@@ -62,10 +73,6 @@ async fn main() {
                                .unwrap()
                                .parse::<usize>()
                                .unwrap()).await;
-        }
-        Some("api") => {
-            let sub = arg.subcommand_matches("api").unwrap();
-            webapi::main(sub.value_of("host").unwrap(), sub.value_of("port").unwrap().parse::<u16>().unwrap());
         }
         _ => println!("No subcommand was used"),
     }

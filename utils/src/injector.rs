@@ -32,14 +32,6 @@ impl Urlinjector for Injector {
             });
         url.query_pairs_mut().clear();
         url.query_pairs_mut().extend_pairs(final_params);
-        
-//        *final_params.get_mut(param).unwrap() = _payload.to_string();
-
-       /* *final_params.entry(param.to_string()).or_insert(_payload.to_string()) = _payload.to_string();
-        final_params.iter()
-            .for_each(|(k,v)| {
-                url.query_pairs_mut().append_pair(k,v);
-            });*/
         url
 
     }

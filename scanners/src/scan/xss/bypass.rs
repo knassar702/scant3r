@@ -1,54 +1,16 @@
-
 #[path = "parser.rs"] mod parser;
-use parser::Location;
+use crate::scan::xss::parser::Location;
+use std::collections::HashMap;
 
-pub trait Payloads {
-    fn generate(&self) -> String;
+pub fn generate_xss_payload(_reflect: &Location) -> HashMap<&str, String> {
+    let mut payload = HashMap::new();
+    match _reflect {
+        Location::AttrValue(ref _attr) => {
+            payload.insert("onerror","\"onerror=\"alert()".to_string());
+            payload.insert("onmouseover","\"onmouseover=\"alert()".to_string());
+            payload.insert("onmouseout","\"onmouseout=\"alert()".to_string());
+        },
+        _ => {}
+    };
+    payload
 }
-
-pub struct JSPayload {
-    pub reflect: Location
-}
-
-impl JSPayload {
-    pub fn new(reflect: Location) -> JSPayload {
-        JSPayload {
-            reflect: reflect
-        }
-    }
-}
-
-impl Payloads for JSPayload {
-    fn generate(&self) -> String {
-        let mut payload = String::new();
-        match self.reflect {
-            Location::AttrName(ref attr) => {
-                payload.push_str("document.getElementById(\"");
-                payload.push_str(attr);
-                payload.push_str("\").value");
-            },
-            Location::AttrValue(ref attr) => {
-                payload.push_str("document.getElementById(\"");
-                payload.push_str(attr);
-                payload.push_str("\").value");
-            },
-            Location::Comment(ref attr) => {
-                payload.push_str("document.body.innerHTML");
-            },
-            Location::Text(ref attr) => {
-                payload.push_str("document.cookie");
-            },
-            Location::TagName(ref attr) => {
-                payload.push_str("document.getElementById(\"");
-                payload.push_str(attr);
-                payload.push_str("\").value");
-            },
-            _ => {
-                payload.push_str("document.getElementById(\"");
-                payload.push_str("\").value");
-            }
-        }
-        payload
-    }
-}
-

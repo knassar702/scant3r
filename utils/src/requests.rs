@@ -1,5 +1,4 @@
 #![allow(dead_code)]
-use isahc::AsyncBody;
 use isahc::prelude::*;
 use isahc::Request;
 use isahc::http::{
@@ -105,7 +104,10 @@ impl Msg {
                 self.redirect.unwrap_or(5),
             ));
         if self.proxy.as_ref().unwrap_or(&"".to_string()).len() > 0 {
-                response = response.proxy(self.proxy.as_ref().map(|proxy| proxy.as_str().parse().unwrap()));
+                response = response.proxy(self.proxy.as_ref()
+                                                    .map(|proxy| proxy.as_str()
+                                                                       .parse()
+                                                                       .unwrap()));
         }
 
         for (key, value) in &self.headers {

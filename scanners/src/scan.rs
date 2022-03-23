@@ -72,6 +72,7 @@ impl Scanner {
                     }
             }
     }
+
     pub async fn scan(&self,concurrency: usize) {
         if self.payloads.len() == 0 {
             panic!("No payloads loaded");
@@ -91,7 +92,13 @@ impl Scanner {
                         match module {
                             "xss" => {
                                 let mut blocking_headers = false;
-                                let resp = request.send().await.unwrap();
+                                let resp = match request.send().await {
+                                    Ok(resp) => resp,
+                                    Err(_) => {
+                                        pb.inc(1);
+                                        return;
+                                    }
+                                };
                                 BLOCKING_HEADERS.iter().for_each(|header| {
                                     if resp.headers.contains_key("Content-Type") {
                                         if resp.headers.get("Content-Type").unwrap() == header {
@@ -106,7 +113,7 @@ impl Scanner {
                                     let xss_scan = xss::Xss::new(request);
                                     let _value = xss_scan.value_scan(self.payloads.get("xss").unwrap().clone(),pb).await;
                                 }
-//                                pb.inc(1);
+                                pb.inc(1);
                             },
                            _ => {
                                 panic!("Module not found");
