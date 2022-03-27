@@ -24,9 +24,10 @@ end
 --
 --
 --
-local data = require("socket")
 function data(name)
     print("data")
     return name
 end
-print("53535")
+
+local bruh = data("HACKER")
+print(bruh)

@@ -8,7 +8,9 @@ use std::path::Path;
 use home::home_dir;
 
 mod xss;
+mod payloads;
 use xss::XssUrlParamsValue;
+
 
 // create a Const with a list of blocking headers
 const BLOCKING_HEADERS: [&str; 10] = [ 
@@ -22,6 +24,8 @@ const BLOCKING_HEADERS: [&str; 10] = [
 		"image/bmp",
 		"image/gif",
 		"application/rss+xml"];
+
+
 
 #[derive(Debug, Clone)]
 pub struct Scanner {
@@ -110,7 +114,7 @@ impl Scanner {
                                 });
 
                                 if !blocking_headers {
-                                    let xss_scan = xss::Xss::new(request);
+                                    let xss_scan = xss::Xss::new(request,false);
                                     let _value = xss_scan.value_scan(self.payloads.get("xss").unwrap().clone(),pb).await;
                                 }
                                 pb.inc(1);

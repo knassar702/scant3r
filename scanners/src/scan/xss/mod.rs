@@ -1,5 +1,6 @@
 extern crate scant3r_utils;
 
+use futures::TryFutureExt;
 use scant3r_utils::{
     Injector::{
         Urlinjector,
@@ -15,11 +16,17 @@ use log::error;
 mod parser;
 use parser::{
     parse,
-    html_search
+    html_search,
 };
 
+
 mod bypass;
-use bypass::generate_xss_payload;
+use bypass::{
+    generate_xss_payload,
+    match_qoutes,
+    match_double_qoutes,
+    PayloadGen
+};
 // create a struct with refrence Vec
 
 
@@ -45,10 +52,10 @@ pub trait XssUrlParamsValue {
 
 
 impl Xss<'_> {
-    pub fn new(request: &Msg) -> Xss<'_> {
+    pub fn new(request: &Msg,keep_value: bool) -> Xss<'_> {
         Xss {
             request,
-            injector: Injector{request: request.url.clone()},
+            injector: Injector{request: request.url.clone(), keep_value},
         }
     }
 
@@ -99,9 +106,9 @@ impl XssUrlParamsValue for Xss<'_> {
         for param in self.value_reflected().await {
 
             for payload in &payloads {
-
                 if payload.len() == 0 {continue;}
-
+                let payload = payload.replace("JS_FUNC","alert")
+                                     .replace("JS_VALUE","scanttrr");
                 let mut req = self.request.clone();
                 req.url = self.injector.set_urlvalue(&param, "hackerman");
                 let res = match req.send().await {
@@ -115,17 +122,17 @@ impl XssUrlParamsValue for Xss<'_> {
                         /*
                          * Check if the payload is in the html and analyze it for chosen tags
                          * */
-                        let data = generate_xss_payload(x);
-                        for (js,generated_payload) in data.iter() {
-                            req.url = self.injector.set_urlvalue(&param, generated_payload);
+                        req.url = self.injector.set_urlvalue(&param, &payload);
+                        let vvvv = PayloadGen::new(&res.body.as_str(), x,"hackerman",vec!["bruh"]);
+                        for pay in vvvv.analyze().iter() {
+                            req.url = self.injector.set_urlvalue(&param, &pay);
                             match req.send().await {
                                 Ok(resp) => {
-                                    let d = html_search(resp.body.as_str(), format!("*[{}='alert()']",js).as_str());
-                                    _prog.println(format!("vv {}",d));
-                                    _prog.println(format!("URL {}",req.url.as_str()));
+                                    let d = html_search(resp.body.as_str(),"*[onerror='alert()']");
                                 },
-                                Err(e) => error!("{}",e)
+                                Err(e) => {continue;}
                             };
+                            _prog.println(format!("FFFFFFFFFf {:?} | {}",&x,&pay));
                         }
                     }
             }

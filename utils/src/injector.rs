@@ -1,8 +1,10 @@
 use std::collections::HashMap;
 use url::Url;
 
+#[derive(Debug, Clone)]
 pub struct Injector {
     pub request: Url,
+    pub keep_value: bool,
 
 }
 
@@ -11,8 +13,6 @@ pub trait Urlinjector {
     fn url_value(&self,_payload: &str) -> HashMap<String,Vec<Url>>;
     fn set_urlvalue(&self,param: &str,_payload: &str) -> Url;
 }
-
-
 
 impl Urlinjector for Injector {
     fn set_urlvalue(&self,param: &str,_payload: &str) -> Url {
@@ -25,7 +25,14 @@ impl Urlinjector for Injector {
             .iter()
             .for_each(|(k,v)| {
                 if k == param {
-                    final_params.insert(k.to_string(),format!("{}{}",v.to_string(),_payload));
+                    final_params.insert(k.to_string(),{
+                        if self.keep_value == true {
+                            format!("{}{}",v.to_string(),_payload)
+                        } else {
+                            format!("{}",_payload)
+                        }
+
+                    });
                 } else {
                     final_params.insert(k.to_string(),v.to_string());
                 }
@@ -35,8 +42,6 @@ impl Urlinjector for Injector {
         url
 
     }
-
-    fn url_value(&self,_payload: &str) -> HashMap<String,Vec<Url>> {
         /*
          * Set the payload to every GET parameter in the url
          *
@@ -49,6 +54,8 @@ impl Urlinjector for Injector {
          * {"param1":url::Url::parse("http://example.com/index.php?param1=value1hacker&param2=value2").unwrap(),"param2":url::Url::parse("http://example.com/index.php?param1=value1&param2=value2hacker").unwrap()}
          * ```
          * */
+    fn url_value(&self,_payload: &str) -> HashMap<String,Vec<Url>> {
+
         let url = self.request.clone();
         let _params: HashMap<_,_> = url.query_pairs()
                                        .collect::<HashMap<_, _>>();

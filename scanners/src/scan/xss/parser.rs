@@ -2,6 +2,7 @@
 use scraper::Html;
 use scraper::Selector;
 
+#[derive(Debug)]
 pub enum Location {
     AttrValue(String),
     AttrName(String),
@@ -23,10 +24,7 @@ pub fn html_search(html: &str, pattern: &str) -> String {
 
 pub fn parse(html: &str,payload: String) -> Vec<Location> {
     let mut found: Vec<Location> = Vec::new();
-    if payload.len() == 0 {
-        println!("BRUH");
-        return found;
-    }
+    if payload.len() == 0 {return found;}
     let document = Html::parse_document(html);
     document.tree.values().for_each(|node| {
         // find_payloadword in the html without the tag name

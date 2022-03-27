@@ -1,6 +1,6 @@
 extern crate scant3r_utils;
 extern crate scanners;
-extern crate scripting;
+//extern crate scripting;
 extern crate simplelog;
 use simplelog::*;
 
@@ -15,7 +15,7 @@ use scant3r_utils::{
     extract_headers_vec
 };
 use scanners::scan;
-use scripting::func;
+//use scripting::func;
 mod args;
 
 
@@ -27,7 +27,7 @@ async fn main() {
             WriteLogger::new(LevelFilter::Info, Config::default(), File::create("my_rust_binary.log").unwrap()),
         ]
     ).unwrap();
-    func::execute_lua("scripting/scripts/hello.lua");
+  //  func::execute_lua("scripting/scripts/hello.lua");
     let arg = args::args();
     match arg.subcommand_name() {
 
