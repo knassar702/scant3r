@@ -1,4 +1,5 @@
 extern crate scant3r_utils;
+extern crate yaml_rust;
 use indicatif::{ProgressStyle,ProgressBar};
 use scant3r_utils::requests::Msg;
 use futures::{stream, StreamExt};
@@ -6,6 +7,10 @@ use std::collections::HashMap;
 use std::io::prelude::*;
 use std::path::Path;
 use home::home_dir;
+use yaml_rust::{
+    YamlLoader,
+    Yaml,
+};
 
 mod xss;
 mod payloads;
@@ -44,7 +49,30 @@ impl Scanner {
             requests,
         }
     }
-
+    
+    pub fn loader(&self) -> HashMap<String,String> {
+       let mut payloads = HashMap::new();
+       // load ~/.scant3r/config.yaml file
+       let config_file = home_dir().unwrap().join(".scant3r").join("config.yaml");
+       if config_file.exists() {
+           let mut file = std::fs::File::open(config_file).unwrap();
+           let mut contents = String::new();
+           file.read_to_string(&mut contents).unwrap();
+           let docs = YamlLoader::load_from_str(&contents).unwrap();
+           // extract files value
+           // modules:
+           //   xss:
+           //     files:
+          //        html_tags: ~/scant3r/txt
+           let x = &docs[0]["modules"]["xss"]["files"];
+           let v = x.as_hash().unwrap();
+           v.iter().for_each(|(k,v)| {
+               // read v file content
+               let mut fiile = std::fs::File::open(v.as_str().unwrap()).unwrap();
+           });
+       }
+       payloads
+    }
     pub fn load_payloads(&mut self) {
         let scant3r_dir = home_dir().unwrap().join(".scant3r/");
         for module in self.modules.clone() {
@@ -81,6 +109,7 @@ impl Scanner {
         if self.payloads.len() == 0 {
             panic!("No payloads loaded");
         }
+        //self.loader();
         let bar = ProgressBar::new(self.requests.len() as u64);
         bar.set_style(ProgressStyle::default_bar()
             .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos:>7}/{len:7} {msg}")

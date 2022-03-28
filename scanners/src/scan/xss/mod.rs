@@ -1,6 +1,5 @@
 extern crate scant3r_utils;
 
-use futures::TryFutureExt;
 use scant3r_utils::{
     Injector::{
         Urlinjector,
@@ -21,12 +20,7 @@ use parser::{
 
 
 mod bypass;
-use bypass::{
-    generate_xss_payload,
-    match_qoutes,
-    match_double_qoutes,
-    PayloadGen
-};
+use bypass::PayloadGen;
 // create a struct with refrence Vec
 
 
