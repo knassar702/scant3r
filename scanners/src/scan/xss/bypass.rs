@@ -1,32 +1,50 @@
-#[path = "parser.rs"] mod parser;
+#[path = "parser.rs"]
+mod parser;
 use crate::scan::xss::parser::Location;
-use std::collections::HashMap;
 use regex::Regex;
 
+pub struct XssPayloads {
+    pub js_cmd: Vec<String>,
+    pub js_value: Vec<String>,
+    pub html_tags: Vec<String>,
+}
 
-pub fn match_qoutes(d: &str,s: &str) -> bool {
-    let re = Regex::new(&format!(r#"'(?:[^\\\\'\\\\]|\\\\.)*{}(?:[^\\\\'\\\\]|\\\\.)*'"#,s)).unwrap();
+#[derive(Debug)]
+pub struct OrderPayload {
+    pub search: String,
+    pub payload: String,
+}
+
+pub fn match_qoutes(d: &str, s: &str) -> bool {
+    let re = Regex::new(&format!(
+        r#"'(?:[^\\\\'\\\\]|\\\\.)*{}(?:[^\\\\'\\\\]|\\\\.)*'"#,
+        s
+    ))
+    .unwrap();
     re.is_match(d)
 }
 
 pub fn match_double_qoutes(d: &str, s: &str) -> bool {
     // regex: "(?:[^"\\\\]|\\\\.)*khaled(?:[^"\\\\]|\\\\.)*"
-    let c = &format!(r#""*(?:[^"\\\\]|\\\\.)*{}(?:[^"\\\\]|\\\\.)*""#,s);
+    let c = &format!(r#""*(?:[^"\\\\]|\\\\.)*{}(?:[^"\\\\]|\\\\.)*""#, s);
     let re = Regex::new(c).unwrap();
     re.is_match(d)
 }
-
-
 
 pub struct PayloadGen<'a> {
     pub location: &'a Location,
     pub response: &'a str,
     pub payload: &'a str,
-    pub payloads: Vec<&'a str>,
+    pub payloads: &'a XssPayloads,
 }
 
-impl <'a> PayloadGen<'a> {
-    pub fn new(response: &'a str,location: &'a Location,payload: &'a str,payloads: Vec<&'a str>) -> Self {
+impl<'a> PayloadGen<'a> {
+    pub fn new(
+        response: &'a str,
+        location: &'a Location,
+        payload: &'a str,
+        payloads: &'a XssPayloads,
+    ) -> Self {
         PayloadGen {
             location,
             response,
@@ -35,8 +53,25 @@ impl <'a> PayloadGen<'a> {
         }
     }
 
-    pub fn get_attr(&self,word: &str) -> Vec<String> {
-        let attrs = vec!["onerror","onload","oncopy"];
+    pub fn get_attr(&self, word: &str) -> Vec<String> {
+        let attrs = vec![
+            "onerror",
+            "onload",
+            "oncopy",
+            "onmouseover",
+            "onmouseenter",
+            "onmouseleave",
+            "onmouseout",
+            "onmousemove",
+            "onmousedown",
+            "onmouseup",
+            "onclick",
+            "ondblclick",
+            "oncontextmenu",
+            "onkeydown",
+            "onkeypress",
+            "onkeyup",
+        ];
         let mut payloads = Vec::new();
         for words in attrs.iter() {
             if words.starts_with(word) {
@@ -45,55 +80,92 @@ impl <'a> PayloadGen<'a> {
         }
         payloads
     }
-    pub fn analyze(&self) -> Vec<String> {
+    pub fn analyze(&self) -> Vec<OrderPayload> {
         match *self.location {
             Location::Text(ref text) => {
-                vec!["<img src=x onerror=alert()>".to_string()]
-            },
+                vec!["<img src=x onerror=alert()>".to_string()];
+                vec![]
+            }
             Location::TagName(ref tag_name) => {
-                let tag_without_payload = tag_name.replace("hackerman","");
+                let tag_without_payload = tag_name.replace(self.payload, "");
                 if tag_without_payload.len() == 0 {
-                    vec!["img/onerror=alert()".to_string()]
-                } else{
-                    vec![format!("kokimg/{:?}",self.get_attr(tag_without_payload.as_str()))]
-                }        
-            },
+                    vec!["img/onerror=alert()".to_string()];
+                    vec![]
+                } else {
+                    vec![format!(
+                        "kokimg/{:?}",
+                        self.get_attr(tag_without_payload.as_str())
+                    )];
+                    vec![]
+                }
+            }
 
             Location::Comment(ref comment) => {
-                vec!["--><img src=x onerror=alert()>".to_string()]
-            },
+                vec!["--><img src=x onload=alert()>".to_string()];
+                vec![]
+            }
 
             Location::AttrName(ref attr_name) => {
                 /*
                  * Just match the attribute name
                  * */
-                let tag_without_payload = attr_name.replace("hackerman","");
+                let tag_without_payload = attr_name.replace("hackerman", "");
                 self.get_attr(tag_without_payload.as_str())
                     .into_iter()
-                    .map(|x| format!("{}=alert() f",x.replace("hackerman", "")
-                                                     .replace(tag_without_payload.as_str(), "")))
-                                                     .collect::<Vec<String>>()
-            },
+                    .map(|x| {
+                        format!(
+                            "{}=alert() f",
+                            x.replace("hackerman", "")
+                                .replace(tag_without_payload.as_str(), "")
+                        )
+                    })
+                    .collect::<Vec<String>>();
+                vec![]
+            }
 
             Location::AttrValue(ref attr_value) => {
                 // match if attr_value is a js command
-                match match_double_qoutes(self.response,attr_value.as_str()) {
+                let pay = {
+                    let mut pay = vec![];
+                    self.payloads.js_cmd.iter().for_each(|y| {
+                        self.payloads.js_value.iter().for_each(|z| {
+                            pay.push(format!("{}({})", y, z));
+                        })
+                    });
+                    pay
+                };
+                // add more " after one loop
+                let attrs = vec!["onerror", "onload"];
+                match match_double_qoutes(self.response, attr_value.as_str()) {
                     true => {
-                        vec![
-                            "\" onerror=\"alert()".to_string(),
-                            "\\\" onerror=\"alert()".to_string(),
-                        ]
-                    },
+                        let mut v = vec![];
+                        let c = pay.iter().for_each(|js_cmd| {
+                            for i in 0..5 {
+                                attrs.iter().for_each(|attr_pay| {
+                                    v.push(OrderPayload {
+                                        payload: format!(
+                                            "{}{}={} g",
+                                            "\"".repeat(i),
+                                            attr_pay,
+                                            js_cmd
+                                        ),
+                                        search: format!(
+                                            "*[{}='{}']",
+                                            attr_pay,
+                                            js_cmd.replace("\"", "\\\"").replace("'", "\\\"")
+                                        ),
+                                    });
+                                })
+                            }
+                        });
+                        v
+                    }
                     false => {
-                        vec![
-                            "''' onerror='alert()".to_string(),
-                        ]
-                    },
+                        vec!["''' onerror='alert()".to_string()];
+                        vec![]
+                    }
                 }
-            },
+            }
         }
-
-    } 
+    }
 }
-
-
