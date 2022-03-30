@@ -15,14 +15,14 @@ pub struct OrderPayload {
     pub payload: String,
 }
 
-pub fn match_qoutes(d: &str,s: &str) -> bool {
-    let re = Regex::new(&format!(r#"=\'.*{}*.\'"#,s)).unwrap();
+pub fn match_qoutes(d: &str, s: &str) -> bool {
+    let re = Regex::new(&format!(r#"=\'.*{}*.\'"#, s)).unwrap();
     re.is_match(d).unwrap_or(false)
 }
 
-pub fn match_double_qoutes(d: &str,s: &str) -> bool {
+pub fn match_double_qoutes(d: &str, s: &str) -> bool {
     // regex: "(?:[^"\\\\]|\\\\.)*khaled(?:[^"\\\\]|\\\\.)*"
-    let re = Regex::new(&format!(r#"=\".*{}*.\""#,s)).unwrap();
+    let re = Regex::new(&format!(r#"=\".*{}*.\""#, s)).unwrap();
     re.is_match(d).unwrap_or(false)
 }
 
@@ -120,29 +120,34 @@ impl<'a> PayloadGen<'a> {
 
             Location::AttrValue(ref attr_value) => {
                 // match if attr_value is a js command
-                let pay = {
-                    let mut pay = vec![];
+                let payloads = {
+                    let mut new_payloads = vec![];
                     self.payloads.js_cmd.iter().for_each(|y| {
                         self.payloads.js_value.iter().for_each(|z| {
-                            pay.push(format!("{}({})", y, z));
+                            new_payloads.push(format!("{}({})", y, z));
                         })
                     });
-                    pay
+                    new_payloads
                 };
                 // add more " after one loop
                 let attrs = vec!["onerror", "onload"];
-                let mut v = vec![];
-                let c = pay.iter().for_each(|js_cmd| {
+                let mut found: Vec<OrderPayload> = Vec::new();
+                payloads.iter().for_each(|js_cmd| {
                     attrs.iter().for_each(|attr_pay| {
-                        let double = match_double_qoutes(self.response,attr_value.as_str());
-                        let single = match_qoutes(self.response,attr_value.as_str());
+                        let double = match_double_qoutes(self.response, attr_value.as_str());
+                        let single = match_qoutes(self.response, attr_value.as_str());
                         if single || double {
-                            println!("TESTSET");
                             for i in 0..5 {
-                                v.push(OrderPayload {
+                                found.push(OrderPayload {
                                     payload: format!(
                                         "{}{}={} g",
-                                        "\"".repeat(i),
+                                        {
+                                            if double {
+                                                "\"".repeat(i)
+                                            } else {
+                                                "'".repeat(i)
+                                            }
+                                        },
                                         attr_pay,
                                         js_cmd
                                     ),
@@ -154,12 +159,8 @@ impl<'a> PayloadGen<'a> {
                                 });
                             }
                         } else {
-                            v.push(OrderPayload {
-                                payload: format!(
-                                    " {}={} g",
-                                    attr_pay,
-                                    js_cmd
-                                ),
+                            found.push(OrderPayload {
+                                payload: format!(" {}={} g", attr_pay, js_cmd),
                                 search: format!(
                                     "*[{}='{}']",
                                     attr_pay,
@@ -169,7 +170,7 @@ impl<'a> PayloadGen<'a> {
                         }
                     })
                 });
-                v
+                found
             }
         }
     }

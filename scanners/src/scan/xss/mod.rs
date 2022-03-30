@@ -99,7 +99,7 @@ impl XssUrlParamsValue for Xss<'_> {
                      * */
                     req.url = self.injector.set_urlvalue(&param, &payload);
                     let Payloads = XssPayloads {
-                        js_cmd: vec!["alert".to_string()],
+                        js_cmd: vec!["pp".to_string()],
                         js_value: vec!["1".to_string()],
                         html_tags: vec!["<img src=x JS_FUNC(JS_VALUE)>".to_string()],
                     };
