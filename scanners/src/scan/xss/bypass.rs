@@ -1,7 +1,7 @@
 #[path = "parser.rs"]
 mod parser;
 use crate::scan::xss::parser::Location;
-use regex::Regex;
+use fancy_regex::Regex;
 
 pub struct XssPayloads {
     pub js_cmd: Vec<String>,
@@ -15,20 +15,15 @@ pub struct OrderPayload {
     pub payload: String,
 }
 
-pub fn match_qoutes(d: &str, s: &str) -> bool {
-    let re = Regex::new(&format!(
-        r#"'(?:[^\\\\'\\\\]|\\\\.)*{}(?:[^\\\\'\\\\]|\\\\.)*'"#,
-        s
-    ))
-    .unwrap();
-    re.is_match(d)
+pub fn match_qoutes(d: &str,s: &str) -> bool {
+    let re = Regex::new(&format!(r#"=\'.*{}*.\'"#,s)).unwrap();
+    re.is_match(d).unwrap_or(false)
 }
 
-pub fn match_double_qoutes(d: &str, s: &str) -> bool {
+pub fn match_double_qoutes(d: &str,s: &str) -> bool {
     // regex: "(?:[^"\\\\]|\\\\.)*khaled(?:[^"\\\\]|\\\\.)*"
-    let c = &format!(r#""*(?:[^"\\\\]|\\\\.)*{}(?:[^"\\\\]|\\\\.)*""#, s);
-    let re = Regex::new(c).unwrap();
-    re.is_match(d)
+    let re = Regex::new(&format!(r#"=\".*{}*.\""#,s)).unwrap();
+    re.is_match(d).unwrap_or(false)
 }
 
 pub struct PayloadGen<'a> {
@@ -136,35 +131,45 @@ impl<'a> PayloadGen<'a> {
                 };
                 // add more " after one loop
                 let attrs = vec!["onerror", "onload"];
-                match match_double_qoutes(self.response, attr_value.as_str()) {
-                    true => {
-                        let mut v = vec![];
-                        let c = pay.iter().for_each(|js_cmd| {
+                let mut v = vec![];
+                let c = pay.iter().for_each(|js_cmd| {
+                    attrs.iter().for_each(|attr_pay| {
+                        let double = match_double_qoutes(self.response,attr_value.as_str());
+                        let single = match_qoutes(self.response,attr_value.as_str());
+                        if single || double {
+                            println!("TESTSET");
                             for i in 0..5 {
-                                attrs.iter().for_each(|attr_pay| {
-                                    v.push(OrderPayload {
-                                        payload: format!(
-                                            "{}{}={} g",
-                                            "\"".repeat(i),
-                                            attr_pay,
-                                            js_cmd
-                                        ),
-                                        search: format!(
-                                            "*[{}='{}']",
-                                            attr_pay,
-                                            js_cmd.replace("\"", "\\\"").replace("'", "\\\"")
-                                        ),
-                                    });
-                                })
+                                v.push(OrderPayload {
+                                    payload: format!(
+                                        "{}{}={} g",
+                                        "\"".repeat(i),
+                                        attr_pay,
+                                        js_cmd
+                                    ),
+                                    search: format!(
+                                        "*[{}='{}']",
+                                        attr_pay,
+                                        js_cmd.replace("\"", "\\\"").replace("'", "\\\"")
+                                    ),
+                                });
                             }
-                        });
-                        v
-                    }
-                    false => {
-                        vec!["''' onerror='alert()".to_string()];
-                        vec![]
-                    }
-                }
+                        } else {
+                            v.push(OrderPayload {
+                                payload: format!(
+                                    " {}={} g",
+                                    attr_pay,
+                                    js_cmd
+                                ),
+                                search: format!(
+                                    "*[{}='{}']",
+                                    attr_pay,
+                                    js_cmd.replace("\"", "\\\"").replace("'", "\\\"")
+                                ),
+                            });
+                        }
+                    })
+                });
+                v
             }
         }
     }
