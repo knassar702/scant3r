@@ -2,6 +2,7 @@
 mod parser;
 use crate::scan::xss::parser::Location;
 use fancy_regex::Regex;
+use log::warn;
 
 pub struct XssPayloads {
     pub js_cmd: Vec<String>,
@@ -21,7 +22,6 @@ pub fn match_qoutes(d: &str, s: &str) -> bool {
 }
 
 pub fn match_double_qoutes(d: &str, s: &str) -> bool {
-    // regex: "(?:[^"\\\\]|\\\\.)*khaled(?:[^"\\\\]|\\\\.)*"
     let re = Regex::new(&format!(r#"=\".*{}*.\""#, s)).unwrap();
     re.is_match(d).unwrap_or(false)
 }
@@ -78,8 +78,7 @@ impl<'a> PayloadGen<'a> {
     pub fn analyze(&self) -> Vec<OrderPayload> {
         match *self.location {
             Location::Text(ref text) => {
-                vec!["<img src=x onerror=alert()>".to_string()];
-                vec![]
+                vec![OrderPayload{payload:"<img src=x onerror=alert()>".to_string(),search:"*[onerror='alert()']".to_string()}]
             }
             Location::TagName(ref tag_name) => {
                 let tag_without_payload = tag_name.replace(self.payload, "");
@@ -95,27 +94,25 @@ impl<'a> PayloadGen<'a> {
                 }
             }
 
-            Location::Comment(ref comment) => {
+            Location::Comment(ref _comment) => {
+                let mut payloads: Vec<OrderPayload> = Vec::new();
                 vec!["--><img src=x onload=alert()>".to_string()];
                 vec![]
             }
 
-            Location::AttrName(ref attr_name) => {
-                /*
-                 * Just match the attribute name
-                 * */
-                let tag_without_payload = attr_name.replace("hackerman", "");
-                self.get_attr(tag_without_payload.as_str())
-                    .into_iter()
-                    .map(|x| {
-                        format!(
-                            "{}=alert() f",
-                            x.replace("hackerman", "")
-                                .replace(tag_without_payload.as_str(), "")
-                        )
-                    })
-                    .collect::<Vec<String>>();
-                vec![]
+            Location::AttrName(ref _attr_name) => {
+                let mut payloads: Vec<OrderPayload> = Vec::new();
+                for i in 0..5  {
+                    payloads.push(OrderPayload {
+                        search: "*[onerror='alert(1)']".to_string(),
+                        payload: format!("{}onerror={}{}>", " ".repeat(i),"alert(1)", " ".repeat(i)),
+                    });
+                    payloads.push(OrderPayload {
+                        search: "*[onerror='alert(1)']".to_string(),
+                        payload: format!("{}onerror={}{}", " ".repeat(i),"alert(1)", " ".repeat(i)),
+                    });
+                }
+                payloads
             }
 
             Location::AttrValue(ref attr_value) => {
@@ -129,7 +126,6 @@ impl<'a> PayloadGen<'a> {
                     });
                     new_payloads
                 };
-                // add more " after one loop
                 let attrs = vec!["onerror", "onload"];
                 let mut found: Vec<OrderPayload> = Vec::new();
                 payloads.iter().for_each(|js_cmd| {
@@ -159,14 +155,16 @@ impl<'a> PayloadGen<'a> {
                                 });
                             }
                         } else {
-                            found.push(OrderPayload {
-                                payload: format!(" {}={} g", attr_pay, js_cmd),
-                                search: format!(
-                                    "*[{}='{}']",
-                                    attr_pay,
-                                    js_cmd.replace("\"", "\\\"").replace("'", "\\\"")
-                                ),
-                            });
+                            for i in 0..5 {
+                                found.push(OrderPayload {
+                                    payload: format!("{}{}={} g","".repeat(i), attr_pay, js_cmd),
+                                    search: format!(
+                                        "*[{}='{}']",
+                                        attr_pay,
+                                        js_cmd.replace("\"", "\\\"").replace("'", "\\\"")
+                                    ),
+                                });
+                            }
                         }
                     })
                 });

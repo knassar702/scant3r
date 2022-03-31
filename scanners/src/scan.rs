@@ -31,14 +31,16 @@ pub struct Scanner {
     pub modules: Vec<&'static str>,
     pub payloads: HashMap<String, Vec<String>>,
     pub requests: Vec<Msg>,
+    pub keep_value: bool,
 }
 
 impl Scanner {
-    pub fn new(modules: Vec<&'static str>, requests: Vec<Msg>) -> Scanner {
+    pub fn new(modules: Vec<&'static str>, requests: Vec<Msg>,keep_value: bool) -> Scanner {
         Scanner {
             modules,
             payloads: HashMap::new(),
             requests,
+            keep_value,
         }
     }
 
@@ -129,9 +131,9 @@ impl Scanner {
                                 });
 
                                 if !blocking_headers {
-                                    let xss_scan = xss::Xss::new(request, false);
+                                    let xss_scan = xss::Xss::new(request,self.keep_value);
                                     let _value = xss_scan
-                                        .value_scan(self.payloads.get("xss").unwrap().clone(), pb)
+                                        .value_scan(pb)
                                         .await;
                                 }
                                 pb.inc(1);

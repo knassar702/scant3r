@@ -24,6 +24,12 @@ pub fn args() -> ArgMatches {
                         .takes_value(true),
                 )
                 .arg(
+                    Arg::new("keep-value")
+                        .help("Keep the value of the parameter")
+                        .long("keep-value")
+                        .takes_value(false),
+                    )
+                .arg(
                     Arg::new("delay")
                         .help("The delay between requests")
                         .long("delay")

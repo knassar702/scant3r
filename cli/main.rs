@@ -23,12 +23,7 @@ async fn main() {
             Config::default(),
             TerminalMode::Mixed,
             ColorChoice::Auto,
-        ),
-        WriteLogger::new(
-            LevelFilter::Info,
-            Config::default(),
-            File::create("my_rust_binary.log").unwrap(),
-        ),
+        )
     ])
     .unwrap();
     //  func::execute_lua("scripting/scripts/hello.lua");
@@ -66,7 +61,7 @@ async fn main() {
                 reqs.push(live_check.clone());
             });
             drop(urls);
-            let mut scan_settings = scan::Scanner::new(vec!["xss"], reqs);
+            let mut scan_settings = scan::Scanner::new(vec!["xss"], reqs,sub.is_present("keep-value"));
             scan_settings.load_payloads();
             scan_settings
                 .scan(

@@ -2,7 +2,7 @@ extern crate scant3r_utils;
 
 use async_trait::async_trait;
 use indicatif::ProgressBar;
-use log::error;
+use log::{error,info,warn};
 use scant3r_utils::{
     requests::Msg,
     Injector::{Injector, Urlinjector},
@@ -14,7 +14,6 @@ use parser::{html_search, parse};
 
 mod bypass;
 use bypass::{PayloadGen, XssPayloads};
-// create a struct with refrence Vec
 
 pub struct Xss<'t> {
     request: &'t Msg,
@@ -27,7 +26,6 @@ pub trait XssUrlParamsValue {
     async fn value_reflected(&self) -> Vec<String>;
     async fn value_scan(
         &self,
-        payloads: Vec<String>,
         _prog: &ProgressBar,
     ) -> HashMap<url::Url, String>;
 }
@@ -72,7 +70,6 @@ impl XssUrlParamsValue for Xss<'_> {
 
     async fn value_scan(
         &self,
-        payloads: Vec<String>,
         _prog: &ProgressBar,
     ) -> HashMap<url::Url, String> {
         let mut _found: HashMap<url::Url, String> = HashMap::new();
@@ -95,10 +92,11 @@ impl XssUrlParamsValue for Xss<'_> {
                     js_value: vec!["1".to_string()],
                     html_tags: vec!["<img src=x JS_FUNC(JS_VALUE)>".to_string()],
                 };
-                let PayloadGenerator =
+                let payload_generator =
                     PayloadGen::new(&res.body.as_str(), x, "hackerman", &Payloads);
-                for pay in PayloadGenerator.analyze().iter() {
+                for pay in payload_generator.analyze().iter() {
                     req.url = self.injector.set_urlvalue(&param, &pay.payload);
+                    warn!("MATCHES WITH {:?}", x);
                     match req.send().await {
                         Ok(resp) => {
                             let d = html_search(resp.body.as_str(), &pay.search);
