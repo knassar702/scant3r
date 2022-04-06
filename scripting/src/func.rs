@@ -10,15 +10,6 @@ fn bruh(name: String) -> String {
     format!("YEAH BOOYAH {}",name)
 }
 
-async fn request(url: String, method: String, body: String) -> String {
-    let req = Msg::new()
-            .url(url)
-            .method(method)
-            .body(body)
-            .send().await;
-    req.unwrap().body
-}
-
 
 pub fn execute_lua(file: &str){
     let mut lua = Lua::new();

@@ -21,6 +21,27 @@ pub fn html_search(html: &str, pattern: &str) -> String {
     found
 }
 
+pub fn css_selector(html: &str) -> String {
+    let mut found = String::new();
+    let document = Html::parse_document(html);
+    document.tree.values().for_each(|node| {
+        if node.as_element().is_some() {
+            let element = node.as_element().unwrap();
+            let mut search = format!("{}",element.name());
+            element.attrs.iter().for_each(|attr| {
+                search.push_str(&format!("[{}='{}']",attr.0.local.to_string(),attr.1.to_string()
+                .replace("'","\\'")
+                .replace("\"","\\\"")
+                ));
+            });
+            if search.contains("[") {
+                found.push_str(&search);
+            }
+        }
+    });
+    found
+}
+
 pub fn parse(html: &str, payload: String) -> Vec<Location> {
     let mut found: Vec<Location> = Vec::new();
     if payload.len() == 0 {

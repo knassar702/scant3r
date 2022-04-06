@@ -1,9 +1,0 @@
-xssmap:
-  modes:
-    - normal:
-        command: xssmap %url%
-        expect: json
-    - fast:
-        command: xssmap %url% -t 30 
-        expect: json
-

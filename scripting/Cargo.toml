@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 hlua = "0.4.1"
 scant3r_utils = { path = "../utils" }
+isaac = { version = "0.1.0" }

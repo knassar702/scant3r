@@ -2,7 +2,7 @@ extern crate scant3r_utils;
 
 use async_trait::async_trait;
 use indicatif::ProgressBar;
-use log::{error,info,warn};
+use log::{error, info, warn};
 use scant3r_utils::{
     requests::Msg,
     Injector::{Injector, Urlinjector},
@@ -10,7 +10,7 @@ use scant3r_utils::{
 use std::collections::HashMap;
 
 mod parser;
-use parser::{html_search, parse};
+use parser::{html_search,css_selector, parse};
 
 mod bypass;
 use bypass::{PayloadGen, XssPayloads};
@@ -24,10 +24,7 @@ pub struct Xss<'t> {
 pub trait XssUrlParamsValue {
     // scan url params value
     async fn value_reflected(&self) -> Vec<String>;
-    async fn value_scan(
-        &self,
-        _prog: &ProgressBar,
-    ) -> HashMap<url::Url, String>;
+    async fn value_scan(&self, _prog: &ProgressBar) -> HashMap<url::Url, String>;
 }
 
 impl Xss<'_> {
@@ -68,10 +65,7 @@ impl XssUrlParamsValue for Xss<'_> {
         reflected_parameters
     }
 
-    async fn value_scan(
-        &self,
-        _prog: &ProgressBar,
-    ) -> HashMap<url::Url, String> {
+    async fn value_scan(&self, _prog: &ProgressBar) -> HashMap<url::Url, String> {
         let mut _found: HashMap<url::Url, String> = HashMap::new();
         for param in self.value_reflected().await {
             let mut req = self.request.clone();
@@ -83,20 +77,21 @@ impl XssUrlParamsValue for Xss<'_> {
                     continue;
                 }
             };
+            let Payloads = XssPayloads {
+                js_cmd: vec!["alert".to_string()],
+                js_value: vec!["1".to_string()],
+                attr: vec!["onerror".to_string()],
+                html_tags: vec!["\"><img src=x onerror=$JS_FUNC$`$JS_CMD$`>".to_string()],
+            };
             for x in parse(&res.body.as_str(), "hackerman".to_string()).iter() {
                 /*
                  * Check if the payload is in the html and analyze it for chosen tags
                  * */
-                let Payloads = XssPayloads {
-                    js_cmd: vec!["pp".to_string()],
-                    js_value: vec!["1".to_string()],
-                    html_tags: vec!["<img src=x JS_FUNC(JS_VALUE)>".to_string()],
-                };
-                let payload_generator =
-                    PayloadGen::new(&res.body.as_str(), x, "hackerman", &Payloads);
+                let payload_generator = PayloadGen::new(&res.body.as_str(), x, "hackerman", &Payloads);
                 for pay in payload_generator.analyze().iter() {
                     req.url = self.injector.set_urlvalue(&param, &pay.payload);
                     warn!("MATCHES WITH {:?}", x);
+                    warn!("PAYLOAD: {:?}", pay.payload);
                     match req.send().await {
                         Ok(resp) => {
                             let d = html_search(resp.body.as_str(), &pay.search);

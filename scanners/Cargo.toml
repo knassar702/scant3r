@@ -18,3 +18,4 @@ scraper = "0.12.0"
 urlencoding = "2.1.0"
 yaml-rust = "0.4.5"
 fancy-regex = "0.8.0"
+tokio = { version = "0.2.18", features = ["full"] }

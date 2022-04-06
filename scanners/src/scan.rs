@@ -35,7 +35,7 @@ pub struct Scanner {
 }
 
 impl Scanner {
-    pub fn new(modules: Vec<&'static str>, requests: Vec<Msg>,keep_value: bool) -> Scanner {
+    pub fn new(modules: Vec<&'static str>, requests: Vec<Msg>, keep_value: bool) -> Scanner {
         Scanner {
             modules,
             payloads: HashMap::new(),
@@ -116,7 +116,7 @@ impl Scanner {
                                 let resp = match request.send().await {
                                     Ok(resp) => resp,
                                     Err(_) => {
-                                        pb.inc(1);
+//                                        pb.inc(1);
                                         return;
                                     }
                                 };
@@ -131,12 +131,10 @@ impl Scanner {
                                 });
 
                                 if !blocking_headers {
-                                    let xss_scan = xss::Xss::new(request,self.keep_value);
-                                    let _value = xss_scan
-                                        .value_scan(pb)
-                                        .await;
+                                    let xss_scan = xss::Xss::new(request, self.keep_value);
+                                    let _value = xss_scan.value_scan(pb).await;
                                 }
-                                pb.inc(1);
+//                                pb.inc(1);
                             }
                             _ => {
                                 panic!("Module not found");
