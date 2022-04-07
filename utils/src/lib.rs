@@ -5,6 +5,14 @@ pub mod poc;
 pub mod requests;
 use regex::Regex;
 use std::collections::HashMap;
+use rand::{Rng, thread_rng};
+use rand::distributions::Alphanumeric;
+
+
+pub fn random_str(len: usize) -> String {
+    let mut rng = thread_rng();
+    (0..len).map(|_| rng.sample(Alphanumeric) as char).collect()
+}
 
 pub fn extract_headers(header: String) -> HashMap<String, String> {
     // regex to extract headers

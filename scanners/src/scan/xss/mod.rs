@@ -5,6 +5,7 @@ use indicatif::ProgressBar;
 use log::{error, warn};
 use scant3r_utils::{
     requests::Msg,
+    random_str,
     Injector::{Injector, Urlinjector},
 };
 use std::collections::HashMap;
@@ -45,8 +46,8 @@ impl Xss<'_> {
 impl XssUrlParamsValue for Xss<'_> {
     async fn value_reflected(&self) -> Vec<String> {
         let mut reflected_parameters: Vec<String> = Vec::new();
-        let payload = "scanter";
-        let check_requests = self.injector.url_value(payload);
+        let payload = random_str(5);
+        let check_requests = self.injector.url_value(&payload);
         for (_param, urls) in check_requests {
             for url in urls {
                 let _param = _param.clone();
@@ -54,8 +55,8 @@ impl XssUrlParamsValue for Xss<'_> {
                 req.url = url.clone();
                 match req.send().await {
                     Ok(resp) => {
-                        let found = html_parse(&resp.body, payload);
-                        if found.len() > 0 {
+                        let found = resp.body.contains(&payload);
+                        if found {
                             reflected_parameters.push(_param);
                         }
                     }
