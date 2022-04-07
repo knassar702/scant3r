@@ -92,6 +92,7 @@ impl XssUrlParamsValue for Xss<'_> {
                     req.url = self.injector.set_urlvalue(&param, &pay.payload);
                     warn!("MATCHES WITH {:?}", x);
                     warn!("PAYLOAD: {:?}", pay.payload);
+                    warn!("MATCHING PATTERN: {:?}", pay.search);
                     match req.send().await {
                         Ok(resp) => {
                             let d = html_search(resp.body.as_str(), &pay.search);

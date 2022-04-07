@@ -70,8 +70,16 @@ impl<'a> PayloadGen<'a> {
 
     pub fn tagname_payloads(&self) -> Vec<OrderPayload> {
         let mut payloads = vec![];
-        self.payloads.js_cmd.iter().for_each(|cmd| {
-            self.payloads.js_value.iter().for_each(|value| {
+        self.payloads.attr.iter().for_each(|attr|{
+            self.payloads.js_cmd.iter().for_each(|cmd| {
+                self.payloads.js_value.iter().for_each(|value| {
+                    for space in 1..5 {
+                        payloads.push(OrderPayload {
+                            payload: format!("{}{} {}={}({})","v".repeat(space)," ".repeat(space),attr,cmd,value),
+                            search: format!("*[{}='{}({})']",attr,cmd,value),
+                        });
+                    }
+                });
             });
         });
         payloads
@@ -81,7 +89,7 @@ impl<'a> PayloadGen<'a> {
             Location::Text(ref _txt) => {
                 self.txt_payloads()
             },
-            Location::TagName(ref _txt) => {vec![]},
+            Location::TagName(ref _txt) => {self.tagname_payloads()},
             Location::AttrName(ref _txt) => {vec![]},
             Location::AttrValue(ref _txt) => {vec![]},
             Location::Comment(ref _txt) => {vec![]},
