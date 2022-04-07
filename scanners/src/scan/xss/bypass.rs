@@ -1,11 +1,7 @@
 #[path = "parser.rs"]
 mod parser;
-use crate::scan::xss::parser::{
-    Location,
-    css_selector
-};
+use crate::scan::xss::parser::{css_selector, Location};
 use fancy_regex::Regex;
-
 
 pub struct XssPayloads {
     pub js_cmd: Vec<String>,
@@ -14,6 +10,7 @@ pub struct XssPayloads {
     pub html_tags: Vec<String>,
 }
 
+#[derive(Debug)]
 pub struct OrderPayload {
     pub search: String,
     pub payload: String,
@@ -55,28 +52,46 @@ impl<'a> PayloadGen<'a> {
         let mut payloads = vec![];
         self.payloads.html_tags.iter().for_each(|tag| {
             self.payloads.js_cmd.iter().for_each(|cmd| {
-                    self.payloads.js_value.iter().for_each(|value| {
-                        let payload = tag.replace("$JS_FUNC$", cmd).replace("$JS_CMD$", value);
-                        let search = css_selector(&payload);
-                        payloads.push(OrderPayload {
-                            payload,
-                            search,
-                        });
-                    });
+                self.payloads.js_value.iter().for_each(|value| {
+                    let payload = tag.replace("$JS_FUNC$", cmd).replace("$JS_CMD$", value);
+                    let search = css_selector(&payload);
+                    payloads.push(OrderPayload { payload, search });
                 });
+            });
         });
         payloads
     }
 
     pub fn tagname_payloads(&self) -> Vec<OrderPayload> {
         let mut payloads = vec![];
-        self.payloads.attr.iter().for_each(|attr|{
+        self.payloads.attr.iter().for_each(|attr| {
             self.payloads.js_cmd.iter().for_each(|cmd| {
                 self.payloads.js_value.iter().for_each(|value| {
                     for space in 1..5 {
                         payloads.push(OrderPayload {
-                            payload: format!("{}{} {}={}({})","v".repeat(space)," ".repeat(space),attr,cmd,value),
-                            search: format!("*[{}='{}({})']",attr,cmd,value),
+                            payload: format!(
+                                "{}{} {}={}({}){}",
+                                "v".repeat(space),
+                                " ".repeat(space),
+                                attr,
+                                cmd,
+                                value,
+                                " ".repeat(space)
+                            ),
+                            search: format!("*[{}='{}({})']", attr, cmd, value),
+                        });
+
+                        payloads.push(OrderPayload {
+                            payload: format!(
+                                "{}{} {}={}`{}`{}",
+                                "v".repeat(space),
+                                " ".repeat(space),
+                                attr,
+                                cmd,
+                                value,
+                                " ".repeat(space)
+                            ),
+                            search: format!("*[{}='{}`{}`']", attr, cmd, value),
                         });
                     }
                 });
@@ -84,15 +99,54 @@ impl<'a> PayloadGen<'a> {
         });
         payloads
     }
+
+    pub fn attrvalue_payloads(&self,qoutes: &str) -> Vec<OrderPayload> {
+        // check for single quotes and double quotes
+        let mut payloads = Vec::new();
+        let payloads_with_attr = {
+            let mut new_payloads = vec![];
+            self.payloads.js_cmd.iter().for_each(|y| {
+                self.payloads.js_value.iter().for_each(|z| {
+                    new_payloads.push(format!("{}({})", y, z));
+                })
+            });
+            new_payloads
+        };
+        payloads_with_attr.iter().for_each(|js_cmd| {
+            self.payloads.attr.iter().for_each(|attr_param| {
+                    for i in 0..5 {
+                        payloads.push(OrderPayload{
+                            payload: { 
+                                format!("{}{}={} {}", qoutes.repeat(i), attr_param, js_cmd, " vd".repeat(i))
+                            },
+                            search: format!("*[{}='{}']", attr_param, js_cmd),
+                        });
+                    }
+            });
+        });
+        payloads
+    }
     pub fn analyze(&self) -> Vec<OrderPayload> {
         match *self.location {
-            Location::Text(ref _txt) => {
-                self.txt_payloads()
-            },
-            Location::TagName(ref _txt) => {self.tagname_payloads()},
-            Location::AttrName(ref _txt) => {vec![]},
-            Location::AttrValue(ref _txt) => {vec![]},
-            Location::Comment(ref _txt) => {vec![]},
+            Location::Text(ref _txt) => self.txt_payloads(),
+            Location::TagName(ref _txt) => self.tagname_payloads(),
+            Location::AttrName(ref _txt) => {
+                vec![]
+            }
+            Location::AttrValue(ref attr_value) => {
+                let double = match_double_qoutes(self.response, attr_value.as_str());
+                let single = match_qoutes(self.response, attr_value.as_str());
+                if double {
+                    self.attrvalue_payloads("\"")
+                } else if single {
+                    self.attrvalue_payloads("'")
+                } else {
+                    self.attrvalue_payloads("v ")
+                }
+            }
+            Location::Comment(ref _txt) => {
+                vec![]
+            }
         }
     }
 }

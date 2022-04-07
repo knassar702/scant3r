@@ -1388,7 +1388,6 @@ dependencies = [
  "log",
  "scant3r_utils",
  "scraper",
- "tokio",
  "url",
  "urlencoding",
  "yaml-rust",

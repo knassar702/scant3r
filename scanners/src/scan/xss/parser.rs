@@ -27,11 +27,12 @@ pub fn css_selector(html: &str) -> String {
     document.tree.values().for_each(|node| {
         if node.as_element().is_some() {
             let element = node.as_element().unwrap();
-            let mut search = format!("{}",element.name());
+            let mut search = format!("{}", element.name());
             element.attrs.iter().for_each(|attr| {
-                search.push_str(&format!("[{}='{}']",attr.0.local.to_string(),attr.1.to_string()
-                .replace("'","\\'")
-                .replace("\"","\\\"")
+                search.push_str(&format!(
+                    "[{}='{}']",
+                    attr.0.local.to_string(),
+                    attr.1.to_string().replace("'", "\\'").replace("\"", "\\\"")
                 ));
             });
             if search.contains("[") {
@@ -42,7 +43,7 @@ pub fn css_selector(html: &str) -> String {
     found
 }
 
-pub fn parse(html: &str, payload: String) -> Vec<Location> {
+pub fn html_parse(html: &str, payload: String) -> Vec<Location> {
     let mut found: Vec<Location> = Vec::new();
     if payload.len() == 0 {
         return found;

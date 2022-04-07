@@ -1,6 +1,5 @@
 extern crate scanners;
 extern crate scant3r_utils;
-//extern crate scripting;
 extern crate simplelog;
 use simplelog::*;
 
@@ -12,19 +11,16 @@ use scant3r_utils::{
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
-//use scripting::func;
 mod args;
 
 #[tokio::main]
 async fn main() {
-    CombinedLogger::init(vec![
-        TermLogger::new(
-            LevelFilter::Warn,
-            Config::default(),
-            TerminalMode::Mixed,
-            ColorChoice::Auto,
-        )
-    ])
+    CombinedLogger::init(vec![TermLogger::new(
+        LevelFilter::Warn,
+        Config::default(),
+        TerminalMode::Mixed,
+        ColorChoice::Auto,
+    )])
     .unwrap();
     //  func::execute_lua("scripting/scripts/hello.lua");
     let arg = args::args();
@@ -61,8 +57,8 @@ async fn main() {
                 reqs.push(live_check.clone());
             });
             drop(urls);
-            let mut scan_settings = scan::Scanner::new(vec!["xss"], reqs,sub.is_present("keep-value"));
-            scan_settings.load_payloads();
+            let scan_settings =
+                scan::Scanner::new(vec!["xss"], reqs, sub.is_present("keep-value"));
             scan_settings
                 .scan(
                     sub.value_of("concurrency")

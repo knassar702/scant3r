@@ -21,8 +21,6 @@ path = "cli/main.rs"
 url = "2.2.2"
 scant3r_utils = {path ="./utils"}
 scanners = {path = "./scanners"}
-#scripting = {path = "./scripting"}
-#webapi = {path = "./webapi"}
 clap = "3.0.14"
 tokio = { version = "0.2.18", features = ["full"] }
 indicatif = "0.16.2"
