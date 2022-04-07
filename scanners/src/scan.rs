@@ -45,6 +45,14 @@ impl Scanner {
 
     pub fn load_config(&self) {
         // load ~/.scant3r/config.yml file and extract payloads from it
+        let config_path = home_dir().unwrap().join(".scant3r").join("config.yaml");
+        let mut config_file = std::fs::File::open(config_path).unwrap();
+        let mut config_yaml = String::new();
+        config_file.read_to_string(&mut config_yaml).unwrap();
+        let config_yaml = YamlLoader::load_from_str(&config_yaml).unwrap();
+        // get payloads from config
+        let payloads = &config_yaml[0]["modules"];
+        println!("{:?}", payloads);
     }
     pub async fn scan(&self, concurrency: usize) {
         //self.loader();

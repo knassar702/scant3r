@@ -59,6 +59,7 @@ async fn main() {
             drop(urls);
             let scan_settings =
                 scan::Scanner::new(vec!["xss"], reqs, sub.is_present("keep-value"));
+            scan_settings.load_config();
             scan_settings
                 .scan(
                     sub.value_of("concurrency")

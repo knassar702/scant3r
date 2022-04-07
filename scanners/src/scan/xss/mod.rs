@@ -85,11 +85,12 @@ impl XssUrlParamsValue for Xss<'_> {
                 let payload_generator =
                     PayloadGen::new(&res.body.as_str(), reflect, "hackerman", &self.payloads);
                 for pay in payload_generator.analyze().iter() {
+                    let count = html_search(&res.body.as_str(), &pay.search);
                     req.url = self.injector.set_urlvalue(&param, &pay.payload);
                     match req.send().await {
                         Ok(resp) => {
                             let d = html_search(resp.body.as_str(), &pay.search);
-                            if d.len() > 0 {
+                            if d.len() > count.len() {
                                 _prog.println(format!(
                                     "FOUND XSS \nReflect: {:?}\nPayload: {:?}\nMatch: {:?}",
                                     reflect, pay.payload, d
