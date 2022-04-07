@@ -33,7 +33,6 @@ pub struct Scanner {
     pub keep_value: bool,
 }
 
-
 impl Scanner {
     pub fn new(modules: Vec<&'static str>, requests: Vec<Msg>, keep_value: bool) -> Scanner {
         Scanner {
@@ -46,10 +45,8 @@ impl Scanner {
 
     pub fn load_config(&self) {
         // load ~/.scant3r/config.yml file and extract payloads from it
-
     }
     pub async fn scan(&self, concurrency: usize) {
-
         //self.loader();
         let bar = ProgressBar::new(self.requests.len() as u64);
         bar.set_style(ProgressStyle::default_bar()

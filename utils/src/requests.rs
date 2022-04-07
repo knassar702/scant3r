@@ -1,24 +1,19 @@
 #![allow(dead_code)]
+use isahc::http::{HeaderMap, StatusCode};
 use isahc::prelude::*;
 use isahc::Request;
-use isahc::http::{
-    HeaderMap,
-    StatusCode
-};
 use std::collections::HashMap;
+use std::str::from_utf8;
 use tokio::time::Duration;
 use url::Url;
-use std::str::from_utf8;
 
 pub struct Resp {
     pub url: Url,
     pub status: StatusCode,
     pub headers: HeaderMap,
     pub body: String,
-    pub error: Option<String>
+    pub error: Option<String>,
 }
-
-
 
 #[derive(Debug, Clone)]
 pub struct Msg {
@@ -33,47 +28,46 @@ pub struct Msg {
 }
 
 pub trait Settings {
-    fn method(&mut self,_method: String) -> Self;
-    fn url(&mut self,_url: String) -> Self;
-    fn headers(&mut self,_headers: HashMap<String,String>) -> Self;
-    fn body(&mut self,_body: String) -> Self;
-    fn redirect(&mut self,_many: u32) -> Self;
-    fn timeout(&mut self,_sec: u64) -> Self;
-    fn proxy(&mut self,_proxy: String) -> Self;
-    fn delay(&mut self,_sec: u64) -> Self;
+    fn method(&mut self, _method: String) -> Self;
+    fn url(&mut self, _url: String) -> Self;
+    fn headers(&mut self, _headers: HashMap<String, String>) -> Self;
+    fn body(&mut self, _body: String) -> Self;
+    fn redirect(&mut self, _many: u32) -> Self;
+    fn timeout(&mut self, _sec: u64) -> Self;
+    fn proxy(&mut self, _proxy: String) -> Self;
+    fn delay(&mut self, _sec: u64) -> Self;
 }
 
-
 impl Settings for Msg {
-    fn method(&mut self,_method: String) -> Self {
+    fn method(&mut self, _method: String) -> Self {
         self.method = _method;
         self.clone()
     }
-    fn url(&mut self,_url: String) -> Self {
+    fn url(&mut self, _url: String) -> Self {
         self.url = url::Url::parse(_url.as_str()).unwrap();
         self.clone()
     }
-    fn headers(&mut self,_headers: HashMap<String,String>) -> Self {
+    fn headers(&mut self, _headers: HashMap<String, String>) -> Self {
         self.headers = _headers;
         self.clone()
     }
-    fn body(&mut self,_body: String) -> Self {
+    fn body(&mut self, _body: String) -> Self {
         self.body = Some(_body);
         self.clone()
     }
-    fn redirect(&mut self,_many: u32) -> Self {
+    fn redirect(&mut self, _many: u32) -> Self {
         self.redirect = Some(_many);
         self.clone()
     }
-    fn timeout(&mut self,_sec: u64) -> Self {
+    fn timeout(&mut self, _sec: u64) -> Self {
         self.timeout = Some(_sec);
         self.clone()
     }
-    fn proxy(&mut self,_proxy: String) -> Self {
+    fn proxy(&mut self, _proxy: String) -> Self {
         self.proxy = Some(_proxy);
         self.clone()
     }
-    fn delay(&mut self,_sec: u64) -> Self {
+    fn delay(&mut self, _sec: u64) -> Self {
         self.delay = Some(_sec);
         self.clone()
     }
@@ -92,7 +86,7 @@ impl Msg {
             delay: None,
         }
     }
-    pub async fn send(&self) -> Result<Resp,isahc::Error> {
+    pub async fn send(&self) -> Result<Resp, isahc::Error> {
         // sleep with tokio
         if let Some(delay) = self.delay {
             tokio::time::delay_for(Duration::from_secs(delay)).await;
@@ -104,10 +98,11 @@ impl Msg {
                 self.redirect.unwrap_or(5),
             ));
         if self.proxy.as_ref().unwrap_or(&"".to_string()).len() > 0 {
-                response = response.proxy(self.proxy.as_ref()
-                                                    .map(|proxy| proxy.as_str()
-                                                                       .parse()
-                                                                       .unwrap()));
+            response = response.proxy(
+                self.proxy
+                    .as_ref()
+                    .map(|proxy| proxy.as_str().parse().unwrap()),
+            );
         }
 
         for (key, value) in &self.headers {
@@ -117,22 +112,26 @@ impl Msg {
             .uri(self.url.as_str())
             .body(self.body.clone().unwrap_or_else(|| "".to_string()))
             .unwrap()
-            .send_async().await
+            .send_async()
+            .await
         {
-            Ok(mut res) => async {
-                Ok(Resp {
-                    url: self.url.clone(),
-                    status: res.status(),
-                    headers: res.headers().clone(),
-                    body: from_utf8(&res.bytes().await.unwrap()).unwrap().to_string().clone(),
-                    error: None
-                })
-                }.await,
-            
-            Err(e) => {
-                Err(e)
+            Ok(mut res) => {
+                async {
+                    Ok(Resp {
+                        url: self.url.clone(),
+                        status: res.status(),
+                        headers: res.headers().clone(),
+                        body: from_utf8(&res.bytes().await.unwrap())
+                            .unwrap()
+                            .to_string()
+                            .clone(),
+                        error: None,
+                    })
+                }
+                .await
             }
+
+            Err(e) => Err(e),
         }
     }
-
 }

@@ -1,11 +1,10 @@
-pub mod requests;
-pub mod poc;
 #[allow(non_snake_case)]
-#[path = "./injector.rs"] pub mod Injector;
-use std::collections::HashMap;
+#[path = "./injector.rs"]
+pub mod Injector;
+pub mod poc;
+pub mod requests;
 use regex::Regex;
-
-
+use std::collections::HashMap;
 
 pub fn extract_headers(header: String) -> HashMap<String, String> {
     // regex to extract headers
@@ -16,7 +15,6 @@ pub fn extract_headers(header: String) -> HashMap<String, String> {
     }
     headers
 }
-
 
 pub fn extract_headers_vec(header: Vec<String>) -> HashMap<String, String> {
     // regex to extract headers
@@ -29,7 +27,6 @@ pub fn extract_headers_vec(header: Vec<String>) -> HashMap<String, String> {
     });
     headers
 }
-
 
 #[cfg(test)]
 mod tests {

@@ -2,7 +2,7 @@ extern crate scant3r_utils;
 
 use async_trait::async_trait;
 use indicatif::ProgressBar;
-use log::{error,warn};
+use log::{error, warn};
 use scant3r_utils::{
     requests::Msg,
     Injector::{Injector, Urlinjector},
@@ -10,7 +10,7 @@ use scant3r_utils::{
 use std::collections::HashMap;
 
 mod parser;
-use parser::{html_search, html_parse};
+use parser::{html_parse, html_search};
 
 mod bypass;
 pub use bypass::{PayloadGen, XssPayloads};
@@ -46,9 +46,7 @@ impl XssUrlParamsValue for Xss<'_> {
     async fn value_reflected(&self) -> Vec<String> {
         let mut reflected_parameters: Vec<String> = Vec::new();
         let mut is_allowed: Vec<String> = Vec::new();
-        let try_it = vec![
-            "<",
-        ];
+        let try_it = vec!["<"];
         for txt in try_it.iter() {
             let payload = &format!("scanterrr{}", txt);
             let check_requests = self.injector.url_value(payload);
@@ -59,7 +57,7 @@ impl XssUrlParamsValue for Xss<'_> {
                     req.url = url.clone();
                     match req.send().await {
                         Ok(resp) => {
-                            let found = html_parse(&resp.body,payload.to_string());
+                            let found = html_parse(&resp.body, payload.to_string());
                             if found.len() > 0 {
                                 reflected_parameters.push(_param);
                             }
@@ -71,8 +69,7 @@ impl XssUrlParamsValue for Xss<'_> {
                     };
                 }
             }
-
-        };
+        }
         reflected_parameters
     }
 

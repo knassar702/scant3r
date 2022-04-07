@@ -48,12 +48,16 @@ impl<'a> PayloadGen<'a> {
         }
     }
 
-    pub fn txt_payloads(&self,before_payload: &str) -> Vec<OrderPayload> {
+    pub fn txt_payloads(&self, before_payload: &str) -> Vec<OrderPayload> {
         let mut payloads = vec![];
         self.payloads.html_tags.iter().for_each(|tag| {
             self.payloads.js_cmd.iter().for_each(|cmd| {
                 self.payloads.js_value.iter().for_each(|value| {
-                    let payload = format!("{}{}",before_payload,tag.replace("$JS_FUNC$", cmd).replace("$JS_CMD$", value));
+                    let payload = format!(
+                        "{}{}",
+                        before_payload,
+                        tag.replace("$JS_FUNC$", cmd).replace("$JS_CMD$", value)
+                    );
                     let search = css_selector(&payload);
                     payloads.push(OrderPayload { payload, search });
                 });
@@ -100,8 +104,7 @@ impl<'a> PayloadGen<'a> {
         payloads
     }
 
-    pub fn attrvalue_payloads(&self,qoutes: &str) -> Vec<OrderPayload> {
-        // check for single quotes and double quotes
+    pub fn attrvalue_payloads(&self, qoutes: &str) -> Vec<OrderPayload> {
         let mut payloads = Vec::new();
         let payloads_with_attr = {
             let mut new_payloads = vec![];
@@ -114,14 +117,20 @@ impl<'a> PayloadGen<'a> {
         };
         payloads_with_attr.iter().for_each(|js_cmd| {
             self.payloads.attr.iter().for_each(|attr_param| {
-                    for i in 0..5 {
-                        payloads.push(OrderPayload{
-                            payload: { 
-                                format!("{}{}={} {}", qoutes.repeat(i), attr_param, js_cmd, " vd".repeat(i))
-                            },
-                            search: format!("*[{}='{}']", attr_param, js_cmd),
-                        });
-                    }
+                for i in 0..5 {
+                    payloads.push(OrderPayload {
+                        payload: {
+                            format!(
+                                "{}{}={} {}",
+                                qoutes.repeat(i),
+                                attr_param,
+                                js_cmd,
+                                " vd".repeat(i)
+                            )
+                        },
+                        search: format!("*[{}='{}']", attr_param, js_cmd),
+                    });
+                }
             });
         });
         payloads
@@ -144,9 +153,7 @@ impl<'a> PayloadGen<'a> {
                     self.attrvalue_payloads("v ")
                 }
             }
-            Location::Comment(ref _txt) => {
-                self.txt_payloads("--> --> -->")
-            }
+            Location::Comment(ref _txt) => self.txt_payloads("--> --> -->"),
         }
     }
 }
