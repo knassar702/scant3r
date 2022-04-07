@@ -135,12 +135,29 @@ impl<'a> PayloadGen<'a> {
         });
         payloads
     }
+    pub fn attrname_payloads(&self) -> Vec<OrderPayload> {
+        let mut payloads: Vec<OrderPayload> = Vec::new();
+        self.payloads.attr.iter().for_each(|attr| {
+            self.payloads.js_cmd.iter().for_each(|js_cmd| {
+                self.payloads.js_value.iter().for_each(|js_value| {
+                    for i in 0..5 {
+                        payloads.push(OrderPayload{
+                            payload:format!("{}{}={}({}) {}", "v ".repeat(i), attr, js_cmd,js_value,"v ".repeat(i)),
+                            search: format!("*[{}='{}({})']", attr, js_cmd,js_value),
+                        });
+                    }
+                });
+            });
+        });
+        payloads
+    }
+
     pub fn analyze(&self) -> Vec<OrderPayload> {
         match *self.location {
             Location::Text(ref _txt) => self.txt_payloads(""),
             Location::TagName(ref _txt) => self.tagname_payloads(),
             Location::AttrName(ref _txt) => {
-                vec![]
+                self.attrname_payloads()
             }
             Location::AttrValue(ref attr_value) => {
                 let double = match_double_qoutes(self.response, attr_value.as_str());
