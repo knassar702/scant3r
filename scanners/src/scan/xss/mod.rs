@@ -45,28 +45,25 @@ impl Xss<'_> {
 impl XssUrlParamsValue for Xss<'_> {
     async fn value_reflected(&self) -> Vec<String> {
         let mut reflected_parameters: Vec<String> = Vec::new();
-        let try_it = vec!["<"];
-        for txt in try_it.iter() {
-            let payload = &format!("scanterrr{}", txt);
-            let check_requests = self.injector.url_value(payload);
-            for (_param, urls) in check_requests {
-                for url in urls {
-                    let _param = _param.clone();
-                    let mut req = self.request.clone();
-                    req.url = url.clone();
-                    match req.send().await {
-                        Ok(resp) => {
-                            let found = html_parse(&resp.body, payload);
-                            if found.len() > 0 {
-                                reflected_parameters.push(_param);
-                            }
+        let payload = "scanter";
+        let check_requests = self.injector.url_value(payload);
+        for (_param, urls) in check_requests {
+            for url in urls {
+                let _param = _param.clone();
+                let mut req = self.request.clone();
+                req.url = url.clone();
+                match req.send().await {
+                    Ok(resp) => {
+                        let found = html_parse(&resp.body, payload);
+                        if found.len() > 0 {
+                            reflected_parameters.push(_param);
                         }
-                        Err(e) => {
-                            error!("{}", e);
-                            continue;
-                        }
-                    };
-                }
+                    }
+                    Err(e) => {
+                        error!("{}", e);
+                        continue;
+                    }
+                };
             }
         }
         reflected_parameters
