@@ -45,7 +45,6 @@ impl Xss<'_> {
 impl XssUrlParamsValue for Xss<'_> {
     async fn value_reflected(&self) -> Vec<String> {
         let mut reflected_parameters: Vec<String> = Vec::new();
-        let mut is_allowed: Vec<String> = Vec::new();
         let try_it = vec!["<"];
         for txt in try_it.iter() {
             let payload = &format!("scanterrr{}", txt);
@@ -57,7 +56,7 @@ impl XssUrlParamsValue for Xss<'_> {
                     req.url = url.clone();
                     match req.send().await {
                         Ok(resp) => {
-                            let found = html_parse(&resp.body, payload.to_string());
+                            let found = html_parse(&resp.body, payload);
                             if found.len() > 0 {
                                 reflected_parameters.push(_param);
                             }
@@ -85,12 +84,9 @@ impl XssUrlParamsValue for Xss<'_> {
                     continue;
                 }
             };
-            for x in html_parse(&res.body.as_str(), "hackerman".to_string()).iter() {
-                /*
-                 * Check if the payload is in the html and analyze it for chosen tags
-                 * */
+            for reflect in html_parse(&res.body.as_str(), "hackerman").iter() {
                 let payload_generator =
-                    PayloadGen::new(&res.body.as_str(), x, "hackerman", &self.payloads);
+                    PayloadGen::new(&res.body.as_str(), reflect, "hackerman", &self.payloads);
                 for pay in payload_generator.analyze().iter() {
                     req.url = self.injector.set_urlvalue(&param, &pay.payload);
                     match req.send().await {
@@ -98,8 +94,8 @@ impl XssUrlParamsValue for Xss<'_> {
                             let d = html_search(resp.body.as_str(), &pay.search);
                             if d.len() > 0 {
                                 _prog.println(format!(
-                                    "FOUND DOM XSS {:?} | {:?} | {:?}",
-                                    x, pay.payload, d
+                                    "FOUND XSS \nReflect: {:?}\nPayload: {:?}\nMatch: {:?}",
+                                    reflect, pay.payload, d
                                 ));
                                 break;
                             }

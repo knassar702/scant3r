@@ -43,7 +43,7 @@ pub fn css_selector(html: &str) -> String {
     found
 }
 
-pub fn html_parse(html: &str, payload: String) -> Vec<Location> {
+pub fn html_parse(html: &str, payload: &str) -> Vec<Location> {
     let mut found: Vec<Location> = Vec::new();
     if payload.len() == 0 {
         return found;
@@ -53,25 +53,25 @@ pub fn html_parse(html: &str, payload: String) -> Vec<Location> {
         // find_payloadword in the html without the tag name
         if node.is_text() {
             let text = node.as_text().unwrap();
-            if text.contains(payload.as_str()) {
+            if text.contains(payload) {
                 found.push(Location::Text(text.to_string()));
             }
         } else if node.is_element() {
             let element = node.as_element().unwrap();
-            if element.name().contains(payload.as_str()) {
+            if element.name().contains(payload) {
                 found.push(Location::TagName(element.name().to_string()));
             }
             element.attrs().for_each(|attr| {
-                if attr.1.contains(payload.as_str()) {
+                if attr.1.contains(payload) {
                     found.push(Location::AttrValue(attr.1.to_string()));
                 }
-                if attr.0.contains(payload.as_str()) {
+                if attr.0.contains(payload) {
                     found.push(Location::AttrName(attr.0.to_string()));
                 }
             });
         } else if node.is_comment() {
             let comment = node.as_comment().unwrap();
-            if comment.contains(payload.as_str()) {
+            if comment.contains(payload) {
                 found.push(Location::Comment(comment.to_string()));
             }
         }
