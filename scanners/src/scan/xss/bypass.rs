@@ -48,12 +48,12 @@ impl<'a> PayloadGen<'a> {
         }
     }
 
-    pub fn txt_payloads(&self) -> Vec<OrderPayload> {
+    pub fn txt_payloads(&self,before_payload: &str) -> Vec<OrderPayload> {
         let mut payloads = vec![];
         self.payloads.html_tags.iter().for_each(|tag| {
             self.payloads.js_cmd.iter().for_each(|cmd| {
                 self.payloads.js_value.iter().for_each(|value| {
-                    let payload = tag.replace("$JS_FUNC$", cmd).replace("$JS_CMD$", value);
+                    let payload = format!("{}{}",before_payload,tag.replace("$JS_FUNC$", cmd).replace("$JS_CMD$", value));
                     let search = css_selector(&payload);
                     payloads.push(OrderPayload { payload, search });
                 });
@@ -128,7 +128,7 @@ impl<'a> PayloadGen<'a> {
     }
     pub fn analyze(&self) -> Vec<OrderPayload> {
         match *self.location {
-            Location::Text(ref _txt) => self.txt_payloads(),
+            Location::Text(ref _txt) => self.txt_payloads(""),
             Location::TagName(ref _txt) => self.tagname_payloads(),
             Location::AttrName(ref _txt) => {
                 vec![]
@@ -145,7 +145,7 @@ impl<'a> PayloadGen<'a> {
                 }
             }
             Location::Comment(ref _txt) => {
-                vec![]
+                self.txt_payloads("--> --> -->")
             }
         }
     }
