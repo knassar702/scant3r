@@ -13,6 +13,7 @@ use std::io::prelude::*;
 use std::io::BufReader;
 mod args;
 
+
 #[tokio::main]
 async fn main() {
     CombinedLogger::init(vec![TermLogger::new(
@@ -22,7 +23,6 @@ async fn main() {
         ColorChoice::Auto,
     )])
     .unwrap();
-    //  func::execute_lua("scripting/scripts/hello.lua");
     let arg = args::args();
     match arg.subcommand_name() {
         Some("scan") => {
@@ -57,8 +57,8 @@ async fn main() {
                 reqs.push(live_check.clone());
             });
             drop(urls);
-            let scan_settings =
-                scan::Scanner::new(vec!["xss"], reqs, sub.is_present("keep-value"));
+            let mut scan_settings =
+                scan::Scanner::new(vec!["xss".to_string()], reqs, sub.is_present("keep-value"));
             scan_settings.load_config();
             scan_settings
                 .scan(

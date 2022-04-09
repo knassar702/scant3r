@@ -2,10 +2,10 @@ extern crate scant3r_utils;
 
 use async_trait::async_trait;
 use indicatif::ProgressBar;
-use log::{error, warn};
+use log::error;
 use scant3r_utils::{
-    requests::Msg,
     random_str,
+    requests::Msg,
     Injector::{Injector, Urlinjector},
 };
 use std::collections::HashMap;
@@ -19,7 +19,7 @@ pub use bypass::{PayloadGen, XssPayloads};
 pub struct Xss<'t> {
     request: &'t Msg,
     injector: Injector,
-    payloads: XssPayloads,
+    payloads: &'t XssPayloads,
 }
 
 #[async_trait]
@@ -30,7 +30,7 @@ pub trait XssUrlParamsValue {
 }
 
 impl Xss<'_> {
-    pub fn new(request: &Msg, payloads: XssPayloads, keep_value: bool) -> Xss<'_> {
+    pub fn new<'a>(request: &'a Msg, payloads: &'a XssPayloads, keep_value: bool) -> Xss<'a> {
         Xss {
             request,
             payloads,
@@ -74,17 +74,18 @@ impl XssUrlParamsValue for Xss<'_> {
         let mut _found: HashMap<url::Url, String> = HashMap::new();
         for param in self.value_reflected().await {
             let mut req = self.request.clone();
-            req.url = self.injector.set_urlvalue(&param, "hackerman");
+            let payload = random_str(5).to_lowercase();
+            req.url = self.injector.set_urlvalue(&param,&payload);
             let res = match req.send().await {
                 Ok(resp) => resp,
                 Err(e) => {
-                    error!("{}", e);
+                    _prog.set_message(format!("CONNECTION ERROR: {}", e));
                     continue;
                 }
             };
-            for reflect in html_parse(&res.body.as_str(), "hackerman").iter() {
+            for reflect in html_parse(&res.body.as_str(), &payload).iter() {
                 let payload_generator =
-                    PayloadGen::new(&res.body.as_str(), reflect, "hackerman", &self.payloads);
+                    PayloadGen::new(&res.body.as_str(), reflect, &payload, &self.payloads);
                 for pay in payload_generator.analyze().iter() {
                     let count = html_search(&res.body.as_str(), &pay.search);
                     req.url = self.injector.set_urlvalue(&param, &pay.payload);

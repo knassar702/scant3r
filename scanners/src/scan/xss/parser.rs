@@ -50,7 +50,6 @@ pub fn html_parse(html: &str, payload: &str) -> Vec<Location> {
     }
     let document = Html::parse_document(html);
     document.tree.values().for_each(|node| {
-        // find_payloadword in the html without the tag name
         if node.is_text() {
             let text = node.as_text().unwrap();
             if text.contains(payload) {
