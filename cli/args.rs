@@ -7,8 +7,13 @@ pub fn args() -> ArgMatches {
         .author("Khaled Nassar <knassar702@gmail.com>")
         .about("A Web Application Scanner")
         .subcommands(vec![
-            Command::new("scan")
+            Command::new("urls")
                 .about("Scan a website")
+                .arg(
+                    Arg::new("config")
+                        .help("Path to the configuration file")
+                    )
+
                 .arg(
                     Arg::new("modules")
                         .help("The modules to use")
@@ -42,7 +47,6 @@ pub fn args() -> ArgMatches {
                         })
                         .takes_value(true),
                 )
-                // arg for data option
                 .arg(
                     Arg::new("data")
                         .help("The data to send")
@@ -51,26 +55,16 @@ pub fn args() -> ArgMatches {
                         .default_value("")
                         .takes_value(true),
                 )
-                // arg for headers option
                 .arg(
                     Arg::new("headers")
                         .help("The headers to send")
                         .long("headers")
-                        .short('R')
+                        .short('H')
                         .default_value("")
                         .multiple_occurrences(true)
                         .takes_value(true),
                 )
-                .arg(
-                    Arg::new("content-type")
-                        .help("The content type of the data")
-                        .long("content-type")
-                        .default_value("application/x-www-form-urlencoded")
-                        .possible_values(&["application/x-www-form-urlencoded", "application/json"])
-                        .takes_value(true),
-                )
-                // arg for http method options
-                // HEADERS AND COOKIES AND METHOD
+
                 .arg(
                     Arg::new("method")
                         .help("The HTTP method to use")
@@ -78,7 +72,6 @@ pub fn args() -> ArgMatches {
                         .takes_value(true)
                         .default_value("GET"),
                 )
-                // arg for concurrency option
                 .arg(
                     Arg::new("concurrency")
                         .help("The number of concurrent requests to make (default: 10)")
@@ -95,9 +88,9 @@ pub fn args() -> ArgMatches {
                         .takes_value(true),
                 )
                 .arg(
-                    Arg::new("urls")
+                    Arg::new("file")
                         .help("The file containing the URLs to scan")
-                        .long("urls")
+                        .long("file")
                         .validator(|s| {
                             if std::path::Path::new(s).exists() {
                                 Ok(())
@@ -109,7 +102,6 @@ pub fn args() -> ArgMatches {
                         .takes_value(true),
                 )
                 .arg(
-                    // validate is it a number  or not
                     Arg::new("redirect")
                         .help("The Number of redirects to follow")
                         .long("redirect")
@@ -154,88 +146,6 @@ pub fn args() -> ArgMatches {
                         })
                         .default_value("20"),
                 )
-                .arg(
-                    // -m xss,headers
-                    Arg::new("mode")
-                        .help("The mode to use")
-                        .long("mode")
-                        .short('m')
-                        .takes_value(true)
-                        .multiple_values(true)
-                        .possible_values(&["xss", "headers", "cookies"])
-                        .default_value("xss"),
-                ),
-            Command::new("api")
-                .about("Scan a website using the API")
-                .arg(
-                    Arg::new("host")
-                        .help("The host to bind")
-                        .long("host")
-                        .takes_value(true)
-                        .default_value("localhost"),
-                )
-                .arg(
-                    Arg::new("port")
-                        .help("The port to bind")
-                        .long("port")
-                        .takes_value(true)
-                        .default_value("1338"),
-                ),
-            Command::new("pipe")
-                .about("Scan a website passively")
-                .arg(
-                    Arg::new("timeout")
-                        .help("The timeout in seconds")
-                        .long("timeout")
-                        .short('t')
-                        .takes_value(true)
-                        .validator(|s| {
-                            if s.parse::<u64>().is_ok() {
-                                Ok(10)
-                            } else {
-                                Err("Timeout must be a number".to_string())
-                            }
-                        })
-                        .default_value("20"),
-                )
-                .arg(
-                    Arg::new("redirect")
-                        .help("The Number of redirects to follow")
-                        .long("redirect")
-                        .short('r')
-                        .validator(|s| {
-                            if s.parse::<u8>().is_ok() {
-                                Ok(0)
-                            } else {
-                                Err("Redirects must be a number".to_string())
-                            }
-                        })
-                        .takes_value(true),
-                )
-                .arg(
-                    Arg::new("proxy")
-                        .help("The proxy to use")
-                        .long("proxy")
-                        .short('p')
-                        .validator(|s| {
-                            if s.parse::<url::Url>().is_ok() {
-                                Ok(())
-                            } else {
-                                Err("Proxy must be in the format host:port".to_string())
-                            }
-                        })
-                        .takes_value(true),
-                )
-                .arg(
-                    Arg::new("modules")
-                        .help("The modules to use")
-                        .long("modules")
-                        .takes_value(true)
-                        .multiple_values(true)
-                        .possible_values(&[
-                            "headers", "links", "forms", "cookies", "sitemap", "xss",
-                        ]),
-                ),
         ])
         .get_matches()
 }

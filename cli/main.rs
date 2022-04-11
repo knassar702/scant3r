@@ -12,7 +12,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 mod args;
-
+mod config;
 
 #[tokio::main]
 async fn main() {
@@ -25,10 +25,10 @@ async fn main() {
     .unwrap();
     let arg = args::args();
     match arg.subcommand_name() {
-        Some("scan") => {
-            let sub = arg.subcommand_matches("scan").unwrap();
+        Some("urls") => {
+            let sub = arg.subcommand_matches("urls").unwrap();
             let urls = {
-                let read_file = File::open(sub.value_of("urls").unwrap()).unwrap();
+                let read_file = File::open(sub.value_of("file").unwrap()).unwrap();
                 BufReader::new(read_file)
                     .lines()
                     .map(|x| x.unwrap())
@@ -36,20 +36,21 @@ async fn main() {
             };
 
             // setup the scanner module
-            let mut reqs = Vec::new();
+           // let mut reqs = Vec::new();
             let header = extract_headers_vec(
                 sub.values_of("headers")
                     .unwrap()
                     .map(|x| x.to_string())
                     .collect::<Vec<String>>(),
             );
+            let mut reqs: Vec<Msg> = Vec::new();
             urls.iter().for_each(|url| {
                 let mut live_check = Msg::new()
                     .method(sub.value_of("method").unwrap().to_string())
-                    .url(url.clone())
+                    .url(url.to_string())
                     .headers(header.clone())
                     .body(sub.value_of("data").unwrap_or("").to_string())
-                    .url(url.clone())
+                    .url(url.to_string())
                     .delay(sub.value_of("delay").unwrap_or("0").parse::<u64>().unwrap());
                 if sub.value_of("proxy").is_some() {
                     live_check.proxy(sub.value_of("proxy").unwrap().to_string());
@@ -57,8 +58,10 @@ async fn main() {
                 reqs.push(live_check.clone());
             });
             drop(urls);
+            let conf = config::Opts::default();
+            conf.parse("scant3r.toml");
             let mut scan_settings =
-                scan::Scanner::new(vec!["xss".to_string()], reqs, sub.is_present("keep-value"));
+                scan::Scanner::new(vec!["xss".to_string()], reqs,  sub.is_present("keep-value"));
             scan_settings.load_config();
             scan_settings
                 .scan(
@@ -71,4 +74,5 @@ async fn main() {
         }
         _ => println!("No subcommand was used"),
     }
+
 }
