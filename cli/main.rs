@@ -12,7 +12,6 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 mod args;
-mod config;
 
 #[tokio::main]
 async fn main() {
@@ -58,8 +57,6 @@ async fn main() {
                 reqs.push(live_check.clone());
             });
             drop(urls);
-            let conf = config::Opts::default();
-            conf.parse("scant3r.toml");
             let mut scan_settings =
                 scan::Scanner::new(vec!["xss".to_string()], reqs,  sub.is_present("keep-value"));
             scan_settings.load_config();
