@@ -1,9 +1,9 @@
 extern crate scant3r_utils;
 use futures::{stream, StreamExt};
-use home::home_dir;
 use indicatif::{ProgressBar, ProgressStyle};
-use scant3r_utils::requests::Msg;
-use std::io::prelude::*;
+use scant3r_utils::{
+    requests::Msg,
+};
 
 mod xss;
 use xss::{XssPayloads, XssUrlParamsValue};
@@ -43,10 +43,6 @@ impl Scanner {
     }
 
     pub fn load_config(&mut self) {
-        // load ~/.scant3r/config.yml file and extract payloads from it
-        let config_path = home_dir().unwrap().join(".scant3r").join("config.yaml");
-        let mut config_file = std::fs::File::open(config_path).unwrap();
-        let mut config_yaml = String::new();
         self.modules.iter().for_each(|module| {
             self.payloads.push(Payloads::XSS(XssPayloads {
                     js_cmd: vec!["alert".to_string()],
@@ -57,7 +53,6 @@ impl Scanner {
                     .to_string(),
                     ]}));
         });
-        config_file.read_to_string(&mut config_yaml).unwrap();
         
     }
     pub async fn scan(&self, concurrency: usize) {

@@ -135,3 +135,35 @@ impl Msg {
         }
     }
 }
+
+pub trait Curl {
+    fn curl(&self) -> String;
+}
+
+impl Curl for Msg {
+    fn curl(&self) -> String {
+        // convert isahc request to curl
+        let mut curl = String::from("curl ");
+        // extract headers
+        self.headers.iter().for_each(|(key, value)| {
+            curl.push_str(&format!("-H \"{}: {}\" ", key, value.replace("\"", "\\\"")));
+        });
+        // extract body
+        if self.body.as_ref().unwrap().len() > 0 {
+            curl.push_str(&format!(
+                "-d \"{:?}\" ",
+                self.body.as_ref().unwrap()
+            ));
+        }
+        // extract url
+        curl.push_str(&format!("\"{}\"", self.url));
+        // extract method
+        curl.push_str(&format!(" -X {}", self.method));
+        // proxy
+        if self.proxy.as_ref().unwrap_or(&"".to_string()).len() > 0 {
+            curl.push_str(&format!(" -x {}", self.proxy.as_ref().unwrap()));
+        }
+        curl
+    }
+}
+

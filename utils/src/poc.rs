@@ -1,6 +1,7 @@
 #[path = "requests.rs"]
 mod requests;
 use crate::requests::Msg;
+
 pub struct Poc<'a> {
     pub name: String,
     pub payload: String,
