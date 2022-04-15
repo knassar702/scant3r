@@ -5,7 +5,7 @@ use indicatif::ProgressBar;
 use log::error;
 use scant3r_utils::{
     random_str,
-    requests::{Msg,Curl},
+    requests::{Curl, Msg},
     Injector::{Injector, Urlinjector},
 };
 use std::collections::HashMap;
@@ -75,7 +75,7 @@ impl XssUrlParamsValue for Xss<'_> {
         for param in self.value_reflected().await {
             let mut req = self.request.clone();
             let payload = random_str(5).to_lowercase();
-            req.url = self.injector.set_urlvalue(&param,&payload);
+            req.url = self.injector.set_urlvalue(&param, &payload);
             let res = match req.send().await {
                 Ok(resp) => resp,
                 Err(e) => {
@@ -95,7 +95,10 @@ impl XssUrlParamsValue for Xss<'_> {
                             if d.len() > count.len() {
                                 _prog.println(format!(
                                     "FOUND XSS \nReflect: {:?}\nPayload: {}\nMatch: {}\nCURL: \n{}",
-                                    reflect, pay.payload, d,req.curl()
+                                    reflect,
+                                    pay.payload,
+                                    d,
+                                    req.curl()
                                 ));
                                 break;
                             }

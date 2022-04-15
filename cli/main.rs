@@ -8,20 +8,21 @@ use scant3r_utils::{
     extract_headers_vec,
     requests::{Msg, Settings},
 };
+use std::fs::read_to_string;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 mod args;
-mod startup;
 
 #[tokio::main]
 async fn main() {
-    CombinedLogger::init(
-        vec![
-            TermLogger::new(LevelFilter::Warn, Config::default(), TerminalMode::Mixed, ColorChoice::Auto),
-        ]
-    ).unwrap();
-    startup::check_config();
+    CombinedLogger::init(vec![TermLogger::new(
+        LevelFilter::Warn,
+        Config::default(),
+        TerminalMode::Mixed,
+        ColorChoice::Auto,
+    )])
+    .unwrap();
 
     let arg = args::args();
     match arg.subcommand_name() {
@@ -35,8 +36,7 @@ async fn main() {
                     .collect::<Vec<String>>()
             };
 
-            // setup the scanner module
-           // let mut reqs = Vec::new();
+            let config_file = read_to_string(sub.value_of("config").unwrap()).unwrap();
             let header = extract_headers_vec(
                 sub.values_of("headers")
                     .unwrap()
@@ -59,19 +59,8 @@ async fn main() {
             });
             drop(urls);
             let mut scan_settings =
-                scan::Scanner::new(vec!["xss".to_string()], reqs,  sub.is_present("keep-value"));
-            scan_settings.load_config(r#"
-modules:
-    xss:
-        tags:
-            - /home/knassar702/.scant3r/mod/xss/tags.txt
-        jsfunc:
-            - /home/knassar702/.scant3r/mod/xss/jsfunc.txt
-        jsvalue:
-            - /home/knassar702/.scant3r/mod/xss/jsvalue.txt
-        attr:
-            - /home/knassar702/.scant3r/mod/xss/attr.txt
-                                      "#);
+                scan::Scanner::new(vec!["xss".to_string()], reqs, sub.is_present("keep-value"));
+            scan_settings.load_config(&config_file);
             scan_settings
                 .scan(
                     sub.value_of("concurrency")
@@ -83,5 +72,4 @@ modules:
         }
         _ => println!("No subcommand was used"),
     }
-
 }
