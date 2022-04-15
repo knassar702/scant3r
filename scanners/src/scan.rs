@@ -119,8 +119,8 @@ impl Scanner {
                                     self.payloads.push(Payloads::XSS(XssPayloads {
                                             js_cmd: jsfunc,
                                             js_value: jsvalue,
-                                            attr: attr,
-                                            html_tags: html_tags
+                                            attr,
+                                            html_tags
                                     }));
 
                                 },
@@ -153,7 +153,7 @@ impl Scanner {
                 let request = request;
                 let pb = &bar;
                 async move {
-                    for module in modules.clone() {
+                    for module in modules {
                         let module = module.as_str();
                         match module {
                             "xss" => {
