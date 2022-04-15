@@ -19,11 +19,12 @@ path = "cli/main.rs"
 
 [dependencies]
 url = "2.2.2"
-scant3r_utils = {path ="./utils"}
-scanners = {path = "./scanners"}
+scant3r_utils = { path ="./utils" }
+scanners = { path = "./scanners" }
 clap = "3.0.14"
 tokio = { version = "0.2.18", features = ["full"] }
 indicatif = "0.16.2"
 env_logger = "0.6.0"
 simplelog = "0.11.2"
-toml = "0.5.8"
+home = "0.5.3"
+log = "0.4.16"

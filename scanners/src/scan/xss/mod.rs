@@ -94,7 +94,7 @@ impl XssUrlParamsValue for Xss<'_> {
                             let d = html_search(resp.body.as_str(), &pay.search);
                             if d.len() > count.len() {
                                 _prog.println(format!(
-                                    "FOUND XSS \nReflect: {:?}\nPayload: {:?}\nMatch: {:?}\nCURL: {:?}",
+                                    "FOUND XSS \nReflect: {:?}\nPayload: {}\nMatch: {}\nCURL: \n{}",
                                     reflect, pay.payload, d,req.curl()
                                 ));
                                 break;

@@ -12,16 +12,17 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 mod args;
+mod startup;
 
 #[tokio::main]
 async fn main() {
-    CombinedLogger::init(vec![TermLogger::new(
-        LevelFilter::Warn,
-        Config::default(),
-        TerminalMode::Mixed,
-        ColorChoice::Auto,
-    )])
-    .unwrap();
+    CombinedLogger::init(
+        vec![
+            TermLogger::new(LevelFilter::Warn, Config::default(), TerminalMode::Mixed, ColorChoice::Auto),
+        ]
+    ).unwrap();
+    startup::check_config();
+
     let arg = args::args();
     match arg.subcommand_name() {
         Some("urls") => {
@@ -59,7 +60,18 @@ async fn main() {
             drop(urls);
             let mut scan_settings =
                 scan::Scanner::new(vec!["xss".to_string()], reqs,  sub.is_present("keep-value"));
-            scan_settings.load_config();
+            scan_settings.load_config(r#"
+modules:
+    xss:
+        tags:
+            - /home/knassar702/.scant3r/mod/xss/tags.txt
+        jsfunc:
+            - /home/knassar702/.scant3r/mod/xss/jsfunc.txt
+        jsvalue:
+            - /home/knassar702/.scant3r/mod/xss/jsvalue.txt
+        attr:
+            - /home/knassar702/.scant3r/mod/xss/attr.txt
+                                      "#);
             scan_settings
                 .scan(
                     sub.value_of("concurrency")

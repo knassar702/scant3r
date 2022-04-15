@@ -1,5 +1,4 @@
 extern crate scant3r_utils;
-use scant3r_utils::requests::{Msg, Settings};
 use hlua::{
     Lua,
     function1, function3, 

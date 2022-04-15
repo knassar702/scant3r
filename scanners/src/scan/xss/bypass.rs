@@ -3,6 +3,7 @@ mod parser;
 use crate::scan::xss::parser::{css_selector, Location};
 use fancy_regex::Regex;
 
+#[derive(Debug, Clone)]
 pub struct XssPayloads {
     pub js_cmd: Vec<String>,
     pub js_value: Vec<String>,
