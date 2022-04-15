@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use scraper::Html;
 use scraper::Selector;
 
@@ -13,7 +14,6 @@ pub enum Location {
 pub fn html_search(html: &str, pattern: &str) -> String {
     let mut found = String::new();
     let document = Html::parse_document(html);
-    println!("{:?}", pattern);
     let select = Selector::parse(pattern).unwrap();
     for node in document.select(&select) {
         found.push_str(&node.html());

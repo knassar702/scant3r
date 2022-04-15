@@ -21,6 +21,7 @@ const BLOCKING_HEADERS: [&str; 10] = [
     "application/rss+xml",
 ];
 
+#[derive(Debug)]
 pub enum Payloads {
     XSS(XssPayloads),
 }
@@ -46,7 +47,7 @@ impl Scanner {
     pub fn load_config(&mut self, config_yaml: &str) {
         match YamlLoader::load_from_str(config_yaml) {
             Ok(config) => {
-                let modules = match &config[0]["modules"].as_hash() {
+                match &config[0]["modules"].as_hash() {
                     Some(module) => {
                         module.iter().for_each(|(key,value)|{
                             match key.as_str().unwrap() {
@@ -116,10 +117,10 @@ impl Scanner {
                                         attr = vec!["onerror".to_string()];
                                     }
                                     self.payloads.push(Payloads::XSS(XssPayloads {
-                                            js_cmd: jsfunc.clone(),
-                                            js_value: jsvalue.clone(),
-                                            attr: attr.clone(),
-                                            html_tags: html_tags.clone()
+                                            js_cmd: jsfunc,
+                                            js_value: jsvalue,
+                                            attr: attr,
+                                            html_tags: html_tags
                                     }));
 
                                 },
