@@ -3,6 +3,6 @@ test
 Cargo.lock
 .vimspector.*
 *.log
-*.txt
+test*.txt
 .vim
 test*

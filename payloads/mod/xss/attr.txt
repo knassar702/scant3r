@@ -1,0 +1,4 @@
+onerror
+onmouseover
+onmouseout
+onclick
