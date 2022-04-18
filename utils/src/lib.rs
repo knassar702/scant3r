@@ -7,6 +7,15 @@ use regex::Regex;
 use std::collections::HashMap;
 use rand::{Rng, thread_rng};
 use rand::distributions::Alphanumeric;
+use urlencoding::encode as url_encode;
+
+pub fn urlencode(s: &str,many: Option<u8>) -> String {
+    let mut after_encode = String::from(s);
+    for _ in 0..many.unwrap_or(1) {
+        after_encode = url_encode(s).to_string();
+    }
+    after_encode
+}
 
 pub fn random_str(len: usize) -> String {
     let mut rng = thread_rng();
@@ -40,7 +49,12 @@ pub fn extract_headers_vec(header: Vec<String>) -> HashMap<String, String> {
 mod tests {
     #[test]
     fn it_works() {
-        let result = super::extract_headers("Content-Type: application/json");
+        let result = super::extract_headers("Content-Type: application/json".to_string());
         assert_eq!(result.get("Content-Type").unwrap(), "application/json");
+    }
+    #[test]
+    fn check_urlencode() {
+        let result = super::urlencode("http://www.google.com", None);
+        assert_eq!(result, "http%3A%2F%2Fwww.google.com");
     }
 }

@@ -121,10 +121,7 @@ impl Msg {
                         url: self.url.clone(),
                         status: res.status(),
                         headers: res.headers().clone(),
-                        body: from_utf8(&res.bytes().await.unwrap())
-                            .unwrap()
-                            .to_string()
-                            .clone(),
+                        body: res.text().await?,
                         error: None,
                     })
                 }
