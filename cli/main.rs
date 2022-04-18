@@ -23,17 +23,19 @@ async fn main() {
         ColorChoice::Auto,
     )])
     .unwrap();
-
     let arg = args::args();
     match arg.subcommand_name() {
         Some("urls") => {
             let sub = arg.subcommand_matches("urls").unwrap();
             let urls = {
                 let read_file = File::open(sub.value_of("file").unwrap()).unwrap();
-                BufReader::new(read_file)
+                let mut _urls = BufReader::new(read_file)
                     .lines()
                     .map(|x| x.unwrap())
-                    .collect::<Vec<String>>()
+                    .collect::<Vec<String>>();
+                _urls.sort();
+                _urls.dedup();
+                _urls
             };
 
             let config_file = read_to_string(sub.value_of("config").unwrap()).unwrap();
