@@ -1,7 +1,11 @@
 #![allow(dead_code)]
-use isahc::http::{HeaderMap, StatusCode};
-use isahc::prelude::*;
-use isahc::Request;
+use reqwest::blocking::ClientBuilder;
+use reqwest::header::HeaderMap;
+use reqwest::header::HeaderName;
+use reqwest::header::HeaderValue;
+use reqwest::redirect::Policy;
+use reqwest::Proxy;
+use reqwest::StatusCode;
 use std::collections::HashMap;
 use url::Url;
 
@@ -10,7 +14,6 @@ pub struct Resp {
     pub status: StatusCode,
     pub headers: HeaderMap,
     pub body: String,
-    pub error: Option<String>,
 }
 
 #[derive(Debug, Clone)]
@@ -62,7 +65,11 @@ impl Settings for Msg {
         self.clone()
     }
     fn proxy(&mut self, _proxy: String) -> Self {
-        self.proxy = Some(_proxy);
+        if _proxy.is_empty() {
+            self.proxy = None;
+        } else {
+            self.proxy = Some(_proxy);
+        }
         self.clone()
     }
     fn delay(&mut self, _sec: u64) -> Self {
@@ -84,44 +91,48 @@ impl Msg {
             delay: None,
         }
     }
-    pub fn send(&self) -> Result<Resp, isahc::Error> {
+    pub fn send(&self) -> Result<Resp, reqwest::Error> {
         // sleep with tokio
 
         if let Some(delay) = self.delay {
             std::thread::sleep(std::time::Duration::from_secs(delay));
         }
 
-        let mut response = Request::builder()
-            .method(self.method.as_str())
-            .ssl_options(isahc::config::SslOption::DANGER_ACCEPT_INVALID_CERTS)
+        let mut resp = ClientBuilder::new()
+            .danger_accept_invalid_certs(true)
             .timeout(std::time::Duration::from_secs(self.timeout.unwrap_or(30)))
-            .redirect_policy(isahc::config::RedirectPolicy::Limit(
-                self.redirect.unwrap_or(5),
-            ));
-        if self.proxy.as_ref().unwrap_or(&"".to_string()).len() > 0 {
-            response = response.proxy(
-                self.proxy
-                    .as_ref()
-                    .map(|proxy| proxy.as_str().parse().unwrap()),
-            );
+            .pool_max_idle_per_host(1)
+            .user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36")
+            .redirect(Policy::limited((self.redirect.unwrap_or(10) as u16).into()));
+
+        let mut headers = HeaderMap::new();
+        if self.proxy.is_some() {
+            resp = resp.proxy(Proxy::all(self.proxy.as_ref().unwrap()).unwrap());
+        }
+        self.headers.iter().for_each(|(k, v)| {
+            headers.append(
+                HeaderName::from_bytes(k.as_bytes()).unwrap(),
+                HeaderValue::from_str(v.as_str()).unwrap());
+        });
+        if headers.len() > 0 {
+            resp = resp.default_headers(headers);
         }
 
-        for (key, value) in &self.headers {
-            response = response.header(key.as_str(), value.as_str());
-        }
-        match response
-            .uri(self.url.as_str())
-            .body(self.body.clone().unwrap_or_else(|| "".to_string()))
+        match resp
+            .build()
             .unwrap()
+            .request(
+                reqwest::Method::from_bytes(self.method.as_bytes()).unwrap(),
+                self.url.as_str(),
+            )
             .send()
         {
-            Ok(mut res) => Ok(Resp {
-                        url: self.url.clone(),
-                        status: res.status(),
-                        headers: res.headers().clone(),
-                        body: res.text().unwrap(),
-                        error: None,
-                    }),
+            Ok(res) => Ok(Resp {
+                url: self.url.clone(),
+                status: res.status(),
+                headers: res.headers().clone(),
+                body: res.text().unwrap(),
+            }),
 
             Err(e) => Err(e),
         }
@@ -142,10 +153,7 @@ impl Curl for Msg {
         });
         // extract body
         if self.body.as_ref().unwrap().len() > 0 {
-            curl.push_str(&format!(
-                "-d \"{:?}\" ",
-                self.body.as_ref().unwrap()
-            ));
+            curl.push_str(&format!("-d \"{:?}\" ", self.body.as_ref().unwrap()));
         }
         // extract url
         curl.push_str(&format!("\"{}\"", self.url));
@@ -158,4 +166,3 @@ impl Curl for Msg {
         curl
     }
 }
-

@@ -3,13 +3,13 @@
 pub mod Injector;
 pub mod poc;
 pub mod requests;
+use rand::distributions::Alphanumeric;
+use rand::{thread_rng, Rng};
 use regex::Regex;
 use std::collections::HashMap;
-use rand::{Rng, thread_rng};
-use rand::distributions::Alphanumeric;
 use urlencoding::encode as url_encode;
 
-pub fn urlencode(s: &str,many: Option<u8>) -> String {
+pub fn urlencode(s: &str, many: Option<u8>) -> String {
     let mut after_encode = String::from(s);
     for _ in 0..many.unwrap_or(1) {
         after_encode = url_encode(s).to_string();
