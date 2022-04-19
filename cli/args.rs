@@ -139,12 +139,12 @@ pub fn args() -> ArgMatches {
                     .takes_value(true)
                     .validator(|s| {
                         if s.parse::<u64>().is_ok() {
-                            Ok(10)
+                            Ok(s.parse::<u64>().unwrap())
                         } else {
                             Err("Timeout must be a number".to_string())
                         }
                     })
-                    .default_value("20"),
+                    .default_value("30"),
             )])
         .get_matches()
 }

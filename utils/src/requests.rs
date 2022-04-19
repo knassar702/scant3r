@@ -86,12 +86,15 @@ impl Msg {
     }
     pub fn send(&self) -> Result<Resp, isahc::Error> {
         // sleep with tokio
+
         if let Some(delay) = self.delay {
             std::thread::sleep(std::time::Duration::from_secs(delay));
         }
+
         let mut response = Request::builder()
             .method(self.method.as_str())
             .ssl_options(isahc::config::SslOption::DANGER_ACCEPT_INVALID_CERTS)
+            .timeout(std::time::Duration::from_secs(self.timeout.unwrap_or(30)))
             .redirect_policy(isahc::config::RedirectPolicy::Limit(
                 self.redirect.unwrap_or(5),
             ));
