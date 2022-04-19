@@ -14,7 +14,6 @@ use std::io::prelude::*;
 use std::io::BufReader;
 mod args;
 
-#[tokio::main]
 async fn main() {
     CombinedLogger::init(vec![TermLogger::new(
         LevelFilter::Warn,
@@ -69,8 +68,7 @@ async fn main() {
                         .unwrap()
                         .parse::<usize>()
                         .unwrap(),
-                )
-                .await;
+                );
         }
         _ => println!("No subcommand was used"),
     }
