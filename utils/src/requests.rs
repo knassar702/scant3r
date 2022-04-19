@@ -3,8 +3,6 @@ use isahc::http::{HeaderMap, StatusCode};
 use isahc::prelude::*;
 use isahc::Request;
 use std::collections::HashMap;
-use std::str::from_utf8;
-use tokio::time::Duration;
 use url::Url;
 
 pub struct Resp {
@@ -86,10 +84,10 @@ impl Msg {
             delay: None,
         }
     }
-    pub async fn send(&self) -> Result<Resp, isahc::Error> {
+    pub fn send(&self) -> Result<Resp, isahc::Error> {
         // sleep with tokio
         if let Some(delay) = self.delay {
-            tokio::time::delay_for(Duration::from_secs(delay)).await;
+            std::thread::sleep(std::time::Duration::from_secs(delay));
         }
         let mut response = Request::builder()
             .method(self.method.as_str())
@@ -112,21 +110,15 @@ impl Msg {
             .uri(self.url.as_str())
             .body(self.body.clone().unwrap_or_else(|| "".to_string()))
             .unwrap()
-            .send_async()
-            .await
+            .send()
         {
-            Ok(mut res) => {
-                async {
-                    Ok(Resp {
+            Ok(mut res) => Ok(Resp {
                         url: self.url.clone(),
                         status: res.status(),
                         headers: res.headers().clone(),
-                        body: res.text().await?,
+                        body: res.text().unwrap(),
                         error: None,
-                    })
-                }
-                .await
-            }
+                    }),
 
             Err(e) => Err(e),
         }

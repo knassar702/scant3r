@@ -1,6 +1,6 @@
 extern crate scant3r_utils;
-use futures::{stream, StreamExt};
 use indicatif::{ProgressBar, ProgressStyle};
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use scant3r_utils::requests::Msg;
 use std::fs::read_to_string;
 use yaml_rust::YamlLoader;
@@ -177,58 +177,55 @@ impl Scanner {
             .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos:>7}/{len:7} {msg}")
             .tick_chars("//—\\\r")
             .progress_chars("#>-"));
-        stream::iter(&self.requests)
-            .for_each_concurrent(concurrency, |request| {
-                let modules = &self.modules;
-                let request = request;
-                let pb = &bar;
-                async move {
-                    for module in modules {
-                        let module = module.as_str();
-                        match module {
-                            "xss" => {
-                                let mut blocking_headers = false;
-                                let resp = match request.send().await {
-                                    Ok(resp) => resp,
-                                    Err(_) => {
-                                        pb.inc(1);
-                                        return;
-                                    }
-                                };
+        let threader = rayon::ThreadPoolBuilder::new()
+            .num_threads(concurrency).build().unwrap();
+        threader.install(||{
+            self.requests.par_iter().for_each(|request| {
+                self.modules.iter().for_each(|module| {
+                    let module = module.as_str();
+                    match module {
+                        "xss" => {
+                            let mut blocking_headers = false;
+                            let resp = match request.send() {
+                                Ok(resp) => resp,
+                                Err(_) => {
+                                    bar.inc(1);
+                                    return;
+                                }
+                            };
 
-                                BLOCKING_HEADERS.iter().for_each(|header| {
-                                    if resp.headers.contains_key("Content-Type") {
-                                        if resp.headers.get("Content-Type").unwrap() == header {
-                                            blocking_headers = true;
-                                        }
-                                    } else {
+                            BLOCKING_HEADERS.iter().for_each(|header| {
+                                if resp.headers.contains_key("Content-Type") {
+                                    if resp.headers.get("Content-Type").unwrap() == header {
                                         blocking_headers = true;
                                     }
-                                });
+                                } else {
+                                    blocking_headers = true;
+                                }
+                            });
 
-                                if !blocking_headers {
-                                    for payload in self.payloads.iter() {
-                                        match payload {
-                                            Payloads::XSS(current_payload) => {
-                                                let xss_scan = xss::Xss::new(
-                                                    request,
-                                                    current_payload,
-                                                    self.keep_value,
-                                                );
-                                                let _value = xss_scan.value_scan(pb).await;
-                                            }
+                            if !blocking_headers {
+                                for payload in self.payloads.iter() {
+                                    match payload {
+                                        Payloads::XSS(current_payload) => {
+                                            let xss_scan = xss::Xss::new(
+                                                request,
+                                                current_payload,
+                                                self.keep_value,
+                                            );
+                                            let _value = xss_scan.value_scan(&bar);
                                         }
                                     }
                                 }
-                                pb.inc(1);
                             }
-                            _ => {
-                                panic!("Module not found");
-                            }
+                            bar.inc(1);
+                        }
+                        _ => {
+                            panic!("Module not found");
                         }
                     }
-                }
-            })
-            .await;
+                });
+            });
+        });
     }
 }

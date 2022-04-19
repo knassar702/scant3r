@@ -7,13 +7,12 @@ edition = "2021"
 
 [dependencies]
 scant3r_utils = {path = "../utils"}
+rayon = "1.5.2"
 url = "2.2.2"
 home = "0.5.3"
 log = "0.4.14"
-async-trait = "0.1.52"
 indicatif = "0.16.2"
 console = "0.15.0"
-futures = "0.3.19"
 scraper = "0.12.0"
 urlencoding = "2.1.0"
 fancy-regex = "0.8.0"
