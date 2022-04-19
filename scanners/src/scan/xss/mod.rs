@@ -40,7 +40,43 @@ impl Xss<'_> {
     }
 }
 
+pub fn accept_html(req: &Msg) -> bool {
+         let block_headers = vec![
+                "application/json",
+                "application/javascript",
+                "text/javascript",
+                "text/plain",
+                "text/css",
+                "image/jpeg",
+                "image/png",
+                "image/bmp",
+                "image/gif",
+                "application/rss+xml",
+                ];
+
+        let mut is_html = false;
+        match req.send() {
+            Ok(resp) => {
+                    block_headers.iter().for_each(|header| {
+                        if resp.headers.contains_key("Content-Type") {
+                            if resp.headers.get("Content-Type").unwrap() == header {
+                                is_html = true;
+                            }
+                        } else {
+                            is_html = true;
+                        }
+                    })
+                 },
+            Err(e) => {
+                error!("{}", e);
+                return false;
+            },
+        }
+        is_html
+    }
+
 impl XssUrlParamsValue for Xss<'_> {
+    
      fn value_reflected(&self) -> Vec<String> {
         let mut reflected_parameters: Vec<String> = Vec::new();
         let payload = random_str(5);

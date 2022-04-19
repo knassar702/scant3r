@@ -6,20 +6,7 @@ use std::fs::read_to_string;
 use yaml_rust::YamlLoader;
 
 mod xss;
-use xss::{XssPayloads, XssUrlParamsValue};
-
-const BLOCKING_HEADERS: [&str; 10] = [
-    "application/json",
-    "application/javascript",
-    "text/javascript",
-    "text/plain",
-    "text/css",
-    "image/jpeg",
-    "image/png",
-    "image/bmp",
-    "image/gif",
-    "application/rss+xml",
-];
+use xss::{accept_html,XssPayloads, XssUrlParamsValue};
 
 #[derive(Debug)]
 pub enum Payloads {
@@ -178,32 +165,24 @@ impl Scanner {
             .tick_chars("//—\\\r")
             .progress_chars("#>-"));
         let threader = rayon::ThreadPoolBuilder::new()
+            .exit_handler(move |_| {
+                log::info!("Thread pool is exiting");
+            })
+            .panic_handler(move |_| {
+                log::info!("Thread pool panicked");
+            })
+            .start_handler(move |_| {
+                log::info!("Thread pool is starting");
+            })
             .num_threads(concurrency).build().unwrap();
+
         threader.install(||{
             self.requests.par_iter().for_each(|request| {
                 self.modules.iter().for_each(|module| {
                     let module = module.as_str();
                     match module {
                         "xss" => {
-                            let mut blocking_headers = false;
-                            let resp = match request.send() {
-                                Ok(resp) => resp,
-                                Err(_) => {
-                                    bar.inc(1);
-                                    return;
-                                }
-                            };
-
-                            BLOCKING_HEADERS.iter().for_each(|header| {
-                                if resp.headers.contains_key("Content-Type") {
-                                    if resp.headers.get("Content-Type").unwrap() == header {
-                                        blocking_headers = true;
-                                    }
-                                } else {
-                                    blocking_headers = true;
-                                }
-                            });
-
+                            let blocking_headers = accept_html(request);
                             if !blocking_headers {
                                 for payload in self.payloads.iter() {
                                     match payload {
