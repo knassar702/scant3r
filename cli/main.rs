@@ -14,7 +14,7 @@ use std::io::prelude::*;
 use std::io::BufReader;
 mod args;
 
-async fn main() {
+fn main() {
     CombinedLogger::init(vec![TermLogger::new(
         LevelFilter::Warn,
         Config::default(),
