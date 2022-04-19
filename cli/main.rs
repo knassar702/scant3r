@@ -62,13 +62,12 @@ fn main() {
             let mut scan_settings =
                 scan::Scanner::new(vec!["xss".to_string()], reqs, sub.is_present("keep-value"));
             scan_settings.load_config(&config_file);
-            scan_settings
-                .scan(
-                    sub.value_of("concurrency")
-                        .unwrap()
-                        .parse::<usize>()
-                        .unwrap(),
-                );
+            scan_settings.scan(
+                sub.value_of("concurrency")
+                    .unwrap()
+                    .parse::<usize>()
+                    .unwrap(),
+            );
         }
         _ => println!("No subcommand was used"),
     }

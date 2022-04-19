@@ -16,6 +16,8 @@ jobs:
           args: --release
       - name: Rename binary
         run: mv target/release/scant3r scant3r-macos64
+      - name: strip
+        run: strip scant3r-macos64
       - name: Upload to release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -41,6 +43,8 @@ jobs:
           args: --release
       - name: Rename binary
         run: mv target/release/scant3r scant3r-linux-amd64
+      - name: strip
+        run: strip scant3r-linux-amd64
       - name: Upload to release
         uses: JasonEtco/upload-to-release@d648f1babf776de9cad881320bd9e9818fc3b262
         with:
