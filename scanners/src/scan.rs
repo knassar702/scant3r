@@ -197,12 +197,12 @@ impl Scanner {
                                     }
                                 }
                             }
-                            bar.inc(1);
                         }
                         _ => {
                             panic!("Module not found");
                         }
                     }
+                    bar.inc(1);
                 });
             });
         });

@@ -1,5 +1,6 @@
 extern crate scant3r_utils;
 
+use crate::model::Report;
 use indicatif::ProgressBar;
 use log::error;
 use scant3r_utils::{
@@ -24,7 +25,7 @@ pub struct Xss<'t> {
 pub trait XssUrlParamsValue {
     // scan url params value
      fn value_reflected(&self) -> Vec<String>;
-     fn value_scan(&self, _prog: &ProgressBar) -> HashMap<url::Url, String>;
+     fn value_scan(&self, _prog: &ProgressBar) -> Vec<Report>;
 }
 
 impl Xss<'_> {
@@ -41,7 +42,7 @@ impl Xss<'_> {
 }
 
 pub fn accept_html(req: &Msg) -> bool {
-         let block_headers = vec![
+        let block_headers = vec![
                 "application/json",
                 "application/javascript",
                 "text/javascript",
@@ -103,8 +104,8 @@ impl XssUrlParamsValue for Xss<'_> {
         reflected_parameters
     }
 
-     fn value_scan(&self, _prog: &ProgressBar) -> HashMap<url::Url, String> {
-        let mut _found: HashMap<url::Url, String> = HashMap::new();
+     fn value_scan(&self, _prog: &ProgressBar) -> Vec<Report> {
+        let mut _found: Vec<Report> = Vec::new();
         for param in self.value_reflected() {
             let mut req = self.request.clone();
             let payload = random_str(5).to_lowercase();
@@ -133,6 +134,12 @@ impl XssUrlParamsValue for Xss<'_> {
                                     d,
                                     req.curl()
                                 ));
+                                _found.push(Report{
+                                    url: req.url.to_string(),
+                                    match_payload: d,
+                                    payload: pay.payload.to_string(),
+                                    curl: req.curl(),
+                                });
                                 break;
                             }
                         }
