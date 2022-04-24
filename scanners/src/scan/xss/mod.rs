@@ -1,14 +1,14 @@
 extern crate scant3r_utils;
 
 use crate::model::Report;
+use console::style;
 use indicatif::ProgressBar;
 use log::error;
 use scant3r_utils::{
+    injector::{Injector, Urlinjector},
     random_str,
     requests::{Curl, Msg},
-    injector::{Injector, Urlinjector},
 };
-use console::style;
 
 mod parser;
 use parser::{html_parse, html_search};
@@ -16,9 +16,19 @@ use parser::{html_parse, html_search};
 mod bypass;
 pub use bypass::{PayloadGen, XssPayloads};
 
-
-pub fn print_poc(report: &Report) {
-    println!("{} Valid XSS\n{} URL: {}\n{} CURL: {}\n{} MATCH: {}\n{} PAYLOAD: \"{}\"", style("[+]").green(), style("[!]").yellow(), report.url, style("[!]").yellow(),report.curl,style("[!]").yellow(),report.match_payload,style("[!]").yellow(),report.payload.replace("\"","\\\""));
+pub fn print_poc(report: &Report) -> String {
+    format!(
+        "{} Valid XSS\n{} URL: {}\n{} MATCH: {}\n{} PAYLOAD: \"{}\"\n{} CURL: {}\n",
+        style("[+]").green(),
+        style("[!]").yellow(),
+        report.url,
+        style("[!]").yellow(),
+        report.match_payload,
+        style("[!]").yellow(),
+        report.payload.replace("\"", "\\\""),
+        style("[!]").yellow(),
+        report.curl,
+    )
 }
 
 pub struct Xss<'t> {
@@ -29,8 +39,8 @@ pub struct Xss<'t> {
 
 pub trait XssUrlParamsValue {
     // scan url params value
-     fn value_reflected(&self) -> Vec<String>;
-     fn value_scan(&self, _prog: &ProgressBar) -> Vec<Report>;
+    fn value_reflected(&self) -> Vec<String>;
+    fn value_scan(&self, _prog: &ProgressBar) -> Vec<Report>;
 }
 
 impl Xss<'_> {
@@ -47,43 +57,40 @@ impl Xss<'_> {
 }
 
 pub fn accept_html(req: &Msg) -> bool {
-        let block_headers = vec![
-                "application/json",
-                "application/javascript",
-                "text/javascript",
-                "text/plain",
-                "text/css",
-                "image/jpeg",
-                "image/png",
-                "image/bmp",
-                "image/gif",
-                "application/rss+xml",
-                ];
+    let block_headers = vec![
+        "application/json",
+        "application/javascript",
+        "text/javascript",
+        "text/plain",
+        "text/css",
+        "image/jpeg",
+        "image/png",
+        "image/bmp",
+        "image/gif",
+        "application/rss+xml",
+    ];
 
-        let mut is_html = false;
-        match req.send() {
-            Ok(resp) => {
-                    block_headers.iter().for_each(|header| {
-                        if resp.headers.contains_key("Content-Type") {
-                            if resp.headers.get("Content-Type").unwrap() == header {
-                                is_html = true;
-                            }
-                        } else {
-                            is_html = true;
-                        }
-                    })
-                 },
-            Err(e) => {
-                error!("{}", e);
-                return false;
-            },
+    let mut is_html = false;
+    match req.send() {
+        Ok(resp) => block_headers.iter().for_each(|header| {
+            if resp.headers.contains_key("Content-Type") {
+                if resp.headers.get("Content-Type").unwrap() == header {
+                    is_html = true;
+                }
+            } else {
+                is_html = true;
+            }
+        }),
+        Err(e) => {
+            error!("{}", e);
+            return false;
         }
-        is_html
     }
+    is_html
+}
 
 impl XssUrlParamsValue for Xss<'_> {
-    
-     fn value_reflected(&self) -> Vec<String> {
+    fn value_reflected(&self) -> Vec<String> {
         let mut reflected_parameters: Vec<String> = Vec::new();
         let payload = random_str(5);
         let check_requests = self.injector.url_value(&payload);
@@ -109,7 +116,7 @@ impl XssUrlParamsValue for Xss<'_> {
         reflected_parameters
     }
 
-     fn value_scan(&self, _prog: &ProgressBar) -> Vec<Report> {
+    fn value_scan(&self, _prog: &ProgressBar) -> Vec<Report> {
         let mut _found: Vec<Report> = Vec::new();
         for param in self.value_reflected() {
             let mut req = self.request.clone();
@@ -130,27 +137,20 @@ impl XssUrlParamsValue for Xss<'_> {
                     req.url = self.injector.set_urlvalue(&param, &pay.payload);
                     match req.send() {
                         Ok(resp) => {
-                            let d = html_search(resp.body.as_str(), &pay.search);
-                            if d.len() > count.len() {
-                                /*_prog.println(format!(
-                                    "FOUND XSS \nReflect: {:?}\nPayload: {}\nMatch: {}\nCURL: \n{}",
-                                    reflect,
-                                    pay.payload,
-                                    d,
-                                    req.curl()
-                                ));*/
-                                print_poc(&Report{
+                            let payload_found = html_search(resp.body.as_str(), &pay.search);
+                            if payload_found.len() > count.len() {
+                                _found.push(Report {
                                     url: req.url.to_string(),
-                                    match_payload: d,
+                                    match_payload: payload_found.clone(),
                                     payload: pay.payload.to_string(),
                                     curl: req.curl(),
                                 });
-                                /*_found.push(Report{
+                                _prog.println(print_poc(&Report {
                                     url: req.url.to_string(),
-                                    match_payload: d,
+                                    match_payload: payload_found,
                                     payload: pay.payload.to_string(),
                                     curl: req.curl(),
-                                });*/
+                                }));
                                 break;
                             }
                         }
@@ -162,5 +162,5 @@ impl XssUrlParamsValue for Xss<'_> {
             }
         }
         _found
-     }
+    }
 }

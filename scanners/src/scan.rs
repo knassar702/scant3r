@@ -6,7 +6,7 @@ use std::fs::read_to_string;
 use yaml_rust::YamlLoader;
 
 mod xss;
-use xss::{accept_html,XssPayloads, XssUrlParamsValue};
+use xss::{accept_html, XssPayloads, XssUrlParamsValue};
 
 #[derive(Debug)]
 pub enum Payloads {
@@ -174,9 +174,11 @@ impl Scanner {
             .start_handler(move |_| {
                 log::info!("Thread pool is starting");
             })
-            .num_threads(concurrency).build().unwrap();
+            .num_threads(concurrency)
+            .build()
+            .unwrap();
 
-        threader.install(||{
+        threader.install(|| {
             self.requests.par_iter().for_each(|request| {
                 self.modules.iter().for_each(|module| {
                     let module = module.as_str();

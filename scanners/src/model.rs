@@ -5,4 +5,3 @@ pub struct Report {
     pub curl: String,
     pub url: String,
 }
-
