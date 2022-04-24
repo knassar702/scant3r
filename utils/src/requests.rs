@@ -1,8 +1,9 @@
 #![allow(dead_code)]
 use reqwest::blocking::ClientBuilder;
-use reqwest::header::HeaderMap;
-use reqwest::header::HeaderName;
-use reqwest::header::HeaderValue;
+use reqwest::header::{
+    HeaderMap,
+    HeaderName,
+    HeaderValue};
 use reqwest::redirect::Policy;
 use reqwest::Proxy;
 use reqwest::StatusCode;
@@ -112,7 +113,8 @@ impl Msg {
         self.headers.iter().for_each(|(k, v)| {
             headers.append(
                 HeaderName::from_bytes(k.as_bytes()).unwrap(),
-                HeaderValue::from_str(v.as_str()).unwrap());
+                HeaderValue::from_str(v.as_str()).unwrap(),
+            );
         });
         if headers.len() > 0 {
             resp = resp.default_headers(headers);

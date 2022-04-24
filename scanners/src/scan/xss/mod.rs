@@ -6,15 +6,20 @@ use log::error;
 use scant3r_utils::{
     random_str,
     requests::{Curl, Msg},
-    Injector::{Injector, Urlinjector},
+    injector::{Injector, Urlinjector},
 };
-use std::collections::HashMap;
+use console::style;
 
 mod parser;
 use parser::{html_parse, html_search};
 
 mod bypass;
 pub use bypass::{PayloadGen, XssPayloads};
+
+
+pub fn print_poc(report: &Report) {
+    println!("{} Valid XSS\n{} URL: {}\n{} CURL: {}\n{} MATCH: {}\n{} PAYLOAD: \"{}\"", style("[+]").green(), style("[!]").yellow(), report.url, style("[!]").yellow(),report.curl,style("[!]").yellow(),report.match_payload,style("[!]").yellow(),report.payload.replace("\"","\\\""));
+}
 
 pub struct Xss<'t> {
     request: &'t Msg,
@@ -127,19 +132,25 @@ impl XssUrlParamsValue for Xss<'_> {
                         Ok(resp) => {
                             let d = html_search(resp.body.as_str(), &pay.search);
                             if d.len() > count.len() {
-                                _prog.println(format!(
+                                /*_prog.println(format!(
                                     "FOUND XSS \nReflect: {:?}\nPayload: {}\nMatch: {}\nCURL: \n{}",
                                     reflect,
                                     pay.payload,
                                     d,
                                     req.curl()
-                                ));
-                                _found.push(Report{
+                                ));*/
+                                print_poc(&Report{
                                     url: req.url.to_string(),
                                     match_payload: d,
                                     payload: pay.payload.to_string(),
                                     curl: req.curl(),
                                 });
+                                /*_found.push(Report{
+                                    url: req.url.to_string(),
+                                    match_payload: d,
+                                    payload: pay.payload.to_string(),
+                                    curl: req.curl(),
+                                });*/
                                 break;
                             }
                         }

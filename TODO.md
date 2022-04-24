@@ -1,3 +1,3 @@
-* Create XSS payload generator
-* Async Lua function
-* Better error handling
+* [x] Create XSS payload generator
+* [] Async Lua function
+* [] Better error handling

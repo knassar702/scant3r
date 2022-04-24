@@ -1,10 +1,21 @@
 extern crate scant3r_utils;
 use hlua::{
     Lua,
-    function1, function3, 
+    function1 
 };
+use scant3r_utils::requests::{Msg,Settings};
 use std::fs::File;
 
+fn sender(url: String) -> String {
+    let req = Msg::new()
+        .url(url)
+        .method("GET".to_string());
+    match req.send() {
+        Ok(test) => println!("TEST"),
+        Err(e) => println!("ERR"),
+    }
+    String::from("TES")
+}
 fn bruh(name: String) -> String {
     format!("YEAH BOOYAH {}",name)
 }
