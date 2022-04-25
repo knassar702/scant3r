@@ -1,53 +1,42 @@
-name: Build Binaries
+name: Release
 
-on: 
-  release:
-    types: # This configuration does not affect the page_build event above
-      - created
+on:
+  push:
+    tags:
+      - v[0-9]+.*
+
 jobs:
-  build_for_mac:
-    name: MacOS
-    runs-on: macos-10.15
+  create-release:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --release
-      - name: Rename binary
-        run: mv target/release/scant3r scant3r-macos64
-      - name: strip
-        run: strip scant3r-macos64
-      - name: Upload to release
+      - uses: actions/checkout@v3
+      - uses: taiki-e/create-gh-release-action@v1
         env:
+          # (required)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          curl \
-            -f \
-            -sSL \
-            -XPOST \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            -H "Content-Length: $(stat -f%z scant3r-macos64)" \
-            -H "Content-Type: application/octet-stream" \
-            --upload-file "scant3r-macos64" \
-            "https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$(jq --raw-output '.release.id' $GITHUB_EVENT_PATH)/assets?name=scant3r-macos64"
 
-  build_for_linux:
-    name: Linux
-    runs-on: ubuntu-18.04
+  upload-assets:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@master
-      - uses: actions-rs/cargo@v1
+      - uses: actions/checkout@v3
+      - uses: taiki-e/upload-rust-binary-action@v1
         with:
-          command: build
-          args: --release
-      - name: Rename binary
-        run: mv target/release/scant3r scant3r-linux-amd64
-      - name: strip
-        run: strip scant3r-linux-amd64
-      - name: Upload to release
-        uses: JasonEtco/upload-to-release@d648f1babf776de9cad881320bd9e9818fc3b262
-        with:
-          args: scant3r-linux-amd64 application/octet-stream
+          # (required)
+          bin: scant3r
+          # (optional) On which platform to distribute the `.tar.gz` file.
+          # [default value: unix]
+          # [possible values: all, unix, windows, none]
+          tar: unix
+          # (optional) On which platform to distribute the `.zip` file.
+          # [default value: windows]
+          # [possible values: all, unix, windows, none]
+          zip: windows
         env:
+          # (required)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
