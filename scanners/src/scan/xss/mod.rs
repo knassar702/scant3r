@@ -18,15 +18,15 @@ pub use bypass::{PayloadGen, XssPayloads};
 
 pub fn print_poc(report: &Report) -> String {
     format!(
-        "{} Valid XSS\n{} URL: {}\n{} MATCH: {}\n{} PAYLOAD: \"{}\"\n{} CURL: {}\n",
-        style("[+]").green(),
-        style("[!]").yellow(),
+        "\n{}\n{} URL: {}\n{} MATCH: {}\n{} PAYLOAD: \"{}\"\n{} CURL: {}\n",
+        style("[XSS]").bold().red(),
+        style(">> ").yellow(),
         report.url,
-        style("[!]").yellow(),
+        style(">> ").yellow(),
         report.match_payload,
-        style("[!]").yellow(),
+        style(">> ").yellow(),
         report.payload.replace("\"", "\\\""),
-        style("[!]").yellow(),
+        style(">> ").yellow(),
         report.curl,
     )
 }
