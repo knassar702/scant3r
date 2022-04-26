@@ -119,8 +119,7 @@ pub fn valid_to_xss(req: &Msg) -> (bool,bool) {
             })
 
             },
-            Err(e) => {
-                error!("{}", e);
+            Err(_e) => {
                 return (false,false);
             }
         }
