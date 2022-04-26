@@ -1,7 +1,7 @@
 extern crate scant3r_utils;
 use indicatif::{ProgressBar, ProgressStyle};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-use scant3r_utils::requests::{Msg, Settings};
+use scant3r_utils::requests::Msg;
 use console::style;
 
 mod xss;
