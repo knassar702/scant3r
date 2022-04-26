@@ -9,13 +9,6 @@ pub fn args() -> ArgMatches {
         .subcommands(vec![Command::new("urls")
             .about("Scan a website")
             .arg(
-                Arg::new("config")
-                    .long("config")
-                    .help("Path to the configuration file")
-                    .required(true)
-                    .takes_value(true),
-            )
-            .arg(
                 Arg::new("modules")
                     .help("The modules to use")
                     .long("modules")

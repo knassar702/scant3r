@@ -8,7 +8,6 @@ use scant3r_utils::{
     extract_headers_vec,
     requests::{Msg, Settings},
 };
-use std::fs::read_to_string;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
@@ -37,7 +36,6 @@ fn main() {
                 _urls
             };
 
-            let config_file = read_to_string(sub.value_of("config").unwrap()).unwrap();
             let header = extract_headers_vec(
                 sub.values_of("headers")
                     .unwrap()

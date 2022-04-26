@@ -83,7 +83,7 @@ fn get_cspcheck() -> Vec<&'static str> {
     ]
 }
 
-pub fn valid_to_xss(req: &Msg) -> bool {
+pub fn valid_to_xss(req: &Msg) -> (bool,bool) {
         let block_headers = vec![
             "application/json",
             "application/javascript",
@@ -98,12 +98,13 @@ pub fn valid_to_xss(req: &Msg) -> bool {
         ];
 
         let mut is_html = false;
+        let mut need_manual_check = false;
         match req.send() {
             Ok(resp) => { 
                 for csp in get_cspcheck().iter() {
                     if resp.headers.get("Content-Security-Policy").is_some() {
                         if resp.headers.get("Content-Security-Policy").unwrap().to_str().unwrap().contains(csp) {
-                            return false;
+                            need_manual_check = true;
                         }
                     }
                 }
@@ -120,10 +121,10 @@ pub fn valid_to_xss(req: &Msg) -> bool {
             },
             Err(e) => {
                 error!("{}", e);
-                return false;
+                return (false,false);
             }
         }
-        is_html
+        (is_html,need_manual_check)
     }
 
 
