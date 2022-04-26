@@ -3,7 +3,6 @@ extern crate scant3r_utils;
 use crate::model::Report;
 use console::style;
 use indicatif::ProgressBar;
-use log::error;
 use scant3r_utils::{
     injector::{Injector, Urlinjector},
     random_str,
@@ -169,8 +168,7 @@ impl XssUrlParamsValue for Xss<'_> {
                             reflected_parameters.push(_param);
                         }
                     }
-                    Err(e) => {
-                        error!("{}", e);
+                    Err(_e) => {
                         continue;
                     }
                 };

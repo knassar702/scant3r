@@ -1,7 +1,5 @@
 extern crate scanners;
 extern crate scant3r_utils;
-extern crate simplelog;
-use simplelog::*;
 
 use scanners::scan;
 use scant3r_utils::{
@@ -15,13 +13,6 @@ use std::io::BufReader;
 mod args;
 
 fn main() {
-    CombinedLogger::init(vec![TermLogger::new(
-        LevelFilter::Warn,
-        Config::default(),
-        TerminalMode::Mixed,
-        ColorChoice::Auto,
-    )])
-    .unwrap();
     let arg = args::args();
     match arg.subcommand_name() {
         Some("urls") => {

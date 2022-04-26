@@ -10,7 +10,6 @@ scant3r_utils = {path = "../utils"}
 rayon = "1.5.2"
 url = "2.2.2"
 home = "0.5.3"
-log = "0.4.14"
 indicatif = "0.16.2"
 console = "0.15.0"
 scraper = "0.12.0"
