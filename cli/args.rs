@@ -1,4 +1,5 @@
 extern crate scant3r_utils;
+use std::path::Path;
 use clap::{Arg, ArgMatches, Command};
 
 pub fn args() -> ArgMatches {
@@ -8,6 +9,19 @@ pub fn args() -> ArgMatches {
         .about("A Web Application Scanner")
         .subcommands(vec![Command::new("urls")
             .about("Scan a website")
+            .arg(
+                Arg::new("xsslist")
+                .help("XSS WordList")
+                .long("xsslist")
+                .takes_value(true)
+                .validator(|wordlist| {
+                    if Path::new(wordlist).exists() {
+                        Ok(())
+                    } else {
+                        Err(format!("{} does not exist", wordlist))
+                    }
+                })
+                )
             .arg(
                 Arg::new("modules")
                     .help("The modules to use")
@@ -106,6 +120,7 @@ pub fn args() -> ArgMatches {
                             Err("Redirects must be a number".to_string())
                         }
                     })
+                    .default_value("0")
                     .takes_value(true),
             )
             .arg(
