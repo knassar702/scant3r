@@ -7,6 +7,7 @@ use scanners::scan;
 use scant3r_utils::{
     extract_headers_vec,
     requests::{Msg, Settings},
+    valid_url
 };
 use std::fs::File;
 use std::io::prelude::*;
@@ -44,17 +45,19 @@ fn main() {
             );
             let mut reqs: Vec<Msg> = Vec::new();
             urls.iter().for_each(|url| {
-                let mut live_check = Msg::new()
-                    .method(sub.value_of("method").unwrap().to_string())
-                    .url(url.to_string())
-                    .redirect(sub.value_of("redirect").unwrap().parse::<u32>().unwrap())
-                    .headers(header.clone())
-                    .body(sub.value_of("data").unwrap_or("").to_string())
-                    .delay(sub.value_of("delay").unwrap_or("0").parse::<u64>().unwrap());
-                if sub.value_of("proxy").is_some() {
-                    live_check.proxy(sub.value_of("proxy").unwrap().to_string());
+                if valid_url(url) {
+                    let mut live_check = Msg::new()
+                        .method(sub.value_of("method").unwrap().to_string())
+                        .url(url.to_string())
+                        .redirect(sub.value_of("redirect").unwrap().parse::<u32>().unwrap())
+                        .headers(header.clone())
+                        .body(sub.value_of("data").unwrap_or("").to_string())
+                        .delay(sub.value_of("delay").unwrap_or("0").parse::<u64>().unwrap());
+                    if sub.value_of("proxy").is_some() {
+                        live_check.proxy(sub.value_of("proxy").unwrap().to_string());
+                    }
+                    reqs.push(live_check.clone());
                 }
-                reqs.push(live_check.clone());
             });
             drop(urls);
             let mut scan_settings =

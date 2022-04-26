@@ -23,4 +23,3 @@ scanners = { path = "./scanners" }
 clap = "3.0.14"
 simplelog = "0.11.2"
 log = "0.4.16"
-trust-dns-resolver = "0.21.2"
