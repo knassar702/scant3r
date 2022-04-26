@@ -132,14 +132,6 @@ pub fn args() -> ArgMatches {
                     .takes_value(true),
             )
             .arg(
-                Arg::new("location")
-                    .help("The location to inject the payload (headers or urls or body)")
-                    .long("location")
-                    .default_value("url")
-                    .possible_values(&["headers", "url", "body"])
-                    .takes_value(true),
-            )
-            .arg(
                 Arg::new("timeout")
                     .help("The timeout in seconds")
                     .long("timeout")
