@@ -132,7 +132,10 @@ impl Msg {
                 url: self.url.clone(),
                 status: res.status(),
                 headers: res.headers().clone(),
-                body: res.text().unwrap(),
+                body: match res.text() {
+                    Ok(body) => body,
+                    Err(_) => "".to_string(),
+                },
             }),
 
             Err(e) => Err(e),

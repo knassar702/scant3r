@@ -21,3 +21,4 @@ path = "cli/main.rs"
 scant3r_utils = { path ="./utils" }
 scanners = { path = "./scanners" }
 clap = "3.0.14"
+console = "0.15.0"

@@ -1263,7 +1263,6 @@ dependencies = [
  "fancy-regex",
  "home",
  "indicatif",
- "log",
  "rayon",
  "scant3r_utils",
  "scraper",
@@ -1277,6 +1276,7 @@ name = "scant3r"
 version = "0.1.0"
 dependencies = [
  "clap",
+ "console",
  "scanners",
  "scant3r_utils",
 ]
