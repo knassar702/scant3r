@@ -1,4 +1,0 @@
-onerror
-onmouseover
-onmouseout
-onclick

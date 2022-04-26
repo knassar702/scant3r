@@ -1,7 +1,8 @@
 extern crate scant3r_utils;
 use indicatif::{ProgressBar, ProgressStyle};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-use scant3r_utils::requests::Msg;
+use scant3r_utils::requests::{Msg, Settings};
+use console::style;
 
 mod xss;
 use xss::{valid_to_xss,XssPayloads, XssUrlParamsValue};
@@ -72,7 +73,7 @@ impl Scanner {
                         "xss" => {
                             let blocking_headers = valid_to_xss(request);
                             if blocking_headers.1 == true {
-                                let _ = &bar.println("NEED MANUAL CHECK");
+                                let _ = &bar.println(format!("{}: {}",style("Need Manual Test").yellow().bold(),request.url));
                             }
                             if !blocking_headers.0 && blocking_headers.1 == false {
                                 for payload in self.payloads.iter() {
