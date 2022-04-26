@@ -48,8 +48,8 @@ impl Scanner {
                         "onpointerover".to_string(),
                     ],
                     html_tags: vec!["<img src=x onerror=$JS_FUNC$`$JS_CMD$`>".to_string(), "<h1 $JS_FUNC$`$JS_CMD$`>".to_string(),"<h1 $JS_FUNC$($JS_CMD)".to_string()],
-                    js_cmd: vec!["alert".to_string(), "prompt".to_string()],
-                    js_value: vec!["document.cookie".to_string(), "document.location".to_string(),"1".to_string()],
+                    js_cmd: vec!["alert".to_string(),"confirm".to_string(),"prompt".to_string()],
+                    js_value: vec!["this['ale'+'rt'](this['doc'+'ument']['dom'+'ain'])".to_string(),"document.cookie".to_string(), "document.location".to_string(),"1".to_string()],
                 }
                 ));
     }

@@ -83,7 +83,7 @@ impl<'a> PayloadGen<'a> {
                                 value,
                                 " ".repeat(space)
                             ),
-                            search: format!("*[{}='{}({})']", attr, cmd, value),
+                            search: format!(r#"*[{}="{}({})"]"#, attr, cmd, value),
                         });
 
                         payloads.push(OrderPayload {
@@ -129,7 +129,7 @@ impl<'a> PayloadGen<'a> {
                                 " vd".repeat(i)
                             )
                         },
-                        search: format!("*[{}='{}']", attr_param, js_cmd),
+                        search: format!(r#"*[{}="{}"]"#, attr_param, js_cmd),
                     });
                 }
             });
