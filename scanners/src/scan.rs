@@ -58,7 +58,7 @@ impl Scanner {
         bar.set_style(ProgressStyle::default_bar()
             .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos:>7}/{len:7} {msg}")
             .tick_chars(format!("{}", "⣾⣽⣻⢿⡿⣟⣯⣷").as_str())
-            .progress_chars("-\\\\|/"));
+            .progress_chars("#>-"));
         let threader = rayon::ThreadPoolBuilder::new()
             .num_threads(concurrency)
             .build()
