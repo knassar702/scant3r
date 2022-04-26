@@ -18,12 +18,12 @@ pub struct OrderPayload {
 }
 
 pub fn match_qoutes(d: &str, s: &str) -> bool {
-    let re = Regex::new(&format!(r#"=\'.*{}*.\'"#, s)).unwrap();
+    let re = Regex::new(&format!(r#""(.*{}.*)""#, s)).unwrap();
     re.is_match(d).unwrap_or(false)
 }
 
 pub fn match_double_qoutes(d: &str, s: &str) -> bool {
-    let re = Regex::new(&format!(r#"=\".*{}*.\""#, s)).unwrap();
+    let re = Regex::new(&format!(r#"'(.*{}.*)'"#, s)).unwrap();
     re.is_match(d).unwrap_or(false)
 }
 
