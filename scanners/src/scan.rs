@@ -74,7 +74,7 @@ impl Scanner {
                             if blocking_headers.1 == true {
                                 let _ = &bar.println("NEED MANUAL CHECK");
                             }
-                            if !blocking_headers.0 {
+                            if !blocking_headers.0 && blocking_headers.1 == false {
                                 for payload in self.payloads.iter() {
                                     match payload {
                                         Payloads::XSS(current_payload) => {
