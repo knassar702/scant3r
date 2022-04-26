@@ -61,7 +61,7 @@ fn main() {
             drop(urls);
             let mut scan_settings =
                 scan::Scanner::new(vec!["xss".to_string()], reqs, sub.is_present("keep-value"));
-            scan_settings.load_config(&config_file);
+            scan_settings.load_config();
             scan_settings.scan(
                 sub.value_of("concurrency")
                     .unwrap()

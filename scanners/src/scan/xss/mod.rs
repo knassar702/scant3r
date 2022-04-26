@@ -31,6 +31,102 @@ pub fn print_poc(report: &Report) -> String {
     )
 }
 
+fn get_cspcheck() -> Vec<&'static str> {
+    vec![
+        ".doubleclick.net",
+        ".googleadservices.com",
+        "cse.google.com",
+        "accounts.google.com",
+        "*.google.com",
+        "www.blogger.com",
+        "*.blogger.com",
+        "translate.yandex.net",
+        "api-metrika.yandex.ru",
+        "api.vk.comm",
+        "*.vk.com",
+        "*.yandex.ru",
+        "*.yandex.net",
+        "app-sjint.marketo.com",
+        "app-e.marketo.com",
+        "*.marketo.com",
+        "detector.alicdn.com",
+        "suggest.taobao.com",
+        "ount.tbcdn.cn",
+        "bebezoo.1688.com",
+        "wb.amap.com",
+        "a.sm.cn",
+        "api.m.sm.cn",
+        "*.taobao.com",
+        "*.tbcdn.cn",
+        "*.1688.com",
+        "*.amap.com",
+        "*.sm.cn",
+        "mkto.uber.com",
+        "*.uber.com",
+        "ads.yap.yahoo.com",
+        "mempf.yahoo.co.jp",
+        "suggest-shop.yahooapis.jp",
+        "www.aol.com",
+        "df-webservices.comet.aol.com",
+        "api.cmi.aol.com",
+        "ui.comet.aol.com",
+        "portal.pf.aol.com",
+        "*.yahoo.com",
+        "*.yahoo.jp",
+        "*.yahooapis.jp",
+        "*.aol.com",
+        "search.twitter.com",
+        "*.twitter.com",
+        "twitter.com",
+        "ajax.googleapis.com",
+        "*.googleapis.com"
+    ]
+}
+
+pub fn valid_to_xss(req: &Msg) -> bool {
+        let block_headers = vec![
+            "application/json",
+            "application/javascript",
+            "text/javascript",
+            "text/plain",
+            "text/css",
+            "image/jpeg",
+            "image/png",
+            "image/bmp",
+            "image/gif",
+            "application/rss+xml",
+        ];
+
+        let mut is_html = false;
+        match req.send() {
+            Ok(resp) => { 
+                for csp in get_cspcheck().iter() {
+                    if resp.headers.get("Content-Security-Policy").is_some() {
+                        if resp.headers.get("Content-Security-Policy").unwrap().to_str().unwrap().contains(csp) {
+                            return false;
+                        }
+                    }
+                }
+                block_headers.iter().for_each(|header| {
+                if resp.headers.contains_key("Content-Type") {
+                    if resp.headers.get("Content-Type").unwrap() == header {
+                        is_html = true;
+                    }
+                } else {
+                    is_html = true;
+                }
+            })
+
+            },
+            Err(e) => {
+                error!("{}", e);
+                return false;
+            }
+        }
+        is_html
+    }
+
+
 pub struct Xss<'t> {
     request: &'t Msg,
     injector: Injector,
@@ -38,7 +134,6 @@ pub struct Xss<'t> {
 }
 
 pub trait XssUrlParamsValue {
-    // scan url params value
     fn value_reflected(&self) -> Vec<String>;
     fn value_scan(&self, _prog: &ProgressBar) -> Vec<Report>;
 }
@@ -56,40 +151,8 @@ impl Xss<'_> {
     }
 }
 
-pub fn accept_html(req: &Msg) -> bool {
-    let block_headers = vec![
-        "application/json",
-        "application/javascript",
-        "text/javascript",
-        "text/plain",
-        "text/css",
-        "image/jpeg",
-        "image/png",
-        "image/bmp",
-        "image/gif",
-        "application/rss+xml",
-    ];
-
-    let mut is_html = false;
-    match req.send() {
-        Ok(resp) => block_headers.iter().for_each(|header| {
-            if resp.headers.contains_key("Content-Type") {
-                if resp.headers.get("Content-Type").unwrap() == header {
-                    is_html = true;
-                }
-            } else {
-                is_html = true;
-            }
-        }),
-        Err(e) => {
-            error!("{}", e);
-            return false;
-        }
-    }
-    is_html
-}
-
 impl XssUrlParamsValue for Xss<'_> {
+
     fn value_reflected(&self) -> Vec<String> {
         let mut reflected_parameters: Vec<String> = Vec::new();
         let payload = random_str(5);
