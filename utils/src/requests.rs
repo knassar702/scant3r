@@ -103,7 +103,13 @@ impl Msg {
             .danger_accept_invalid_certs(true)
             .timeout(std::time::Duration::from_secs(self.timeout.unwrap_or(30)))
             .user_agent("Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36")
-            .redirect(Policy::limited((self.redirect.unwrap_or(10) as u16).into()));
+            .redirect({
+                if self.redirect.unwrap_or(0) != 0 {
+                    Policy::limited(self.redirect.unwrap() as usize)
+                } else {
+                    Policy::none()
+                }
+            }.into());
 
         let mut headers = HeaderMap::new();
         if self.proxy.is_some() {
