@@ -78,36 +78,43 @@ fn get_cspcheck() -> Vec<&'static str> {
         "*.twitter.com",
         "twitter.com",
         "ajax.googleapis.com",
-        "*.googleapis.com"
+        "*.googleapis.com",
     ]
 }
 
-pub fn valid_to_xss(req: &Msg) -> (bool,bool) {
-        let block_headers = vec![
-            "application/json",
-            "application/javascript",
-            "text/javascript",
-            "text/plain",
-            "text/css",
-            "image/jpeg",
-            "image/png",
-            "image/bmp",
-            "image/gif",
-            "application/rss+xml",
-        ];
+pub fn valid_to_xss(req: &Msg) -> (bool, bool) {
+    let block_headers = vec![
+        "application/json",
+        "application/javascript",
+        "text/javascript",
+        "text/plain",
+        "text/css",
+        "image/jpeg",
+        "image/png",
+        "image/bmp",
+        "image/gif",
+        "application/rss+xml",
+    ];
 
-        let mut is_html = false;
-        let mut need_manual_check = false;
-        match req.send() {
-            Ok(resp) => { 
-                for csp in get_cspcheck().iter() {
-                    if resp.headers.get("Content-Security-Policy").is_some() {
-                        if resp.headers.get("Content-Security-Policy").unwrap().to_str().unwrap().contains(csp) {
-                            need_manual_check = true;
-                        }
+    let mut is_html = false;
+    let mut need_manual_check = false;
+    match req.send() {
+        Ok(resp) => {
+            for csp in get_cspcheck().iter() {
+                if resp.headers.get("Content-Security-Policy").is_some() {
+                    if resp
+                        .headers
+                        .get("Content-Security-Policy")
+                        .unwrap()
+                        .to_str()
+                        .unwrap()
+                        .contains(csp)
+                    {
+                        need_manual_check = true;
                     }
                 }
-                block_headers.iter().for_each(|header| {
+            }
+            block_headers.iter().for_each(|header| {
                 if resp.headers.contains_key("Content-Type") {
                     if resp.headers.get("Content-Type").unwrap() == header {
                         is_html = true;
@@ -116,15 +123,13 @@ pub fn valid_to_xss(req: &Msg) -> (bool,bool) {
                     is_html = true;
                 }
             })
-
-            },
-            Err(_e) => {
-                return (false,false);
-            }
         }
-        (is_html,need_manual_check)
+        Err(_e) => {
+            return (false, false);
+        }
     }
-
+    (is_html, need_manual_check)
+}
 
 pub struct Xss<'t> {
     request: &'t Msg,
@@ -151,7 +156,6 @@ impl Xss<'_> {
 }
 
 impl XssUrlParamsValue for Xss<'_> {
-
     fn value_reflected(&self) -> Vec<String> {
         let mut reflected_parameters: Vec<String> = Vec::new();
         let payload = random_str(5);

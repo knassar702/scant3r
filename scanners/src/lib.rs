@@ -1,5 +1,6 @@
 pub mod model;
 pub mod scan;
+pub mod payloads;
 pub use urlencoding::encode as url_encode;
 
 #[cfg(test)]

@@ -129,7 +129,7 @@ impl Msg {
             .send()
         {
             Ok(res) => Ok(Resp {
-                url: self.url.clone(),
+                url: res.url().clone(),
                 status: res.status(),
                 headers: res.headers().clone(),
                 body: match res.text() {

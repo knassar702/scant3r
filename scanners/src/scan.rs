@@ -1,11 +1,11 @@
 extern crate scant3r_utils;
+use console::style;
 use indicatif::{ProgressBar, ProgressStyle};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use scant3r_utils::requests::Msg;
-use console::style;
-
+use crate::payloads::{get_jsvalue,get_attr,get_htmltags, get_jscmd};
 mod xss;
-use xss::{valid_to_xss,XssPayloads, XssUrlParamsValue};
+use xss::{valid_to_xss, XssPayloads, XssUrlParamsValue};
 
 #[derive(Debug)]
 pub enum Payloads {
@@ -30,28 +30,12 @@ impl Scanner {
     }
 
     pub fn load_config(&mut self) {
-        self.payloads.push(Payloads::XSS(
-                XssPayloads{
-                    attr: vec![
-                        "onmouseover".to_string(), 
-                        "onmouseenter".to_string(),
-                        "onmouseleave".to_string(),
-                        "onmouseout".to_string(),
-                        "onclick".to_string(),
-                        "onmousedown".to_string(),
-                        "onmouseup".to_string(),
-                        "ontouchstart".to_string(),
-                        "ontouchend".to_string(),
-                        "ontouchmove".to_string(),
-                        "onpointerenter".to_string(),
-                        "onpointerleave".to_string(),
-                        "onpointerover".to_string(),
-                    ],
-                    html_tags: vec!["<img src=x onerror=$JS_FUNC$`$JS_CMD$`>".to_string(), "<h1 $JS_FUNC$`$JS_CMD$`>".to_string(),"<h1 $JS_FUNC$($JS_CMD)".to_string()],
-                    js_cmd: vec!["alert".to_string(),"confirm".to_string(),"prompt".to_string()],
-                    js_value: vec!["document.cookie".to_string(), "document.location".to_string(),"1".to_string()],
-                }
-                ));
+        self.payloads.push(Payloads::XSS(XssPayloads {
+            attr: get_attr(),
+            html_tags: get_htmltags(),
+            js_cmd: get_jscmd(),
+            js_value: get_jsvalue(),
+        }));
     }
 
     pub fn scan(&self, concurrency: usize) {
@@ -73,7 +57,11 @@ impl Scanner {
                         "xss" => {
                             let blocking_headers = valid_to_xss(request);
                             if blocking_headers.1 == true {
-                                let _ = &bar.println(format!("{}: {}",style("Need Manual Test").yellow().bold(),request.url));
+                                let _ = &bar.println(format!(
+                                    "{}: {}",
+                                    style("Need Manual Test").yellow().bold(),
+                                    request.url
+                                ));
                             }
                             if !blocking_headers.0 && blocking_headers.1 == false {
                                 for payload in self.payloads.iter() {
