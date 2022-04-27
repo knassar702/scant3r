@@ -126,7 +126,7 @@ impl<'a> PayloadGen<'a> {
                                 qoutes.repeat(i),
                                 attr_param,
                                 js_cmd,
-                                " vd".repeat(i)
+                                " vd ".repeat(i)
                             )
                         },
                         search: format!(r#"*[{}="{}"]"#, attr_param, js_cmd),
@@ -136,6 +136,7 @@ impl<'a> PayloadGen<'a> {
         });
         payloads
     }
+
     pub fn attrname_payloads(&self) -> Vec<OrderPayload> {
         let mut payloads: Vec<OrderPayload> = Vec::new();
         self.payloads.attr.iter().for_each(|attr| {

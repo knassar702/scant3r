@@ -1,16 +1,14 @@
 pub fn get_jsvalue() -> Vec<String> {
         vec![
                 "document.cookie".to_string(),
-                "document.location".to_string(),
-                "1".to_string(),
             ]
 }
 
 pub fn get_jscmd() -> Vec<String> {
         vec![
-                "<img src=x onerror=$JS_FUNC$`$JS_CMD$`>".to_string(),
-                "<h1 $JS_FUNC$`$JS_CMD$`>".to_string(),
-                "<h1 $JS_FUNC$($JS_CMD)".to_string(),
+            "alert".to_string(),
+            "prompt".to_string(),
+            "confirm".to_string(),
             ]
 }
 
