@@ -56,14 +56,7 @@ impl Scanner {
                     match module {
                         "xss" => {
                             let blocking_headers = valid_to_xss(request);
-                            if blocking_headers.1 == true {
-                                let _ = &bar.println(format!(
-                                    "{}: {}",
-                                    style("Need Manual Test").yellow().bold(),
-                                    request.url
-                                ));
-                            }
-                            if !blocking_headers.0 && blocking_headers.1 == false {
+                            if blocking_headers == true {
                                 for payload in self.payloads.iter() {
                                     match payload {
                                         Payloads::XSS(current_payload) => {

@@ -6,7 +6,7 @@ use indicatif::ProgressBar;
 use scant3r_utils::{
     injector::{Injector, Urlinjector},
     random_str,
-    requests::{Curl, Msg},
+    requests::{Curl, Msg, Resp},
 };
 
 mod parser;
@@ -27,6 +27,16 @@ pub fn print_poc(report: &Report) -> String {
         report.payload.replace("\"", "\\\""),
         style(">> ").yellow(),
         report.curl,
+    )
+}
+
+pub fn csp_message(url: &str) -> String {
+    format!(
+        "{} {} {}: {}",
+        style("[CSP]").yellow(),
+        style(">>").blink(),
+        style("Needs manual testing").yellow().bold(),
+        url
     )
 }
 
@@ -82,7 +92,17 @@ fn get_cspcheck() -> Vec<&'static str> {
     ]
 }
 
-pub fn valid_to_xss(req: &Msg) -> (bool, bool) {
+pub fn csp_check(resp: &str) -> bool {
+    let csp_list = get_cspcheck();
+    for csp_item in csp_list {
+        if resp.contains(csp_item) {
+            return true;
+        }
+    }
+    false
+}
+
+pub fn valid_to_xss(req: &Msg) -> bool {
     let block_headers = vec![
         "application/json",
         "application/javascript",
@@ -96,39 +116,23 @@ pub fn valid_to_xss(req: &Msg) -> (bool, bool) {
         "application/rss+xml",
     ];
 
-    let mut is_html = false;
-    let mut need_manual_check = false;
+    let mut is_html = true;
     match req.send() {
         Ok(resp) => {
-            for csp in get_cspcheck().iter() {
-                if resp.headers.get("Content-Security-Policy").is_some() {
-                    if resp
-                        .headers
-                        .get("Content-Security-Policy")
-                        .unwrap()
-                        .to_str()
-                        .unwrap()
-                        .contains(csp)
-                    {
-                        need_manual_check = true;
-                    }
-                }
-            }
             block_headers.iter().for_each(|header| {
                 if resp.headers.contains_key("Content-Type") {
                     if resp.headers.get("Content-Type").unwrap() == header {
-                        is_html = true;
+                        is_html = false;
                     }
-                } else {
-                    is_html = true;
-                }
+                } 
             })
         }
         Err(_e) => {
-            return (false, false);
+            println!("ERR\n\n\n\n");
+            return false;
         }
     }
-    (is_html, need_manual_check)
+    is_html
 }
 
 pub struct Xss<'t> {
@@ -194,6 +198,11 @@ impl XssUrlParamsValue for Xss<'_> {
                     continue;
                 }
             };
+            if res.headers.get("Content-Security-Policy").is_some() {
+                if csp_check(res.headers.get("Content-Security-Policy").unwrap().to_str().unwrap()) {
+                    _prog.println(csp_message(&res.url.as_str()));
+                }
+            }
             for reflect in html_parse(&res.body.as_str(), &payload).iter() {
                 let payload_generator =
                     PayloadGen::new(&res.body.as_str(), reflect, &payload, &self.payloads);
