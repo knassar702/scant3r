@@ -1,5 +1,4 @@
 extern crate scant3r_utils;
-use console::style;
 use indicatif::{ProgressBar, ProgressStyle};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use scant3r_utils::requests::Msg;

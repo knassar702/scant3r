@@ -6,7 +6,7 @@ use indicatif::ProgressBar;
 use scant3r_utils::{
     injector::{Injector, Urlinjector},
     random_str,
-    requests::{Curl, Msg, Resp},
+    requests::{Curl, Msg},
 };
 
 mod parser;
@@ -33,7 +33,7 @@ pub fn print_poc(report: &Report) -> String {
 pub fn csp_message(url: &str) -> String {
     format!(
         "{} {} {}: {}",
-        style("[CSP]").yellow(),
+        style("[CSP]").yellow().bold(),
         style(">>").blink(),
         style("Needs manual testing").yellow().bold(),
         url
@@ -128,7 +128,6 @@ pub fn valid_to_xss(req: &Msg) -> bool {
             })
         }
         Err(_e) => {
-            println!("ERR\n\n\n\n");
             return false;
         }
     }
@@ -193,16 +192,10 @@ impl XssUrlParamsValue for Xss<'_> {
             req.url = self.injector.set_urlvalue(&param, &payload);
             let res = match req.send() {
                 Ok(resp) => resp,
-                Err(e) => {
-                    _prog.set_message(format!("CONNECTION ERROR: {}", e));
+                Err(_e) => {
                     continue;
                 }
             };
-            if res.headers.get("Content-Security-Policy").is_some() {
-                if csp_check(res.headers.get("Content-Security-Policy").unwrap().to_str().unwrap()) {
-                    _prog.println(csp_message(&res.url.as_str()));
-                }
-            }
             for reflect in html_parse(&res.body.as_str(), &payload).iter() {
                 let payload_generator =
                     PayloadGen::new(&res.body.as_str(), reflect, &payload, &self.payloads);
@@ -213,6 +206,11 @@ impl XssUrlParamsValue for Xss<'_> {
                         Ok(resp) => {
                             let payload_found = html_search(resp.body.as_str(), &pay.search);
                             if payload_found.len() > count.len() {
+                                if res.headers.get("Content-Security-Policy").is_some() {
+                                    if csp_check(res.headers.get("Content-Security-Policy").unwrap().to_str().unwrap()) {
+                                        _prog.println(csp_message(&res.url.as_str()));
+                                    }
+                                }
                                 _found.push(Report {
                                     url: req.url.to_string(),
                                     match_payload: payload_found.clone(),
