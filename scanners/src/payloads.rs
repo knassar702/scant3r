@@ -1,5 +1,6 @@
 pub fn get_jsvalue() -> Vec<String> {
         vec![
+                "1".to_string(),
                 "(+{}+[])[+!![]]".to_string(),
                 "/XSS/.source".to_string(),
             ]
