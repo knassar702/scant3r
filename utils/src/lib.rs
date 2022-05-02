@@ -7,7 +7,7 @@ use std::collections::HashMap;
 use urlencoding::encode as url_encode;
 
 pub fn valid_url(url: &str) -> bool {
-    url::Url::parse(url).is_ok()
+    reqwest::Url::parse(url).is_ok()
 }
 
 pub fn urlencode(s: &str, many: Option<u8>) -> String {

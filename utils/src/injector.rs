@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use url::Url;
+use reqwest::Url;
 
 #[derive(Debug, Clone)]
 pub struct Injector {

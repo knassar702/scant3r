@@ -7,7 +7,6 @@ readme = "README.md"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-url = "2.2.2"
 regex = "1.0"
 rand = "0.6.5"
 urlencoding = "2.1.0"

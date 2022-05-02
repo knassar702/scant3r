@@ -7,8 +7,8 @@ use reqwest::header::{
 use reqwest::redirect::Policy;
 use reqwest::Proxy;
 use reqwest::StatusCode;
+use reqwest::Url;
 use std::collections::HashMap;
-use url::Url;
 
 pub struct Resp {
     pub url: Url,
@@ -46,7 +46,7 @@ impl Settings for Msg {
         self.clone()
     }
     fn url(&mut self, _url: String) -> Self {
-        self.url = url::Url::parse(_url.as_str()).unwrap();
+        self.url = Url::parse(_url.as_str()).unwrap();
         self.clone()
     }
     fn headers(&mut self, _headers: HashMap<String, String>) -> Self {
