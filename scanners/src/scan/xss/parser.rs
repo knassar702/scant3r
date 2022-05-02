@@ -29,11 +29,18 @@ pub fn css_selector(html: &str) -> String {
             let element = node.as_element().unwrap();
             let mut search = format!("{}", element.name());
             element.attrs.iter().for_each(|attr| {
-                search.push_str(&format!(
-                    r#"[{}="{}"]"#,
-                    attr.0.local.to_string(),
-                    attr.1.to_string().replace("'", "\\'").replace("\"", "\\\"")
-                ));
+                if attr.1.to_string().len() > 0 {
+                    search.push_str(&format!(
+                        r#"[{}="{}"]"#,
+                        attr.0.local.to_string(),
+                        attr.1.to_string().replace("'", "\\'").replace("\"", "\\\"")
+                    ));
+                } else {
+                    search.push_str(&format!(
+                        r#"[{}]"#,
+                        attr.0.local.to_string()
+                    ));
+                }
             });
             if search.contains("[") {
                 found.push_str(&search);
