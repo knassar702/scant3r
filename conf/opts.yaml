@@ -124,7 +124,6 @@ targetlist:
           for url in dict_args['targetlist']:
             dict_args['urls'].append(url.rstrip())
         except Exception as e:
-            print(e)
             exit()
 
 genparam:

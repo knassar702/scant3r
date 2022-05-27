@@ -15,7 +15,7 @@ class Scantr:
             pass
 
     def start(self):
-        display_banner(*["424",":snake: 42"])
+        display_banner(*[])
         mod_loader = ModuleLoader()
         for module in self.options["modules"]:
             mod_loader.get(module)

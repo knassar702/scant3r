@@ -31,7 +31,6 @@ class ModuleLoader:
                     import_obj = importlib.import_module(import_path)
                     self.modules[name] = import_obj
                 except Exception as err:
-                    print(err)
                     return err
 
     def run(
@@ -51,9 +50,6 @@ class ModuleLoader:
             ) as executor:
                 started_threads: List[Any] = []
                 # TO-DO: ADD THE SAME HOST NAME TO CUSTOM LIST
-                user_opts["urls"] = [
-                    "http://127.0.0.1:4000/search?u=faf",
-                ]
                 task1 = progress.add_task(
                     "[green] Scanning ...",
                     total=len(user_opts["urls"] * len(self.modules.keys())),

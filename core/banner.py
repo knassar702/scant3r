@@ -3,9 +3,9 @@ import time
  
 
 def display_banner(*args):
-#    console.print(LOGO)
+    console.print(LOGO)
     msg = ""
     for option in args:
         msg += "\n%s" %option
-#    console.print(msg)
+    console.print(msg)
     time.sleep(2)
