@@ -1,3 +1,15 @@
+exit_after:
+  - option: 
+    - '-e'
+    - "--exit-after"
+  - type: int
+  - default: 500
+  - save_content: true
+  - help: "Exit after get this number of errors"
+  - exec: "dict_args['exit_after'] = int(value)"
+
+
+
 headers:
   - option: 
     - '-H'

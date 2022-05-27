@@ -7,7 +7,7 @@ from urllib.parse import parse_qsl, urlparse
 from requests.models import Response
 from yaml import safe_load
 
-from core.data import base_dir
+from core.data import base_dir, console
 from core.requester import httpSender
 
 PATH_PYTHON_MODULE = f"{base_dir}/modules/python/"
@@ -74,3 +74,16 @@ class Scan:
         if parse_url.query:
             new_url += f"?{parse_url.query}"
         return new_url
+
+    def show_report(self, name: str, url: str, payload: str, matching: str):
+        console.print(
+            f"""
+[bold blue]-----------------------[/bold blue] 
+:fire: {name}
+:dart: The Effected URL: {url}
+:syringe: The Used Payload: [bold red] {payload} [/bold red]
+:mag: Matched with : [bold yellow] {matching} [/bold yellow]
+:file_folder: Saved: data.json
+[bold blue]-----------------------[/bold blue] 
+                        """
+        )

@@ -1,8 +1,0 @@
-{red}
-   ____              __  ____
-  / __/______ ____  / /_|_  /____
-{yellow} _\ \/ __/ _ `/ _ \/ __//_ </ __/
-{green}/___/\__/\_,_/_//_/\__/____/_/{rest}
-
-{info} Coded by: Khaled Nassar @knassar702
-{info} Version: 0.8#Beta

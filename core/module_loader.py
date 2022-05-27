@@ -3,11 +3,14 @@
 import concurrent.futures
 import importlib
 import logging
+import time
 from glob import glob
 from os.path import isfile
 from typing import Any, Dict, List
 
-from core.data import base_dir
+from rich.progress import BarColumn, Progress, SpinnerColumn
+
+from core.data import base_dir, console
 from core.requester import httpSender
 
 log = logging.getLogger("scant3r")
@@ -32,22 +35,43 @@ class ModuleLoader:
                     return err
 
     def run(
-        self, user_opts: Dict[str, Any], http_opts: httpSender, max_workers: int = 10
+        self,
+        user_opts: Dict[str, Any],
+        http_opts: httpSender,
+        max_workers: int = 10,
+        exit_after: int = 500,
     ):
-        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-            started_threads: List[Any] = []
-            # TO-DO: ADD THE SAME HOST NAME TO CUSTOM LIST
-            user_opts["urls"] = ["http://google.com/?test=2"]
-            for url in user_opts["urls"]:
-                opts = user_opts.copy()
-                opts["url"] = url
-                for _, current_module in self.modules.items():
-                    loaded_mod = current_module.Main(opts, http_opts)
-                    started_threads.append(
-                        executor.submit(loaded_mod.start(), opts, http_opts)
-                    )
-            for future in concurrent.futures.as_completed(started_threads):
-                try:
-                    print(future)
-                except Exception as err:
-                    print(f" BRUHH ERROR : {err}")
+
+        errs = 0
+        with Progress(
+            "{task.description}", SpinnerColumn(), BarColumn(), console=console
+        ) as progress:
+            with concurrent.futures.ThreadPoolExecutor(
+                max_workers=max_workers
+            ) as executor:
+                started_threads: List[Any] = []
+                # TO-DO: ADD THE SAME HOST NAME TO CUSTOM LIST
+                user_opts["urls"] = [
+                    "http://127.0.0.1:4000/search?u=faf",
+                ]
+                task1 = progress.add_task(
+                    "[green] Scanning ...",
+                    total=len(user_opts["urls"] * len(self.modules.keys())),
+                )
+                for url in user_opts["urls"]:
+                    opts = user_opts.copy()
+                    opts["url"] = url
+                    for _, current_module in self.modules.items():
+                        loaded_mod = current_module.Main(opts, http_opts)
+                        started_threads.append(
+                            executor.submit(loaded_mod.start(), opts, http_opts)
+                        )
+                for _ in concurrent.futures.as_completed(started_threads):
+                    try:
+                        progress.update(task1, advance=1)
+                        time.sleep(2)
+                    except:
+                        errs += 1
+                        console.print_exception()
+                        if errs >= exit_after:
+                            exit()

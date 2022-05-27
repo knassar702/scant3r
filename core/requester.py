@@ -145,7 +145,7 @@ class httpSender:
         except Exception as e:
             if IgnoreErrors == False:
                 log.error(e)
-            return [0, e]
+            return e
 
     # send a request with custom options (without user options)
     def custom(
@@ -182,4 +182,4 @@ class httpSender:
             return res
         except Exception as e:
             log.error(e)
-            return [0, e]
+            return e

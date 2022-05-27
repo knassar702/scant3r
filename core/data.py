@@ -2,8 +2,17 @@ from base64 import b64encode
 from pathlib import Path
 from typing import Union
 
+from rich.console import Console
+
 base_dir = Path(__file__).resolve().parent.parent
 
+# CLI
+LOGO = open(f"{base_dir}/conf/logo/main.txt","r").read()
+console = Console()
+
+
+
+# PAYLOADS
 SQLI_PAYLOADS = Path(f"{base_dir}/db/txt/sqli.txt").read_text().splitlines()
 SQL_ERRORS = Path(f"{base_dir}/db/txt/sqli_errors.txt").read_text().splitlines()
 

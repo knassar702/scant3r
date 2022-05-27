@@ -11,11 +11,18 @@ class Main(Scan):
         super().__init__(opts, http, "scanning")
 
     def start(self) -> Dict[str, str]:
+        report = {}
         for method in self.opts["methods"]:
             for payload in SSTI_PAYLOADS:
                 new_url = insert_to_params_urls(self.opts["url"], payload)
                 response = self.send_request(method, new_url, self.opts["url"])
                 if response.__class__.__name__ == "Response":
                     if "scan10tr" in response.text:
-                        print("FOUIDNDDDD")
-        return {"test": "test"}
+                        report = {
+                            "name": "Server-Side template injection",
+                            "url": response.url,
+                            "payload": payload,
+                            "matching": "scan10tr",
+                        }
+                        self.show_report(**report)
+        return report
