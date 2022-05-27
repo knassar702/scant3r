@@ -7,6 +7,14 @@ from rich.console import Console
 base_dir = Path(__file__).resolve().parent.parent
 
 # SETTINGS
+INTERACT_SERVERS = [
+    "interact.sh",
+    "oast.pro",
+    "oast.live",
+    "oast.site",
+    "oast.online",
+    "oast.me",
+]
 ENABLED_MODS = ["ssti"]
 
 # CLI
