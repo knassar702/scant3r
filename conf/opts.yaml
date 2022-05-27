@@ -43,10 +43,12 @@ log_mode:
   - save_content: true
   - help: 'change debug messages mode (1: info 2: debug 3: warning 4: error)'
   - exec: |
+      from pathlib import Path
+      from os.path import join
       logs = {1:logging.INFO,2:logging.DEBUG,3:logging.WARNING,4:logging.ERROR}
       logger = logging.getLogger("scant3r")
       logger.setLevel(logs[value])
-      ch = logging.StreamHandler()
+      ch = logging.FileHandler(join(str(Path.home()),"scant3r.log"))
       ch.setLevel(logs[value])
       #ch.setFormatter(CustomFormatter())
       logger.addHandler(ch)
@@ -82,12 +84,11 @@ modules:
   - help: 'run scant3r module (ex: -m=example)'
   - type: string
   - default: '[]'
-  - default_action: |
-      yaml.safe_load(open('conf/main_scan.yaml','r'))
   - save_content: true
   - exec: |
-      if type(value) == list:
-        dict_args['modules'] = value
+      from core.data import ENABLED_MODS
+      if value == "all":
+        dict_args['modules'] = ENABLED_MODS
       else:
         dict_args['modules'] = value.split(",")
 more_scan:

@@ -5,7 +5,7 @@ from typing import Any, Dict
 
 import yaml
 
-from core.data import base_dir
+from core.data import base_dir, console
 
 log = logging.getLogger("scant3r")
 
@@ -17,6 +17,7 @@ class Args:
             self.conf = yaml.safe_load(open(f"{base_dir}/conf/opts.yaml", "r"))
             self.help = open(f"{base_dir}/conf/help.txt", "r")
         except Exception as e:
+            console.print_exception()
             log.error(e)
             exit()
 

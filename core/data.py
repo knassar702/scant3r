@@ -6,6 +6,11 @@ from rich.console import Console
 
 base_dir = Path(__file__).resolve().parent.parent
 
+# SETTINGS
+ENABLED_MODS = [
+        "ssti"
+        ]
+
 # CLI
 LOGO = open(f"{base_dir}/conf/logo/main.txt","r").read()
 console = Console()
