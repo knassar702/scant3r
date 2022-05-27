@@ -1,7 +1,7 @@
 from base64 import b64encode
 from logging import getLogger
 from secrets import token_bytes
-from typing import Union
+from typing import Dict, Union, Any
 from urllib.parse import parse_qsl, urlparse
 
 from requests.models import Response
@@ -15,7 +15,7 @@ PATH_PYTHON_MODULE = f"{base_dir}/modules/python/"
 
 class Scan:
     def __init__(
-        self, opts: dict, http: httpSender, tag: str, path: str = PATH_PYTHON_MODULE
+        self, opts: Dict[str,Any], http: httpSender, tag: str, path: str = PATH_PYTHON_MODULE
     ):
         self.opts = opts
         self.http = http
