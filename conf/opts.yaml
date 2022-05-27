@@ -50,7 +50,8 @@ log_mode:
       logger.setLevel(logs[value])
       ch = logging.FileHandler(join(str(Path.home()),"scant3r.log"))
       ch.setLevel(logs[value])
-      #ch.setFormatter(CustomFormatter())
+      fmt = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+      ch.setFormatter(fmt)
       logger.addHandler(ch)
 
 
