@@ -15,9 +15,12 @@ class Main(Scan):
         for method in self.opts["methods"]:
             for payload in SSTI_PAYLOADS:
                 new_url = insert_to_params_urls(self.opts["url"], payload)
+                self.log.debug("SSTI: GENERATE A NEW URL: {new_url}")
                 response = self.send_request(method, new_url, self.opts["url"])
                 if response.__class__.__name__ == "Response":
+                    self.log.debug("SSTI: MATCHING  WITH scan10tr")
                     if "scan10tr" in response.text:
+                        self.log.debug(f"SSTI: MATCHED {response.url}")
                         report = {
                             "name": "Server-Side template injection",
                             "url": response.url,

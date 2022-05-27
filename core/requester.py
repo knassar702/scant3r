@@ -38,7 +38,7 @@ class Agent:
 
 
 class httpSender:
-    def __init__(self, opts: dict):
+    def __init__(self, opts: Dict[str,Any]):
         self.timeout: int = opts["timeout"]
         self.headers: Dict[str, str] = opts["headers"]
         self.cookies: Dict[str, str] = opts["cookies"]
@@ -106,6 +106,7 @@ class httpSender:
                             pass
                         else:
                             body = "?" + body
+                        log.debug(f"Convert body to dict : {body}")
                         body = post_data(body)
                 if method != "GET" and not body:
                     log.debug("convert body to dict")
@@ -144,7 +145,7 @@ class httpSender:
             return req
         except Exception as e:
             if IgnoreErrors == False:
-                log.error(e)
+                log.exception(e)
             return e
 
     # send a request with custom options (without user options)
@@ -158,7 +159,7 @@ class httpSender:
         allow_redirects=False,
         proxy={},
         json=None,
-    ):
+    ) -> Union[Response,Exception]:
         try:
             if method.upper() != "GET":
                 if self.json:
@@ -181,5 +182,5 @@ class httpSender:
             )
             return res
         except Exception as e:
-            log.error(e)
+            log.exception(e)
             return e

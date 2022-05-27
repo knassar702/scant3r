@@ -39,7 +39,7 @@ log_mode:
     - '-v'
     - '--logger-mode'
   - type: int
-  - default: 1
+  - default: 2
   - save_content: true
   - help: 'change debug messages mode (1: info 2: debug 3: warning 4: error)'
   - exec: |
