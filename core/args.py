@@ -18,7 +18,7 @@ class Args:
             self.help = open(f"{base_dir}/conf/help.txt", "r")
         except Exception as e:
             console.print_exception()
-            log.error(e)
+            log.exception(e)
             exit()
 
     # Add an argument to a parser
