@@ -9,3 +9,8 @@
 - secrets
 - ssrf
 - ssti 
+
+# EAXMPLE OF MAP
+# xss_scanner:
+#   - xss:
+#     pass: uploader

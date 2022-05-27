@@ -1,8 +1,0 @@
-'http://burpcollaborator.net/': 
-    - text: 'Burp Collaborator Server'
-    - regex: false
-
-'http://localhost:22':
-    - text: 'php_network_getaddresses: getaddrinfo failed: Temporary failure in name resolution'
-    - regex: false
-

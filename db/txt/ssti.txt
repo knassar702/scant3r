@@ -1,0 +1,3 @@
+scan{{2*2}scan{{2*5}}tr
+scan<%= 2*5%>tr
+scan${2*5}tr

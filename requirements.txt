@@ -1,7 +1,6 @@
-rich
-requests
-colorama
-nimporter
+rich==12.4.1
+requests==2.27.1
+colorama==0.4.4
+tldextract==3.3.0
+fuzzywuzzy==0.18.0
 pyyaml
-tldextract
-fuzzywuzzy

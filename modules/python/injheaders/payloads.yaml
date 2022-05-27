@@ -1,7 +1,0 @@
-# YOUR Payload:
-#  - text: match_text (if your match like your payload add 1) # text: 1
-#  - regex: match the text with regex?
-"\"><svg/onload=alert(1)>": 
-    - text: 1
-    - regex: false
-

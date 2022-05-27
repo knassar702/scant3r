@@ -1,7 +1,0 @@
-exec: echo 53252352 
-
-remove:
-  word: LOL
-  regex: false
-
-match: hackerman

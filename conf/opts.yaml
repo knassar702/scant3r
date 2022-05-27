@@ -6,7 +6,9 @@ headers:
   - default: '{}'
   - save_content: true
   - help: "add custom header (ex:-H='Cookie: test=1; PHPSESSID=test')"
-  - exec: "dict_args['headers'] = extract_headers(value)"
+  - exec: |
+      from core.utils import extract_headers
+      dict_args['headers'] = extract_headers(value)
 
 cookies: 
   - option:
@@ -16,7 +18,9 @@ cookies:
   - default: '{}'
   - save_content : true 
   - help: "add cookie to the header (ex: 'cookie1=1; cookie2=2')"
-  - exec: "dict_args['cookies'] = extract_cookie(value)"
+  - exec: |
+      from core.utils import extract_cookie
+      dict_args['cookies'] = extract_cookie(value)
 
 log_mode:
   - option: 
@@ -32,7 +36,7 @@ log_mode:
       logger.setLevel(logs[value])
       ch = logging.StreamHandler()
       ch.setLevel(logs[value])
-      ch.setFormatter(CustomFormatter())
+      #ch.setFormatter(CustomFormatter())
       logger.addHandler(ch)
 
 
