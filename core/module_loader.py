@@ -22,7 +22,7 @@ class ModuleLoader:
         self.modules: Dict[str, Any] = {}
         self.scripts: Dict[str, str] = {}
 
-    def get(self, name: str) -> Union[None,Exception]:
+    def get(self, name: str) -> Union[None, Exception]:
         for the_modfile in glob(f"{base_dir}/modules/python/{name}"):
             mod_init = isfile(f"{the_modfile}/__init__.py")
             if mod_init:

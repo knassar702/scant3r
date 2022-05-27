@@ -2,10 +2,11 @@ import os
 import sys
 
 from core.args import Args
-from core.module_loader import ModuleLoader
-from core.requester import httpSender
 from core.banner import display_banner
 from core.data import console
+from core.module_loader import ModuleLoader
+from core.requester import httpSender
+
 
 class Scantr:
     def __init__(self):
@@ -13,9 +14,11 @@ class Scantr:
         self.http = httpSender(self.options)
 
     def get_urls(self):
-        if len(self.options.get("urls",[])) == 0:
+        if len(self.options.get("urls", [])) == 0:
             if os.isatty(0):
-                console.print("[bold red][-][/bold red] PIPE is empty, you need to use [bold yellow]-l[/bold yellow] option")
+                console.print(
+                    "[bold red][-][/bold red] PIPE is empty, you need to use [bold yellow]-l[/bold yellow] option"
+                )
                 console.print("[bold cyan][!][/bold cyan] Exit ...")
                 exit()
             for url in sys.stdin:

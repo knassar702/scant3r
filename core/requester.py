@@ -38,7 +38,7 @@ class Agent:
 
 
 class httpSender:
-    def __init__(self, opts: Dict[str,Any]):
+    def __init__(self, opts: Dict[str, Any]):
         self.timeout: int = opts["timeout"]
         self.headers: Dict[str, str] = opts["headers"]
         self.cookies: Dict[str, str] = opts["cookies"]
@@ -159,7 +159,7 @@ class httpSender:
         allow_redirects=False,
         proxy={},
         json=None,
-    ) -> Union[Response,Exception]:
+    ) -> Union[Response, Exception]:
         try:
             if method.upper() != "GET":
                 if self.json:
