@@ -45,7 +45,7 @@ class Main(Scan):
                                 report_msg = [
                                     "\n",
                                     ":fire: Server-Side template injection",
-                                    ":dart: The Effected URL: {response.url}",
+                                    f":dart: The Effected URL: {response.url}",
                                     f":syringe: The Used Payload: [bold red] {payload} [/bold red]",
                                     ":mag: Matched with : [bold yellow] scan10tr [/bold yellow]",
                                 ]
