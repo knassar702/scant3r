@@ -5,7 +5,7 @@ from rich.syntax import Syntax
 
 from core.data import SSTI as SSTI_PAYLOADS
 from core.requester import httpSender
-from core.utils import dump_response, insert_to_params_urls, random_str
+from core.utils import dump_request, dump_response, insert_to_params_urls, random_str
 from modules.python.scan import Scan
 
 
@@ -36,8 +36,11 @@ class Main(Scan):
                             if "scan10tr" in raw_response:
                                 self.log.debug(f"SSTI: MATCHED {response.url}")
                                 report = {
+                                    "module": "ssti",
                                     "name": "Server-Side template injection",
                                     "url": response.url,
+                                    "request": dump_request(response),
+                                    "response": dump_response(response),
                                     "payload": payload,
                                     "matching": "scan10tr",
                                 }
