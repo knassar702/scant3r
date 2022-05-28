@@ -45,6 +45,7 @@ class ModuleLoader:
     ):
 
         errs = 0
+        report = []
         with Progress(
             TextColumn(
                 "[progress.percentage] Scanning {task.completed}/{task.total} | {task.percentage:>3.0f}% ",
@@ -70,11 +71,12 @@ class ModuleLoader:
                         log.debug(f"Trynig to Start {loaded_mod}")
                         started_threads.append(executor.submit(loaded_mod.start))
                         log.debug(f"STARTED {loaded_mod}")
-                for _ in concurrent.futures.as_completed(started_threads):
+                for future in concurrent.futures.as_completed(started_threads):
                     try:
-                        log.debug("UPATED ")
-                        # out_except = out.exception()
-                        # console.print(out_except)
+                         future_output = future.result()
+                         log.debug(f"TASK FINISHED: {future} | {future_output}")
+                         if len(future_output) > 0:
+                             report.append(future_output)
                     except Exception as e:
                         errs += 1
                         log.exception(e)
