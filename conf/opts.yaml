@@ -44,6 +44,7 @@ log_mode:
   - help: 'change debug messages mode (1: info 2: debug 3: warning 4: error)'
   - exec: |
       from os.path import isfile
+      import os
       from core.data import LOGGING_FORMAT, LOGGING_FILE, CLEAR_LOGGING_FILE
       logs = {1:logging.INFO,2:logging.DEBUG,3:logging.WARNING,4:logging.ERROR}
       logger = logging.getLogger("scant3r")
