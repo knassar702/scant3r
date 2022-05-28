@@ -15,6 +15,7 @@ INTERACT_SERVERS = [
     "oast.online",
     "oast.me",
 ]
+LOGGING_FORMAT = "%(name)-12s: %(levelname)-8s %(message)s"
 ENABLED_MODS = ["ssti"]
 
 # CLI

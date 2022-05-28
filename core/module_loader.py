@@ -66,8 +66,10 @@ class ModuleLoader:
                             executor.submit(loaded_mod.start(), opts, http_opts)
                         )
                         log.debug(f"STARTED {loaded_mod}")
-                for _ in concurrent.futures.as_completed(started_threads):
+                for out in concurrent.futures.as_completed(started_threads):
                     try:
+                        out_except = out.exception()
+                        console.print(out_except)
                         progress.update(task1, advance=1)
                     except Exception as e:
                         errs += 1

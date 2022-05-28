@@ -45,12 +45,13 @@ log_mode:
   - exec: |
       from pathlib import Path
       from os.path import join
+      from core.data import LOGGING_FORMAT
       logs = {1:logging.INFO,2:logging.DEBUG,3:logging.WARNING,4:logging.ERROR}
       logger = logging.getLogger("scant3r")
       logger.setLevel(logs[value])
       ch = logging.FileHandler(join(str(Path.home()),"scant3r.log"))
       ch.setLevel(logs[value])
-      fmt = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+      fmt = logging.Formatter(LOGGING_FORMAT)
       ch.setFormatter(fmt)
       logger.addHandler(ch)
 
