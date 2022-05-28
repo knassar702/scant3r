@@ -10,7 +10,7 @@ from yaml import safe_load
 from core.data import base_dir, console
 from core.requester import httpSender
 
-PATH_PYTHON_MODULE = f"{base_dir}/modules/python/"
+PATH_PYTHON_MODULE = f"{base_dir}/modules/"
 
 
 class Scan:
