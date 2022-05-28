@@ -3,6 +3,7 @@
 import concurrent.futures
 import importlib
 import logging
+import json
 from glob import glob
 from os.path import isfile
 from typing import Any, Dict, List, Union
@@ -42,7 +43,7 @@ class ModuleLoader:
         http_opts: httpSender,
         max_workers: int = 50,
         exit_after: int = 500,
-    ):
+    ) -> List[Dict[str,Any]]:
 
         errs = 0
         report = []
@@ -86,3 +87,5 @@ class ModuleLoader:
                             exit()
                     finally:
                         progress.update(task1, advance=1)
+
+        return report

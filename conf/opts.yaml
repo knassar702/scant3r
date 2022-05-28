@@ -8,7 +8,15 @@ exit_after:
   - help: "Exit after get this number of errors"
   - exec: "dict_args['exit_after'] = int(value)"
 
-
+output_file:
+  - option:
+    - "-o"
+    - "--output"
+  - type: string
+  - default: ""
+  - save_content: true
+  - help: "The output json file location"
+  - exec: "dict_args['output'] = value"
 
 headers:
   - option: 
