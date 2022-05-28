@@ -1,0 +1,6 @@
+nuclei:
+  info:
+    name: Scanning with nuclei
+    tag: scanner
+
+  command: echo {url} | nuclei -json -silent
