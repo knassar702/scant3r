@@ -40,9 +40,9 @@ class Scan:
     def send_request(
         self, method: str, url: str, second_url: Union[str, None] = None
     ) -> Response:
-        convert_body = self.opts.get("convert_body",False)
+        convert_body = self.opts.get("convert_body", False)
         if method == "GET":
-            return self.http.send(url, method,org=convert_body)
+            return self.http.send(url, method, org=convert_body)
 
         if convert_body:
             params = dict(parse_qsl(urlparse(url).query))
@@ -52,8 +52,8 @@ class Scan:
         else:
             params = {}
         if second_url is not None:
-            return self.http.send(second_url, method, body=params,org=convert_body)
-        return self.http.send(url, method, body=params,org=convert_body)
+            return self.http.send(second_url, method, body=params, org=convert_body)
+        return self.http.send(url, method, body=params, org=convert_body)
 
     def transform_path_to_module_import(self, path: str) -> str:
         path = path.replace("/", ".").replace("\\", ".").strip()
@@ -86,15 +86,14 @@ class Scan:
             new_url += f"?{parse_url.query}"
         return new_url
 
-    def show_report(self, name: str, url: str, payload: str, matching: str):
-        console.print(
-            f"""
-[bold blue]-----------------------[/bold blue] 
-:fire: {name}
-:dart: The Effected URL: {url}
-:syringe: The Used Payload: [bold red] {payload} [/bold red]
-:mag: Matched with : [bold yellow] {matching} [/bold yellow]
-:file_folder: Saved: data.json
-[bold blue]-----------------------[/bold blue] 
-                        """
-        )
+    def show_report(self, *args):
+        msg = ""
+        code = None
+        for option in args:
+            if type(option) not in (str, int):
+                code = option
+                continue
+            msg += "\n%s" % option
+        console.print(msg)
+        if code:
+            console.print(code)
