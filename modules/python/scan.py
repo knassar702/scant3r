@@ -91,4 +91,3 @@ class Scan:
 [bold blue]-----------------------[/bold blue] 
                         """
         )
-

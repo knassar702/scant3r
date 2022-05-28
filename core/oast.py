@@ -15,7 +15,6 @@ from Crypto.PublicKey import RSA
 requests.packages.urllib3.disable_warnings()  # ignore ssl warning messages
 
 
-
 class Interactsh:
     def __init__(self, token="", server=""):
         rsa = RSA.generate(2048)
@@ -86,6 +85,7 @@ class Interactsh:
             "remote_address": log_entry["remote-address"],
         }
         return new_log_entry
+
 
 class Odiss:
     def __init__(self, http):
