@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Union
 
 from rich.console import Console
+import os.path
 
 base_dir = Path(__file__).resolve().parent.parent
 
@@ -16,6 +17,8 @@ INTERACT_SERVERS = [
     "oast.me",
 ]
 LOGGING_FORMAT = "%(name)-12s: %(levelname)-8s %(message)s"
+LOGGING_FILE = os.path.join(Path.home(),".scant3r.log")
+CLEAR_LOGGING_FILE = True
 ENABLED_MODS = ["ssti"]
 
 # CLI

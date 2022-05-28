@@ -43,17 +43,15 @@ log_mode:
   - save_content: true
   - help: 'change debug messages mode (1: info 2: debug 3: warning 4: error)'
   - exec: |
-      from pathlib import Path
-      from os.path import join, isfile
-      from core.data import LOGGING_FORMAT
-      import os
+      from os.path import isfile
+      from core.data import LOGGING_FORMAT, LOGGING_FILE, CLEAR_LOGGING_FILE
       logs = {1:logging.INFO,2:logging.DEBUG,3:logging.WARNING,4:logging.ERROR}
       logger = logging.getLogger("scant3r")
       logger.setLevel(logs[value])
-      log_file = join(str(Path.home()),"scant3r.log")
-      if isfile(log_file):
-        os.remove(log_file)
-      ch = logging.FileHandler(log_file)
+      if CLEAR_LOGGING_FILE:
+        if isfile(LOGGING_FILE):
+          os.remove(LOGGING_FILE)
+      ch = logging.FileHandler(LOGGING_FILE)
       ch.setLevel(logs[value])
       fmt = logging.Formatter(LOGGING_FORMAT)
       ch.setFormatter(fmt)
