@@ -10,5 +10,4 @@ def display_banner(*args):
         msg += "\n%s" % option
     console.print(msg)
 
-
-#    time.sleep(2)
+    time.sleep(1)
