@@ -27,7 +27,7 @@ class ModuleLoader:
         for the_modfile in glob(f"{base_dir}/modules/{name}"):
             mod_init = isfile(f"{the_modfile}/__init__.py")
             if mod_init:
-                import_path = f"modules.python.{name}"
+                import_path = f"modules.{name}"
                 try:
                     log.debug(f"trying to load {import_path}")
                     import_obj = importlib.import_module(import_path)
