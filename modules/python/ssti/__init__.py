@@ -4,7 +4,6 @@ from typing import Any, Dict
 from rich.syntax import Syntax
 
 from core.data import SSTI as SSTI_PAYLOADS
-from core.data import console
 from core.requester import httpSender
 from core.utils import dump_response, insert_to_params_urls, random_str
 from modules.python.scan import Scan
