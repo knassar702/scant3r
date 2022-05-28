@@ -19,8 +19,7 @@ class Main(Scan):
                 self.opts["url"], f"scan{reflect_payload}r"
             )
             self.log.debug(f"SSTI: GENERATE A NEW URL: {new_url}")
-            response = self.send_request(method, new_url, self.opts["url"])
-
+            response = self.send_request(method, new_url)
             if response.__class__.__name__ == "Response":
                 raw_response = dump_response(response)
                 if reflect_payload in raw_response:
@@ -31,7 +30,6 @@ class Main(Scan):
                     for payload in SSTI_PAYLOADS:
                         new_url = insert_to_params_urls(self.opts["url"], payload)
                         response = self.send_request(method, new_url)
-
                         if response.__class__.__name__ == "Response":
                             raw_response = dump_response(response)
                             if "scan10tr" in dump_response(response):

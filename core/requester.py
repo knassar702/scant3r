@@ -105,7 +105,7 @@ class httpSender:
                         if body.startswith("?"):
                             pass
                         else:
-                            body = "?" + body
+                            body = "?%s" % body
                         log.debug(f"Convert body to dict : {body}")
                         body = post_data(body)
                 if method != "GET" and not body:

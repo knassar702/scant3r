@@ -8,6 +8,18 @@ exit_after:
   - help: "Exit after get this number of errors"
   - exec: "dict_args['exit_after'] = int(value)"
 
+  
+convert_body:
+  - option:
+    - "-c"
+    - "--convert-body"
+  - type: boolean
+  - default: false
+  - save_content: false
+  - help: "Change the url parameters into request body ( in non-GET methods )"
+  - exec: "dict_args['convert_body'] = value"
+
+
 output_file:
   - option:
     - "-o"

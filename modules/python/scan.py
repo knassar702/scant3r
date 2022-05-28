@@ -40,13 +40,20 @@ class Scan:
     def send_request(
         self, method: str, url: str, second_url: Union[str, None] = None
     ) -> Response:
+        convert_body = self.opts.get("convert_body",False)
         if method == "GET":
-            return self.http.send(url, method)
+            return self.http.send(url, method,org=convert_body)
 
-        params = dict(parse_qsl(urlparse(url).query))
+        if convert_body:
+            params = dict(parse_qsl(urlparse(url).query))
+            if second_url is not None:
+                second_url = second_url.split("?")[0]
+            url = url.split("?")[0]
+        else:
+            params = {}
         if second_url is not None:
-            return self.http.send(second_url.split("?")[0], method, body=params)
-        return self.http.send(url.split("?")[0], method, body=params)
+            return self.http.send(second_url, method, body=params,org=convert_body)
+        return self.http.send(url, method, body=params,org=convert_body)
 
     def transform_path_to_module_import(self, path: str) -> str:
         path = path.replace("/", ".").replace("\\", ".").strip()
