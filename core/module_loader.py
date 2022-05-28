@@ -40,7 +40,7 @@ class ModuleLoader:
         self,
         user_opts: Dict[str, Any],
         http_opts: httpSender,
-        max_workers: int = 200,
+        max_workers: int = 50,
         exit_after: int = 500,
     ):
 
