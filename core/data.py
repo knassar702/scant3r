@@ -7,7 +7,7 @@ import os.path
 
 base_dir = Path(__file__).resolve().parent.parent
 
-# SETTINGS
+# interact.sh public servers 
 INTERACT_SERVERS = [
     "interact.sh",
     "oast.pro",
@@ -16,9 +16,12 @@ INTERACT_SERVERS = [
     "oast.online",
     "oast.me",
 ]
+
 LOGGING_FORMAT = "%(name)-12s: %(levelname)-8s %(message)s"
 LOGGING_FILE = os.path.join(Path.home(),".scant3r.log")
 CLEAR_LOGGING_FILE = True
+
+# ENABLED Modules ( after using `-m all` option)
 ENABLED_MODS = ["ssti"]
 
 # CLI
