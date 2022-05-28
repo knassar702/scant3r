@@ -31,9 +31,9 @@ class Scantr:
         mod_loader = ModuleLoader()
         for module in self.options["modules"]:
             mod_loader.get(module)
-            mod_loader.run(
-                self.options,
-                self.http,
-                self.options["threads"],
-                self.options["exit_after"],
-            )
+        mod_loader.run(
+            self.options,
+            self.http,
+            self.options["threads"],
+            self.options["exit_after"],
+        )
