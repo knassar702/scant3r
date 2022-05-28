@@ -13,21 +13,25 @@ class Main(Scan):
     def start(self) -> Dict[str, str]:
         report = {}
         for method in self.opts["methods"]:
-            for payload in SSTI_PAYLOADS:
-                reflect_payload = random_str(3)
-                new_url = insert_to_params_urls(
-                    self.opts["url"], f"scan{reflect_payload}r"
-                )
-                self.log.debug(f"SSTI: GENERATE A NEW URL: {new_url}")
-                response = self.send_request(method, new_url, self.opts["url"])
-                if response.__class__.__name__ == "Response":
-                    raw_response = dump_response(response)
-                    if reflect_payload in raw_response:
-                        self.log.debug(f"REFLECTED {payload} on {response.url}")
-                        self.log.debug("SSTI: MATCHING  WITH scan10tr")
+            # check for reflected params
+            reflect_payload = random_str(3)
+            new_url = insert_to_params_urls(
+                self.opts["url"], f"scan{reflect_payload}r"
+            )
+            self.log.debug(f"SSTI: GENERATE A NEW URL: {new_url}")
+            response = self.send_request(method, new_url, self.opts["url"])
 
+            if response.__class__.__name__ == "Response":
+                raw_response = dump_response(response)
+                if reflect_payload in raw_response:
+                    self.log.debug(f"REFLECTED {reflect_payload} on {response.url}")
+                    self.log.debug("SSTI: MATCHING  WITH scan10tr")
+
+                    # scan the target with ssti payloads
+                    for payload in SSTI_PAYLOADS:
                         new_url = insert_to_params_urls(self.opts["url"], payload)
                         response = self.send_request(method, new_url)
+
                         if response.__class__.__name__ == "Response":
                             raw_response = dump_response(response)
                             if "scan10tr" in dump_response(response):
