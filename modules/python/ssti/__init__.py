@@ -32,7 +32,7 @@ class Main(Scan):
                         response = self.send_request(method, new_url)
                         if response.__class__.__name__ == "Response":
                             raw_response = dump_response(response)
-                            if "scan10tr" in dump_response(response):
+                            if "scan10tr" in raw_response:
                                 self.log.debug(f"SSTI: MATCHED {response.url}")
                                 report = {
                                     "name": "Server-Side template injection",
