@@ -2,8 +2,8 @@
 
 import concurrent.futures
 import importlib
-import logging
 import json
+import logging
 from glob import glob
 from os.path import isfile
 from typing import Any, Dict, List, Union
@@ -43,7 +43,7 @@ class ModuleLoader:
         http_opts: httpSender,
         max_workers: int = 50,
         exit_after: int = 500,
-    ) -> List[Dict[str,Any]]:
+    ) -> List[Dict[str, Any]]:
 
         errs = 0
         report = []
@@ -74,10 +74,10 @@ class ModuleLoader:
                         log.debug(f"STARTED {loaded_mod}")
                 for future in concurrent.futures.as_completed(started_threads):
                     try:
-                         future_output = future.result()
-                         log.debug(f"TASK FINISHED: {future} | {future_output}")
-                         if len(future_output) > 0:
-                             report.append(future_output)
+                        future_output = future.result()
+                        log.debug(f"TASK FINISHED: {future} | {future_output}")
+                        if len(future_output) > 0:
+                            report.append(future_output)
                     except Exception as e:
                         errs += 1
                         log.exception(e)

@@ -1,6 +1,6 @@
+import json
 import os
 import sys
-import json
 
 from core.args import Args
 from core.banner import display_banner
@@ -26,7 +26,7 @@ class Scantr:
                 url = url.rstrip()
                 self.options.get("urls").append(url)
 
-    def start(self,save_output: bool = True):
+    def start(self, save_output: bool = True):
         display_banner(*[])
         self.get_urls()
         mod_loader = ModuleLoader()
@@ -41,10 +41,12 @@ class Scantr:
 
         if save_output:
             if self.options.get("output"):
-                output_file = open(self.options.get("output"),"w")
+                output_file = open(self.options.get("output"), "w")
                 if output_file.writable():
                     output_file.write(json.dumps(the_output))
                     output_file.close()
                 else:
-                    console.print("[/bold red][-][/bold red] File is not writable, please check your permission, Exit ..")
+                    console.print(
+                        "[/bold red][-][/bold red] File is not writable, please check your permission, Exit .."
+                    )
                     exit()

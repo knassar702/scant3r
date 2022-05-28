@@ -1,13 +1,13 @@
+import os.path
 from base64 import b64encode
 from pathlib import Path
 from typing import Union
 
 from rich.console import Console
-import os.path
 
 base_dir = Path(__file__).resolve().parent.parent
 
-# interact.sh public servers 
+# interact.sh public servers
 INTERACT_SERVERS = [
     "interact.sh",
     "oast.pro",
@@ -18,7 +18,7 @@ INTERACT_SERVERS = [
 ]
 
 LOGGING_FORMAT = "%(name)-12s: %(levelname)-8s %(message)s"
-LOGGING_FILE = os.path.join(Path.home(),".scant3r.log")
+LOGGING_FILE = os.path.join(Path.home(), ".scant3r.log")
 CLEAR_LOGGING_FILE = True
 
 # ENABLED Modules ( after using `-m all` option)
