@@ -46,15 +46,16 @@ class ModuleLoader:
 
         errs = 0
         with Progress(
-            TextColumn("[progress.percentage] Scanning {task.completed}/{task.total} | {task.percentage:>3.0f}% ", table_column=Column(ratio=1)),
+            TextColumn(
+                "[progress.percentage] Scanning {task.completed}/{task.total} | {task.percentage:>3.0f}% ",
+                table_column=Column(ratio=1),
+            ),
             BarColumn(bar_width=50, table_column=Column(ratio=2)),
             SpinnerColumn(),
-            console=console
+            console=console,
         ) as progress:
             pb_counter = len(user_opts["urls"] * len(self.modules.keys()))
-            task1 = progress.add_task(
-                    "[green] Scanning ...",
-                    total=pb_counter)
+            task1 = progress.add_task("[green] Scanning ...", total=pb_counter)
             with concurrent.futures.ThreadPoolExecutor(
                 max_workers=max_workers
             ) as executor:
@@ -67,15 +68,13 @@ class ModuleLoader:
                     for _, current_module in self.modules.items():
                         loaded_mod = current_module.Main(opts, http_opts)
                         log.debug(f"Trynig to Start {loaded_mod}")
-                        started_threads.append(
-                            executor.submit(loaded_mod.start)
-                        )
+                        started_threads.append(executor.submit(loaded_mod.start))
                         log.debug(f"STARTED {loaded_mod}")
                 for _ in concurrent.futures.as_completed(started_threads):
                     try:
                         log.debug("UPATED ")
-                        #out_except = out.exception()
-                        #console.print(out_except)
+                        # out_except = out.exception()
+                        # console.print(out_except)
                     except Exception as e:
                         errs += 1
                         log.exception(e)
@@ -85,4 +84,3 @@ class ModuleLoader:
                             exit()
                     finally:
                         progress.update(task1, advance=1)
-

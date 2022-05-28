@@ -1,16 +1,15 @@
-from base64 import b64encode
-from secrets import token_bytes
-
 import json
 import random
 from base64 import b64decode, b64encode
+from secrets import token_bytes
 from uuid import uuid4
-from core.data import INTERACT_SERVERS
 
 import requests
 from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
+
+from core.data import INTERACT_SERVERS
 
 requests.packages.urllib3.disable_warnings()  # ignore ssl warning messages
 
