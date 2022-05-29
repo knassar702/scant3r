@@ -1,7 +1,13 @@
+<h3 align="center">
+  <img src="https://user-images.githubusercontent.com/45688522/170848465-55cbbdee-2bbf-437c-ac1b-4b36621574a5.png" width="700px">
+</h3>
+
+
+
 <h1 align="center">
   <br>
   <br>
-  ScanT3r
+  ScanT3r - Save your script writing time
   <br>  
 </h1>
 
@@ -16,6 +22,8 @@
 
 ***
 
+### What's this?
+this a module-based webs scancasck oak okasf oaskfasofkaosf
 #### ⚠️ ATTENTION 
 * https://github.com/knassar702/scant3r/discussions/49
 --- 
@@ -68,15 +76,14 @@ this the modules we providing for our community for you need new module open an 
 ```bash
 $ git clone https://github.com/knassar702/scant3r
 $ cd scant3r
-$ pip3 install -r requirements.txt
-$ ./scant3r.py -h
+$ python3 setup.py install
+$ python3 -m scant3r --help
 ```
 
-
 ## TODO-Features
-* https://github.com/knassar702/scant3r/projects/8
+* https://github.com/knassar702/scant3r/projects
 
-## Collaborators
+## Acknowledgments
 * [@knassar702](https://github.com/knassar702)
 * [@MariusVinaschi](https://github.com/MariusVinaschi) (big thanks)
 * [@0xflotus](https://github.com/0xflotus)
