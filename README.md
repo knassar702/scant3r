@@ -67,7 +67,7 @@ code issue", "how can I parse this' <br> and after getting the answer you will g
 some cool errors in your code and you will find yourself needing more time to
 search and fix these bugs
 
-![speedrun](https://c.tenor.com/xRKRAjXmEVcAAAAd/sweaty-sweaty-speedrunner.gif)
+![image](.src/sweaty-sweaty-speedrunner.gif)
 
 you as a security guy this is a waste of time for you, so this project will help to
 save more and more, just take a look at the examples modules and read the
