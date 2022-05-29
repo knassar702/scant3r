@@ -22,15 +22,19 @@ class Main(Scan):
         if read_request.__class__.__name__ == "Response":
             log.debug(f'Check for Read permission -> {firebase}')
             if read_request.status_code == 200:
+                # check read permission
                 report["read"]["url"] = urljoin(firebase ,'/.json')
                 report["read"]["content_length"] = len(read_request.text),
                 report["read"]["content_length"] = len(read_request.text)
                 report["read"]["status"] = 200
                 report["read"]["request"] = dump_request(read_request)
                 report["read"]["response"] = dump_response(read_request)
+
             log.debug(f'Check for Write permission -> {firebase}')
             write_request = self.http.send(urljoin(firebase ,'/firebase/security.json'),body={"msg":"scant3r"},org=False)
+
             if read_request.__class__.__name__ == "Response":
+                # check write permission
                 if write_request.status_code == 200:
                     report["write"]["url"] = urljoin(firebase ,'/firebase/security.json')
                     report["write"]["write"] = True
@@ -38,6 +42,7 @@ class Main(Scan):
                     report["write"]["status"] = 200
                     report["write"]["request"] = dump_request(read_request)
                     report["write"]["response"] = dump_response(read_request)
+
         return report
 
     def start(self) -> Dict[str,List[str]]:
