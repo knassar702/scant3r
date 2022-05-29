@@ -94,7 +94,7 @@ class ModuleLoader:
                         future_output = future.result()
                         log.debug(f"TASK FINISHED: {future} | {future_output}")
                         try:
-                            if len(future_output[list(future_output)[0]]) > 0:
+                            if len(future_output[list(future_output)[1]]) > 0:
                                 report.append(future_output)
                         except:
                             pass

@@ -44,7 +44,7 @@ class Main(Scan):
         host = tldextract.extract(self.opts['url']).domain
         all_hosts = [host]
         tasks = [] 
-        report = {"firebase":[]}
+        report = {"module":"firebase"}
         for tld in TLD_PAYLOADS:
             all_hosts.append(host + tld.rstrip())
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
@@ -64,5 +64,5 @@ class Main(Scan):
                         f":unlock: Open Firebase on [bold yellow]{future_output.get('host')}[/bold yellow]",
                         *report_msg
                         )
-                report["firebase"] = future_output
+                report.update(future_output)
         return report
