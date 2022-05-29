@@ -27,12 +27,12 @@ class Main(Scan):
                     time.sleep(0.3)
                     if callback.pull_logs():
                         report = {
-                            "module": "ssti",
-                            "name": "Server-Side template injection",
+                            "module": "brl",
+                            "name": "Out-of-band resource load",
                             "url": response.url,
                             "request": dump_request(response),
                             "response": dump_response(response),
-                            "paylod": f"{protocole}://{callback.domain}",
+                            "payload": f"{protocole}://{callback.domain}",
                             "callback": callback.pull_logs(),
                         }
                         report_msg = [
