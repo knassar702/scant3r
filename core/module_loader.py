@@ -3,7 +3,7 @@
 import concurrent.futures
 import importlib
 import logging
-import subprocess
+from urllib.parse import urljoin, urlparse
 from glob import glob
 from os.path import isfile
 from typing import Any, Dict, List, Union
@@ -62,22 +62,42 @@ class ModuleLoader:
                 max_workers=max_workers
             ) as executor:
                 started_threads: List[Any] = []
+                hosts = []
                 # TO-DO: ADD THE SAME HOST NAME TO CUSTOM LIST
 
                 for url in user_opts["urls"]:
                     opts = user_opts.copy()
                     opts["url"] = url
+                    parsed_host = urljoin(url,"/")
+                    if parsed_host not in hosts:
+                        hosts.append(parsed_host)
                     for _, current_module in self.modules.items():
                         loaded_mod = current_module.Main(opts, http_opts)
+                        if loaded_mod.tag == "recon":
+                            continue
                         log.debug(f"Trynig to Start {loaded_mod}")
                         started_threads.append(executor.submit(loaded_mod.start))
                         log.debug(f"STARTED {loaded_mod}")
+                for host in hosts:
+                    opts = user_opts.copy()
+                    opts["url"] = host
+                    for _, current_module in self.modules.items():
+                        loaded_mod = current_module.Main(opts, http_opts)
+                        if loaded_mod.tag != "recon":
+                            continue
+                        log.debug(f"Trynig to Start {loaded_mod}")
+                        started_threads.append(executor.submit(loaded_mod.start))
+                        log.debug(f"STARTED {loaded_mod}")
+
                 for future in concurrent.futures.as_completed(started_threads):
                     try:
                         future_output = future.result()
                         log.debug(f"TASK FINISHED: {future} | {future_output}")
-                        if len(future_output) > 0:
-                            report.append(future_output)
+                        try:
+                            if len(future_output[list(future_output)[0]]) > 0:
+                                report.append(future_output)
+                        except:
+                            pass
                     except Exception as e:
                         errs += 1
                         log.exception(e)
@@ -87,5 +107,7 @@ class ModuleLoader:
                             exit()
                     finally:
                         progress.update(task1, advance=1)
+                while not progress.finished:
+                    progress.update(task1,advance=1)
 
         return report
