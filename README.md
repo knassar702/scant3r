@@ -101,10 +101,9 @@ $ python3 -m scant3r --help
 ```
 
 
-##### Options
-
 ## TODO-Features
 * [ ] Restful API
+* [ ]  re-write the core utils in Rust by using pyo3 
 * [ ] Command line Modules ( with yaml file )
 * [ ] Custom scanning map
 * [ ] Selenium Modules
