@@ -43,7 +43,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'scant3r = scant3r.__main__:main'
+            'scant3r = scant3r.main:main'
         ]
     },
     keywords=['sectools',"scant3r", 'bug bounty', 'automation', 'pentesting', 'security'],
