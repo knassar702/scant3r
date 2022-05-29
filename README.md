@@ -1,6 +1,6 @@
 
 <h3 align="center">
-  <img src="https://user-images.githubusercontent.com/45688522/170871350-80113c02-5733-4d04-9f09-c33bef80c2bf.png" width="700px">
+  <img src="https://user-images.githubusercontent.com/45688522/170871350-80113c02-5733-4d04-9f09-c33bef80c2bf.png" width="600px">
 </h3>
 
 
@@ -40,8 +40,8 @@ this is a module-based web automation tool that I made for saving my scripting
 time by providing some utilises that everybody needs in his automation script
 instead of focusing on ( logger, parsers, output function , cmd args, multi-threading) ,
 just write the logic of your scanning idea with scant3r utils without caring
-about these things, you can find callback/parsing/logging utils and output functions, Also we will adding Restful API soon,
-what if you need to add new Command option to scant3r for your script?
+about these things, you can find callback/parsing/logging utils and output functions, Also we will adding Restful API soon <br>
+what if you need to add new Command option to scant3r for your script? <br>
 easy without writing any code just open `conf/opts.yaml` file and you will find all options of scant3r so you can change and add what you want;D
 
 
@@ -61,16 +61,16 @@ exit_after:
 ### why should I use it ?
 the short answer is to save your time, you as a security guy you don't need to
 learn more about " how to write a perfect CLI script " you just need to
-understand the logic of your script, if you need to write something like SSRF
-CVE scanner, instead of searching "How can I call interact.sh", how to fix this
-code issue, how can I parse this, and after getting the answer you will get
+understand the logic of your script <br> if you need to write something like SSRF
+CVE scanner, instead of searching "How can I call interact.sh", "how to fix this
+code issue", "how can I parse this' <br> and after getting the answer you will get
 some cool errors in your code and you will find yourself needing more time to
 search and fix these bugs
 ![speedrun](https://c.tenor.com/xRKRAjXmEVcAAAAd/sweaty-sweaty-speedrunner.gif)
 
 you as a security guy this is a waste of time for you, so this project will help to
 save more and more, just take a look at the examples modules and read the
-official documentation (still unavailable), or just open an issue with a
+official documentation (unavailable yet), or just open an issue with a
 Feature request and we will write your script by our hands
 
 ### Modules
