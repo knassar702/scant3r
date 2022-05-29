@@ -24,7 +24,7 @@ CLEAR_LOGGING_FILE = True
 
 
 # ENABLED Modules ( after using `-m all` option)
-ENABLED_MODS = ["ssti"]
+ENABLED_MODS = ["ssti","firebase","req_callback"]
 
 # CLI
 LOGO = open(f"{base_dir}/conf/logo/main.txt", "r").read()
