@@ -9,6 +9,15 @@ exit_after:
   - exec: "dict_args['exit_after'] = int(value)"
 
   
+callback_time:
+  - option:
+    - "-ct"
+    - "--callback-time"
+  - type: int
+  - default: 0.5
+  - save_content: true
+  - help: "Callback timeout"
+  - exec: "dict_args['callback_time'] = int(value)"
 convert_body:
   - option:
     - "-c"
