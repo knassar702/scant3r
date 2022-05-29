@@ -1,3 +1,44 @@
+exit_after:
+  - option: 
+    - '-e'
+    - "--exit-after"
+  - type: int
+  - default: 500
+  - save_content: true
+  - help: "Exit after get this number of errors"
+  - exec: "dict_args['exit_after'] = int(value)"
+
+  
+callback_time:
+  - option:
+    - "-ct"
+    - "--callback-time"
+  - type: int
+  - default: 0.5
+  - save_content: true
+  - help: "Callback timeout"
+  - exec: "dict_args['callback_time'] = int(value)"
+convert_body:
+  - option:
+    - "-c"
+    - "--convert-body"
+  - type: boolean
+  - default: false
+  - save_content: false
+  - help: "Change the url parameters into request body ( in non-GET methods )"
+  - exec: "dict_args['convert_body'] = value"
+
+
+output_file:
+  - option:
+    - "-o"
+    - "--output"
+  - type: string
+  - default: ""
+  - save_content: true
+  - help: "The output json file location"
+  - exec: "dict_args['output'] = value"
+
 headers:
   - option: 
     - '-H'
@@ -6,7 +47,9 @@ headers:
   - default: '{}'
   - save_content: true
   - help: "add custom header (ex:-H='Cookie: test=1; PHPSESSID=test')"
-  - exec: "dict_args['headers'] = extract_headers(value)"
+  - exec: |
+      from core.utils import extract_headers
+      dict_args['headers'] = extract_headers(value)
 
 cookies: 
   - option:
@@ -16,23 +59,32 @@ cookies:
   - default: '{}'
   - save_content : true 
   - help: "add cookie to the header (ex: 'cookie1=1; cookie2=2')"
-  - exec: "dict_args['cookies'] = extract_cookie(value)"
+  - exec: |
+      from core.utils import extract_cookie
+      dict_args['cookies'] = extract_cookie(value)
 
 log_mode:
   - option: 
     - '-v'
     - '--logger-mode'
   - type: int
-  - default: 1
+  - default: 2
   - save_content: true
   - help: 'change debug messages mode (1: info 2: debug 3: warning 4: error)'
   - exec: |
+      from os.path import isfile
+      import os
+      from core.data import LOGGING_FORMAT, LOGGING_FILE, CLEAR_LOGGING_FILE
       logs = {1:logging.INFO,2:logging.DEBUG,3:logging.WARNING,4:logging.ERROR}
       logger = logging.getLogger("scant3r")
       logger.setLevel(logs[value])
-      ch = logging.StreamHandler()
+      if CLEAR_LOGGING_FILE:
+        if isfile(LOGGING_FILE):
+          os.remove(LOGGING_FILE)
+      ch = logging.FileHandler(LOGGING_FILE)
       ch.setLevel(logs[value])
-      ch.setFormatter(CustomFormatter())
+      fmt = logging.Formatter(LOGGING_FORMAT)
+      ch.setFormatter(fmt)
       logger.addHandler(ch)
 
 
@@ -66,12 +118,11 @@ modules:
   - help: 'run scant3r module (ex: -m=example)'
   - type: string
   - default: '[]'
-  - default_action: |
-      yaml.safe_load(open('conf/main_scan.yaml','r'))
   - save_content: true
   - exec: |
-      if type(value) == list:
-        dict_args['modules'] = value
+      from core.data import ENABLED_MODS
+      if value == "all":
+        dict_args['modules'] = ENABLED_MODS
       else:
         dict_args['modules'] = value.split(",")
 more_scan:
@@ -108,7 +159,6 @@ targetlist:
           for url in dict_args['targetlist']:
             dict_args['urls'].append(url.rstrip())
         except Exception as e:
-            print(e)
             exit()
 
 genparam:

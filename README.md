@@ -1,61 +1,88 @@
+
+<h3 align="center">
+  <img src="https://user-images.githubusercontent.com/45688522/170871350-80113c02-5733-4d04-9f09-c33bef80c2bf.png" width="600px">
+</h3>
+
+
+
 <h1 align="center">
   <br>
   <br>
-  ScanT3r
+  ScanT3r <br><h4 align="center">Save your scripting time</h4>
   <br>  
 </h1>
 
 <p align="center">
-  <a href="https://github.com/knassar702/scant3r/wiki">Scant3r Wiki</a> •
-  <a href="https://github.com/knassar702/scant3r/wiki/Usage">Main Usage</a> •
-  <a href="https://github.com/knassar702/scant3r/wiki/for-developers">For Developers</a> •
-  <a href="https://github.com/knassar702/scant3r#Media">Media</a> •
-  <a href="https://github.com/knassar702/scant3r#Collaborators">Collaborators</a>  • 
-  <a href="https://github.com/knassar702/scant3r/wiki/TIPS">TIPS</a> •
+  <a href="https://github.com//scant3r/releases">
+    <img src="https://img.shields.io/github/release/knassar702/scant3r.svg">
+  </a>
+  <a href="https://github.com/knassar702/scant3r/issues?q=is%3Aissue+is%3Aclosed">
+      <img src="https://img.shields.io/github/issues-closed-raw/knassar702/scant3r?color=dark-green&label=issues%20fixed">
+  </a>
+  <a href="https://img.shields.io/github/stars/knassar702/scant3r">
+      <img src="https://img.shields.io/github/stars/knassar702/scant3r">
+  </a>
+  <a href="https://img.shields.io/github/forks/knassar702/scant3r">
+      <img src="https://img.shields.io/github/forks/knassar702/scant3r">
+  </a>
+  <a href="https://img.shields.io/github/issues/knassar702/scant3r">
+      <img src="https://img.shields.io/github/issues/knassar702/scant3r">
+  </a>
+  <a href="https://img.shields.io/github/license/knassar702/scant3r">
+      <img src="https://img.shields.io/github/license/knassar702/scant3r">
+  </a>
 </p>
 
 ***
 
-#### ⚠️ ATTENTION 
-* https://github.com/knassar702/scant3r/discussions/49
---- 
+### What's this?
+this is a module-based web automation tool that I made for saving my scripting
+time by providing some utilises that everybody needs in his automation script
+instead of focusing on ( logger, parsers, output function , cmd args, multi-threading) ,
+just write the logic of your scanning idea with scant3r utils without caring
+about these things, you can find callback/parsing/logging utils and output functions, Also we will adding Restful API soon <br>
+what if you need to add new Command option to scant3r for your script? <br>
+easy without writing any code just open `conf/opts.yaml` file and you will find all options of scant3r so you can change and add what you want;D
 
-### Description
-scant3r is a module-based web security tool, our goal is to make customizable tool with providing many functions and features that what you need for write a security module for an example (cookie parser/http request class/opts parsing etc ..) to make write a security module easy and simple for saving your time also we made it customizable as possible for example you can change what you want for example options parser you can change/add more options by a config file and scanning map content_types help message logos etc ...
 
-### How can I benefit from this project?
-* for bug bounty hunters : <br>
-you can use it with the main modules in the table below or write your own module
-* for developers : <br>
-you can read the source code and try to understand how to make a project like this, or you can get all functions of scant3r in your projects (based on) and try to add more features with scant3r team support :D
+```yaml
+# conf/opts.yaml
+exit_after:
+  - option: 
+    - '-e' # SHORT
+    - "--exit-after" # LONG
+  - type: int # TYPE OF VALUE
+  - default: 500 # DEFAULT
+  - save_content: true # SHOUD I SAVE THE CONTENT OF THIS OPTION ?
+  - help: "Exit after get this number of errors" # HELP MESSAGE
+  - exec: "dict_args['exit_after'] = int(value)" # HOW TO SAVE IT IN OPTS DICT
+```
 
+### why should I use it ?
+the short answer is to save your time, you as a security guy you don't need to
+learn more about " how to write a perfect CLI script " you just need to
+understand the logic of your script <br> if you need to write something like SSRF
+CVE scanner, instead of searching "How can I call interact.sh", "how to fix this
+code issue", "how can I parse this' <br> and after getting the answer you will get
+some cool errors in your code and you will find yourself needing more time to
+search and fix these bugs
+![speedrun](https://c.tenor.com/xRKRAjXmEVcAAAAd/sweaty-sweaty-speedrunner.gif)
+
+you as a security guy this is a waste of time for you, so this project will help to
+save more and more, just take a look at the examples modules and read the
+official documentation (unavailable yet), or just open an issue with a
+Feature request and we will write your script by our hands
 
 ### Modules
 
 this the modules we providing for our community for you need new module open an issue with `Feature request
-` template or write your own module ;D 
+` template 
 
 | module         | Short description                                           |
 | :------------- | :-------------                                               |
-| **lorsrf**     | Bruteforcing on Hidden parameters to find SSRF vulnerability |
-| **ssrf**       | simple ssrf scanner                                          |
-| **cve**        | cve checks module wtih python scripts and YAML template      |
-| **firebase**   | checks for public firebase database (write/read) permission  |
-| **paths**      | checking for custom paths                                    |
-| **xss**        | inject xss payload in parameter value                        |
-| **sqli**       | simple sqli scanner                                          |
-| **rce**        | simple RCE scanner
-| **xss_param** | inject xss payload in parameter name
-| **ssti** | simple server side template injection scanner |
-| **exec** | run multi tasks for automate your work/recon |
-| **injheaders** | inject blind xss and custom payloads in custom headers (headers.yaml&payload.yaml)
-| **reflect** | find reflected parameters 
-| **secrets** | find interesting variables content (API Keys , Debug Mode , etc ..) |
-
-
-### Blogs
-* https://knassar702.github.io/tags/#scant3r
-
+| **req_callback**     | Finds Out-of-band Resources parameters |
+| **ssti**       | Finds Server-side Template injection                                         |
+| **firebase**   | checks for public firebase databases (write/read) permission  |
 
 #### Requirements
 * python >= 3.6
@@ -68,15 +95,20 @@ this the modules we providing for our community for you need new module open an 
 ```bash
 $ git clone https://github.com/knassar702/scant3r
 $ cd scant3r
-$ pip3 install -r requirements.txt
-$ ./scant3r.py -h
+$ python3 setup.py install
+$ python3 -m scant3r --help
 ```
 
 
-## TODO-Features
-* https://github.com/knassar702/scant3r/projects/8
+##### Options
 
-## Collaborators
+## TODO-Features
+* [ ] Restful API
+* [ ] Command line Modules ( with yaml file )
+* [ ] Custom scanning map
+* [ ] Selenium Modules
+
+## Acknowledgments
 * [@knassar702](https://github.com/knassar702)
 * [@MariusVinaschi](https://github.com/MariusVinaschi) (big thanks)
 * [@0xflotus](https://github.com/0xflotus)
@@ -84,8 +116,8 @@ $ ./scant3r.py -h
 * [@oppsec](https://github.com/oppsec)
 
 
-#### wanna to Help us ?
-* Read this wikie page : https://github.com/knassar702/scant3r/wiki/helpup 
+#### Join us 
+if you wanna to join us a python developer you can send an email to the owner of this project ( knassar702@gmail.com )
 
 ## License
 * [GPL 3v](https://github.com/knassar702/scant3r/blob/master/LICENSE)
@@ -97,6 +129,8 @@ $ ./scant3r.py -h
 ***
 
 ## Media
+some demo gifs from the old versions
+
 * LorSrf
 ![](.src/output.gif)
 

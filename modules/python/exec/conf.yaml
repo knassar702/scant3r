@@ -1,5 +1,0 @@
-subdomain enum:
-    assetfinder: assetfinder -subs-only {domain}
-
-geturls:
-    waybackurls: waybackurls {domain}

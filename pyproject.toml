@@ -1,0 +1,37 @@
+[build-system]
+requires      = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scant3r"
+version = "0.9.2"
+description = "Module based Bug Bounty Automation Tool"
+readme = "README.md"
+authors = [{ name = "Khaled Nassar", email = "knassar702@gmail.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: GPL License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["feed", "reader", "tutorial"]
+dependencies = [
+    "rich==12.4.1",
+    "requests==2.27.1",
+    "colorama==0.4.4",
+    "tldextract==3.3.0",
+    "fuzzywuzzy==0.18.0",
+    "pycryptodome==3.14.1",
+    "pyyaml==6.0",
+    "flask==2.1.2"
+]
+requires-python = ">=3.6"
+
+[project.optional-dependencies]
+dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
+
+[project.urls]
+Homepage = "https://github.com/realpython/reader"
+
+[project.scripts]
+scant3r = "scant3r.__main__:main"

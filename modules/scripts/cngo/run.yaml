@@ -1,1 +1,0 @@
-exec: echo {domain}  > $SCPATH/domain.txt && $SCPATH/m -f $SCPATH/domain.txt
