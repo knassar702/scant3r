@@ -66,6 +66,7 @@ CVE scanner, instead of searching "How can I call interact.sh", "how to fix this
 code issue", "how can I parse this' <br> and after getting the answer you will get
 some cool errors in your code and you will find yourself needing more time to
 search and fix these bugs
+
 ![speedrun](https://c.tenor.com/xRKRAjXmEVcAAAAd/sweaty-sweaty-speedrunner.gif)
 
 you as a security guy this is a waste of time for you, so this project will help to
