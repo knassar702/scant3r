@@ -21,13 +21,15 @@ LOGGING_FORMAT = "%(name)-12s: %(levelname)-8s %(message)s"
 LOGGING_FILE = os.path.join(Path.home(), ".scant3r.log")
 CLEAR_LOGGING_FILE = True
 
+
+
 # ENABLED Modules ( after using `-m all` option)
 ENABLED_MODS = ["ssti"]
 
 # CLI
 LOGO = open(f"{base_dir}/conf/logo/main.txt", "r").read()
 console = Console()
-
+FIREBASE_URL = 'https://%s.firebaseio.com'
 
 # PAYLOADS
 SQLI_PAYLOADS = Path(f"{base_dir}/db/txt/sqli.txt").read_text().splitlines()
