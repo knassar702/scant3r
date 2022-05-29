@@ -34,4 +34,4 @@ dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
 Homepage = "https://github.com/realpython/reader"
 
 [project.scripts]
-scant3r = "scant3r.__main__:main"
+scant3r = "scant3r.main:main"
