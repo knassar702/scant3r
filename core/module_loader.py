@@ -3,7 +3,7 @@
 import concurrent.futures
 import importlib
 import logging
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin
 from glob import glob
 from os.path import isfile
 from typing import Any, Dict, List, Union
