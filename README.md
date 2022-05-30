@@ -94,10 +94,7 @@ this the modules we providing for our community for you need new module open an 
 * Unix & MS-DOS
 
 ```bash
-$ git clone https://github.com/knassar702/scant3r
-$ cd scant3r
-$ python3 setup.py install
-$ python3 -m scant3r --help
+$ pip3 install git+https://github.com/knassar702/scant3r
 ```
 
 
