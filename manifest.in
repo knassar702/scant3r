@@ -1,5 +1,0 @@
-include README.md
-include LICENSE
-include requirements.txt
-recursive-include scant3r/db *
-recursive-include scant3r/conf *

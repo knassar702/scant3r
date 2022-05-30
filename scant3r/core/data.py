@@ -27,7 +27,7 @@ CLEAR_LOGGING_FILE = True
 ENABLED_MODS = ["ssti","firebase","req_callback"]
 
 # CLI
-LOGO = open(f"{base_dir}/conf/logo/main.txt", "r").read()
+LOGO = open(f"{base_dir}/conf/logo.txt", "r").read()
 console = Console()
 FIREBASE_URL = 'https://%s.firebaseio.com'
 
