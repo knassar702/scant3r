@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from core.app import Scantr
+from scant3r.core.app import Scantr
 
 
 def main():

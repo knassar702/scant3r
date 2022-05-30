@@ -9,7 +9,7 @@ from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 
-from core.data import INTERACT_SERVERS
+from scant3r.core.data import INTERACT_SERVERS
 
 requests.packages.urllib3.disable_warnings()  # ignore ssl warning messages
 

@@ -1,6 +1,6 @@
 import time
 
-from core.data import LOGO, console
+from scant3r.core.data import LOGO, console
 
 
 def display_banner(*args):

@@ -48,7 +48,7 @@ headers:
   - save_content: true
   - help: "add custom header (ex:-H='Cookie: test=1; PHPSESSID=test')"
   - exec: |
-      from core.utils import extract_headers
+      from scant3r.core.utils import extract_headers
       dict_args['headers'] = extract_headers(value)
 
 cookies: 
@@ -60,7 +60,7 @@ cookies:
   - save_content : true 
   - help: "add cookie to the header (ex: 'cookie1=1; cookie2=2')"
   - exec: |
-      from core.utils import extract_cookie
+      from scant3r.core.utils import extract_cookie
       dict_args['cookies'] = extract_cookie(value)
 
 log_mode:
@@ -74,7 +74,7 @@ log_mode:
   - exec: |
       from os.path import isfile
       import os
-      from core.data import LOGGING_FORMAT, LOGGING_FILE, CLEAR_LOGGING_FILE
+      from scant3r.core.data import LOGGING_FORMAT, LOGGING_FILE, CLEAR_LOGGING_FILE
       logs = {1:logging.INFO,2:logging.DEBUG,3:logging.WARNING,4:logging.ERROR}
       logger = logging.getLogger("scant3r")
       logger.setLevel(logs[value])
@@ -120,7 +120,7 @@ modules:
   - default: '[]'
   - save_content: true
   - exec: |
-      from core.data import ENABLED_MODS
+      from scant3r.core.data import ENABLED_MODS
       if value == "all":
         dict_args['modules'] = ENABLED_MODS
       else:

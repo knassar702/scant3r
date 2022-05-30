@@ -1,10 +1,10 @@
 from typing import Dict, Any, List
 from urllib.parse import urljoin
-from core.data import TLD as TLD_PAYLOADS
-from core.data import FIREBASE_URL
-from core.requester import httpSender
-from core.utils import dump_request, dump_response
-from modules.scan import Scan
+from scant3r.core.data import TLD as TLD_PAYLOADS
+from scant3r.core.data import FIREBASE_URL
+from scant3r.core.requester import httpSender
+from scant3r.core.utils import dump_request, dump_response
+from scant3r.modules.scan import Scan
 import tldextract
 import concurrent.futures
 import logging

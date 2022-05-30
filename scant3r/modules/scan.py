@@ -7,8 +7,8 @@ from urllib.parse import parse_qsl, urlparse
 from requests.models import Response
 from yaml import safe_load
 
-from core.data import base_dir, console
-from core.requester import httpSender
+from scant3r.core.data import base_dir, console
+from scant3r.core.requester import httpSender
 
 PATH_PYTHON_MODULE = f"{base_dir}/modules/"
 

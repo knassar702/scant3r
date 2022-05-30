@@ -2,11 +2,11 @@ import json
 import os
 import sys
 
-from core.args import Args
-from core.banner import display_banner
-from core.data import console
-from core.module_loader import ModuleLoader
-from core.requester import httpSender
+from scant3r.core.args import Args
+from scant3r.core.banner import display_banner
+from scant3r.core.data import console
+from scant3r.core.module_loader import ModuleLoader
+from scant3r.core.requester import httpSender
 
 
 class Scantr:

@@ -11,8 +11,8 @@ from typing import Any, Dict, List, Union
 from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn
 from rich.table import Column
 
-from core.data import base_dir, console
-from core.requester import httpSender
+from scant3r.core.data import base_dir, console
+from scant3r.core.requester import httpSender
 
 log = logging.getLogger("scant3r")
 
@@ -27,7 +27,7 @@ class ModuleLoader:
         for the_modfile in glob(f"{base_dir}/modules/{name}"):
             mod_init = isfile(f"{the_modfile}/__init__.py")
             if mod_init:
-                import_path = f"modules.{name}"
+                import_path = f"scant3r.modules.{name}"
                 try:
                     log.debug(f"trying to load {import_path}")
                     import_obj = importlib.import_module(import_path)

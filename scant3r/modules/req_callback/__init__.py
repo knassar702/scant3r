@@ -2,10 +2,10 @@
 import time
 from typing import Any, Dict
 
-from core.requester import httpSender
-from core.oast import Interactsh
-from core.utils import dump_request, dump_response, insert_to_params_urls 
-from modules.scan import Scan
+from scant3r.core.requester import httpSender
+from scant3r.core.oast import Interactsh
+from scant3r.core.utils import dump_request, dump_response, insert_to_params_urls 
+from scant3r.modules.scan import Scan
 
 proto = [
     "http",

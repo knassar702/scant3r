@@ -18,10 +18,9 @@ setup(
     author_email='knassar702@gmail.com',
     license='GNU General Public License v3 (GPLv3)',
     url='https://github.com/knassar702/scant3r',
-    download_url='https://github.com/scant3r/scant3r/archive/v%s.zip' % "0.9.2",
-    zip_safe=False,
-    packages=find_packages(),
-    package_data={'scant3r': ["conf/*",'db/*']},
+    download_url='https://github.com/knassar702/scant3r/archive/v%s.zip' % "0.9.2",
+    packages=find_packages(include=["scant3r","scant3r.*"]),
+    package_data={'scant3r': ['db/*']},
     install_requires=[
         "rich==12.4.1",
         "requests==2.27.1",
@@ -43,7 +42,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'scant3r = scant3r.main:main'
+            'scant3r = scant3r.__main__:main'
         ]
     },
     keywords=['sectools',"scant3r", 'bug bounty', 'automation', 'pentesting', 'security'],

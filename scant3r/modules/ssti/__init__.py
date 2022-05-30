@@ -3,10 +3,10 @@ from typing import Any, Dict
 
 from rich.syntax import Syntax
 
-from core.data import SSTI as SSTI_PAYLOADS
-from core.requester import httpSender
-from core.utils import dump_request, dump_response, insert_to_params_urls, random_str
-from modules.scan import Scan
+from scant3r.core.data import SSTI as SSTI_PAYLOADS
+from scant3r.core.requester import httpSender
+from scant3r.core.utils import dump_request, dump_response, insert_to_params_urls, random_str
+from scant3r.modules.scan import Scan
 
 
 class Main(Scan):

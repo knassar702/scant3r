@@ -5,7 +5,7 @@ from typing import Any, Dict
 
 import yaml
 
-from core.data import base_dir, console
+from scant3r.core.data import base_dir, console
 
 log = logging.getLogger("scant3r")
 
