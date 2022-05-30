@@ -95,7 +95,7 @@ this the modules we providing for our community for you need new module open an 
 
 ```bash
 $ pip3 install git+https://github.com/knassar702/scant3r
-$ python3 -m scant3r --help
+$ scant3r --help
 ```
 
 
