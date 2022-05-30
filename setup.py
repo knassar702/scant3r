@@ -19,6 +19,7 @@ setup(
     license='GNU General Public License v3 (GPLv3)',
     url='https://github.com/knassar702/scant3r',
     download_url='https://github.com/knassar702/scant3r/archive/v%s.zip' % "0.9.2",
+    py_modules=["scant3r"],
     packages=find_packages(include=["scant3r","scant3r.*"]),
     package_data={'scant3r': ['db/*']},
     package_dir={"":"scant3r"},
