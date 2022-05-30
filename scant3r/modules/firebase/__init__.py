@@ -31,9 +31,9 @@ class Main(Scan):
                 report["read"]["response"] = dump_response(read_request)
 
             log.debug(f'Check for Write permission -> {firebase}')
-            write_request = self.http.send(urljoin(firebase ,'/firebase/security.json'),body={"msg":"scant3r"},org=False)
+            write_request = self.http.send(urljoin(firebase ,'/firebase/security.json'),method="PUT",body={"msg":"scant3r"},org=False)
 
-            if read_request.__class__.__name__ == "Response":
+            if write_request.__class__.__name__ == "Response":
                 # check write permission
                 if write_request.status_code == 200:
                     report["write"]["url"] = urljoin(firebase ,'/firebase/security.json')
