@@ -96,6 +96,55 @@ this the modules we providing for our community for you need new module open an 
 ```bash
 $ pip3 install git+https://github.com/knassar702/scant3r
 $ scant3r --help
+usage: scant3r [-h] [-e EXIT_AFTER] [-ct CALLBACK_TIME] [-c] [-o OUTPUT_FILE]
+               [-H HEADERS] [-C COOKIES] [-v LOG_MODE] [-s DELAY] [-M METHODS]
+               [-m MODULES] [-O] [-P LORSRF_PARAMETERS] [-l TARGETLIST] [-g] [-j]
+               [-p PROXY] [-r] [-b BLINDXSS] [-x HOST] [-R] [-w THREADS]
+               [-t TIMEOUT]
+
+options:
+  -h, --help            show this help message and exit
+  -e EXIT_AFTER, --exit-after EXIT_AFTER
+                        Exit after get this number of errors
+  -ct CALLBACK_TIME, --callback-time CALLBACK_TIME
+                        Callback timeout
+  -c, --convert-body    Change the url parameters into request body ( in non-GET methods )
+  -o OUTPUT_FILE, --output OUTPUT_FILE
+                        The output json file location
+  -H HEADERS, --header HEADERS
+                        add custom header (ex:-H='Cookie: test=1; PHPSESSID=test')
+  -C COOKIES, --cookie COOKIES
+                        add cookie to the header (ex: 'cookie1=1; cookie2=2')
+  -v LOG_MODE, --logger-mode LOG_MODE
+                        change debug messages mode (1: info 2: debug 3: warning 4: error)
+  -s DELAY, --sleep DELAY
+                        number of seconds to hold between each HTTP(S) requests.
+  -M METHODS, --method METHODS
+                        Methods Allowed on your target
+  -m MODULES, --module MODULES
+                        run scant3r module (ex: -m=example)
+  -O, --more-scan       scanning with the current module with import another modules (eg: lorsrf xss/ssti scanner)
+  -P LORSRF_PARAMETERS, --lorsrf-parameters LORSRF_PARAMETERS
+                        how many parameters in one request for lorsrf module
+  -l TARGETLIST, --list TARGETLIST
+                        add targets list
+  -g, --add-parameters  Generate Famouse Parameters if your url dosen't have parameters
+  -j, --json            JSON Request Body
+  -p PROXY, --proxy PROXY
+                        Forward all requests to proxy
+  -r, --follow-redirects
+                        Follow redirects
+  -b BLINDXSS, --blind-host BLINDXSS
+                        add your xsshunter host (or any xss host)
+  -x HOST, --host HOST  add your host (burpcall,etc..)
+  -R, --random-agents   use random user agent
+  -w THREADS, --workers THREADS
+                        Number of workers (default: 50)
+  -t TIMEOUT, --timeout TIMEOUT
+                        set connection timeout (default: 10)
+
+for Questions/suggestions/Bugs : https://github.com/knassar702/scant3r/issues
+wiki: https://github.com/knassar702/scant3r/wiki
 ```
 
 
