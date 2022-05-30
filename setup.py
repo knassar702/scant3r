@@ -21,6 +21,7 @@ setup(
     download_url='https://github.com/knassar702/scant3r/archive/v%s.zip' % "0.9.2",
     packages=find_packages(include=["scant3r","scant3r.*"]),
     package_data={'scant3r': ['db/*']},
+    package_dir={"":"scant3r"},
     install_requires=[
         "rich==12.4.1",
         "requests==2.27.1",
