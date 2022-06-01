@@ -164,7 +164,7 @@ wiki: https://github.com/knassar702/scant3r/wiki
 
 
 #### Join us 
-if you wanna to join us a python developer you can send an email to the owner of this project ( knassar702@gmail.com )
+* https://docs.google.com/forms/d/e/1FAIpQLSfb7-67XG5d1CU-zwqux6Kfx8nCHsM0SiFlZLj8VmXZL-vSwg/viewform
 
 ## License
 * [GPL 3v](https://github.com/knassar702/scant3r/blob/master/LICENSE)
