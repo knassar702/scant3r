@@ -47,10 +47,8 @@ SSRF_PARAMS = Path(f"{base_dir}/db/txt/ssrf_parameters.txt").read_text().splitli
 
 class XSS:
     def __init__(self, host: Union[str, None] = None):
-        self.payloads = (
-            Path(f"{base_dir}/wordlists/txt/xss.txt").read_text().splitlines()
-        )
-        self.blind_payloads = open(f"{base_dir}/wordlists/txt/bxss.txt", "r")
+        self.payloads = Path(f"{base_dir}/db/txt/xss.txt").read_text().splitlines()
+        self.blind_payloads = open(f"{base_dir}/db/txt/bxss.txt", "r")
         self.blind = []
         if host:
             b = (
