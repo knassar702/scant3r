@@ -3,10 +3,10 @@
 import concurrent.futures
 import importlib
 import logging
-from urllib.parse import urljoin
 from glob import glob
 from os.path import isfile
 from typing import Any, Dict, List, Union
+from urllib.parse import urljoin
 
 from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn
 from rich.table import Column
@@ -68,7 +68,7 @@ class ModuleLoader:
                 for url in user_opts["urls"]:
                     opts = user_opts.copy()
                     opts["url"] = url
-                    parsed_host = urljoin(url,"/")
+                    parsed_host = urljoin(url, "/")
                     if parsed_host not in hosts:
                         hosts.append(parsed_host)
                     for _, current_module in self.modules.items():
@@ -104,10 +104,13 @@ class ModuleLoader:
                         console.print_exception()
                         if errs >= exit_after:
                             log.debug(f"Exit because of errors counter : {errs}")
+                            log.debug("Cancle all workers ...")
+                            executor.shutdown(cancel_futures=True,wait=False)
+                            log.debug("Exit ..")
                             exit()
                     finally:
                         progress.update(task1, advance=1)
                 while not progress.finished:
-                    progress.update(task1,advance=1)
+                    progress.update(task1, advance=1)
 
         return report
