@@ -156,11 +156,7 @@ wiki: https://github.com/knassar702/scant3r/wiki
 * [ ] Selenium Modules
 
 ## Acknowledgments
-* [@knassar702](https://github.com/knassar702)
-* [@MariusVinaschi](https://github.com/MariusVinaschi) (big thanks)
-* [@0xflotus](https://github.com/0xflotus)
-* [@pdelteil](https://github.com/pdelteil)
-* [@oppsec](https://github.com/oppsec)
+![cont](CONTRIBUTORS.svg)
 
 
 #### Join us 
