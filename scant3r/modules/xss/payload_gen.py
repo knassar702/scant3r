@@ -48,34 +48,34 @@ class XSS_PAYLOADS:
         for ATTR in XSS_ATTR:
             for JS_CMD in XSS_JS_VALUE:
                 for JS_FUNC in XSS_JS_FUNC:
-                    for space in range(1,5):
+                    for space in range(1, 5):
                         new_payload = "{random_txt}{space} {attr}={js_func}({js_cmd}){space}".format(
-                                    random_txt=random_str(1),
-                                    space="".center(space),
-                                    attr=ATTR,
-                                    js_func=JS_FUNC,
-                                    js_cmd=JS_CMD,
-                                    )
+                            random_txt=random_str(1),
+                            space="".center(space),
+                            attr=ATTR,
+                            js_func=JS_FUNC,
+                            js_cmd=JS_CMD,
+                        )
                         search_pattern = '//*[@{attr}="{js_func}({js_cmd})"]'.format(
-                                    attr=ATTR,
-                                    js_func=JS_FUNC,
-                                    js_cmd=JS_CMD,
-                                    )
-                        payloads.append((new_payload,search_pattern))
+                            attr=ATTR,
+                            js_func=JS_FUNC,
+                            js_cmd=JS_CMD,
+                        )
+                        payloads.append((new_payload, search_pattern))
 
                         new_payload = "{random_txt}{space} {attr}={js_func}`{js_cmd}`{space}".format(
-                                    random_txt=random_str(1),
-                                    space="".center(space),
-                                    attr=ATTR,
-                                    js_func=JS_FUNC,
-                                    js_cmd=JS_CMD,
-                                    )
+                            random_txt=random_str(1),
+                            space="".center(space),
+                            attr=ATTR,
+                            js_func=JS_FUNC,
+                            js_cmd=JS_CMD,
+                        )
                         search_pattern = '//*[@{attr}="{js_func}`{js_cmd}`"]'.format(
-                                    attr=ATTR,
-                                    js_func=JS_FUNC,
-                                    js_cmd=JS_CMD,
-                                    )
-                        payloads.append((new_payload,search_pattern))
+                            attr=ATTR,
+                            js_func=JS_FUNC,
+                            js_cmd=JS_CMD,
+                        )
+                        payloads.append((new_payload, search_pattern))
         return payloads
 
     def endtag(self, payload: str) -> List[str]:

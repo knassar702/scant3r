@@ -27,7 +27,9 @@ setup(
     include_package_data=True,
     package_data={"scant3r": ["db/txt/*.txt"]},
     # package_dir={"":"scant3r"},
-    install_requires=Path(f"{this_directory}/requirements.txt").read_text().splitlines(),
+    install_requires=Path(f"{this_directory}/requirements.txt")
+    .read_text()
+    .splitlines(),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
