@@ -105,7 +105,7 @@ class ModuleLoader:
                         if errs >= exit_after:
                             log.debug(f"Exit because of errors counter : {errs}")
                             log.debug("Cancle all workers ...")
-                            executor.shutdown(cancel_futures=True,wait=False)
+                            executor.shutdown(cancel_futures=True, wait=False)
                             log.debug("Exit ..")
                             exit()
                     finally:
@@ -113,4 +113,5 @@ class ModuleLoader:
                 while not progress.finished:
                     progress.update(task1, advance=1)
 
+        print(report)
         return report

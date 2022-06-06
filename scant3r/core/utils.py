@@ -3,7 +3,8 @@ import logging
 import random
 import re
 import string
-from urllib.parse import parse_qsl, urlencode, urljoin, urlparse, urlsplit, urlunparse
+from urllib.parse import (parse_qsl, urlencode, urljoin, urlparse, urlsplit,
+                          urlunparse)
 
 from requests.models import Response
 

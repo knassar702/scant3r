@@ -2,15 +2,17 @@
 import time
 from typing import Any, Dict
 
-from scant3r.core.requester import httpSender
 from scant3r.core.oast import Interactsh
-from scant3r.core.utils import dump_request, dump_response, insert_to_params_urls 
+from scant3r.core.requester import httpSender
+from scant3r.core.utils import (dump_request, dump_response,
+                                insert_to_params_urls)
 from scant3r.modules.scan import Scan
 
 proto = [
     "http",
     "https",
 ]
+
 
 class Main(Scan):
     def __init__(self, opts: Dict[str, Any], http: httpSender):
@@ -21,7 +23,9 @@ class Main(Scan):
         for method in self.opts["methods"]:
             callback = Interactsh()
             for protocole in proto:
-                new_url = insert_to_params_urls(self.opts["url"], f"{protocole}://{callback.domain}")
+                new_url = insert_to_params_urls(
+                    self.opts["url"], f"{protocole}://{callback.domain}"
+                )
                 response = self.send_request(method, new_url)
                 if response.__class__.__name__ == "Response":
                     time.sleep(self.opts.get("callback_time"))
@@ -45,4 +49,3 @@ class Main(Scan):
                         ]
                         self.show_report(*report_msg)
         return report
-

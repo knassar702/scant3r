@@ -209,7 +209,7 @@ blindxss:
   - default: ''
   - help: 'add your xsshunter host (or any xss host)'
   - save_content: true
-  - exec: "dict_args['blindxss'] = value"
+  - exec: "dict_args['xsshost'] = value"
 
 host:
   - option: 

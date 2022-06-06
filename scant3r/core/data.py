@@ -40,5 +40,8 @@ RCE_PAYLOADS_PASSWD = Path(f"{base_dir}/db/txt/passwd.txt").read_text().splitlin
 
 SSTI = Path(f"{base_dir}/db/txt/ssti.txt").read_text().splitlines()
 SSRF_PARAMS = Path(f"{base_dir}/db/txt/ssrf_parameters.txt").read_text().splitlines()
-XSS_PAYLOADS = Path(f"{base_dir}/db/txt/xss.txt").read_text().splitlines()
-#BLIND_XSS_PAYLOADS = Path(f"{base_dir}/db/txt/bxss.txt", "r").read_text().splitlines()
+XSS_JS_FUNC = Path(f"{base_dir}/db/txt/js_func.txt").read_text().splitlines()
+XSS_JS_VALUE = Path(f"{base_dir}/db/txt/js_value.txt").read_text().splitlines()
+XSS_TAGS = Path(f"{base_dir}/db/txt/xss.txt").read_text().splitlines()
+XSS_ATTR = Path(f"{base_dir}/db/txt/xss_attr.txt").read_text().splitlines()
+# BLIND_XSS_PAYLOADS = Path(f"{base_dir}/db/txt/bxss.txt", "r").read_text().splitlines()
