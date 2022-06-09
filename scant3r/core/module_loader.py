@@ -113,5 +113,4 @@ class ModuleLoader:
                 while not progress.finished:
                     progress.update(task1, advance=1)
 
-        print(report)
         return report

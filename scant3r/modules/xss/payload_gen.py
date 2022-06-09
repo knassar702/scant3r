@@ -33,8 +33,32 @@ class XSS_PAYLOADS:
                 )
                 self.payloads.append(new_payload)
 
-    def attrname(self, payload: str) -> List[Tuple[str, str]]:
+    def attrname(self) -> List[Tuple[str, str]]:
         payloads = []
+        for ATTR in XSS_ATTR:
+            for JS_CMD in XSS_JS_VALUE:
+                for JS_FUNC in XSS_JS_FUNC:
+                    for space in range(1, 5):
+                        random_txt = random_str(1).lower()
+                        payload = "{random_txt}{space}{attr_name}={js_func}({js_cmd}){space}{random_txt}".format(
+                            random_txt=random_txt,
+                            space="".center(space),
+                            js_func=JS_FUNC,
+                            js_cmd=JS_CMD,
+                            attr_name=ATTR,
+                        )
+                        search_pattern = f'//*[@{ATTR}="{JS_FUNC}({JS_CMD})"]'
+                        payloads.append((payload, search_pattern))
+
+                        payload = "{random_txt}{space}{attr_name}={js_func}`{random_txt}`{space}{random_txt}".format(
+                            random_txt=random_txt,
+                            space="".center(space),
+                            js_func=JS_FUNC,
+                            js_cmd=JS_CMD,
+                            attr_name=ATTR,
+                        )
+                        search_pattern = f'//*[@{ATTR}="{JS_FUNC}`{random_txt}`"]'
+                        payloads.append((payload, search_pattern))
         return payloads
 
     def attrvalue(self, payload: str) -> List[str]:
@@ -50,7 +74,7 @@ class XSS_PAYLOADS:
                 for JS_FUNC in XSS_JS_FUNC:
                     for space in range(1, 5):
                         new_payload = "{random_txt}{space} {attr}={js_func}({js_cmd}){space}".format(
-                            random_txt=random_str(1),
+                            random_txt=random_str(1).lower(),
                             space="".center(space),
                             attr=ATTR,
                             js_func=JS_FUNC,
@@ -64,7 +88,7 @@ class XSS_PAYLOADS:
                         payloads.append((new_payload, search_pattern))
 
                         new_payload = "{random_txt}{space} {attr}={js_func}`{js_cmd}`{space}".format(
-                            random_txt=random_str(1),
+                            random_txt=random_str(1).lower(),
                             space="".center(space),
                             attr=ATTR,
                             js_func=JS_FUNC,
@@ -77,9 +101,6 @@ class XSS_PAYLOADS:
                         )
                         payloads.append((new_payload, search_pattern))
         return payloads
-
-    def endtag(self, payload: str) -> List[str]:
-        pass
 
     def txt(self, before_payload: str) -> List[Tuple[str, str]]:
         payloads = []
@@ -105,11 +126,9 @@ class XSS_PAYLOADS:
         self, payload: str, location: Optional[str] = "text"
     ) -> List[Tuple[str, str]]:
         match location:
-            case HTMLMatch.Text:
-                return self.txt(payload)
             case HTMLMatch.AttrName:
-                return self.attrname(payload)
+                return self.attrname()
             case HTMLMatch.TAG_NAME:
                 return self.tagname()
             case _:
-                return []
+                return self.txt(payload)
