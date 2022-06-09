@@ -17,7 +17,7 @@ def random_str(num: int) -> str:
     """
     num = int(num)
     return "".join(
-        random.choice(string.ascii_uppercase + string.digits) for _ in range(num)
+        random.choice(string.ascii_uppercase) for _ in range(num)
     )
 
 
