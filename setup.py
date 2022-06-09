@@ -26,7 +26,6 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     package_data={"scant3r": ["db/txt/*.txt"]},
-    # package_dir={"":"scant3r"},
     install_requires=Path(f"{this_directory}/requirements.txt")
     .read_text()
     .splitlines(),
