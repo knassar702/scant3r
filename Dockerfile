@@ -3,4 +3,4 @@ WORKDIR /scant3r
 COPY . .
 RUN pip install --no-cache-dir .
 ENTRYPOINT ["scant3r"]
-CMD ["scant3r","-h"]
+CMD ["-h"]

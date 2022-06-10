@@ -7,10 +7,10 @@ from scant3r.core.requester import httpSender
 from scant3r.core.utils import dump_request, dump_response, insert_to_params_urls
 from scant3r.modules.scan import Scan
 
-proto = [
+proto = (
     "http",
     "https",
-]
+    )
 
 
 class Main(Scan):

@@ -1,2 +1,3 @@
 #!/bin/bash
-echo http://localhost:4000/search?u=hello | ~/.local/bin/scant3r -m xss --proxy http://localhost:8080/
+pip3 install .
+echo http://localhost:5000/?name=hello | ~/.local/bin/scant3r -m xss # --proxy http://localhost:8080i/
