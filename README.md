@@ -81,10 +81,10 @@ this the modules we providing for our community for you need new module open an 
 
 | module         | Short description                                           |
 | :------------- | :-------------                                               |
+| **xss** | xss scanner for the ( ATTR_NAME, ATTR_VALUE , Comments, TAG_NAME ) |
 | **req_callback**     | Finds Out-of-band Resources parameters |
 | **ssti**       | Finds Server-side Template injection                                         |
 | **firebase**   | checks for public firebase databases (write/read) permission  |
-| **xss** | xss scanner for the ( ATTR_NAME, ATTR_VALUE , Comments, TAG_NAME ) |
 
 #### Requirements
 * python >= 3.6
