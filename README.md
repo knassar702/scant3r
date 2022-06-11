@@ -151,7 +151,7 @@ wiki: https://github.com/knassar702/scant3r/wiki
 
 ## TODO-Features
 * [ ] Restful API
-* [ ]  re-write the core utils in Rust by using pyo3 
+* [ ] re-write the core utils in Rust by using pyo3 
 * [ ] Command line Modules ( with yaml file )
 * [ ] Custom scanning map
 * [ ] Selenium Modules
