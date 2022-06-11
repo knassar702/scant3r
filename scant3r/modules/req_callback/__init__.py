@@ -23,7 +23,7 @@ class Main(Scan):
             callback = Interactsh()
             for protocole in proto:
                 new_url = insert_to_params_urls(
-                    self.opts["url"], f"{protocole}://{callback.domain}"
+                    self.opts["url"], f"{protocole}://{callback.domain}",True
                 )
                 response = self.send_request(method, new_url)
                 if response.__class__.__name__ == "Response":
