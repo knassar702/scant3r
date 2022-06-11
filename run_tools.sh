@@ -1,3 +1,3 @@
 #!/bin/bash
 pip3 install .
-echo http://localhost:5000/?u=hello | ~/.local/bin/scant3r -m xss -o data.json # --proxy http://localhost:8080i/
+printf 'http://localhost:5000/?u=hello\nhttp://example.com\nhttp://localhost:5000/dat/?ff=1' | ~/.local/bin/scant3r -m all -o data.json # --proxy http://localhost:8080i/
