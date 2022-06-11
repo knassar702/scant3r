@@ -10,7 +10,7 @@ from scant3r.modules.scan import Scan
 proto = (
     "http",
     "https",
-    )
+)
 
 
 class Main(Scan):

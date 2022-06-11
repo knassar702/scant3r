@@ -9,6 +9,7 @@ from scant3r.core.htmlparser import HTMLForXpath, HTMLMatch
 
 log = getLogger("scant3r")
 
+
 class XSS_PAYLOADS:
     def __init__(
         self,
@@ -71,7 +72,7 @@ class XSS_PAYLOADS:
                 payloads_with_payloads.append(f"{JS_FUNC}({JS_CMD})")
                 payloads_with_payloads.append(f"{JS_FUNC}`{random_str(1).lower()}`")
 
-        for CURRENT_PAYLOAD in payloads_with_payloads: 
+        for CURRENT_PAYLOAD in payloads_with_payloads:
             for ATTR in XSS_ATTR:
                 for space in range(1, 5):
                     random_txt = random_str(1).lower()
@@ -140,7 +141,6 @@ class XSS_PAYLOADS:
                         xpath.feed(payload)
                         payloads.append((payload, xpath.data))
         return payloads
-
 
     def generate(
         self, payload: str, location: Optional[str] = "text"
