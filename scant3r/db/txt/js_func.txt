@@ -1,1 +1,12 @@
+parent['con'+'firm']
+parent['prom'+'pt']
+parent['ale'+'rt']
+globalThis[(+{}+[])[+!![]]+(![]+[])[!+[]+!![]]+([][[]]+[])[!+[]+!![]+!![]]+(!![]+[])[+!![]]+(!![]+[])[+[]]]
 alert
+prompt
+confirm
+this[/*foo*/'alert'/*bar*/]
+this[/*foo*/'print'/*bar*/]
+window[/*foo*/'confirm'/*bar*/]
+self[/*foo*/'prompt'/*bar*/]
+window['ale'+'rt']

