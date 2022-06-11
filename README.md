@@ -56,10 +56,11 @@ search and fix these bugs
 
 ![image](.src/sweaty-sweaty-speedrunner.gif)
 
-you as a security guy this is a waste of time for you, so this project will help to
+
+as a security guy this is a waste of time for you, so this project will help to
 save more and more, just take a look at the examples modules and read the
 official documentation (unavailable yet), or just open an issue with a
-Feature request and we will write your script by our hands
+Feature request and we will write your script with our hands
 
 ### Modules
 
