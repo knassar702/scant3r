@@ -1,11 +1,13 @@
 from base64 import b64encode
 from typing import List, Optional, Tuple, Union
+from logging import getLogger
 
 from scant3r.core.data import XSS_JS_FUNC, XSS_JS_VALUE, XSS_TAGS, XSS_ATTR
 from scant3r.core.utils import random_str
 
 from scant3r.core.htmlparser import HTMLForXpath, HTMLMatch
 
+log = getLogger("scant3r")
 
 class XSS_PAYLOADS:
     def __init__(
@@ -61,11 +63,28 @@ class XSS_PAYLOADS:
                         payloads.append((payload, search_pattern))
         return payloads
 
-    def attrvalue(self, payload: str) -> List[str]:
-        pass
+    def attrvalue(self) -> List[Tuple[str, str]]:
+        payloads = []
+        payloads_with_payloads = []
+        for JS_CMD in XSS_JS_VALUE:
+            for JS_FUNC in XSS_JS_FUNC:
+                payloads_with_payloads.append(f"{JS_FUNC}({JS_CMD})")
+                payloads_with_payloads.append(f"{JS_FUNC}`{random_str(1).lower()}`")
 
-    def comment(self, payload: str) -> List[str]:
-        pass
+        for CURRENT_PAYLOAD in payloads_with_payloads: 
+            for ATTR in XSS_ATTR:
+                for space in range(1, 5):
+                    random_txt = random_str(1).lower()
+                    payload = "{random_txt}{space}{ATTR}={CURRENT_PAYLOAD}{space}{random_txt}".format(
+                        random_txt=random_txt,
+                        space="".center(space),
+                        CURRENT_PAYLOAD=CURRENT_PAYLOAD,
+                        ATTR=ATTR,
+                    )
+                    search_pattern = f'//*[@{ATTR}="{CURRENT_PAYLOAD}"]'
+                    payloads.append((payload, search_pattern))
+
+        return payloads
 
     def tagname(self) -> List[Tuple[str, str]]:
         payloads = []
@@ -122,13 +141,22 @@ class XSS_PAYLOADS:
                         payloads.append((payload, xpath.data))
         return payloads
 
+
     def generate(
         self, payload: str, location: Optional[str] = "text"
     ) -> List[Tuple[str, str]]:
+        log.debug(f"Generating payloads for {payload}")
+        log.debug(f"Location: {location}")
         match location:
             case HTMLMatch.AttrName:
                 return self.attrname()
             case HTMLMatch.TAG_NAME:
                 return self.tagname()
+            case HTMLMatch.AttrValue:
+                return self.attrvalue()
+            case HTMLMatch.AttrName:
+                return self.attrname()
+            case HTMLMatch.Comment:
+                return self.txt("-->")
             case _:
                 return self.txt(payload)
