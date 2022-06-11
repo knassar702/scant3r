@@ -145,3 +145,4 @@ cython_debug/
 urls.out
 run_tool.sh
 data.json
+demo*

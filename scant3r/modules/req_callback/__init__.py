@@ -39,12 +39,12 @@ class Main(Scan):
                             "payload": f"{protocole}://{callback.domain}",
                             "callback": callback_results,
                         }
-                        report_msg = [
+                        report_msg = (
                             "\n",
                             ":satellite: Out-of-band resource load",
                             f":dart: The Effected URL: {response.url}",
                             f":syringe: The Used Payload: [bold red]{protocole}://{callback.domain} [/bold red]",
                             f":mag: Callback log: [bold yellow] {callback_results} [/bold yellow]",
-                        ]
+                        )
                         self.show_report(*report_msg)
         return report

@@ -13,7 +13,6 @@ from scant3r.modules.scan import Scan
 
 log = logging.getLogger("scant3r")
 
-
 class Main(Scan):
     def __init__(self, opts: Dict[str, Any], http: httpSender):
         super().__init__(opts, http, "recon")
