@@ -11,7 +11,6 @@ from scant3r.core.utils import (
     dump_response,
     insert_to_params_urls,
     random_str,
-    urlencoder,
 )
 from scant3r.modules.scan import Scan
 
@@ -61,7 +60,7 @@ class Main(Scan):
                                             "url": response.url,
                                             "request": dump_request(response),
                                             "response": dump_response(response),
-                                            "payload": urlencoder(payload),
+                                            "payload": payload,
                                             "matching": payload_search,
                                         }
                                     )
@@ -87,7 +86,7 @@ class Main(Scan):
                                             ":fire: Reflected Cross-site scripting",
                                             f":dart: The Effected URL: {response.url}",
                                             f":page_facing_up: XSS Location: {xss_location.value}",
-                                            f":syringe: The Used Payload: [bold red] {urlencoder(payload)} [/bold red]",
+                                            f":syringe: The Used Payload: [bold red] {payload} [/bold red]",
                                             the_location,
                                         )
                                     )
