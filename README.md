@@ -134,6 +134,11 @@ wiki: https://github.com/knassar702/scant3r/wiki
 ```
 
 
+### Start
+```bash
+$ echo "http://testphp.vulnweb.com/listproducts.php?cat=1" | scant3r -m all 
+```
+
 ## TODO-Features
 * [ ] Restful API
 * [ ] re-write the core utils in Rust by using pyo3 
