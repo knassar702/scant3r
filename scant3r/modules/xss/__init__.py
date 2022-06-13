@@ -11,7 +11,6 @@ from scant3r.core.utils import (
     dump_response,
     insert_to_params_urls,
     random_str,
-    urlencoder,
 )
 from scant3r.modules.scan import Scan
 
@@ -61,17 +60,10 @@ class Main(Scan):
                                             "url": response.url,
                                             "request": dump_request(response),
                                             "response": dump_response(response),
-                                            "payload": urlencoder(payload),
+                                            "payload": payload,
                                             "matching": payload_search,
                                         }
                                     )
-                                    report_msg = [
-                                        "\n",
-                                        ":fire: Reflected Cross-site scripting",
-                                        f":dart: The Effected URL: {response.url}",
-                                        f":page_facing_up: XSS Location: {xss_location.value}",
-                                        f":syringe: The Used Payload: [bold red] {urlencoder(payload)} [/bold red]",
-                                    ]
                                     the_location = ""
                                     for m in re.finditer(payload, raw_response):
                                         length = (m.end() + m.start()) - len(
@@ -88,7 +80,15 @@ class Main(Scan):
                                                 raw_response[m.start() : m.end()],
                                                 "html",
                                             )
-                                    report_msg.append(the_location)
-                                    self.show_report(*report_msg)
+                                    self.show_report(
+                                        *(
+                                            "\n",
+                                            ":fire: Reflected Cross-site scripting",
+                                            f":dart: The Effected URL: {response.url}",
+                                            f":page_facing_up: XSS Location: {xss_location.value}",
+                                            f":syringe: The Used Payload: [bold red] {payload} [/bold red]",
+                                            the_location,
+                                        )
+                                    )
                                     break
         return report

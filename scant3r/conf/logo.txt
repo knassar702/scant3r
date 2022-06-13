@@ -5,4 +5,4 @@
 [/yellow][green]/___/\__/\_,_/_//_/\__/____/_/[/green]
 
 [bold green][+][/bold green] Coded by: Khaled Nassar @knassar702
-[bold green][+][/bold green] Version: 0.9.2
+[bold green][+][/bold green] Version: 0.9.3

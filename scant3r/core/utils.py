@@ -16,9 +16,7 @@ def random_str(num: int) -> str:
     geCr15
     """
     num = int(num)
-    return "".join(
-        random.choice(string.ascii_uppercase + string.digits) for _ in range(num)
-    )
+    return "".join(random.choice(string.ascii_uppercase) for _ in range(num))
 
 
 # Print the request in the console. Arg the request. Return a string. Empty string if no request

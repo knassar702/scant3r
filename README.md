@@ -37,42 +37,27 @@
 
 ### What's this?
 this is a module-based web automation tool that I made for saving my scripting
-time by providing some utilises that everybody needs in his automation script
-instead of focusing on ( logger, parsers, output function , cmd args, multi-threading) ,
+time by providing some utilizes that every web pentester needs in his automation script
+instead of focusing on ( logger, parsers, output function, cmd args, multi-threading),
 just write the logic of your scanning idea with scant3r utils without caring
-about these things, you can find callback/parsing/logging utils and output functions, Also we will adding Restful API soon <br>
-what if you need to add new Command option to scant3r for your script? <br>
-easy without writing any code just open `conf/opts.yaml` file and you will find all options of scant3r so you can change and add what you want;D
+about these things, you can find callback/parsing/logging utils and output functions, Also we will add Restful API soon <br>
+what if you need to add a new Command option to scant3r for your script? <br>
+easy without writing any code just open the `conf/opts.YAML file and you will find all options of scant3r so you can change and add what you want;D
 
-
-```yaml
-# conf/opts.yaml
-exit_after:
-  - option: 
-    - '-e' # SHORT
-    - "--exit-after" # LONG
-  - type: int # TYPE OF VALUE
-  - default: 500 # DEFAULT
-  - save_content: true # SHOUD I SAVE THE CONTENT OF THIS OPTION ?
-  - help: "Exit after get this number of errors" # HELP MESSAGE
-  - exec: "dict_args['exit_after'] = int(value)" # HOW TO SAVE IT IN OPTS DICT
-```
 
 ### why should I use it ?
-the short answer is to save your time, you as a security guy you don't need to
+the short answer is to save your time, as a security guy you don't need to
 learn more about " how to write a perfect CLI script " you just need to
 understand the logic of your script <br> if you need to write something like SSRF
 CVE scanner, instead of searching "How can I call interact.sh", "how to fix this
 code issue", "how can I parse this' <br> and after getting the answer you will get
 some cool errors in your code and you will find yourself needing more time to
-search and fix these bugs
+search and fix these bugs <br>
 
-![image](.src/sweaty-sweaty-speedrunner.gif)
-
-you as a security guy this is a waste of time for you, so this project will help to
+this is a waste of time for you, so this project will help to
 save more and more, just take a look at the examples modules and read the
 official documentation (unavailable yet), or just open an issue with a
-Feature request and we will write your script by our hands
+Feature request and we will write your script with our hands
 
 ### Modules
 
@@ -81,6 +66,7 @@ this the modules we providing for our community for you need new module open an 
 
 | module         | Short description                                           |
 | :------------- | :-------------                                               |
+| **xss** | xss scanner for the ( ATTR_NAME, ATTR_VALUE , Comments, TAG_NAME ) |
 | **req_callback**     | Finds Out-of-band Resources parameters |
 | **ssti**       | Finds Server-side Template injection                                         |
 | **firebase**   | checks for public firebase databases (write/read) permission  |
@@ -148,9 +134,14 @@ wiki: https://github.com/knassar702/scant3r/wiki
 ```
 
 
+### Start
+```bash
+$ echo "http://testphp.vulnweb.com/listproducts.php?cat=1" | scant3r -m all 
+```
+
 ## TODO-Features
 * [ ] Restful API
-* [ ]  re-write the core utils in Rust by using pyo3 
+* [ ] re-write the core utils in Rust by using pyo3 
 * [ ] Command line Modules ( with yaml file )
 * [ ] Custom scanning map
 * [ ] Selenium Modules

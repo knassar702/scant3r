@@ -1,1 +1,13 @@
-onerror
+onmouseover
+onmouseenter
+onmouseleave
+onmouseout
+onclick
+onmousedown
+onmouseup
+ontouchstart
+ontouchend
+ontouchmove
+onpointerenter
+onpointerleave
+onpointerover

@@ -141,4 +141,8 @@ cython_debug/
 
 .vscode
 *.out
+# TESTING 
+urls.out
+run_tool.sh
 data.json
+demo*

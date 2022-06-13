@@ -18,6 +18,7 @@ callback_time:
   - save_content: true
   - help: "Callback timeout"
   - exec: "dict_args['callback_time'] = int(value)"
+
 convert_body:
   - option:
     - "-c"
@@ -105,7 +106,7 @@ methods:
     - '-M'
     - '--method'
   - type: string
-  - default: 'GET,POST'
+  - default: 'GET'
   - save_content: true
   - help: 'Methods Allowed on your target'
   - exec: | 
