@@ -52,12 +52,9 @@ understand the logic of your script <br> if you need to write something like SSR
 CVE scanner, instead of searching "How can I call interact.sh", "how to fix this
 code issue", "how can I parse this' <br> and after getting the answer you will get
 some cool errors in your code and you will find yourself needing more time to
-search and fix these bugs
+search and fix these bugs <br>
 
-![image](.src/sweaty-sweaty-speedrunner.gif)
-
-
-as a security guy this is a waste of time for you, so this project will help to
+this is a waste of time for you, so this project will help to
 save more and more, just take a look at the examples modules and read the
 official documentation (unavailable yet), or just open an issue with a
 Feature request and we will write your script with our hands
