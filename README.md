@@ -72,7 +72,7 @@ this the modules we providing for our community for you need new module open an 
 | **firebase**   | checks for public firebase databases (write/read) permission  |
 
 #### Requirements
-* python >= 3.6
+* python >= 3.9
 * pip
 * Git
 
