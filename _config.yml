@@ -1,15 +1,14 @@
 # Site settings
-title: Jekyll Doc Theme
-email: your-email@domain.com
+title: Scant3r Documentation
+email: knassar702@gmail.com
 description: >
-  Jekyll Template for Project Websites
-  providing documentation and blog post pages.
+  Scant3r - Module based bug bounty automation CLI tool
 lang: en-US
 
-baseurl: "/jekyll-doc-theme" # the subpath of your site, e.g. /blog/
-url: https://aksakalli.github.io/jekyll-doc-theme # the base hostname & protocol for your site
-git_address: https://github.com/aksakalli/jekyll-doc-theme
-git_edit_address: https://github.com/aksakalli/jekyll-doc-theme/blob/gh-pages
+baseurl: "/scant3r" # the subpath of your site, e.g. /blog/
+url: https://knassar702.github.io/scant3r # the base hostname & protocol for your site
+git_address: https://github.com/knassar702/scant3r
+git_edit_address: https://github.com/knassar702/scant3r/blob/gh-pages
 
 # theme options from https://bootswatch.com/3/
 # comment out this to use default Bootstrap
