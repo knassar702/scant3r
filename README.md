@@ -1,6 +1,5 @@
-
 <h3 align="center">
-  <img src="https://user-images.githubusercontent.com/45688522/173450798-63ea513f-06aa-4845-8512-7262d97285ac.png" width="600px">
+  <img src="https://github.com/knassar702/scant3r/blob/gh-pages/logo.png" width="170px">
 </h3>
 
 
