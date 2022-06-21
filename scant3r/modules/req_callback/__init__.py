@@ -14,13 +14,21 @@ proto = (
 
 
 class Main(Scan):
-    def __init__(self,http: httpSender, methods: List[str], url: str,callback_time: int ,convert_body: bool = False, **_):
+    def __init__(
+        self,
+        http: httpSender,
+        methods: List[str],
+        url: str,
+        callback_time: int,
+        convert_body: bool = False,
+        **_,
+    ):
         self.opts = {
             "url": url,
             "methods": methods,
             "callback_time": callback_time,
-            }
-        super().__init__(http,"scanner",convert_body)
+        }
+        super().__init__(http, "scanner", convert_body)
 
     def start(self) -> Dict[str, str]:
         report = {}
@@ -28,7 +36,7 @@ class Main(Scan):
             callback = Interactsh()
             for protocole in proto:
                 new_url = insert_to_params_urls(
-                    self.opts["url"], f"{protocole}://{callback.domain}",True
+                    self.opts["url"], f"{protocole}://{callback.domain}", True
                 )
                 response = self.send_request(method, new_url)
                 if response.__class__.__name__ == "Response":

@@ -15,11 +15,11 @@ log = logging.getLogger("scant3r")
 
 
 class Main(Scan):
-    def __init__(self,http: httpSender, url: str,convert_body: bool = False, **_):
+    def __init__(self, http: httpSender, url: str, convert_body: bool = False, **_):
         self.opts = {
             "url": url,
-            }
-        super().__init__(http,"recon",convert_body)
+        }
+        super().__init__(http, "recon", convert_body)
 
     def scan(self, target_host: str) -> Dict[str, str]:
         firebase = FIREBASE_URL % target_host

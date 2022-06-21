@@ -15,12 +15,19 @@ from scant3r.modules.scan import Scan
 
 
 class Main(Scan):
-    def __init__(self,http: httpSender, methods: List[str], url: str,convert_body: bool = False, **_):
+    def __init__(
+        self,
+        http: httpSender,
+        methods: List[str],
+        url: str,
+        convert_body: bool = False,
+        **_,
+    ):
         self.opts = {
             "url": url,
             "methods": methods,
-            }
-        super().__init__(http,"scanner",convert_body)
+        }
+        super().__init__(http, "scanner", convert_body)
 
     def start(self) -> Dict[str, str]:
         report = {}
