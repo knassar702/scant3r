@@ -13,7 +13,7 @@ with io.open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="scant3r",
-    version="0.9.2",
+    version="0.9.3",
     description="Module based Bug Bounty Automation Tool",
     long_description=desc,
     long_description_content_type="text/markdown",
