@@ -1,6 +1,6 @@
 # band resource load SCANNER
 import time
-from typing import Any, Dict
+from typing import List, Dict
 
 from scant3r.core.oast import Interactsh
 from scant3r.core.requester import httpSender
@@ -14,8 +14,13 @@ proto = (
 
 
 class Main(Scan):
-    def __init__(self, opts: Dict[str, Any], http: httpSender):
-        super().__init__(opts, http, "scanning")
+    def __init__(self,http: httpSender, methods: List[str], url: str,callback_time: int ,convert_body: bool = False, **_):
+        self.opts = {
+            "url": url,
+            "methods": methods,
+            "callback_time": callback_time,
+            }
+        super().__init__(http,"scanner",convert_body)
 
     def start(self) -> Dict[str, str]:
         report = {}
@@ -27,7 +32,7 @@ class Main(Scan):
                 )
                 response = self.send_request(method, new_url)
                 if response.__class__.__name__ == "Response":
-                    time.sleep(self.opts.get("callback_time"))
+                    time.sleep(self.opts.get("callback_time", 2))
                     callback_results = callback.pull_logs()
                     if len(callback_results) > 0:
                         report = {

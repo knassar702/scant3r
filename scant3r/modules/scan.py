@@ -1,7 +1,7 @@
 from base64 import b64encode
 from logging import getLogger
 from secrets import token_bytes
-from typing import Any, Dict, Union
+from typing import Union
 from urllib.parse import parse_qsl, urlparse
 
 from requests.models import Response
@@ -16,12 +16,12 @@ PATH_PYTHON_MODULE = f"{base_dir}/modules/"
 class Scan:
     def __init__(
         self,
-        opts: Dict[str, Any],
         http: httpSender,
         tag: str,
+        convert_body: bool = False,
         path: str = PATH_PYTHON_MODULE,
     ):
-        self.opts = opts
+        self.convert_body = convert_body
         self.http = http
         self.path = path
         self.tag = tag
@@ -40,11 +40,10 @@ class Scan:
     def send_request(
         self, method: str, url: str, second_url: Union[str, None] = None
     ) -> Response:
-        convert_body = self.opts.get("convert_body", False)
         if method == "GET":
-            return self.http.send(url, method, org=convert_body)
+            return self.http.send(url, method, org=self.convert_body)
 
-        if convert_body:
+        if self.convert_body:
             params = dict(parse_qsl(urlparse(url).query))
             if second_url is not None:
                 second_url = second_url.split("?")[0]

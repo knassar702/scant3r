@@ -1,5 +1,5 @@
 import re
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 from parsel import Selector
 from rich.syntax import Syntax
@@ -18,8 +18,12 @@ from .payload_gen import XSS_PAYLOADS
 
 
 class Main(Scan):
-    def __init__(self, opts: Dict[str, Any], http: httpSender):
-        super().__init__(opts, http, "scanning")
+    def __init__(self,http: httpSender, methods: List[str], url: str,convert_body: bool = False, **_):
+        self.opts = {
+            "url": url,
+            "methods": methods,
+            }
+        super().__init__(http,"scanner",convert_body)
 
     def start(self) -> Dict[str, str]:
         report = {
