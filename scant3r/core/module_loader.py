@@ -72,7 +72,7 @@ class ModuleLoader:
                     if parsed_host not in hosts:
                         hosts.append(parsed_host)
                     for _, current_module in self.modules.items():
-                        loaded_mod = current_module.Main(opts, http_opts)
+                        loaded_mod = current_module.Main(http_opts, **opts)
                         if loaded_mod.tag == "recon":
                             continue
                         log.debug(f"Trynig to Start {loaded_mod}")
@@ -82,7 +82,7 @@ class ModuleLoader:
                     opts = user_opts.copy()
                     opts["url"] = host
                     for _, current_module in self.modules.items():
-                        loaded_mod = current_module.Main(opts, http_opts)
+                        loaded_mod = current_module.Main(http_opts, **opts)
                         if loaded_mod.tag != "recon":
                             continue
                         log.debug(f"Trynig to Start {loaded_mod}")

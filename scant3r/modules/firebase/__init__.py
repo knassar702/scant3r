@@ -1,6 +1,6 @@
 import concurrent.futures
 import logging
-from typing import Any, Dict, List
+from typing import Dict, List
 from urllib.parse import urljoin
 
 import tldextract
@@ -15,8 +15,11 @@ log = logging.getLogger("scant3r")
 
 
 class Main(Scan):
-    def __init__(self, opts: Dict[str, Any], http: httpSender):
-        super().__init__(opts, http, "recon")
+    def __init__(self, http: httpSender, url: str, convert_body: bool = False, **_):
+        self.opts = {
+            "url": url,
+        }
+        super().__init__(http, "recon", convert_body)
 
     def scan(self, target_host: str) -> Dict[str, str]:
         firebase = FIREBASE_URL % target_host
