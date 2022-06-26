@@ -1,3 +1,14 @@
+url:
+  - option:
+    - '-u'
+    - '--url'
+  - type: string
+  - default: ''
+  - save_content: true
+  - help: "Your target URL"
+  - exec: "dict_args['url'] = value"
+
+
 exit_after:
   - option: 
     - '-e'

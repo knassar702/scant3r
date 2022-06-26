@@ -16,15 +16,18 @@ class Scantr:
 
     def get_urls(self):
         if len(self.options.get("urls", [])) == 0:
-            if os.isatty(0):
-                console.print(
-                    "[bold red][-][/bold red] PIPE is empty, you need to use [bold yellow]-l[/bold yellow] option"
-                )
-                console.print("[bold cyan][!][/bold cyan] Exit ...")
-                exit()
-            for url in sys.stdin:
-                url = url.rstrip()
-                self.options.get("urls").append(url)
+            if self.options.get("url") != "":
+                self.options["urls"].append(self.options.get("url"))
+            else:
+                if os.isatty(0):
+                    console.print(
+                        "[bold red][-][/bold red] PIPE is empty, you need to use [bold yellow]-l[/bold yellow] option"
+                    )
+                    console.print("[bold cyan][!][/bold cyan] Exit ...")
+                    exit()
+                for url in sys.stdin:
+                    url = url.rstrip()
+                    self.options.get("urls").append(url)
 
     def start(self, save_output: bool = True):
         display_banner(*[])
