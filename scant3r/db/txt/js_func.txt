@@ -1,7 +1,6 @@
 parent['con'+'firm']
 parent['prom'+'pt']
 parent['ale'+'rt']
-globalThis[(+{}+[])[+!![]]+(![]+[])[!+[]+!![]]+([][[]]+[])[!+[]+!![]+!![]]+(!![]+[])[+!![]]+(!![]+[])[+[]]]
 alert
 prompt
 confirm
