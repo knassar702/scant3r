@@ -70,6 +70,8 @@ this the modules we providing for our community for you need new module open an 
 | **ssti**       | Finds Server-side Template injection                                         |
 | **firebase**   | checks for public firebase databases (write/read) permission  |
 
+Official documentation: https://scant3r.knas.me 
+
 #### Requirements
 * python >= 3.10
 * pip
