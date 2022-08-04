@@ -35,29 +35,30 @@ class Main(Scan):
         for method in self.opts["methods"]:
             callback = Interactsh()
             for protocole in proto:
-                new_url = insert_to_params_urls(
+                new_urls = insert_to_params_urls(
                     self.opts["url"], f"{protocole}://{callback.domain}", True
                 )
-                response = self.send_request(method, new_url)
-                if response.__class__.__name__ == "Response":
-                    time.sleep(self.opts.get("callback_time", 2))
-                    callback_results = callback.pull_logs()
-                    if len(callback_results) > 0:
-                        report = {
-                            "module": "req_callback",
-                            "name": "Out-of-band resource load",
-                            "url": response.url,
-                            "request": dump_request(response),
-                            "response": dump_response(response),
-                            "payload": f"{protocole}://{callback.domain}",
-                            "callback": callback_results,
-                        }
-                        report_msg = (
-                            "\n",
-                            ":satellite: Out-of-band resource load",
-                            f":dart: The Effected URL: {response.url}",
-                            f":syringe: The Used Payload: [bold red]{protocole}://{callback.domain} [/bold red]",
-                            f":mag: Callback log: [bold yellow] {callback_results} [/bold yellow]",
-                        )
-                        self.show_report(*report_msg)
+                for new_url in new_urls:
+                    response = self.send_request(method, new_url)
+                    if response.__class__.__name__ == "Response":
+                        time.sleep(self.opts.get("callback_time", 2))
+                        callback_results = callback.pull_logs()
+                        if len(callback_results) > 0:
+                            report = {
+                                "module": "req_callback",
+                                "name": "Out-of-band resource load",
+                                "url": response.url,
+                                "request": dump_request(response),
+                                "response": dump_response(response),
+                                "payload": f"{protocole}://{callback.domain}",
+                                "callback": callback_results,
+                            }
+                            report_msg = (
+                                "\n",
+                                ":satellite: Out-of-band resource load",
+                                f":dart: The Effected URL: {response.url}",
+                                f":syringe: The Used Payload: [bold red]{protocole}://{callback.domain} [/bold red]",
+                                f":mag: Callback log: [bold yellow] {callback_results} [/bold yellow]",
+                            )
+                            self.show_report(*report_msg)
         return report
