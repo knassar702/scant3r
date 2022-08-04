@@ -1,5 +1,5 @@
 import re
-from typing import Any, Dict, List
+from typing import Dict, List
 
 from parsel import Selector
 from rich.syntax import Syntax
