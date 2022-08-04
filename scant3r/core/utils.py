@@ -289,3 +289,4 @@ def insert_after(text: str, find_this: str, newText: str) -> str:
     """
     i = text.find(find_this)
     return text[: i + len(find_this)] + newText + text[i + len(find_this) :]
+

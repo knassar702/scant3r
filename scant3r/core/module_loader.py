@@ -3,15 +3,15 @@
 import concurrent.futures
 import importlib
 import logging
-from glob import glob
-from os.path import isfile
+import sys
+
 from typing import Any, Dict, List, Union
 from urllib.parse import urljoin
 
 from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn
 from rich.table import Column
 
-from scant3r.core.data import base_dir, console
+from scant3r.core.data import console, mods_dir
 from scant3r.core.requester import httpSender
 
 log = logging.getLogger("scant3r")
@@ -24,10 +24,11 @@ class ModuleLoader:
         self.scripts: Dict[str, str] = {}
 
     def get(self, name: str) -> Union[None, Exception]:
-        for the_modfile in glob(f"{base_dir}/modules/{name}"):
-            mod_init = isfile(f"{the_modfile}/__init__.py")
-            if mod_init:
-                import_path = f"scant3r.modules.{name}"
+        for the_mod in mods_dir:
+            mod_file = the_mod[1]
+            import_path = the_mod[0]
+            if import_path.split(".")[-1] == name:
+                sys.path.append(str(mod_file))
                 try:
                     log.debug(f"trying to load {import_path}")
                     import_obj = importlib.import_module(import_path)

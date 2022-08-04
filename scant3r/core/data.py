@@ -1,9 +1,18 @@
 import os.path
+
 from pathlib import Path
 
 from rich.console import Console
 
+"""
+Scant3r - data.py
+----
+Add your Global variables here
+"""
+
 base_dir = Path(__file__).resolve().parent.parent
+
+mods_dir = ( ("scant3r.modules.xss", base_dir), )
 
 # interact.sh public servers
 INTERACT_SERVERS = (
