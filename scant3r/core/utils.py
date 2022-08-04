@@ -3,6 +3,7 @@ import logging
 import random
 import re
 import string
+from typing import List
 from urllib.parse import parse_qsl, urlencode, urljoin, urlparse, urlsplit, urlunparse
 
 from requests.models import Response
@@ -181,7 +182,7 @@ def add_path(url: str, path: str) -> str:
 
 
 # Add a string to url parameters
-def insert_to_params_urls(url: str, text: str, remove_content: bool = False) -> str:
+def insert_to_params_urls(url: str, text: str, remove_content: bool = False) -> List[str]:
     """
     >>> insert_to_params_urls('http://php.net/?name=2','test')
     http://php.net/?name=2test
@@ -191,15 +192,15 @@ def insert_to_params_urls(url: str, text: str, remove_content: bool = False) -> 
     """
     parse_url = urlparse(url)
     query = parse_url.query
+    urls = []
     url_dict = dict(parse_qsl(query, keep_blank_values=True))
     for param, value in url_dict.copy().items():
         if remove_content:
             url_dict[param] = text
         else:
             url_dict[param] = value + text
-    new_url = urlencode(url_dict)
-    parse_url = parse_url._replace(query=new_url)
-    return urlunparse(parse_url)
+        urls.append(urlunparse(parse_url._replace(query=urlencode(url_dict))))
+    return urls
 
 
 # insert text to url path
