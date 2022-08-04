@@ -12,7 +12,12 @@ Add your Global variables here
 
 base_dir = Path(__file__).resolve().parent.parent
 
-mods_dir = ( ("scant3r.modules.xss", base_dir), )
+mods_dir = (
+    ("scant3r.modules.xss", base_dir),
+    ("scant3r.modules.ssti", base_dir),
+    ("scant3r.modules.firebase", base_dir),
+    ("scant3r.modules.req_callback", base_dir),
+)
 
 # interact.sh public servers
 INTERACT_SERVERS = (
