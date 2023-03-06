@@ -36,7 +36,7 @@
 
 
 
-### :warning: This project is not longer supported
+### :warning: This project is no longer supported
 You should use the Lotus project (https://github.com/rusty-sec/lotus/) instead of scant3r, since scant3r had been developed with many errors that will take more time to fix and scant3r is very slow compared to Lotus.
 
 
